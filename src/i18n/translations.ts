@@ -300,6 +300,16 @@ export const translations = {
         colorItem: "color",
         action: "Complete Info",
       },
+      aiDamages: {
+        title: "AI-Detected Damages",
+        subtitle: "Confirmed damages from our AI scan that impact your valuation",
+        noDamages: "No damages detected — your car passed the AI inspection!",
+        severityHigh: "High",
+        severityMedium: "Medium",
+        severityLow: "Low",
+        penalty: "condition penalty",
+        totalImpact: "Total Damage Impact",
+      },
     },
     buyerMatches: {
       title: "Matched Buyers",
@@ -746,6 +756,16 @@ export const translations = {
         descItem: "ausführliche Beschreibung",
         colorItem: "Farbe",
         action: "Vervollständigen",
+      },
+      aiDamages: {
+        title: "KI-erkannte Schäden",
+        subtitle: "Bestätigte Schäden aus unserem KI-Scan, die Ihre Bewertung beeinflussen",
+        noDamages: "Keine Schäden erkannt — Ihr Auto hat die KI-Inspektion bestanden!",
+        severityHigh: "Hoch",
+        severityMedium: "Mittel",
+        severityLow: "Gering",
+        penalty: "Zustandsabzug",
+        totalImpact: "Gesamter Schadenseinfluss",
       },
     },
     buyerMatches: {

@@ -31,6 +31,7 @@ interface CarData {
   accident_details: string | null;
   vin: string | null;
   description: string | null;
+  detected_damages?: any[] | null;
 }
 
 const FairValueResult: React.FC = () => {

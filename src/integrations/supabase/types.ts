@@ -112,6 +112,7 @@ export type Database = {
           created_at: string
           demand_score: number | null
           description: string | null
+          detected_damages: Json | null
           equipment: string[] | null
           fair_value_price: number | null
           features: string[] | null
@@ -143,6 +144,7 @@ export type Database = {
           created_at?: string
           demand_score?: number | null
           description?: string | null
+          detected_damages?: Json | null
           equipment?: string[] | null
           fair_value_price?: number | null
           features?: string[] | null
@@ -174,6 +176,7 @@ export type Database = {
           created_at?: string
           demand_score?: number | null
           description?: string | null
+          detected_damages?: Json | null
           equipment?: string[] | null
           fair_value_price?: number | null
           features?: string[] | null

@@ -140,6 +140,14 @@ const CarUpload: React.FC = () => {
     }, 0);
     const adjustedCondScore = Math.max(10, condScore - damagePenalty);
 
+    const confirmedDamageData = confirmedDamages.map(d => ({
+      type: d.type,
+      location: d.location,
+      severity: d.severity,
+      confidence: d.confidence,
+      description: d.description,
+    }));
+
     const carData = {
       owner_id: userId,
       make: formData.make,
@@ -165,6 +173,7 @@ const CarUpload: React.FC = () => {
       fair_value_price: fairValue,
       demand_score: demandScore,
       status: "available",
+      detected_damages: confirmedDamageData,
     } as any;
 
     let resultId: string | null = null;
