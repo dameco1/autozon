@@ -5,9 +5,18 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import {
   TrendingDown, Gauge, Shield, Wrench, BarChart3, Globe, Eye,
-  AlertTriangle, Sparkles, ArrowUpRight, Pencil, Star, Car, Gem
+  AlertTriangle, Sparkles, ArrowUpRight, Pencil, Star, Car, Gem,
+  ScanSearch, CircleAlert, CheckCircle2
 } from "lucide-react";
 import { motion } from "framer-motion";
+
+interface DetectedDamageEntry {
+  type: string;
+  location: string;
+  severity: "low" | "medium" | "high";
+  confidence: number;
+  description: string;
+}
 
 interface CarData {
   id: string;
@@ -31,6 +40,7 @@ interface CarData {
   accident_details: string | null;
   vin: string | null;
   description: string | null;
+  detected_damages?: DetectedDamageEntry[] | null;
 }
 
 type FactorType = "booster" | "reducer" | "neutral";
@@ -492,6 +502,82 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           </div>
         </div>
       )}
+
+      {/* AI-Detected Damages Section */}
+      {(() => {
+        const damages = car.detected_damages ?? [];
+        const ad = a.aiDamages;
+        const severityPenalty: Record<string, number> = { high: 15, medium: 8, low: 3 };
+        const severityColors: Record<string, string> = {
+          high: "text-destructive bg-destructive/10 border-destructive/20",
+          medium: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
+          low: "text-silver/70 bg-silver/5 border-silver/10",
+        };
+        const severityLabels: Record<string, string> = {
+          high: ad.severityHigh,
+          medium: ad.severityMedium,
+          low: ad.severityLow,
+        };
+        const totalPenalty = damages.reduce((sum, d) => sum + (severityPenalty[d.severity] ?? 3), 0);
+
+        return (
+          <motion.div
+            className="bg-secondary/50 border border-border rounded-2xl p-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <ScanSearch className="h-5 w-5 text-primary" />
+              <h3 className="text-sm font-display font-bold text-white">{ad.title}</h3>
+            </div>
+            <p className="text-silver/50 text-xs mb-4">{ad.subtitle}</p>
+
+            {damages.length === 0 ? (
+              <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-xl p-4">
+                <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                <span className="text-sm text-primary">{ad.noDamages}</span>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {damages.map((d, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.55 + i * 0.05 }}
+                    className="flex items-start gap-3 bg-charcoal/50 rounded-xl p-4 border border-border"
+                  >
+                    <CircleAlert className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
+                      d.severity === "high" ? "text-destructive" : d.severity === "medium" ? "text-yellow-400" : "text-silver/50"
+                    }`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="text-white text-sm font-medium capitalize">{d.type.replace("_", " ")}</span>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${severityColors[d.severity]}`}>
+                          {severityLabels[d.severity]}
+                        </span>
+                        <span className="text-silver/40 text-[10px]">📍 {d.location}</span>
+                      </div>
+                      <p className="text-silver/50 text-xs">{d.description}</p>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <div className="text-destructive text-sm font-bold">-{severityPenalty[d.severity] ?? 3}</div>
+                      <div className="text-destructive/60 text-[10px]">{ad.penalty}</div>
+                    </div>
+                  </motion.div>
+                ))}
+
+                {/* Total impact */}
+                <div className="flex items-center justify-between bg-destructive/5 border border-destructive/20 rounded-xl p-4 mt-2">
+                  <span className="text-sm text-white font-medium">{ad.totalImpact}</span>
+                  <span className="text-destructive font-bold">-{totalPenalty} pts</span>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        );
+      })()}
 
       {/* Resubmit CTA */}
       <motion.div
