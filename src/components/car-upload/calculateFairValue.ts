@@ -69,7 +69,14 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   if (data.color) transparencyPoints += 1;
   if (data.accidentHistory && data.accidentDetails.length > 20) transparencyPoints += 2;
   if (!data.accidentHistory) transparencyPoints += 1;
-  const transparencyBonus = 1 + Math.min(transparencyPoints / 10, 1) * 0.05;
+  // Photo count bonus: up to 3 points for uploading multiple photos
+  const photoCount = data.photos?.length ?? 0;
+  if (photoCount >= 8) transparencyPoints += 3;
+  else if (photoCount >= 4) transparencyPoints += 2;
+  else if (photoCount >= 1) transparencyPoints += 1;
+  // Damage scan bonus: cars that completed AI scan get extra trust
+  if (data.damageScanned) transparencyPoints += 3;
+  const transparencyBonus = 1 + Math.min(transparencyPoints / 15, 1) * 0.07;
 
   // Final Fair Value
   const fairValue = Math.round(

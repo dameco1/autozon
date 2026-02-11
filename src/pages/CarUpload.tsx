@@ -72,7 +72,7 @@ const CarUpload: React.FC = () => {
         accidentDetails: data.accident_details ?? "",
         description: data.description ?? "",
         photos: (data as any).photos ?? [],
-      });
+        damageScanned: false,
     });
   }, [editId]);
 
@@ -91,6 +91,7 @@ const CarUpload: React.FC = () => {
         confirmed: d.confidence >= 0.6 ? true : undefined,
       }));
       setDamageReport(report);
+      updateForm({ damageScanned: true });
     } catch (err: any) {
       toast.error(err.message || "Damage detection failed");
     } finally {
