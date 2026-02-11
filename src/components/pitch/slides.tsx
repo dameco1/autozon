@@ -3,8 +3,18 @@ import {
   Users, RefreshCw, Tag, Globe, BarChart3, Swords, Database,
   Rocket, Heart, ChevronRight, Zap, Search, Handshake, FileText,
   CreditCard, Truck, Crown, PieChart, Target, ArrowRight, Check,
-  XCircle, Star, Layers, Map
+  XCircle, Star, Layers, Map, User
 } from "lucide-react";
+
+import damirPhoto from "@/assets/pitch/damir-profile.jpg";
+import carBmw5Black from "@/assets/pitch/car-bmw-5-black.jpg";
+import carBmw5Blue from "@/assets/pitch/car-bmw-5-blue.jpg";
+import carBmwX2 from "@/assets/pitch/car-bmw-x2.jpg";
+import carBmwX6Red from "@/assets/pitch/car-bmw-x6-red.jpg";
+import carBmwZ4 from "@/assets/pitch/car-bmw-z4.jpg";
+import carCitroenDs5 from "@/assets/pitch/car-citroen-ds5.jpg";
+import carPorsche911 from "@/assets/pitch/car-porsche-911.jpg";
+import carPorschePanamera from "@/assets/pitch/car-porsche-panamera.jpg";
 
 const green = "text-green";
 const dim = "text-silver/60";
@@ -13,23 +23,21 @@ const subheading = "font-display text-[48px] font-bold text-white leading-tight"
 const body = "text-[28px] text-silver leading-relaxed";
 const stat = "font-display text-[96px] font-black text-green leading-none";
 const cardBg = "bg-white/5 border border-white/10 rounded-2xl p-8";
+const sourceText = "absolute bottom-8 left-40 right-40 text-[16px] text-silver/40 italic";
 
 // Slide 1: Title
 export const SlideTitle = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
     <Car className={green} size={80} />
     <h1 className="font-display text-[96px] font-black text-white mt-8 leading-none">
-      AUTO<span className={green}>ZON</span>
+      auto<span className={green}>zon</span>
     </h1>
-    <p className="text-[40px] text-silver mt-6 font-light">
-      Fair value. Zero friction.
-    </p>
-    <p className={`text-[32px] ${green} mt-4 font-display font-bold`}>
-      The Amazon of cars.
+    <p className="text-[36px] text-silver mt-4 font-light">
+      Fair Value, Best Prices. Zero Friction.
     </p>
     <div className="mt-16 flex items-center gap-3">
       <div className="w-12 h-[2px] bg-green" />
-      <span className={`text-[24px] ${dim}`}>Investor Presentation 2025</span>
+      <span className={`text-[24px] ${dim}`}>Investor Presentation 2026</span>
       <div className="w-12 h-[2px] bg-green" />
     </div>
   </div>
@@ -37,7 +45,7 @@ export const SlideTitle = () => (
 
 // Slide 2: The Problem
 export const SlideProblem = () => (
-  <div className="flex flex-col justify-center h-full px-40">
+  <div className="flex flex-col justify-center h-full px-40 relative">
     <div className="flex items-center gap-4 mb-12">
       <TrendingDown className={green} size={48} />
       <h2 className={heading}>The Problem</h2>
@@ -59,6 +67,7 @@ export const SlideProblem = () => (
         <p className="text-[24px] text-silver mt-4">Of sellers feel cheated after their sale</p>
       </div>
     </div>
+    <p className={sourceText}>Sources: DAT Report 2024; AutoScout24 Market Study 2023; Deloitte Used Car Consumer Survey 2023</p>
   </div>
 );
 
@@ -142,7 +151,7 @@ export const SlideWhyNow = () => (
         "Trust in dealerships is collapsing",
         "Consumers demand transparency",
         "AI enables personalized matching at scale",
-        "No dominant \"Amazon of cars\" exists yet",
+        "No dominant fair-value car platform exists yet",
         "Cross-border markets are more connected than ever",
       ].map((text, i) => (
         <div key={i} className="flex items-center gap-6">
@@ -182,7 +191,7 @@ export const SlideBusinessModel = () => (
       </div>
     </div>
     <p className={`text-[28px] text-silver mt-12 text-center`}>
-      Asymmetric pricing — the same model that built <span className={`${green} font-bold`}>Amazon</span>, <span className={`${green} font-bold`}>Airbnb</span>, and <span className={`${green} font-bold`}>Uber</span>.
+      Asymmetric pricing — the proven model behind the world's most successful marketplaces.
     </p>
   </div>
 );
@@ -277,7 +286,7 @@ export const SlidePricing = () => (
 
 // Slide 11: Market Size
 export const SlideMarketSize = () => (
-  <div className="flex flex-col items-center justify-center h-full px-40 text-center">
+  <div className="flex flex-col items-center justify-center h-full px-40 text-center relative">
     <Globe className={green} size={64} />
     <h2 className={heading + " mt-8"}>Market Size</h2>
     <p className={`${stat} mt-12`}>€300B+</p>
@@ -286,12 +295,13 @@ export const SlideMarketSize = () => (
     <p className="text-[32px] text-silver mt-8">
       Even <span className={`${green} font-bold`}>1% penetration</span> = multi-billion opportunity
     </p>
+    <p className={sourceText}>Source: ACEA European Automobile Manufacturers' Association, 2024 Report</p>
   </div>
 );
 
 // Slide 12: Financial Projections
 export const SlideFinancials = () => (
-  <div className="flex flex-col justify-center h-full px-40">
+  <div className="flex flex-col justify-center h-full px-40 relative">
     <div className="flex items-center gap-4 mb-10">
       <PieChart className={green} size={48} />
       <h2 className={heading}>Financial Projections</h2>
@@ -324,6 +334,7 @@ export const SlideFinancials = () => (
         <p className={`text-[36px] font-bold ${green}`}>&gt; 5x</p>
       </div>
     </div>
+    <p className={sourceText}>Based on internal projections; avg fee derived from 2.5% on €20K avg transaction price</p>
   </div>
 );
 
@@ -423,7 +434,63 @@ export const SlideAsk = () => (
   </div>
 );
 
-// Slide 16: Closing
+// Slide 16: Founder
+const carImages = [
+  carCitroenDs5, carBmw5Black, carBmw5Blue, carBmwZ4,
+  carBmwX6Red, carBmwX2, carPorsche911, carPorschePanamera,
+];
+
+export const SlideFounder = () => (
+  <div className="flex h-full px-40 py-16 gap-12">
+    {/* Left: Photo + Bio */}
+    <div className="flex flex-col justify-center w-[700px] shrink-0">
+      <div className="flex items-center gap-4 mb-8">
+        <User className={green} size={48} />
+        <h2 className={heading}>The Founder</h2>
+      </div>
+      <div className="flex items-start gap-8 mb-8">
+        <img
+          src={damirPhoto}
+          alt="Damir Buljubasic"
+          className="w-[200px] h-[200px] rounded-2xl object-cover border-2 border-green/30 shrink-0"
+        />
+        <div>
+          <h3 className="text-[36px] text-white font-bold">Damir Buljubasic</h3>
+          <p className={`text-[20px] ${green} font-semibold mt-1`}>Founder & CEO</p>
+        </div>
+      </div>
+      <div className="space-y-4 text-[20px] text-silver leading-relaxed">
+        <p>
+          At age 18, founded <span className="text-white font-semibold">Dameco Internet Services</span> and developed one of the most unique and widely used Learning Management Systems — sold to <span className="text-white font-semibold">Learning Library Inc.</span> in 2009.
+        </p>
+        <p>
+          Since then, held key roles at <span className="text-white font-semibold">Oracle, ATOS, ASA Prevent Holding</span>, and <span className="text-white font-semibold">Planetsoft</span>.
+        </p>
+        <p>
+          In 2025, a personal realization: despite investing heavily in maintenance and condition preservation, <span className={`${green} font-semibold`}>the system always depreciated the car without sense</span>. That frustration became Autozon.
+        </p>
+        <p className="text-silver/60 italic">
+          An avid car enthusiast who has owned and cared for every vehicle with passion →
+        </p>
+      </div>
+    </div>
+
+    {/* Right: Car Collage */}
+    <div className="flex-1 grid grid-cols-4 grid-rows-2 gap-3 my-auto">
+      {carImages.map((src, i) => (
+        <div key={i} className="rounded-xl overflow-hidden border border-white/10">
+          <img
+            src={src}
+            alt={`Car ${i + 1}`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+// Slide 17: Closing
 export const SlideClosing = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
     <Heart className={green} size={64} />
@@ -438,8 +505,8 @@ export const SlideClosing = () => (
     <p className="text-[24px] text-silver/60 mt-8 italic max-w-[1000px]">
       "Autozon is not a marketplace. It's a value-preservation engine for the €300B used-car market."
     </p>
-    <p className={`font-display text-[36px] font-black ${green} mt-16`}>
-      AUTO<span className="text-white">ZON</span>
+    <p className="font-display text-[36px] font-black text-white mt-16">
+      auto<span className={green}>zon</span>
     </p>
   </div>
 );
@@ -448,5 +515,5 @@ export const allSlides = [
   SlideTitle, SlideProblem, SlideInsight, SlideSolution, SlideProduct,
   SlideWhyNow, SlideBusinessModel, SlideRevenueStreams, SlideFlywheel,
   SlidePricing, SlideMarketSize, SlideFinancials, SlideCompetition,
-  SlideMoatRoadmap, SlideAsk, SlideClosing,
+  SlideMoatRoadmap, SlideAsk, SlideFounder, SlideClosing,
 ];
