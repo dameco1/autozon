@@ -1,59 +1,67 @@
 
 
-# Combined Homepage Redesign
+# Add Car Imagery to Homepage
 
-## What's Changing
+## Approach: Animated Car Image Ticker + Visual Hero
 
-### 1. Logo and Branding
-- Remove the car icon from the logo everywhere (navbar and footer)
-- Make the logo text bigger (`text-2xl` in navbar)
-- Add "buy. sell. cars." tagline directly under the logo
-- Add "Like Amazon, only for cars!" as a secondary line in the navbar
+Combine two elements for maximum visual impact without cluttering the design.
 
-### 2. Hero Section
-- New headline: **"Fair Value. Best Prices."** with accent **"Zero Friction."**
-- Remove the green pill/badge element above the headline ("Fair value. Zero friction." rounded rectangle)
-- Update subtitle to address both buyers AND sellers
-- Change buttons: **"Sell My Car"** and **"Find My Next Car"** (both go to `/intent`)
-- Replace the blurry background circles with subtle animated floating dots using framer-motion
+---
 
-### 3. Section Badges Removed
-- Remove all the colored rounded-rectangle badges ("The Problem", "The Solution", "How It Works", "Why Autozon")
-- Replace each with a clean, minimal accent line (a short green horizontal bar) above the section title
+## Change 1: Hero Section — Split Layout with Car Showcase
 
-### 4. Footer
-- Remove car icon, update tagline to "buy. sell. cars."
+Transform the hero from centered text to a split layout:
+- **Left side**: Headline, subtitle, and CTA buttons (existing content)
+- **Right side**: A stacked/overlapping arrangement of 3 car image cards with slight rotation and shadow, creating a "deck of cards" effect with subtle framer-motion float animation
 
-### 5. Translations
-- All copy updates applied to both English and German
+On mobile, the car images stack below the text.
+
+## Change 2: Auto-Scrolling Car Ticker
+
+Add a horizontal auto-scrolling strip of car images between the Hero and Problem sections:
+- Uses the existing Embla carousel (already installed) with auto-scroll
+- Shows 4-6 car thumbnails in rounded cards sliding continuously
+- Subtle fade-out on edges for a polished look
+- No user interaction needed — purely decorative
+
+## Change 3: Placeholder Images
+
+Use 5-6 high-quality car photos. Options:
+- Use Unsplash URLs (e.g., `https://images.unsplash.com/photo-xxxxx`) for realistic car photos — free, no setup needed
+- Or the user can upload their own images through chat
 
 ---
 
 ## Technical Details
 
-### Files Modified
-
-**`src/components/Navbar.tsx`**
-- Remove `Car` import from lucide-react
-- Increase logo text to `text-2xl`
-- Add a flex-col wrapper around the logo with two small tagline lines below:
-  - `"buy. sell. cars."` in `text-[10px] text-silver/50 tracking-widest uppercase`
-  - `"Like Amazon, only for cars!"` in `text-[10px] text-silver/40 italic`
-- Same changes in the mobile menu logo area
+### Files to Modify
 
 **`src/pages/Index.tsx`**
-- Remove `Car` icon import
-- Hero: delete the pill badge `<motion.div>` (the "Fair value. Zero friction." rounded element)
-- Hero: replace the two static blur circles with 5 small animated dots using framer-motion `animate` with infinite looping `y` drift
-- Hero: update headline to use new translation keys
-- Hero: update CTA buttons -- primary "Sell My Car" navigating to `/intent`, outline "Find My Next Car" navigating to `/intent`
-- Problem, Solution, How It Works, Trust sections: replace each `<span className="inline-block px-3 py-1 rounded-full ...">` badge with `<div className="w-12 h-1 bg-primary rounded-full mx-auto mb-4" />`
-- Footer: remove `Car` icon, use new tagline key
+- Refactor hero section from `text-center` to a `grid grid-cols-1 lg:grid-cols-2` layout
+- Left column: existing headline, subtitle, buttons (left-aligned on desktop)
+- Right column: new `HeroCarShowcase` component with 3 overlapping car image cards using framer-motion for subtle floating
+- Add a new `CarTicker` section between Hero and Problem sections
 
-**`src/i18n/translations.ts`**
-- Add to `nav` (EN): `tagline: "buy. sell. cars."`, `amazonTagline: "Like Amazon, only for cars!"`
-- Add to `nav` (DE): `tagline: "buy. sell. cars."`, `amazonTagline: "Wie Amazon, nur für Autos!"`
-- Update EN `hero`: title "Fair Value. Best Prices.", titleAccent "Zero Friction.", subtitle rewritten for buyers+sellers, cta "Sell My Car", ctaSecondary "Find My Next Car"
-- Update DE `hero`: matching German translations
-- Update EN/DE `footer.tagline`: "buy. sell. cars."
+**`src/components/home/HeroCarShowcase.tsx`** (new file)
+- Three car images positioned with absolute positioning, slight rotations (-3deg, 0deg, 3deg)
+- Each wrapped in a rounded card with shadow
+- framer-motion `animate` for gentle up/down drift on each card (staggered timing)
+
+**`src/components/home/CarTicker.tsx`** (new file)
+- Horizontal auto-scrolling strip using CSS animation (`@keyframes scroll`)
+- Duplicate the image set for seamless infinite loop
+- Gradient fade on left/right edges using `mask-image`
+- 6 car images in rounded-xl cards
+
+**`src/components/home/carImages.ts`** (new file)
+- Array of placeholder car image URLs (Unsplash) with alt text
+- Centralized so both components share the same images
+
+### Dependencies
+- No new dependencies — uses framer-motion (already installed) and CSS animations
+- Embla carousel is available but pure CSS infinite scroll is simpler for a ticker
+
+### Responsive Behavior
+- Desktop: Split hero (text left, cars right) + full-width ticker
+- Mobile: Stacked hero (text on top, car cards below, smaller) + ticker with fewer visible cards
 
