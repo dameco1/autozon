@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,10 @@ const STEPS = 3;
 const CarUpload: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  const [searchParams] = useSearchParams();
+  const editId = searchParams.get("edit");
+  const initialStep = searchParams.get("step");
+  const [step, setStep] = useState(initialStep ? Number(initialStep) : 1);
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -62,6 +65,31 @@ const CarUpload: React.FC = () => {
       else setUserId(session.user.id);
     });
   }, [navigate]);
+
+  // Load existing car data in edit mode
+  useEffect(() => {
+    if (!editId) return;
+    supabase.from("cars").select("*").eq("id", editId).maybeSingle().then(({ data }) => {
+      if (!data) return;
+      setMake(data.make);
+      setModel(data.model);
+      setYear(data.year);
+      setVin(data.vin ?? "");
+      setMileage(data.mileage);
+      setFuelType(data.fuel_type);
+      setTransmission(data.transmission);
+      setBodyType(data.body_type);
+      setColor(data.color ?? "");
+      setPowerHp(data.power_hp ?? 150);
+      setPrice(data.price);
+      setEquipment(data.equipment ?? []);
+      setConditionExterior(data.condition_exterior ?? 80);
+      setConditionInterior(data.condition_interior ?? 80);
+      setAccidentHistory(data.accident_history ?? false);
+      setAccidentDetails(data.accident_details ?? "");
+      setDescription(data.description ?? "");
+    });
+  }, [editId]);
 
   const toggleEquipment = (item: string) => {
     setEquipment((prev) => prev.includes(item) ? prev.filter((e) => e !== item) : [...prev, item]);
@@ -181,40 +209,63 @@ const CarUpload: React.FC = () => {
 
     const { fairValue, condScore, demandScore } = calculateFairValue();
 
-    const { data, error } = await supabase
-      .from("cars")
-      .insert({
-        owner_id: userId,
-        make,
-        model,
-        year,
-        vin,
-        mileage,
-        fuel_type: fuelType,
-        transmission,
-        body_type: bodyType,
-        color,
-        power_hp: powerHp,
-        price,
-        equipment,
-        condition_exterior: conditionExterior,
-        condition_interior: conditionInterior,
-        accident_history: accidentHistory,
-        accident_details: accidentDetails,
-        description,
-        condition_score: condScore,
-        fair_value_price: fairValue,
-        demand_score: demandScore,
-        status: "available",
-      } as any)
-      .select("id")
-      .single();
+    const carData = {
+      owner_id: userId,
+      make,
+      model,
+      year,
+      vin,
+      mileage,
+      fuel_type: fuelType,
+      transmission,
+      body_type: bodyType,
+      color,
+      power_hp: powerHp,
+      price,
+      equipment,
+      condition_exterior: conditionExterior,
+      condition_interior: conditionInterior,
+      accident_history: accidentHistory,
+      accident_details: accidentDetails,
+      description,
+      condition_score: condScore,
+      fair_value_price: fairValue,
+      demand_score: demandScore,
+      status: "available",
+    } as any;
+
+    let resultId: string | null = null;
+
+    if (editId) {
+      // Update existing car
+      const { error } = await supabase
+        .from("cars")
+        .update(carData)
+        .eq("id", editId);
+      if (error) {
+        toast.error(error.message);
+        setLoading(false);
+        return;
+      }
+      resultId = editId;
+    } else {
+      // Insert new car
+      const { data, error } = await supabase
+        .from("cars")
+        .insert(carData)
+        .select("id")
+        .single();
+      if (error) {
+        toast.error(error.message);
+        setLoading(false);
+        return;
+      }
+      resultId = data?.id ?? null;
+    }
 
     setLoading(false);
-    if (error) {
-      toast.error(error.message);
-    } else if (data) {
-      navigate(`/fair-value/${data.id}`);
+    if (resultId) {
+      navigate(`/fair-value/${resultId}`);
     }
   };
 
@@ -234,8 +285,12 @@ const CarUpload: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <Car className="h-10 w-10 text-primary mx-auto mb-4" />
-          <h1 className="text-3xl font-display font-bold text-white">{t.carUpload.title}</h1>
-          <p className="text-silver/60 mt-2">{t.carUpload.subtitle}</p>
+          <h1 className="text-3xl font-display font-bold text-white">
+            {editId ? t.carUpload.editTitle : t.carUpload.title}
+          </h1>
+          <p className="text-silver/60 mt-2">
+            {editId ? t.carUpload.editSubtitle : t.carUpload.subtitle}
+          </p>
         </div>
 
         {/* Steps */}
