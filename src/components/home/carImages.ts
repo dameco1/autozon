@@ -23,4 +23,20 @@ export const carImages = [
     url: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
     alt: "Red Ferrari sports car",
   },
+  {
+    url: "https://images.unsplash.com/photo-1551830820-330a71b99659?auto=format&fit=crop&w=800&q=80",
+    alt: "Renault Clio compact car",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1612825173281-9a193378527e?auto=format&fit=crop&w=800&q=80",
+    alt: "Ford Mustang on the road",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=800&q=80",
+    alt: "Volkswagen Golf hatchback",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=800&q=80",
+    alt: "Toyota Corolla sedan",
+  },
 ];
