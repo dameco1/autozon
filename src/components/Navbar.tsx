@@ -37,10 +37,12 @@ const Navbar: React.FC = () => {
               auto<span className="text-primary">zon</span>
             </span>
             <span className="text-[10px] text-silver/50 tracking-widest uppercase leading-none">{t.nav.tagline}</span>
-            <span className="text-[10px] text-silver/40 italic leading-none mt-0.5">{t.nav.amazonTagline}</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
+            <span className="text-sm text-primary/80 -rotate-1 select-none" style={{ fontFamily: "'Comic Neue', cursive" }}>
+              ✨ {t.nav.amazonTagline}
+            </span>
             <a href="#how-it-works" className="text-sm text-silver/80 hover:text-primary transition-colors">
               {t.nav.howItWorks}
             </a>
@@ -80,6 +82,9 @@ const Navbar: React.FC = () => {
 
       {menuOpen && (
         <div className="md:hidden bg-charcoal border-t border-border px-4 py-4 space-y-3">
+          <span className="block text-sm text-primary/80 -rotate-1" style={{ fontFamily: "'Comic Neue', cursive" }}>
+            ✨ {t.nav.amazonTagline}
+          </span>
           <a href="#how-it-works" className="block text-sm text-silver/80 hover:text-primary" onClick={() => setMenuOpen(false)}>
             {t.nav.howItWorks}
           </a>
