@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText } from "lucide-react";
+import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText, Camera } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { STEPS } from "@/components/car-upload/constants";
@@ -12,6 +12,7 @@ import { calculateFairValue } from "@/components/car-upload/calculateFairValue";
 import StepBasicInfo from "@/components/car-upload/StepBasicInfo";
 import StepEquipment from "@/components/car-upload/StepEquipment";
 import StepCondition from "@/components/car-upload/StepCondition";
+import StepPhotos from "@/components/car-upload/StepPhotos";
 
 const CarUpload: React.FC = () => {
   const { t } = useLanguage();
@@ -67,6 +68,7 @@ const CarUpload: React.FC = () => {
         accidentHistory: data.accident_history ?? false,
         accidentDetails: data.accident_details ?? "",
         description: data.description ?? "",
+        photos: (data as any).photos ?? [],
       });
     });
   }, [editId]);
@@ -96,6 +98,8 @@ const CarUpload: React.FC = () => {
       accident_history: formData.accidentHistory,
       accident_details: formData.accidentDetails,
       description: formData.description,
+      photos: formData.photos,
+      image_url: formData.photos[0] ?? null,
       condition_score: condScore,
       fair_value_price: fairValue,
       demand_score: demandScore,
@@ -118,8 +122,8 @@ const CarUpload: React.FC = () => {
     if (resultId) navigate(`/fair-value/${resultId}`);
   };
 
-  const stepIcons = [FileText, Wrench, Check];
-  const stepLabels = [t.carUpload.step1, t.carUpload.step2, t.carUpload.step3];
+  const stepIcons = [FileText, Camera, Wrench, Check];
+  const stepLabels = [t.carUpload.step1, t.carUpload.step2, t.carUpload.step3, t.carUpload.step4];
 
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center px-4 py-12">
@@ -137,7 +141,7 @@ const CarUpload: React.FC = () => {
 
         {/* Steps indicator */}
         <div className="flex items-center justify-center gap-4 mb-10">
-          {[1, 2, 3].map((s) => {
+          {[1, 2, 3, 4].map((s) => {
             const Icon = stepIcons[s - 1];
             return (
               <div key={s} className="flex items-center gap-2">
@@ -165,8 +169,9 @@ const CarUpload: React.FC = () => {
               transition={{ duration: 0.25 }}
             >
               {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} />}
-              {step === 2 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
-              {step === 3 && <StepCondition data={formData} onChange={updateForm} />}
+              {step === 2 && <StepPhotos photos={formData.photos} userId={userId} onPhotosChange={(photos) => updateForm({ photos })} />}
+              {step === 3 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
+              {step === 4 && <StepCondition data={formData} onChange={updateForm} />}
             </motion.div>
           </AnimatePresence>
 
