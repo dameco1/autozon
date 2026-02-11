@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText, Camera, ShieldAlert } from "lucide-react";
+import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText, Camera, ShieldAlert, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { STEPS } from "@/components/car-upload/constants";
@@ -213,9 +213,51 @@ const CarUpload: React.FC = () => {
     t.carUpload.step4,
   ];
 
+  const validateStep = (s: number): string | null => {
+    switch (s) {
+      case 1:
+        if (!formData.make) return "Please select a make";
+        if (!formData.model) return "Please select a model";
+        if (!formData.color) return "Please select a color";
+        if (formData.mileage <= 0) return "Please enter a valid mileage";
+        if (formData.price <= 0) return "Please enter a valid price";
+        return null;
+      case 2:
+        if (formData.photos.length === 0) return "Please upload at least one photo";
+        return null;
+      case 3:
+        if (analyzingDamage) return "Please wait for damage analysis to finish";
+        return null;
+      case 4:
+        return null; // equipment is optional
+      case 5:
+        return null; // condition has defaults
+      default:
+        return null;
+    }
+  };
+
+  const handleNext = () => {
+    const error = validateStep(step);
+    if (error) {
+      toast.error(error);
+      return;
+    }
+    setStep(step + 1);
+  };
+
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl">
+        {/* Back to dashboard button */}
+        <Button
+          variant="ghost"
+          className="text-silver/60 mb-4 -ml-2 hover:text-white"
+          onClick={() => navigate(-1)}
+        >
+          <ChevronLeft className="mr-1 h-4 w-4" /> Back
+        </Button>
+
         <div className="text-center mb-8">
           <Car className="h-10 w-10 text-primary mx-auto mb-4" />
           <h1 className="text-3xl font-display font-bold text-white">
@@ -280,8 +322,8 @@ const CarUpload: React.FC = () => {
             {step < STEPS ? (
               <Button
                 className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-                onClick={() => setStep(step + 1)}
-                disabled={(step === 1 && (!formData.make || !formData.model)) || (step === 3 && analyzingDamage)}
+                onClick={handleNext}
+                disabled={step === 3 && analyzingDamage}
               >
                 {t.carUpload.next} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
