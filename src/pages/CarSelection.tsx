@@ -62,7 +62,7 @@ const CarSelection: React.FC = () => {
     // Build query for matching cars
     let query = supabase
       .from("cars")
-      .select("*")
+      .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, detected_damages")
       .eq("status", "available")
       .limit(10);
 
@@ -141,7 +141,7 @@ const CarSelection: React.FC = () => {
 
     let query = supabase
       .from("cars")
-      .select("*")
+      .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, detected_damages")
       .eq("status", "available")
       .limit(10);
 
