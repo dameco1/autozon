@@ -117,9 +117,9 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: false,
   });
 
-  // 3. EXTERIOR CONDITION (actionable, with pristine bonus)
+  // 3. EXTERIOR CONDITION (recentered: avg 75 = ~1.0)
   const condExt = car.condition_exterior ?? 80;
-  const condExtFactor = 0.65 + (condExt / 100) * 0.40 + (condExt > 90 ? (condExt - 90) * 0.005 : 0);
+  const condExtFactor = 0.85 + (condExt / 100) * 0.17;
   const extEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condExtFactor - 1) * 0.5);
   factors.push({
     id: "exterior",
@@ -136,14 +136,14 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     barValue: condExt,
     type: condExt >= 70 ? "booster" : "reducer",
     icon: <Car className="h-5 w-5" />,
-    actionable: true,
+    actionable: condExt < 85,
     actionLabel: a.exterior.action,
     actionStep: 3,
   });
 
-  // 4. INTERIOR CONDITION (actionable, with pristine bonus)
+  // 4. INTERIOR CONDITION (recentered: avg 75 = ~1.0)
   const condInt = car.condition_interior ?? 80;
-  const condIntFactor = 0.65 + (condInt / 100) * 0.40 + (condInt > 90 ? (condInt - 90) * 0.005 : 0);
+  const condIntFactor = 0.85 + (condInt / 100) * 0.17;
   const intEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condIntFactor - 1) * 0.5);
   factors.push({
     id: "interior",
@@ -160,7 +160,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     barValue: condInt,
     type: condInt >= 70 ? "booster" : "reducer",
     icon: <Shield className="h-5 w-5" />,
-    actionable: true,
+    actionable: condInt < 85,
     actionLabel: a.interior.action,
     actionStep: 3,
   });
@@ -193,12 +193,12 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   const equip = car.equipment ?? [];
   let equipWeightedScore = 0;
   equip.forEach((eq) => {
-    if (safetyFeatures.includes(eq)) equipWeightedScore += 3.5;
-    else if (techFeatures.includes(eq)) equipWeightedScore += 2.5;
-    else if (comfortFeatures.includes(eq)) equipWeightedScore += 1.8;
-    else equipWeightedScore += 1;
+    if (safetyFeatures.includes(eq)) equipWeightedScore += 2.5;
+    else if (techFeatures.includes(eq)) equipWeightedScore += 1.8;
+    else if (comfortFeatures.includes(eq)) equipWeightedScore += 1.2;
+    else equipWeightedScore += 0.8;
   });
-  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.004, 0.20);
+  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.003, 0.10);
   const equipEuro = Math.round(basePrice * depreciationFactor * (equipmentIndex - 1));
   factors.push({
     id: "equipment",
@@ -221,11 +221,11 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   // 7. BRAND & MARKET DEMAND
   const highDemandBodies = ["SUV", "Hatchback"];
   const moderateDemandBodies = ["Sedan", "Wagon", "Coupe", "Convertible"];
-  const bodyDemand = highDemandBodies.includes(car.body_type) ? 1.06
-    : moderateDemandBodies.includes(car.body_type) ? 1.02 : 0.97;
+  const bodyDemand = highDemandBodies.includes(car.body_type) ? 1.04
+    : moderateDemandBodies.includes(car.body_type) ? 1.01 : 0.97;
   const highDemandMakes = ["Toyota", "Honda", "Porsche", "Tesla"];
-  const makeDemand = highDemandMakes.includes(car.make) ? 1.05
-    : premiumBrands.includes(car.make) ? 1.02 : 1.0;
+  const makeDemand = highDemandMakes.includes(car.make) ? 1.03
+    : premiumBrands.includes(car.make) ? 1.01 : 1.0;
   const marketPositionFactor = bodyDemand * makeDemand;
   const marketEuro = Math.round(basePrice * depreciationFactor * (marketPositionFactor - 1));
   factors.push({
@@ -288,7 +288,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   if (car.color) transparencyPoints += 1;
   if (car.accident_history && (car.accident_details ?? "").length > 20) transparencyPoints += 2;
   if (!car.accident_history) transparencyPoints += 1;
-  const transparencyBonus = 1 + Math.min(transparencyPoints / 10, 1) * 0.05;
+  const transparencyBonus = 1 + Math.min(transparencyPoints / 10, 1) * 0.04;
   const transEuro = Math.round(basePrice * depreciationFactor * (transparencyBonus - 1));
   const missingItems: string[] = [];
   if ((car.vin ?? "").length < 10) missingItems.push("VIN");

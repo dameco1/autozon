@@ -27,45 +27,44 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   const expectedKm = carAge * avgAnnualKm;
   const mileageRatio = data.mileage / Math.max(expectedKm, 1);
   const mileageFactor = mileageRatio <= 1
-    ? 1 + (1 - mileageRatio) * 0.08
+    ? 1 + (1 - mileageRatio) * 0.05
     : Math.max(0.55, 1 - Math.pow(mileageRatio - 1, 1.4) * 0.25);
 
-  // 3. Condition Factor (with pristine bonus)
+  // 3. Condition Factor (recentered: avg 75 = ~1.0 neutral)
   const condAvg = (data.conditionExterior + data.conditionInterior) / 2;
-  const baseCondFactor = 0.65 + (condAvg / 100) * 0.40;
-  const pristineBonus = condAvg > 90 ? (condAvg - 90) * 0.005 : 0;
-  const conditionFactor = baseCondFactor + pristineBonus;
+  const conditionFactor = 0.85 + (condAvg / 100) * 0.17;
+  // At 50: 0.935, At 75: 0.9775, At 90: 1.003, At 100: 1.02
   const accidentPenalty = data.accidentHistory ? 0.82 : 1;
 
-  // 4. Equipment Value Index (higher cap)
+  // 4. Equipment Value Index (reduced cap: 10%)
   let equipWeightedScore = 0;
   data.equipment.forEach((eq) => {
-    if (SAFETY_FEATURES.includes(eq)) equipWeightedScore += 3.5;
-    else if (TECH_FEATURES.includes(eq)) equipWeightedScore += 2.5;
-    else if (COMFORT_FEATURES.includes(eq)) equipWeightedScore += 1.8;
-    else equipWeightedScore += 1;
+    if (SAFETY_FEATURES.includes(eq)) equipWeightedScore += 2.5;
+    else if (TECH_FEATURES.includes(eq)) equipWeightedScore += 1.8;
+    else if (COMFORT_FEATURES.includes(eq)) equipWeightedScore += 1.2;
+    else equipWeightedScore += 0.8;
   });
-  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.004, 0.20);
+  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.003, 0.10);
 
-  // 5. Market Position Factor
+  // 5. Market Position Factor (dampened)
   const highDemandBodies = ["SUV", "Hatchback"];
   const moderateDemandBodies = ["Sedan", "Wagon", "Coupe", "Convertible"];
-  const bodyDemand = highDemandBodies.includes(data.bodyType) ? 1.06
-    : moderateDemandBodies.includes(data.bodyType) ? 1.02 : 0.97;
+  const bodyDemand = highDemandBodies.includes(data.bodyType) ? 1.04
+    : moderateDemandBodies.includes(data.bodyType) ? 1.01 : 0.97;
 
   const highDemandMakes = ["Toyota", "Honda", "Porsche", "Tesla"];
-  const makeDemand = highDemandMakes.includes(data.make) ? 1.05
-    : PREMIUM_BRANDS.includes(data.make) ? 1.02 : 1.0;
+  const makeDemand = highDemandMakes.includes(data.make) ? 1.03
+    : PREMIUM_BRANDS.includes(data.make) ? 1.01 : 1.0;
 
   const marketPositionFactor = bodyDemand * makeDemand;
 
   // 6. Regional Demand Multiplier
   const fuelDemand: Record<string, number> = {
-    "Electric": 1.08, "Plug-in Hybrid": 1.05, "Hybrid": 1.04, "Petrol": 1.0, "Diesel": 0.95,
+    "Electric": 1.05, "Plug-in Hybrid": 1.03, "Hybrid": 1.02, "Petrol": 1.0, "Diesel": 0.97,
   };
   const regionalDemandMultiplier = fuelDemand[data.fuelType] ?? 1.0;
 
-  // 7. Transparency Score
+  // 7. Transparency Score (reduced: max 4%)
   let transparencyPoints = 0;
   if (data.vin.length >= 10) transparencyPoints += 3;
   if (data.description.length > 50) transparencyPoints += 2;
@@ -73,17 +72,15 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   if (data.color) transparencyPoints += 1;
   if (data.accidentHistory && data.accidentDetails.length > 20) transparencyPoints += 2;
   if (!data.accidentHistory) transparencyPoints += 1;
-  // Photo count bonus: up to 3 points for uploading multiple photos
   const photoCount = data.photos?.length ?? 0;
   if (photoCount >= 8) transparencyPoints += 3;
   else if (photoCount >= 4) transparencyPoints += 2;
   else if (photoCount >= 1) transparencyPoints += 1;
-  // Damage scan bonus: cars that completed AI scan get extra trust
   if (data.damageScanned) transparencyPoints += 3;
-  const transparencyBonus = 1 + Math.min(transparencyPoints / 15, 1) * 0.07;
+  const transparencyBonus = 1 + Math.min(transparencyPoints / 15, 1) * 0.04;
 
-  // Final Fair Value
-  const fairValue = Math.round(
+  // Compute raw fair value
+  const computedValue = Math.round(
     data.price
     * depreciationFactor
     * mileageFactor
@@ -94,6 +91,9 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
     * regionalDemandMultiplier
     * transparencyBonus
   );
+
+  // Hard cap: fair value cannot exceed 105% of asking price
+  const fairValue = Math.min(computedValue, Math.round(data.price * 1.05));
 
   // Condition Score (0-100)
   const condScore = Math.round(

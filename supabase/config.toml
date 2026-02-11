@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.detect-damage]
 verify_jwt = false
+
+[functions.market-comparison]
+verify_jwt = false
