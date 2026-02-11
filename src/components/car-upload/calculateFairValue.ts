@@ -6,6 +6,7 @@ interface FairValueResult {
   demandScore: number;
 }
 
+const ICONIC_BRANDS = ["Porsche", "Tesla"];
 const PREMIUM_BRANDS = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
 const SAFETY_FEATURES = ["Adaptive Cruise Control", "Lane Assist", "Blind Spot Monitor", "360° Camera", "Parking Sensors", "Backup Camera"];
 const TECH_FEATURES = ["Navigation", "Apple CarPlay", "Android Auto", "Heads-Up Display", "LED Headlights"];
@@ -15,10 +16,11 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   const currentYear = 2026;
   const carAge = currentYear - data.year;
 
-  // 1. Non-Linear Depreciation Curve
+  // 1. Non-Linear Depreciation Curve (brand-tiered)
   const isPremium = PREMIUM_BRANDS.includes(data.make);
-  const depRate = isPremium ? 0.12 : 0.18;
-  const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, Math.sqrt(carAge * 1.8)));
+  const isIconic = ICONIC_BRANDS.includes(data.make);
+  const depRate = isIconic ? 0.07 : isPremium ? 0.10 : 0.15;
+  const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75));
 
   // 2. Mileage Factor
   const avgAnnualKm = 15000;
@@ -28,24 +30,26 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
     ? 1 + (1 - mileageRatio) * 0.08
     : Math.max(0.55, 1 - Math.pow(mileageRatio - 1, 1.4) * 0.25);
 
-  // 3. Condition Factor
+  // 3. Condition Factor (with pristine bonus)
   const condAvg = (data.conditionExterior + data.conditionInterior) / 2;
-  const conditionFactor = 0.6 + (condAvg / 100) * 0.4;
+  const baseCondFactor = 0.65 + (condAvg / 100) * 0.40;
+  const pristineBonus = condAvg > 90 ? (condAvg - 90) * 0.005 : 0;
+  const conditionFactor = baseCondFactor + pristineBonus;
   const accidentPenalty = data.accidentHistory ? 0.82 : 1;
 
-  // 4. Equipment Value Index
+  // 4. Equipment Value Index (higher cap)
   let equipWeightedScore = 0;
   data.equipment.forEach((eq) => {
-    if (SAFETY_FEATURES.includes(eq)) equipWeightedScore += 3;
-    else if (TECH_FEATURES.includes(eq)) equipWeightedScore += 2;
-    else if (COMFORT_FEATURES.includes(eq)) equipWeightedScore += 1.5;
+    if (SAFETY_FEATURES.includes(eq)) equipWeightedScore += 3.5;
+    else if (TECH_FEATURES.includes(eq)) equipWeightedScore += 2.5;
+    else if (COMFORT_FEATURES.includes(eq)) equipWeightedScore += 1.8;
     else equipWeightedScore += 1;
   });
-  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.003, 0.15);
+  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.004, 0.20);
 
   // 5. Market Position Factor
   const highDemandBodies = ["SUV", "Hatchback"];
-  const moderateDemandBodies = ["Sedan", "Wagon"];
+  const moderateDemandBodies = ["Sedan", "Wagon", "Coupe", "Convertible"];
   const bodyDemand = highDemandBodies.includes(data.bodyType) ? 1.06
     : moderateDemandBodies.includes(data.bodyType) ? 1.02 : 0.97;
 
