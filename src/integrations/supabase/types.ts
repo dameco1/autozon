@@ -16,10 +16,18 @@ export type Database = {
     Tables: {
       cars: {
         Row: {
+          accident_details: string | null
+          accident_history: boolean | null
           body_type: string
           color: string | null
+          condition_exterior: number | null
+          condition_interior: number | null
+          condition_score: number | null
           created_at: string
+          demand_score: number | null
           description: string | null
+          equipment: string[] | null
+          fair_value_price: number | null
           features: string[] | null
           fuel_type: string
           id: string
@@ -34,13 +42,22 @@ export type Database = {
           status: string
           transmission: string
           updated_at: string
+          vin: string | null
           year: number
         }
         Insert: {
+          accident_details?: string | null
+          accident_history?: boolean | null
           body_type?: string
           color?: string | null
+          condition_exterior?: number | null
+          condition_interior?: number | null
+          condition_score?: number | null
           created_at?: string
+          demand_score?: number | null
           description?: string | null
+          equipment?: string[] | null
+          fair_value_price?: number | null
           features?: string[] | null
           fuel_type?: string
           id?: string
@@ -55,13 +72,22 @@ export type Database = {
           status?: string
           transmission?: string
           updated_at?: string
+          vin?: string | null
           year: number
         }
         Update: {
+          accident_details?: string | null
+          accident_history?: boolean | null
           body_type?: string
           color?: string | null
+          condition_exterior?: number | null
+          condition_interior?: number | null
+          condition_score?: number | null
           created_at?: string
+          demand_score?: number | null
           description?: string | null
+          equipment?: string[] | null
+          fair_value_price?: number | null
           features?: string[] | null
           fuel_type?: string
           id?: string
@@ -76,6 +102,7 @@ export type Database = {
           status?: string
           transmission?: string
           updated_at?: string
+          vin?: string | null
           year?: number
         }
         Relationships: []
@@ -156,51 +183,75 @@ export type Database = {
       }
       user_preferences: {
         Row: {
+          commute_distance: string | null
           created_at: string
+          family_size: number | null
           id: string
+          insurance_tolerance: string | null
           max_budget: number | null
           max_mileage: number | null
           max_year: number | null
           min_budget: number | null
           min_power_hp: number | null
           min_year: number | null
+          onboarding_completed: boolean | null
+          ownership_preference: string | null
+          parking_type: string | null
           preferred_body_types: string[] | null
           preferred_fuel_types: string[] | null
           preferred_makes: string[] | null
           preferred_transmission: string | null
+          timing_preference: string | null
           updated_at: string
+          usage_pattern: string | null
           user_id: string
         }
         Insert: {
+          commute_distance?: string | null
           created_at?: string
+          family_size?: number | null
           id?: string
+          insurance_tolerance?: string | null
           max_budget?: number | null
           max_mileage?: number | null
           max_year?: number | null
           min_budget?: number | null
           min_power_hp?: number | null
           min_year?: number | null
+          onboarding_completed?: boolean | null
+          ownership_preference?: string | null
+          parking_type?: string | null
           preferred_body_types?: string[] | null
           preferred_fuel_types?: string[] | null
           preferred_makes?: string[] | null
           preferred_transmission?: string | null
+          timing_preference?: string | null
           updated_at?: string
+          usage_pattern?: string | null
           user_id: string
         }
         Update: {
+          commute_distance?: string | null
           created_at?: string
+          family_size?: number | null
           id?: string
+          insurance_tolerance?: string | null
           max_budget?: number | null
           max_mileage?: number | null
           max_year?: number | null
           min_budget?: number | null
           min_power_hp?: number | null
           min_year?: number | null
+          onboarding_completed?: boolean | null
+          ownership_preference?: string | null
+          parking_type?: string | null
           preferred_body_types?: string[] | null
           preferred_fuel_types?: string[] | null
           preferred_makes?: string[] | null
           preferred_transmission?: string | null
+          timing_preference?: string | null
           updated_at?: string
+          usage_pattern?: string | null
           user_id?: string
         }
         Relationships: []
