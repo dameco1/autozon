@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Car, TrendingDown, Users, ArrowRight, Plus, BarChart3, Shield, Zap } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Car, TrendingDown, Users, ArrowRight, Plus, BarChart3, Shield, Zap, Gauge, Wrench, Globe, Eye } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
@@ -18,6 +19,159 @@ interface CarData {
   fair_value_price: number;
   condition_score: number;
   demand_score: number;
+  fuel_type: string;
+  transmission: string;
+  body_type: string;
+  color: string | null;
+  power_hp: number | null;
+  equipment: string[] | null;
+  condition_exterior: number | null;
+  condition_interior: number | null;
+  accident_history: boolean | null;
+  accident_details: string | null;
+  vin: string | null;
+  description: string | null;
+}
+
+interface FactorBreakdown {
+  label: string;
+  desc: string;
+  value: number; // 0-100 normalized
+  impact: string; // e.g. "+5%" or "-12%"
+  positive: boolean;
+  icon: React.ReactNode;
+}
+
+function computeBreakdown(car: CarData, t: any): FactorBreakdown[] {
+  const currentYear = 2026;
+  const carAge = currentYear - car.year;
+  const premiumBrands = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
+  const isPremium = premiumBrands.includes(car.make);
+
+  // 1. Depreciation
+  const depRate = isPremium ? 0.12 : 0.18;
+  const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, Math.sqrt(carAge * 1.8)));
+  const depPct = (depreciationFactor - 1) * 100;
+
+  // 2. Mileage
+  const avgAnnualKm = 15000;
+  const expectedKm = carAge * avgAnnualKm;
+  const mileageRatio = car.mileage / Math.max(expectedKm, 1);
+  const mileageFactor = mileageRatio <= 1
+    ? 1 + (1 - mileageRatio) * 0.08
+    : Math.max(0.55, 1 - Math.pow(mileageRatio - 1, 1.4) * 0.25);
+  const milePct = (mileageFactor - 1) * 100;
+
+  // 3. Condition
+  const condExt = car.condition_exterior ?? 80;
+  const condInt = car.condition_interior ?? 80;
+  const condAvg = (condExt + condInt) / 2;
+  const conditionFactor = 0.6 + (condAvg / 100) * 0.4;
+  const accidentPenalty = car.accident_history ? 0.82 : 1;
+  const condCombined = conditionFactor * accidentPenalty;
+  const condPct = (condCombined - 1) * 100;
+
+  // 4. Equipment
+  const safetyFeatures = ["Adaptive Cruise Control", "Lane Assist", "Blind Spot Monitor", "360° Camera", "Parking Sensors", "Backup Camera"];
+  const techFeatures = ["Navigation", "Apple CarPlay", "Android Auto", "Heads-Up Display", "LED Headlights"];
+  const comfortFeatures = ["Heated Seats", "Leather Interior", "Sunroof", "Cruise Control", "Keyless Entry", "Seat Memory", "Heated Steering Wheel"];
+  const equip = car.equipment ?? [];
+  let equipWeightedScore = 0;
+  equip.forEach((eq) => {
+    if (safetyFeatures.includes(eq)) equipWeightedScore += 3;
+    else if (techFeatures.includes(eq)) equipWeightedScore += 2;
+    else if (comfortFeatures.includes(eq)) equipWeightedScore += 1.5;
+    else equipWeightedScore += 1;
+  });
+  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.003, 0.15);
+  const equipPct = (equipmentIndex - 1) * 100;
+
+  // 5. Market Position
+  const highDemandBodies = ["SUV", "Hatchback"];
+  const moderateDemandBodies = ["Sedan", "Wagon"];
+  const bodyDemand = highDemandBodies.includes(car.body_type) ? 1.06
+    : moderateDemandBodies.includes(car.body_type) ? 1.02 : 0.97;
+  const highDemandMakes = ["Toyota", "Honda", "Porsche", "Tesla"];
+  const makeDemand = highDemandMakes.includes(car.make) ? 1.05
+    : premiumBrands.includes(car.make) ? 1.02 : 1.0;
+  const marketPositionFactor = bodyDemand * makeDemand;
+  const marketPct = (marketPositionFactor - 1) * 100;
+
+  // 6. Regional Demand
+  const fuelDemand: Record<string, number> = {
+    "Electric": 1.08, "Plug-in Hybrid": 1.05, "Hybrid": 1.04, "Petrol": 1.0, "Diesel": 0.95,
+  };
+  const regionalDemandMultiplier = fuelDemand[car.fuel_type] ?? 1.0;
+  const regionalPct = (regionalDemandMultiplier - 1) * 100;
+
+  // 7. Transparency
+  let transparencyPoints = 0;
+  if ((car.vin ?? "").length >= 10) transparencyPoints += 3;
+  if ((car.description ?? "").length > 50) transparencyPoints += 2;
+  if (equip.length >= 5) transparencyPoints += 1;
+  if (car.color) transparencyPoints += 1;
+  if (car.accident_history && (car.accident_details ?? "").length > 20) transparencyPoints += 2;
+  if (!car.accident_history) transparencyPoints += 1;
+  const transparencyBonus = 1 + Math.min(transparencyPoints / 10, 1) * 0.05;
+  const transPct = (transparencyBonus - 1) * 100;
+
+  const b = t.fairValue.breakdown;
+
+  // Normalize to 0-100 bar: map factor range to visual percentage
+  const normalize = (factor: number, min: number, max: number) =>
+    Math.round(Math.max(0, Math.min(100, ((factor - min) / (max - min)) * 100)));
+
+  return [
+    {
+      label: b.depreciation, desc: b.depreciationDesc,
+      value: normalize(depreciationFactor, 0.25, 1),
+      impact: `${depPct >= 0 ? "+" : ""}${depPct.toFixed(1)}%`,
+      positive: depPct >= 0,
+      icon: <TrendingDown className="h-4 w-4" />,
+    },
+    {
+      label: b.mileage, desc: b.mileageDesc,
+      value: normalize(mileageFactor, 0.55, 1.08),
+      impact: `${milePct >= 0 ? "+" : ""}${milePct.toFixed(1)}%`,
+      positive: milePct >= 0,
+      icon: <Gauge className="h-4 w-4" />,
+    },
+    {
+      label: b.condition, desc: b.conditionDesc,
+      value: normalize(condCombined, 0.49, 1),
+      impact: `${condPct >= 0 ? "+" : ""}${condPct.toFixed(1)}%`,
+      positive: condPct >= -5,
+      icon: <Shield className="h-4 w-4" />,
+    },
+    {
+      label: b.equipment, desc: b.equipmentDesc,
+      value: normalize(equipmentIndex, 1, 1.15),
+      impact: `+${equipPct.toFixed(1)}%`,
+      positive: true,
+      icon: <Wrench className="h-4 w-4" />,
+    },
+    {
+      label: b.marketPosition, desc: b.marketPositionDesc,
+      value: normalize(marketPositionFactor, 0.94, 1.12),
+      impact: `${marketPct >= 0 ? "+" : ""}${marketPct.toFixed(1)}%`,
+      positive: marketPct >= 0,
+      icon: <BarChart3 className="h-4 w-4" />,
+    },
+    {
+      label: b.regionalDemand, desc: b.regionalDemandDesc,
+      value: normalize(regionalDemandMultiplier, 0.92, 1.1),
+      impact: `${regionalPct >= 0 ? "+" : ""}${regionalPct.toFixed(1)}%`,
+      positive: regionalPct >= 0,
+      icon: <Globe className="h-4 w-4" />,
+    },
+    {
+      label: b.transparency, desc: b.transparencyDesc,
+      value: normalize(transparencyBonus, 1, 1.05),
+      impact: `+${transPct.toFixed(1)}%`,
+      positive: true,
+      icon: <Eye className="h-4 w-4" />,
+    },
+  ];
 }
 
 const FairValueResult: React.FC = () => {
@@ -31,14 +185,19 @@ const FairValueResult: React.FC = () => {
     if (!id) return;
     supabase
       .from("cars")
-      .select("id, make, model, year, mileage, price, fair_value_price, condition_score, demand_score")
+      .select("*")
       .eq("id", id)
       .single()
-      .then(({ data, error }) => {
+      .then(({ data }) => {
         if (data) setCar(data as CarData);
         setLoading(false);
       });
   }, [id]);
+
+  const breakdown = useMemo(() => {
+    if (!car) return [];
+    return computeBreakdown(car, t);
+  }, [car, t]);
 
   if (loading) {
     return (
@@ -56,7 +215,6 @@ const FairValueResult: React.FC = () => {
     );
   }
 
-  // Generate demo depreciation chart data
   const depreciationData = Array.from({ length: 13 }, (_, i) => ({
     month: `M${i}`,
     value: Math.round(car.fair_value_price * Math.pow(0.993, i)),
@@ -139,6 +297,42 @@ const FairValueResult: React.FC = () => {
             <div className={`text-sm mt-2 ${demandBadge.color}`}>{demandBadge.label}</div>
           </motion.div>
         </div>
+
+        {/* Factor Breakdown */}
+        <motion.div
+          className="bg-secondary/50 border border-border rounded-2xl p-8 mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+        >
+          <h3 className="text-lg font-display font-bold text-white mb-1 flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-primary" /> {t.fairValue.breakdown.title}
+          </h3>
+          <p className="text-silver/40 text-sm mb-6">{t.fairValue.breakdown.subtitle}</p>
+
+          <div className="space-y-5">
+            {breakdown.map((factor, i) => (
+              <motion.div
+                key={factor.label}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + i * 0.05 }}
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">{factor.icon}</span>
+                    <span className="text-white text-sm font-medium">{factor.label}</span>
+                    <span className="text-silver/40 text-xs hidden sm:inline">— {factor.desc}</span>
+                  </div>
+                  <span className={`text-sm font-bold ${factor.positive ? "text-primary" : "text-destructive"}`}>
+                    {factor.impact}
+                  </span>
+                </div>
+                <Progress value={factor.value} className="h-2.5 bg-charcoal" />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Depreciation Chart */}
         <motion.div
