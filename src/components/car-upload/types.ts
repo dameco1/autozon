@@ -17,6 +17,7 @@ export interface CarFormData {
   accidentDetails: string;
   description: string;
   photos: string[];
+  damageScanned: boolean;
 }
 
 export const defaultCarFormData: CarFormData = {
@@ -38,4 +39,5 @@ export const defaultCarFormData: CarFormData = {
   accidentDetails: "",
   description: "",
   photos: [],
+  damageScanned: false,
 };
