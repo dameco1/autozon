@@ -1,139 +1,57 @@
 
 
-# Plan: Fix Overvaluation, Expand Car Models, Fix Condition Logic, Add Market Comparison
+# Plan: Investor Pitch Slides for Autozon (Merged & Expanded)
 
-## Issues Found
+## Overview
 
-### 1. Fair Value Way Too High (185K for a 145K car)
-Tracing through the formula for a pristine 2024 Porsche 911 (price 145K, condition 95/95, low mileage, full equipment, damage scan passed):
+Create a 16-slide in-app investor presentation at `/pitch` with keyboard/click navigation, fullscreen mode, and Autozon branding. All content from the original plan plus the new Investor & Business Package is merged into a comprehensive deck.
 
-All multiplicative factors compound on top of each other:
-- Depreciation: 0.896 (correct, reduces value)
-- Mileage bonus: 1.04 (low mileage)
-- Condition: 1.055 (pristine bonus pushes above 1.0)
-- Equipment: ~1.08 (lots of features)
-- Market position: 1.071 (Porsche + Coupe)
-- Transparency: ~1.05 (full data + AI scan + photos)
+## Slide Deck (16 Slides)
 
-Result: 145,000 x 0.896 x 1.04 x 1.055 x 1.08 x 1.071 x 1.05 = **~173,000-185,000 EUR**
+| # | Title | Content |
+|---|-------|---------|
+| 1 | **Title** | "Autozon — Fair value. Zero friction. The Amazon of cars." |
+| 2 | **The Problem** | Sellers lose 10-20% instantly. Dealerships control pricing. Selling is stressful and unfair. Stats: 10-20% loss, 45 days avg sale time, 67% feel cheated. |
+| 3 | **The Insight** | "Depreciation isn't natural. It's engineered." Single powerful statement slide. |
+| 4 | **The Solution** | Fair-value engine, intelligent matching, curated next-car recommendations, full concierge execution. |
+| 5 | **Product** | Visual breakdown: AI appraisal, buyer matching, concierge handling, damage detection, market comparison. |
+| 6 | **Why Now** | Trust collapsing, transparency demand, AI enables personalization, no dominant "Amazon of cars" exists, cross-border markets more connected. |
+| 7 | **Business Model** | Free for buyers, sellers pay success fee. Asymmetric pricing mirrors Amazon/Airbnb/Uber. |
+| 8 | **Revenue Streams** | 6 streams: Seller success fee (primary), Dealer lead fees, Financing/Insurance commissions, Logistics add-ons, Premium subscription, Data intelligence. |
+| 9 | **The Flywheel** | Buyers create liquidity -> liquidity builds trust -> trust attracts sellers -> sellers generate revenue -> data improves everything. |
+| 10 | **Pricing** | 3 tiers: Basic EUR 99 (valuation + listing), Premium EUR 199 (matching + concierge), Full Service 2.5% capped at EUR 499 (everything + pickup + paperwork). |
+| 11 | **Market Size** | EUR 300B+ European used-car market. 1% = multi-billion opportunity. |
+| 12 | **Financial Projections** | Y1: 2K txns / EUR 1M rev. Y2: 10K txns / EUR 5-6M. Y3: 40K txns / EUR 25M+. Unit economics: EUR 500 avg fee, 70% gross margin, LTV/CAC > 5x. |
+| 13 | **Competitive Landscape** | Listings (AutoScout/mobile.de) are not intelligence. Dealers are not fairness. Autozon = value preservation ecosystem. |
+| 14 | **Moat & Roadmap** | Data flywheel (every valuation/match/transaction improves prediction). Roadmap: MVP -> V1 -> V2 -> V3, marketplace to lifecycle platform. GTM: Austria+Germany -> DACH -> CEE. |
+| 15 | **The Ask** | Raising capital to build MVP, seed liquidity, expand DACH then CEE. |
+| 16 | **Closing** | "Cars shouldn't lose value because the system is broken. Autozon fixes the system — with fairness, intelligence, and trust." Investor soundbite: "Autozon is not a marketplace. It's a value-preservation engine for the EUR 300B used-car market." |
 
-**Root cause**: The boosters (condition, equipment, market, transparency) all multiply on each other, creating runaway inflation. A "fair value" should never significantly exceed the asking price -- the asking price IS what the seller wants, and the fair value tells buyers whether that's reasonable.
+## Technical Approach
 
-### 2. Condition Flagged as "Improvable" at 95/100
-In the AppraisalBreakdown, exterior and interior are always marked `actionable: true` regardless of score. A car with 95/100 condition and zero damages should NOT suggest improvement.
+### New Files
 
-### 3. Too Few Car Models (Only 3 Porsche 911 variants)
-The seed data has only Carrera, Carrera S, and Turbo. Missing: Carrera T, Carrera GTS, Turbo S, GT3, GT3 RS, Targa 4, Targa 4S, Cabriolet variants. Same issue across other brands.
+| File | Purpose |
+|------|---------|
+| `src/pages/InvestorPitch.tsx` | Main page: slide navigation, viewport scaling (1920x1080 base), fullscreen (F5/Escape), back button |
+| `src/components/pitch/SlideLayout.tsx` | Wrapper rendering children at 1920x1080, scaled via `transform: scale(Math.min(vw/1920, vh/1080))` |
+| `src/components/pitch/slides.tsx` | All 16 slide content components with icons from lucide-react |
 
-### 4. Market Comparison
-The user wants to cross-reference valuations against real market data from other car listing sites.
-
----
-
-## Implementation
-
-### Step 1: Fix the Fair Value Formula
-
-**File: `src/components/car-upload/calculateFairValue.ts`**
-
-Restructure the formula so that:
-- **Condition factor is recentered**: Average condition (75) = 1.0 (neutral). Below 75 = penalty, above 75 = small bonus. Max at 100/100 = ~1.02 (not 1.055).
-- **Equipment bonus reduced**: Cap at 10% instead of 20%, lower per-item weights.
-- **Market position dampened**: Reduce make demand from 1.05 to 1.03 for high-demand makes.
-- **Transparency bonus reduced**: Max 4% instead of 7%.
-- **Hard cap**: Fair value cannot exceed 105% of asking price. This prevents all edge-case compounding.
-
-| Factor | Before | After |
-|--------|--------|-------|
-| Condition at 95 avg | 1.055 | ~1.015 |
-| Equipment max | +20% | +10% |
-| Make demand (Porsche) | 1.05 | 1.03 |
-| Transparency max | +7% | +4% |
-| Overall cap | None | 105% of asking price |
-
-Expected result for the Porsche 911 example: approximately **135,000-145,000 EUR**.
-
-### Step 2: Fix "Improvable" Logic for Condition
-
-**File: `src/components/AppraisalBreakdown.tsx`**
-
-Change the `actionable` flag for exterior and interior:
-- Before: `actionable: true` (always)
-- After: `actionable: condExt < 85` / `actionable: condInt < 85`
-
-A car scoring 85+ on condition should NOT be flagged for improvement.
-
-### Step 3: Expand Car Models Database
-
-**File: `supabase/functions/seed-car-models/index.ts`**
-
-Add significantly more variants across all brands. Key additions:
-
-**Porsche 911** (add ~10 variants): Carrera T, Carrera 4, Carrera 4S, Carrera GTS, Carrera 4 GTS, Turbo S, GT3, GT3 RS, Targa 4, Targa 4S, Dakar, Sport Classic
-
-**Porsche Cayenne/Macan** (add ~6 more): Cayenne GTS, Cayenne Turbo, Cayenne Turbo GT, Cayenne E-Hybrid, Macan GTS, Macan Turbo
-
-**Other brands** -- add popular missing models:
-- BMW: M3, M4, M2, Z4, 7 Series, iX
-- Mercedes: S-Class, AMG GT, CLA, GLS, EQS, EQE
-- Audi: RS3, RS6, TT, Q8, e-tron GT
-- VW: Arteon, Touareg, T-Cross, Up!
-- Tesla: Model 3, Model Y, Model S, Model X (all variants)
-- Additional brands: Citro\u00ebn, Dacia, MINI, Jaguar, Land Rover, Alfa Romeo, CUPRA
-
-This will roughly double the seed data from ~200 to ~400+ variants.
-
-After updating the seed function, run it to populate the database.
-
-### Step 4: Add Market Comparison Feature
-
-Create a new edge function that uses AI to estimate market comparison data based on the car's specs. This will show a "Market Comparison" section on the Fair Value Result page with:
-- Estimated price range from major European car marketplaces
-- How the car's asking price compares to the estimated market average
-- A visual indicator (below/at/above market)
-
-This uses the AI models available through Lovable Cloud (no external API key needed) to generate realistic market position estimates based on the car's make, model, year, mileage, and condition.
-
-**New file: `supabase/functions/market-comparison/index.ts`**
-- Takes car details as input
-- Uses Gemini to estimate market pricing based on its training data knowledge of European car markets
-- Returns estimated price range and market position
-
-**Updated file: `src/pages/FairValueResult.tsx`**
-- Add a "Market Comparison" card showing the AI-estimated market range
-- Visual bar showing where the asking price falls within the range
-
----
-
-## Technical Details
-
-### Recentered Condition Factor Formula
-
-```text
-condAvg = (exterior + interior) / 2
-// Center around 75 (average condition)
-// Below 75: penalty, Above 75: small bonus
-conditionFactor = 0.85 + (condAvg / 100) * 0.17
-// At condAvg=50: 0.935, At 75: 0.9775, At 90: 1.003, At 100: 1.02
-// No separate pristine bonus needed -- the curve handles it naturally
-```
-
-### Fair Value Cap
-
-```text
-fairValue = Math.min(
-  computedValue,
-  Math.round(data.price * 1.05)  // Never exceed 105% of asking
-);
-```
-
-### Files Changed
+### Modified Files
 
 | File | Change |
 |------|--------|
-| `src/components/car-upload/calculateFairValue.ts` | Recenter condition factor, reduce equipment/market/transparency multipliers, add 105% cap |
-| `src/components/AppraisalBreakdown.tsx` | Mirror formula changes, fix actionable logic for condition (only show if < 85) |
-| `supabase/functions/seed-car-models/index.ts` | Add ~200 more car variants across all brands |
-| `supabase/functions/market-comparison/index.ts` | New edge function for AI-powered market comparison |
-| `src/pages/FairValueResult.tsx` | Add Market Comparison section |
+| `src/App.tsx` | Add `/pitch` route |
+
+### Features
+
+- Arrow keys, Space, Escape for navigation
+- Slide counter (e.g. "5 / 16")
+- On-screen prev/next buttons
+- Fullscreen toggle button
+- Back button to return to app
+- Fade transitions between slides
+- Dark charcoal background with green accent highlights
+- Large presentation-sized text (minimum 24px at 1920x1080)
+- Key numbers and stats in bold green for visual impact
 
