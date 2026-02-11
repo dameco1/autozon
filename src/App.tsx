@@ -11,6 +11,9 @@ import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
 import CarUpload from "./pages/CarUpload";
 import FairValueResult from "./pages/FairValueResult";
+import BuyerMatches from "./pages/BuyerMatches";
+import NextCarRecommendations from "./pages/NextCarRecommendations";
+import CarDetail from "./pages/CarDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +33,9 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/car-upload" element={<CarUpload />} />
             <Route path="/fair-value/:id" element={<FairValueResult />} />
+            <Route path="/buyer-matches/:carId" element={<BuyerMatches />} />
+            <Route path="/recommendations" element={<NextCarRecommendations />} />
+            <Route path="/car/:id" element={<CarDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

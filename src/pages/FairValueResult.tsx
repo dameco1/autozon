@@ -190,7 +190,7 @@ const FairValueResult: React.FC = () => {
           <Button
             size="lg"
             className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-8 py-6 rounded-xl"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate(`/buyer-matches/${car.id}`)}
           >
             <Users className="mr-2 h-5 w-5" /> {t.fairValue.seebuyers}
           </Button>
@@ -198,7 +198,7 @@ const FairValueResult: React.FC = () => {
             size="lg"
             variant="outline"
             className="border-silver/20 text-silver hover:bg-silver/5 font-semibold px-8 py-6 rounded-xl"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/recommendations")}
           >
             <Zap className="mr-2 h-5 w-5" /> {t.fairValue.findNext}
           </Button>
