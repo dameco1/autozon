@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText, Camera } from "lucide-react";
+import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText, Camera, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { STEPS } from "@/components/car-upload/constants";
@@ -13,6 +13,8 @@ import StepBasicInfo from "@/components/car-upload/StepBasicInfo";
 import StepEquipment from "@/components/car-upload/StepEquipment";
 import StepCondition from "@/components/car-upload/StepCondition";
 import StepPhotos from "@/components/car-upload/StepPhotos";
+import StepDamageReview from "@/components/car-upload/StepDamageReview";
+import type { DamageReport } from "@/components/car-upload/damageTypes";
 
 const CarUpload: React.FC = () => {
   const { t } = useLanguage();
@@ -24,6 +26,8 @@ const CarUpload: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [formData, setFormData] = useState<CarFormData>(defaultCarFormData);
+  const [damageReport, setDamageReport] = useState<DamageReport | null>(null);
+  const [analyzingDamage, setAnalyzingDamage] = useState(false);
 
   const updateForm = useCallback((updates: Partial<CarFormData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
@@ -45,7 +49,6 @@ const CarUpload: React.FC = () => {
     });
   }, [navigate]);
 
-  // Load existing car data in edit mode
   useEffect(() => {
     if (!editId) return;
     supabase.from("cars").select("*").eq("id", editId).maybeSingle().then(({ data }) => {
@@ -73,11 +76,67 @@ const CarUpload: React.FC = () => {
     });
   }, [editId]);
 
+  const runDamageDetection = useCallback(async () => {
+    if (formData.photos.length === 0) return;
+    setAnalyzingDamage(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("detect-damage", {
+        body: { photoUrls: formData.photos },
+      });
+      if (error) throw error;
+      // Mark high-confidence damages as auto-confirmed, low-confidence as needing review
+      const report = data as DamageReport;
+      report.damages = report.damages.map((d) => ({
+        ...d,
+        confirmed: d.confidence >= 0.6 ? true : undefined,
+      }));
+      setDamageReport(report);
+    } catch (err: any) {
+      toast.error(err.message || "Damage detection failed");
+    } finally {
+      setAnalyzingDamage(false);
+    }
+  }, [formData.photos]);
+
+  const confirmDamage = useCallback((index: number) => {
+    setDamageReport((prev) => {
+      if (!prev) return prev;
+      const damages = [...prev.damages];
+      damages[index] = { ...damages[index], confirmed: true };
+      return { ...prev, damages };
+    });
+  }, []);
+
+  const dismissDamage = useCallback((index: number) => {
+    setDamageReport((prev) => {
+      if (!prev) return prev;
+      const damages = [...prev.damages];
+      damages[index] = { ...damages[index], confirmed: false };
+      return { ...prev, damages };
+    });
+  }, []);
+
+  // Auto-trigger damage detection when entering step 3
+  useEffect(() => {
+    if (step === 3 && formData.photos.length > 0 && !damageReport && !analyzingDamage) {
+      runDamageDetection();
+    }
+  }, [step, formData.photos.length, damageReport, analyzingDamage, runDamageDetection]);
+
   const handleSubmit = async () => {
     if (!userId || !formData.make || !formData.model) return;
     setLoading(true);
 
     const { fairValue, condScore, demandScore } = calculateFairValue(formData);
+
+    // Factor in confirmed damages to adjust condition
+    const confirmedDamages = damageReport?.damages.filter((d) => d.confirmed === true) ?? [];
+    const damagePenalty = confirmedDamages.reduce((acc, d) => {
+      if (d.severity === "high") return acc + 15;
+      if (d.severity === "medium") return acc + 8;
+      return acc + 3;
+    }, 0);
+    const adjustedCondScore = Math.max(10, condScore - damagePenalty);
 
     const carData = {
       owner_id: userId,
@@ -95,12 +154,12 @@ const CarUpload: React.FC = () => {
       equipment: formData.equipment,
       condition_exterior: formData.conditionExterior,
       condition_interior: formData.conditionInterior,
-      accident_history: formData.accidentHistory,
+      accident_history: formData.accidentHistory || confirmedDamages.some((d) => d.severity === "high"),
       accident_details: formData.accidentDetails,
       description: formData.description,
       photos: formData.photos,
       image_url: formData.photos[0] ?? null,
-      condition_score: condScore,
+      condition_score: adjustedCondScore,
       fair_value_price: fairValue,
       demand_score: demandScore,
       status: "available",
@@ -122,13 +181,18 @@ const CarUpload: React.FC = () => {
     if (resultId) navigate(`/fair-value/${resultId}`);
   };
 
-  const stepIcons = [FileText, Camera, Wrench, Check];
-  const stepLabels = [t.carUpload.step1, t.carUpload.step2, t.carUpload.step3, t.carUpload.step4];
+  const stepIcons = [FileText, Camera, ShieldAlert, Wrench, Check];
+  const stepLabels = [
+    t.carUpload.step1,
+    t.carUpload.step2,
+    t.carUpload.damage.resultTitle,
+    t.carUpload.step3,
+    t.carUpload.step4,
+  ];
 
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl">
-        {/* Header */}
         <div className="text-center mb-8">
           <Car className="h-10 w-10 text-primary mx-auto mb-4" />
           <h1 className="text-3xl font-display font-bold text-white">
@@ -139,21 +203,20 @@ const CarUpload: React.FC = () => {
           </p>
         </div>
 
-        {/* Steps indicator */}
-        <div className="flex items-center justify-center gap-4 mb-10">
-          {[1, 2, 3, 4].map((s) => {
+        <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
+          {[1, 2, 3, 4, 5].map((s) => {
             const Icon = stepIcons[s - 1];
             return (
               <div key={s} className="flex items-center gap-2">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
                   s === step ? "bg-primary text-primary-foreground" : s < step ? "bg-primary/20 text-primary" : "bg-secondary text-silver/40"
                 }`}>
-                  {s < step ? <Check className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
+                  {s < step ? <Check className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
                 </div>
-                <span className={`text-sm hidden sm:block ${s === step ? "text-white font-medium" : "text-silver/40"}`}>
+                <span className={`text-xs hidden sm:block ${s === step ? "text-white font-medium" : "text-silver/40"}`}>
                   {stepLabels[s - 1]}
                 </span>
-                {s < STEPS && <div className={`w-8 h-0.5 ${s < step ? "bg-primary" : "bg-border"}`} />}
+                {s < STEPS && <div className={`w-6 h-0.5 ${s < step ? "bg-primary" : "bg-border"}`} />}
               </div>
             );
           })}
@@ -170,8 +233,18 @@ const CarUpload: React.FC = () => {
             >
               {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} />}
               {step === 2 && <StepPhotos photos={formData.photos} userId={userId} onPhotosChange={(photos) => updateForm({ photos })} />}
-              {step === 3 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
-              {step === 4 && <StepCondition data={formData} onChange={updateForm} />}
+              {step === 3 && (
+                <StepDamageReview
+                  report={damageReport}
+                  analyzing={analyzingDamage}
+                  onConfirm={confirmDamage}
+                  onDismiss={dismissDamage}
+                  onRunAnalysis={runDamageDetection}
+                  hasPhotos={formData.photos.length > 0}
+                />
+              )}
+              {step === 4 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
+              {step === 5 && <StepCondition data={formData} onChange={updateForm} />}
             </motion.div>
           </AnimatePresence>
 
@@ -182,7 +255,11 @@ const CarUpload: React.FC = () => {
               </Button>
             ) : <div />}
             {step < STEPS ? (
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold" onClick={() => setStep(step + 1)} disabled={step === 1 && (!formData.make || !formData.model)}>
+              <Button
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+                onClick={() => setStep(step + 1)}
+                disabled={(step === 1 && (!formData.make || !formData.model)) || (step === 3 && analyzingDamage)}
+              >
                 {t.carUpload.next} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             ) : (
