@@ -1,7 +1,6 @@
-export const MAKES = [
-  "Audi", "BMW", "Mercedes-Benz", "Volkswagen", "Porsche", "Opel", "Ford",
-  "Toyota", "Hyundai", "Kia", "Skoda", "SEAT", "Peugeot", "Renault",
-  "Volvo", "Fiat", "Mazda", "Honda", "Nissan", "Tesla",
+export const COLORS = [
+  "Black", "White", "Silver", "Grey", "Blue", "Red", "Green",
+  "Brown", "Beige", "Yellow", "Orange", "Navy", "Burgundy",
 ];
 
 export const FUEL_TYPES = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];

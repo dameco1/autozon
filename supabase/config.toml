@@ -1,1 +1,4 @@
 project_id = "heykhsoumvklotycuzya"
+
+[functions.seed-car-models]
+verify_jwt = false

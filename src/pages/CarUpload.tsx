@@ -56,6 +56,7 @@ const CarUpload: React.FC = () => {
       setFormData({
         make: data.make,
         model: data.model,
+        variant: (data as any).variant ?? "",
         year: data.year,
         vin: data.vin ?? "",
         mileage: data.mileage,
