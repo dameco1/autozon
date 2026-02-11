@@ -3,7 +3,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, Zap, Target, Truck, Bell, ChevronRight, CheckCircle2, Car } from "lucide-react";
+import { ArrowRight, Shield, Zap, Target, Truck, Bell, ChevronRight, CheckCircle2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
 const fadeUp = {
@@ -27,16 +27,17 @@ const Index: React.FC = () => {
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-charcoal via-charcoal to-secondary" />
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-primary/3 rounded-full blur-3xl" />
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-primary/20"
+            style={{ left: `${15 + i * 18}%`, top: `${25 + (i % 3) * 20}%` }}
+            animate={{ y: [0, -20, 0], opacity: [0.3, 0.7, 0.3] }}
+            transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
+          />
+        ))}
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-8">
-              <Car className="h-4 w-4" /> Fair value. Zero friction.
-            </span>
-          </motion.div>
-
           <motion.h1
             className="text-5xl sm:text-7xl lg:text-8xl font-display font-black text-white leading-[0.95] tracking-tight mb-6"
             initial="hidden" animate="visible" variants={fadeUp} custom={1}
@@ -60,7 +61,7 @@ const Index: React.FC = () => {
             <Button
               size="lg"
               className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-base px-8 py-6 rounded-xl shadow-[0_0_30px_hsl(155_100%_42%/0.3)]"
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/intent")}
             >
               {t.hero.cta}
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -69,7 +70,7 @@ const Index: React.FC = () => {
               size="lg"
               variant="outline"
               className="border-silver/20 text-silver hover:bg-silver/5 font-semibold text-base px-8 py-6 rounded-xl"
-              onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => navigate("/intent")}
             >
               {t.hero.ctaSecondary}
             </Button>
@@ -81,9 +82,7 @@ const Index: React.FC = () => {
       <section className="py-24 sm:py-32 bg-secondary">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <span className="inline-block px-3 py-1 rounded-full bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium mb-4">
-              {t.problem.badge}
-            </span>
+            <div className="w-12 h-1 bg-primary rounded-full mx-auto mb-4" />
             <h2 className="text-4xl sm:text-5xl font-display font-black text-white">
               {t.problem.title} <span className="text-destructive">{t.problem.titleAccent}</span>
             </h2>
@@ -109,9 +108,7 @@ const Index: React.FC = () => {
       <section className="py-24 sm:py-32 bg-charcoal">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <span className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
-              {t.solution.badge}
-            </span>
+            <div className="w-12 h-1 bg-primary rounded-full mx-auto mb-4" />
             <h2 className="text-4xl sm:text-5xl font-display font-black text-white">{t.solution.title}</h2>
           </motion.div>
 
@@ -140,9 +137,7 @@ const Index: React.FC = () => {
       <section id="how-it-works" className="py-24 sm:py-32 bg-secondary">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <span className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
-              {t.howItWorks.badge}
-            </span>
+            <div className="w-12 h-1 bg-primary rounded-full mx-auto mb-4" />
             <h2 className="text-4xl sm:text-5xl font-display font-black text-white">{t.howItWorks.title}</h2>
           </motion.div>
 
@@ -169,9 +164,7 @@ const Index: React.FC = () => {
       <section id="why-autozon" className="py-24 sm:py-32 bg-charcoal">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <span className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
-              {t.trust.badge}
-            </span>
+            <div className="w-12 h-1 bg-primary rounded-full mx-auto mb-4" />
             <h2 className="text-4xl sm:text-5xl font-display font-black text-white">{t.trust.title}</h2>
           </motion.div>
 
@@ -217,7 +210,6 @@ const Index: React.FC = () => {
       <footer className="py-12 bg-charcoal border-t border-border">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Car className="h-5 w-5 text-primary" />
             <span className="font-display font-bold text-white">auto<span className="text-primary">zon</span></span>
             <span className="text-silver/40 text-sm ml-2">{t.footer.tagline}</span>
           </div>

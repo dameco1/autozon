@@ -11,13 +11,15 @@ export const translations = {
       dashboard: "Dashboard",
       logout: "Log Out",
       language: "DE",
+      tagline: "buy. sell. cars.",
+      amazonTagline: "Like Amazon, only for cars!",
     },
     hero: {
-      title: "Fair value.",
-      titleAccent: "Zero friction.",
-      subtitle: "The automotive platform that protects your money and eliminates dealership tricks. Know your car's real worth, find the perfect match, and trade with confidence.",
-      cta: "Get Your Fair-Value Score",
-      ctaSecondary: "See How It Works",
+      title: "Fair Value. Best Prices.",
+      titleAccent: "Zero Friction.",
+      subtitle: "Whether you're selling your car at its true worth or finding the perfect next ride — Autozon gives you fair prices, verified matches, and zero hassle.",
+      cta: "Sell My Car",
+      ctaSecondary: "Find My Next Car",
     },
     problem: {
       badge: "The Problem",
@@ -85,7 +87,7 @@ export const translations = {
       button: "Get Started — It's Free",
     },
     footer: {
-      tagline: "Fair value. Zero friction.",
+      tagline: "buy. sell. cars.",
       copyright: "© 2026 Autozon. All rights reserved.",
     },
     auth: {
@@ -470,13 +472,15 @@ export const translations = {
       dashboard: "Dashboard",
       logout: "Abmelden",
       language: "EN",
+      tagline: "buy. sell. cars.",
+      amazonTagline: "Wie Amazon, nur für Autos!",
     },
     hero: {
-      title: "Fairer Wert.",
+      title: "Faire Preise. Beste Angebote.",
       titleAccent: "Null Aufwand.",
-      subtitle: "Die Automobilplattform, die Ihr Geld schützt und Händlertricks eliminiert. Kennen Sie den wahren Wert Ihres Autos, finden Sie das perfekte Match und handeln Sie mit Vertrauen.",
-      cta: "Fair-Value-Score erhalten",
-      ctaSecondary: "So funktioniert's",
+      subtitle: "Ob Sie Ihr Auto zum fairen Wert verkaufen oder das perfekte nächste Fahrzeug finden — Autozon bietet faire Preise, verifizierte Matches und null Aufwand.",
+      cta: "Mein Auto verkaufen",
+      ctaSecondary: "Nächstes Auto finden",
     },
     problem: {
       badge: "Das Problem",
@@ -544,7 +548,7 @@ export const translations = {
       button: "Jetzt starten — Kostenlos",
     },
     footer: {
-      tagline: "Fairer Wert. Null Aufwand.",
+      tagline: "buy. sell. cars.",
       copyright: "© 2026 Autozon. Alle Rechte vorbehalten.",
     },
     auth: {
