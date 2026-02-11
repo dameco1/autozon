@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      buyer_selections: {
+        Row: {
+          car_id: string
+          created_at: string
+          id: string
+          liked: boolean
+          round: number
+          user_id: string
+        }
+        Insert: {
+          car_id: string
+          created_at?: string
+          id?: string
+          liked?: boolean
+          round?: number
+          user_id: string
+        }
+        Update: {
+          car_id?: string
+          created_at?: string
+          id?: string
+          liked?: boolean
+          round?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buyer_selections_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       buyers: {
         Row: {
           budget_max: number | null
@@ -249,6 +284,7 @@ export type Database = {
           ownership_preference: string | null
           parking_type: string | null
           preferred_body_types: string[] | null
+          preferred_colors: string[] | null
           preferred_fuel_types: string[] | null
           preferred_makes: string[] | null
           preferred_transmission: string | null
@@ -256,6 +292,7 @@ export type Database = {
           updated_at: string
           usage_pattern: string | null
           user_id: string
+          user_intent: string | null
         }
         Insert: {
           commute_distance?: string | null
@@ -273,6 +310,7 @@ export type Database = {
           ownership_preference?: string | null
           parking_type?: string | null
           preferred_body_types?: string[] | null
+          preferred_colors?: string[] | null
           preferred_fuel_types?: string[] | null
           preferred_makes?: string[] | null
           preferred_transmission?: string | null
@@ -280,6 +318,7 @@ export type Database = {
           updated_at?: string
           usage_pattern?: string | null
           user_id: string
+          user_intent?: string | null
         }
         Update: {
           commute_distance?: string | null
@@ -297,6 +336,7 @@ export type Database = {
           ownership_preference?: string | null
           parking_type?: string | null
           preferred_body_types?: string[] | null
+          preferred_colors?: string[] | null
           preferred_fuel_types?: string[] | null
           preferred_makes?: string[] | null
           preferred_transmission?: string | null
@@ -304,6 +344,7 @@ export type Database = {
           updated_at?: string
           usage_pattern?: string | null
           user_id?: string
+          user_intent?: string | null
         }
         Relationships: []
       }

@@ -23,7 +23,7 @@ const Login: React.FC = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      navigate("/dashboard");
+      navigate("/intent");
     }
   };
 
