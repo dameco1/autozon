@@ -23,6 +23,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import CookiePolicy from "./pages/CookiePolicy";
 import Impressum from "./pages/Impressum";
 import NotFound from "./pages/NotFound";
+import InvestorPitch from "./pages/InvestorPitch";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="/terms" element={<TermsAndConditions />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/impressum" element={<Impressum />} />
+            <Route path="/pitch" element={<InvestorPitch />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
