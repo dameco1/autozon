@@ -394,6 +394,7 @@ export const SlideMoatRoadmap = () => (
         {[
           { phase: "MVP", desc: "Core valuation + matching" },
           { phase: "V1", desc: "Concierge + dealer network" },
+          { phase: "V1.5", desc: "Seller KYC — ownership verification + financing automation" },
           { phase: "V2", desc: "Financing, insurance, logistics" },
           { phase: "V3", desc: "Lifecycle platform + data insights" },
         ].map(({ phase, desc }) => (
