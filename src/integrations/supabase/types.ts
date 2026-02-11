@@ -100,6 +100,45 @@ export type Database = {
         }
         Relationships: []
       }
+      car_models: {
+        Row: {
+          body_type: string
+          fuel_type: string
+          id: string
+          make: string
+          model: string
+          power_hp: number
+          transmission: string
+          variant: string
+          year_from: number
+          year_to: number | null
+        }
+        Insert: {
+          body_type?: string
+          fuel_type?: string
+          id?: string
+          make: string
+          model: string
+          power_hp?: number
+          transmission?: string
+          variant: string
+          year_from?: number
+          year_to?: number | null
+        }
+        Update: {
+          body_type?: string
+          fuel_type?: string
+          id?: string
+          make?: string
+          model?: string
+          power_hp?: number
+          transmission?: string
+          variant?: string
+          year_from?: number
+          year_to?: number | null
+        }
+        Relationships: []
+      }
       cars: {
         Row: {
           accident_details: string | null

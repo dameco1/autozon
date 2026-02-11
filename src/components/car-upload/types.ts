@@ -1,6 +1,7 @@
 export interface CarFormData {
   make: string;
   model: string;
+  variant: string;
   year: number;
   vin: string;
   mileage: number;
@@ -23,6 +24,7 @@ export interface CarFormData {
 export const defaultCarFormData: CarFormData = {
   make: "",
   model: "",
+  variant: "",
   year: 2022,
   vin: "",
   mileage: 50000,
