@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import AppraisalBreakdown from "@/components/AppraisalBreakdown";
+import MarketComparison from "@/components/MarketComparison";
 
 interface CarData {
   id: string;
@@ -138,7 +139,18 @@ const FairValueResult: React.FC = () => {
         {/* Full Appraisal Breakdown */}
         <AppraisalBreakdown car={car} />
 
-        {/* Depreciation Chart */}
+        {/* Market Comparison */}
+        <MarketComparison car={{
+          make: car.make,
+          model: car.model,
+          year: car.year,
+          mileage: car.mileage,
+          condition_score: car.condition_score,
+          price: car.price,
+          fuel_type: car.fuel_type,
+          body_type: car.body_type,
+          transmission: car.transmission,
+        }} />
         <motion.div
           className="bg-secondary/50 border border-border rounded-2xl p-8 mt-10 mb-10"
           initial={{ opacity: 0, y: 20 }}

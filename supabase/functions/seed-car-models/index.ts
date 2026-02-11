@@ -42,6 +42,13 @@ const DATA: CarVariant[] = [
   { make:"Audi", model:"Q7", variant:"50 TDI", year_from:2019, year_to:null, power_hp:286, fuel_type:"Diesel", transmission:"Automatic", body_type:"SUV" },
   { make:"Audi", model:"e-tron", variant:"50 quattro", year_from:2019, year_to:null, power_hp:313, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
   { make:"Audi", model:"e-tron", variant:"55 quattro", year_from:2019, year_to:null, power_hp:408, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"Audi", model:"RS3", variant:"2.5 TFSI", year_from:2021, year_to:null, power_hp:400, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Audi", model:"RS6", variant:"Avant 4.0 TFSI", year_from:2019, year_to:null, power_hp:600, fuel_type:"Petrol", transmission:"Automatic", body_type:"Wagon" },
+  { make:"Audi", model:"TT", variant:"40 TFSI", year_from:2018, year_to:null, power_hp:197, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Audi", model:"TT", variant:"TTS", year_from:2018, year_to:null, power_hp:320, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Audi", model:"Q8", variant:"55 TFSI", year_from:2018, year_to:null, power_hp:340, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Audi", model:"e-tron GT", variant:"quattro", year_from:2021, year_to:null, power_hp:476, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Audi", model:"e-tron GT", variant:"RS", year_from:2021, year_to:null, power_hp:646, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
 
   // ── BMW ──
   { make:"BMW", model:"1 Series", variant:"116i", year_from:2019, year_to:null, power_hp:109, fuel_type:"Petrol", transmission:"Manual", body_type:"Hatchback" },
@@ -69,6 +76,14 @@ const DATA: CarVariant[] = [
   { make:"BMW", model:"X5", variant:"xDrive30d", year_from:2018, year_to:null, power_hp:286, fuel_type:"Diesel", transmission:"Automatic", body_type:"SUV" },
   { make:"BMW", model:"iX3", variant:"eDrive", year_from:2020, year_to:null, power_hp:286, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
   { make:"BMW", model:"i4", variant:"eDrive40", year_from:2021, year_to:null, power_hp:340, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"BMW", model:"M2", variant:"Competition", year_from:2018, year_to:null, power_hp:410, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"BMW", model:"M3", variant:"Competition", year_from:2021, year_to:null, power_hp:510, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"BMW", model:"M4", variant:"Competition", year_from:2021, year_to:null, power_hp:510, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"BMW", model:"Z4", variant:"sDrive20i", year_from:2019, year_to:null, power_hp:197, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"BMW", model:"Z4", variant:"M40i", year_from:2019, year_to:null, power_hp:340, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"BMW", model:"7 Series", variant:"740i", year_from:2022, year_to:null, power_hp:380, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"BMW", model:"iX", variant:"xDrive40", year_from:2021, year_to:null, power_hp:326, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"BMW", model:"iX", variant:"xDrive50", year_from:2021, year_to:null, power_hp:523, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
 
   // ── Mercedes-Benz ──
   { make:"Mercedes-Benz", model:"A-Class", variant:"A 180", year_from:2018, year_to:null, power_hp:136, fuel_type:"Petrol", transmission:"Automatic", body_type:"Hatchback" },
@@ -88,7 +103,16 @@ const DATA: CarVariant[] = [
   { make:"Mercedes-Benz", model:"GLE", variant:"GLE 350", year_from:2019, year_to:null, power_hp:272, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
   { make:"Mercedes-Benz", model:"GLE", variant:"GLE 300d", year_from:2019, year_to:null, power_hp:245, fuel_type:"Diesel", transmission:"Automatic", body_type:"SUV" },
   { make:"Mercedes-Benz", model:"EQA", variant:"EQA 250", year_from:2021, year_to:null, power_hp:190, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
-  { make:"Mercedes-Benz", model:"EQC", variant:"EQC 400", year_from:2019, year_to:null, power_hp:408, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"Mercedes-Benz", model:"S-Class", variant:"S 450", year_from:2020, year_to:null, power_hp:367, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Mercedes-Benz", model:"S-Class", variant:"S 500", year_from:2020, year_to:null, power_hp:435, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Mercedes-Benz", model:"AMG GT", variant:"43", year_from:2018, year_to:null, power_hp:367, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Mercedes-Benz", model:"AMG GT", variant:"63 S", year_from:2018, year_to:null, power_hp:639, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Mercedes-Benz", model:"CLA", variant:"CLA 200", year_from:2019, year_to:null, power_hp:163, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Mercedes-Benz", model:"CLA", variant:"CLA 250", year_from:2019, year_to:null, power_hp:224, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Mercedes-Benz", model:"GLS", variant:"GLS 450", year_from:2019, year_to:null, power_hp:367, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Mercedes-Benz", model:"EQS", variant:"EQS 450+", year_from:2021, year_to:null, power_hp:333, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Mercedes-Benz", model:"EQE", variant:"EQE 300", year_from:2022, year_to:null, power_hp:245, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Mercedes-Benz", model:"EQB", variant:"EQB 250", year_from:2021, year_to:null, power_hp:190, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
 
   // ── Volkswagen ──
   { make:"Volkswagen", model:"Polo", variant:"1.0 TSI 80", year_from:2017, year_to:null, power_hp:80, fuel_type:"Petrol", transmission:"Manual", body_type:"Hatchback" },
@@ -111,17 +135,60 @@ const DATA: CarVariant[] = [
   { make:"Volkswagen", model:"ID.3", variant:"Pro S", year_from:2020, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
   { make:"Volkswagen", model:"ID.4", variant:"Pure", year_from:2021, year_to:null, power_hp:170, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
   { make:"Volkswagen", model:"ID.4", variant:"Pro", year_from:2021, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"Volkswagen", model:"Arteon", variant:"2.0 TSI", year_from:2017, year_to:null, power_hp:190, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Volkswagen", model:"Arteon", variant:"R", year_from:2020, year_to:null, power_hp:320, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Volkswagen", model:"Touareg", variant:"3.0 V6 TSI", year_from:2018, year_to:null, power_hp:340, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Volkswagen", model:"Touareg", variant:"3.0 V6 TDI", year_from:2018, year_to:null, power_hp:286, fuel_type:"Diesel", transmission:"Automatic", body_type:"SUV" },
+  { make:"Volkswagen", model:"T-Cross", variant:"1.0 TSI", year_from:2019, year_to:null, power_hp:110, fuel_type:"Petrol", transmission:"Manual", body_type:"SUV" },
+  { make:"Volkswagen", model:"Up!", variant:"1.0", year_from:2016, year_to:null, power_hp:65, fuel_type:"Petrol", transmission:"Manual", body_type:"Hatchback" },
+  { make:"Volkswagen", model:"e-Up!", variant:"Electric", year_from:2020, year_to:null, power_hp:83, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
 
   // ── Porsche ──
   { make:"Porsche", model:"911", variant:"Carrera", year_from:2019, year_to:null, power_hp:385, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
   { make:"Porsche", model:"911", variant:"Carrera S", year_from:2019, year_to:null, power_hp:450, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"Carrera T", year_from:2022, year_to:null, power_hp:385, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"Carrera 4", year_from:2019, year_to:null, power_hp:385, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"Carrera 4S", year_from:2019, year_to:null, power_hp:450, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"Carrera GTS", year_from:2021, year_to:null, power_hp:480, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"Carrera 4 GTS", year_from:2021, year_to:null, power_hp:480, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
   { make:"Porsche", model:"911", variant:"Turbo", year_from:2020, year_to:null, power_hp:580, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"Turbo S", year_from:2020, year_to:null, power_hp:650, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"GT3", year_from:2021, year_to:null, power_hp:510, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"GT3 RS", year_from:2022, year_to:null, power_hp:525, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"Targa 4", year_from:2020, year_to:null, power_hp:385, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"Porsche", model:"911", variant:"Targa 4S", year_from:2020, year_to:null, power_hp:450, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"Porsche", model:"911", variant:"Cabriolet", year_from:2019, year_to:null, power_hp:385, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"Porsche", model:"911", variant:"Cabriolet S", year_from:2019, year_to:null, power_hp:450, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"Porsche", model:"911", variant:"Dakar", year_from:2023, year_to:null, power_hp:480, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"911", variant:"Sport Classic", year_from:2022, year_to:null, power_hp:550, fuel_type:"Petrol", transmission:"Manual", body_type:"Coupe" },
+  { make:"Porsche", model:"718 Cayman", variant:"2.0T", year_from:2016, year_to:null, power_hp:300, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"718 Cayman", variant:"S", year_from:2016, year_to:null, power_hp:350, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"718 Cayman", variant:"GTS 4.0", year_from:2020, year_to:null, power_hp:400, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Porsche", model:"718 Cayman", variant:"GT4", year_from:2019, year_to:null, power_hp:420, fuel_type:"Petrol", transmission:"Manual", body_type:"Coupe" },
+  { make:"Porsche", model:"718 Boxster", variant:"2.0T", year_from:2016, year_to:null, power_hp:300, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"Porsche", model:"718 Boxster", variant:"S", year_from:2016, year_to:null, power_hp:350, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"Porsche", model:"718 Boxster", variant:"GTS 4.0", year_from:2020, year_to:null, power_hp:400, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+  { make:"Porsche", model:"Panamera", variant:"4", year_from:2016, year_to:null, power_hp:330, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Porsche", model:"Panamera", variant:"4S", year_from:2016, year_to:null, power_hp:440, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Porsche", model:"Panamera", variant:"GTS", year_from:2018, year_to:null, power_hp:480, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Porsche", model:"Panamera", variant:"Turbo", year_from:2016, year_to:null, power_hp:550, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Porsche", model:"Panamera", variant:"4 E-Hybrid", year_from:2017, year_to:null, power_hp:462, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"Sedan" },
   { make:"Porsche", model:"Cayenne", variant:"V6", year_from:2018, year_to:null, power_hp:340, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
   { make:"Porsche", model:"Cayenne", variant:"S", year_from:2018, year_to:null, power_hp:440, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Porsche", model:"Cayenne", variant:"GTS", year_from:2020, year_to:null, power_hp:460, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Porsche", model:"Cayenne", variant:"Turbo", year_from:2018, year_to:null, power_hp:550, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Porsche", model:"Cayenne", variant:"Turbo GT", year_from:2021, year_to:null, power_hp:640, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Porsche", model:"Cayenne", variant:"E-Hybrid", year_from:2018, year_to:null, power_hp:462, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
   { make:"Porsche", model:"Macan", variant:"2.0T", year_from:2019, year_to:null, power_hp:265, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
   { make:"Porsche", model:"Macan", variant:"S", year_from:2019, year_to:null, power_hp:380, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Porsche", model:"Macan", variant:"GTS", year_from:2020, year_to:null, power_hp:380, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Porsche", model:"Macan", variant:"Turbo", year_from:2019, year_to:null, power_hp:440, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Porsche", model:"Macan", variant:"Electric", year_from:2024, year_to:null, power_hp:408, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
   { make:"Porsche", model:"Taycan", variant:"4S", year_from:2020, year_to:null, power_hp:530, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
   { make:"Porsche", model:"Taycan", variant:"Turbo", year_from:2020, year_to:null, power_hp:680, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Porsche", model:"Taycan", variant:"Turbo S", year_from:2020, year_to:null, power_hp:761, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Porsche", model:"Taycan", variant:"GTS", year_from:2022, year_to:null, power_hp:598, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Porsche", model:"Taycan", variant:"Cross Turismo", year_from:2021, year_to:null, power_hp:476, fuel_type:"Electric", transmission:"Automatic", body_type:"Wagon" },
 
   // ── Opel ──
   { make:"Opel", model:"Corsa", variant:"1.2", year_from:2019, year_to:null, power_hp:75, fuel_type:"Petrol", transmission:"Manual", body_type:"Hatchback" },
@@ -365,6 +432,25 @@ const DATA: CarVariant[] = [
   { make:"Mitsubishi", model:"Eclipse Cross", variant:"1.5 Turbo", year_from:2018, year_to:null, power_hp:163, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
   { make:"Mitsubishi", model:"Eclipse Cross", variant:"2.4 PHEV", year_from:2020, year_to:null, power_hp:188, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
   { make:"Mitsubishi", model:"Outlander", variant:"2.4 PHEV", year_from:2019, year_to:null, power_hp:224, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
+
+  // ── CUPRA ──
+  { make:"CUPRA", model:"Formentor", variant:"1.5 TSI", year_from:2020, year_to:null, power_hp:150, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"CUPRA", model:"Formentor", variant:"2.0 TSI", year_from:2020, year_to:null, power_hp:310, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"CUPRA", model:"Formentor", variant:"VZ5", year_from:2021, year_to:null, power_hp:390, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"CUPRA", model:"Leon", variant:"1.4 e-Hybrid", year_from:2020, year_to:null, power_hp:245, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"CUPRA", model:"Leon", variant:"VZ", year_from:2020, year_to:null, power_hp:300, fuel_type:"Petrol", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"CUPRA", model:"Born", variant:"150 kW", year_from:2021, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"CUPRA", model:"Born", variant:"170 kW", year_from:2022, year_to:null, power_hp:231, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"CUPRA", model:"Tavascan", variant:"VZ", year_from:2024, year_to:null, power_hp:340, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+
+  // ── Jaguar ──
+  { make:"Jaguar", model:"F-Pace", variant:"P250", year_from:2016, year_to:null, power_hp:250, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Jaguar", model:"F-Pace", variant:"P400e", year_from:2021, year_to:null, power_hp:404, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"Jaguar", model:"E-Pace", variant:"P200", year_from:2018, year_to:null, power_hp:200, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Jaguar", model:"I-Pace", variant:"EV400", year_from:2018, year_to:null, power_hp:400, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"Jaguar", model:"F-Type", variant:"P300", year_from:2019, year_to:null, power_hp:300, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Jaguar", model:"F-Type", variant:"P450", year_from:2019, year_to:null, power_hp:450, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Jaguar", model:"XE", variant:"P250", year_from:2019, year_to:null, power_hp:250, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
 ];
 
 Deno.serve(async (req: Request) => {
@@ -377,16 +463,28 @@ Deno.serve(async (req: Request) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
+    // Parse optional force param
+    let force = false;
+    try {
+      const body = await req.json();
+      force = body?.force === true;
+    } catch { /* no body is fine */ }
+
     // Check if data already exists
     const { count } = await supabase
       .from("car_models")
       .select("*", { count: "exact", head: true });
 
-    if (count && count > 0) {
+    if (count && count > 0 && !force) {
       return new Response(
-        JSON.stringify({ message: `Already seeded with ${count} records`, skipped: true }),
+        JSON.stringify({ message: `Already seeded with ${count} records. Pass { "force": true } to re-seed.`, skipped: true }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
+    }
+
+    // Clear existing data if re-seeding
+    if (count && count > 0 && force) {
+      await supabase.from("car_models").delete().neq("id", "00000000-0000-0000-0000-000000000000");
     }
 
     // Insert in batches of 100
