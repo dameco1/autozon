@@ -16,4 +16,4 @@ export const EQUIPMENT_LIST = [
   "Heads-Up Display", "Seat Memory", "Heated Steering Wheel",
 ];
 
-export const STEPS = 4;
+export const STEPS = 5;
