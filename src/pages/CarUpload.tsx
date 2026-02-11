@@ -68,17 +68,109 @@ const CarUpload: React.FC = () => {
   };
 
   const calculateFairValue = () => {
-    // Demo fair-value algorithm
-    let basePrice = price;
-    const ageFactor = Math.max(0.5, 1 - (2026 - year) * 0.05);
-    const mileageFactor = Math.max(0.5, 1 - (mileage / 300000));
-    const conditionFactor = ((conditionExterior + conditionInterior) / 2) / 100;
-    const equipmentBonus = 1 + (equipment.length * 0.008);
-    const accidentPenalty = accidentHistory ? 0.85 : 1;
+    const currentYear = 2026;
+    const carAge = currentYear - year;
 
-    const fairValue = Math.round(basePrice * ageFactor * mileageFactor * conditionFactor * equipmentBonus * accidentPenalty);
-    const condScore = Math.round(((conditionExterior + conditionInterior) / 2) * (accidentHistory ? 0.8 : 1));
-    const demandScore = Math.min(100, Math.round(50 + (equipment.length * 2) + (year > 2020 ? 15 : 0) + (mileage < 80000 ? 10 : 0)));
+    // ── 1. Non-Linear Depreciation Curve ──
+    // Premium brands hold value better; first year steep, then flattens
+    const premiumBrands = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
+    const isPremium = premiumBrands.includes(make);
+    // Year 1: -15% (premium) / -22% (standard), then curve flattens
+    const depRate = isPremium ? 0.12 : 0.18;
+    const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, Math.sqrt(carAge * 1.8)));
+
+    // Mileage: exponential penalty past 150k
+    const avgAnnualKm = 15000;
+    const expectedKm = carAge * avgAnnualKm;
+    const mileageRatio = mileage / Math.max(expectedKm, 1);
+    const mileageFactor = mileageRatio <= 1
+      ? 1 + (1 - mileageRatio) * 0.08   // under-mileage bonus
+      : Math.max(0.55, 1 - Math.pow(mileageRatio - 1, 1.4) * 0.25);
+
+    // ── 2. Condition Factor ──
+    const condAvg = (conditionExterior + conditionInterior) / 2;
+    const conditionFactor = 0.6 + (condAvg / 100) * 0.4; // range 0.6–1.0
+    const accidentPenalty = accidentHistory ? 0.82 : 1;
+
+    // ── 3. Equipment Value Index ──
+    // Safety & tech features weighted higher than cosmetic
+    const safetyFeatures = ["Adaptive Cruise Control", "Lane Assist", "Blind Spot Monitor", "360° Camera", "Parking Sensors", "Backup Camera"];
+    const techFeatures = ["Navigation", "Apple CarPlay", "Android Auto", "Heads-Up Display", "LED Headlights"];
+    const comfortFeatures = ["Heated Seats", "Leather Interior", "Sunroof", "Cruise Control", "Keyless Entry", "Seat Memory", "Heated Steering Wheel"];
+
+    let equipWeightedScore = 0;
+    equipment.forEach((eq) => {
+      if (safetyFeatures.includes(eq)) equipWeightedScore += 3;
+      else if (techFeatures.includes(eq)) equipWeightedScore += 2;
+      else if (comfortFeatures.includes(eq)) equipWeightedScore += 1.5;
+      else equipWeightedScore += 1;
+    });
+    // Normalized: max realistic score ~40 (all 18 items), bonus caps at ~12%
+    const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.003, 0.15);
+
+    // ── 4. Market Position Factor ──
+    // High-demand segments score higher
+    const highDemandBodies = ["SUV", "Hatchback"];
+    const moderateDemandBodies = ["Sedan", "Wagon"];
+    const bodyDemand = highDemandBodies.includes(bodyType) ? 1.06
+      : moderateDemandBodies.includes(bodyType) ? 1.02 : 0.97;
+
+    const highDemandMakes = ["Toyota", "Honda", "Porsche", "Tesla"];
+    const makeDemand = highDemandMakes.includes(make) ? 1.05
+      : premiumBrands.includes(make) ? 1.02 : 1.0;
+
+    const marketPositionFactor = bodyDemand * makeDemand;
+
+    // ── 5. Regional Demand Multiplier ──
+    // EVs and hybrids have urban premium; diesel penalized in cities
+    const fuelDemand: Record<string, number> = {
+      "Electric": 1.08,
+      "Plug-in Hybrid": 1.05,
+      "Hybrid": 1.04,
+      "Petrol": 1.0,
+      "Diesel": 0.95,
+    };
+    const regionalDemandMultiplier = fuelDemand[fuelType] ?? 1.0;
+
+    // ── 6. Transparency Score ──
+    // Sellers providing more data get a trust bonus visible to buyers
+    let transparencyPoints = 0;
+    if (vin.length >= 10) transparencyPoints += 3;
+    if (description.length > 50) transparencyPoints += 2;
+    if (equipment.length >= 5) transparencyPoints += 1;
+    if (color) transparencyPoints += 1;
+    if (accidentHistory && accidentDetails.length > 20) transparencyPoints += 2;
+    if (!accidentHistory) transparencyPoints += 1;
+    // Max 10 points → up to 5% bonus
+    const transparencyBonus = 1 + Math.min(transparencyPoints / 10, 1) * 0.05;
+
+    // ── FINAL Fair Value ──
+    const fairValue = Math.round(
+      price
+      * depreciationFactor
+      * mileageFactor
+      * conditionFactor
+      * accidentPenalty
+      * equipmentIndex
+      * marketPositionFactor
+      * regionalDemandMultiplier
+      * transparencyBonus
+    );
+
+    // Condition Score (0-100)
+    const condScore = Math.round(
+      condAvg * accidentPenalty * (mileageFactor > 0.9 ? 1 : 0.9 + mileageFactor * 0.1)
+    );
+
+    // Demand Score (0-100): composite of market signals
+    const demandScore = Math.min(100, Math.round(
+      30
+      + (marketPositionFactor - 0.95) * 200
+      + (regionalDemandMultiplier - 0.95) * 150
+      + (year > 2022 ? 12 : year > 2019 ? 6 : 0)
+      + (mileage < 60000 ? 10 : mileage < 120000 ? 5 : 0)
+      + Math.min(equipWeightedScore * 0.5, 10)
+    ));
 
     return { fairValue, condScore, demandScore };
   };
