@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Globe } from "lucide-react";
-import { useEffect } from "react";
+import NotificationBell from "@/components/NotificationBell";
 import type { User } from "@supabase/supabase-js";
 
 const Navbar: React.FC = () => {
@@ -56,6 +56,7 @@ const Navbar: React.FC = () => {
             </button>
             {user ? (
               <>
+                <NotificationBell />
                 <Button variant="ghost" className="text-silver/80" onClick={() => navigate("/dashboard")}>
                   {t.nav.dashboard}
                 </Button>
