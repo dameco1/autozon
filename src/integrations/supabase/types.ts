@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      buyers: {
+        Row: {
+          budget_max: number | null
+          budget_min: number | null
+          created_at: string
+          id: string
+          intent_level: string
+          is_seed: boolean
+          location: string
+          name: string
+          preferred_body_types: string[] | null
+          preferred_fuel_types: string[] | null
+          preferred_makes: string[] | null
+          timing_preference: string | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          budget_max?: number | null
+          budget_min?: number | null
+          created_at?: string
+          id?: string
+          intent_level?: string
+          is_seed?: boolean
+          location?: string
+          name?: string
+          preferred_body_types?: string[] | null
+          preferred_fuel_types?: string[] | null
+          preferred_makes?: string[] | null
+          timing_preference?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          budget_max?: number | null
+          budget_min?: number | null
+          created_at?: string
+          id?: string
+          intent_level?: string
+          is_seed?: boolean
+          location?: string
+          name?: string
+          preferred_body_types?: string[] | null
+          preferred_fuel_types?: string[] | null
+          preferred_makes?: string[] | null
+          timing_preference?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cars: {
         Row: {
           accident_details: string | null
