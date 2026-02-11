@@ -14,6 +14,10 @@ import FairValueResult from "./pages/FairValueResult";
 import BuyerMatches from "./pages/BuyerMatches";
 import NextCarRecommendations from "./pages/NextCarRecommendations";
 import CarDetail from "./pages/CarDetail";
+import IntentSelection from "./pages/IntentSelection";
+import BuyerQuestionnaire from "./pages/BuyerQuestionnaire";
+import CarSelection from "./pages/CarSelection";
+import CarComparison from "./pages/CarComparison";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +40,10 @@ const App = () => (
             <Route path="/buyer-matches/:carId" element={<BuyerMatches />} />
             <Route path="/recommendations" element={<NextCarRecommendations />} />
             <Route path="/car/:id" element={<CarDetail />} />
+            <Route path="/intent" element={<IntentSelection />} />
+            <Route path="/buyer-questionnaire" element={<BuyerQuestionnaire />} />
+            <Route path="/car-selection" element={<CarSelection />} />
+            <Route path="/compare" element={<CarComparison />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
