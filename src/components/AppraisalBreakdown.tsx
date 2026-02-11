@@ -64,16 +64,18 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   const basePrice = car.price;
   const currentYear = 2026;
   const carAge = currentYear - car.year;
+  const iconicBrands = ["Porsche", "Tesla"];
   const premiumBrands = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
   const isPremium = premiumBrands.includes(car.make);
+  const isIconic = iconicBrands.includes(car.make);
 
   const factors: AppraisalFactor[] = [];
   const normalize = (factor: number, min: number, max: number) =>
     Math.round(Math.max(0, Math.min(100, ((factor - min) / (max - min)) * 100)));
 
-  // 1. DEPRECIATION (age-based)
-  const depRate = isPremium ? 0.12 : 0.18;
-  const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, Math.sqrt(carAge * 1.8)));
+  // 1. DEPRECIATION (age-based, brand-tiered)
+  const depRate = isIconic ? 0.07 : isPremium ? 0.10 : 0.15;
+  const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75));
   const depEuro = Math.round(basePrice * (depreciationFactor - 1));
   const depPct = (depreciationFactor - 1) * 100;
   factors.push({
@@ -115,9 +117,9 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: false,
   });
 
-  // 3. EXTERIOR CONDITION (actionable)
+  // 3. EXTERIOR CONDITION (actionable, with pristine bonus)
   const condExt = car.condition_exterior ?? 80;
-  const condExtFactor = 0.6 + (condExt / 100) * 0.4;
+  const condExtFactor = 0.65 + (condExt / 100) * 0.40 + (condExt > 90 ? (condExt - 90) * 0.005 : 0);
   const extEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condExtFactor - 1) * 0.5);
   factors.push({
     id: "exterior",
@@ -139,9 +141,9 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionStep: 3,
   });
 
-  // 4. INTERIOR CONDITION (actionable)
+  // 4. INTERIOR CONDITION (actionable, with pristine bonus)
   const condInt = car.condition_interior ?? 80;
-  const condIntFactor = 0.6 + (condInt / 100) * 0.4;
+  const condIntFactor = 0.65 + (condInt / 100) * 0.40 + (condInt > 90 ? (condInt - 90) * 0.005 : 0);
   const intEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condIntFactor - 1) * 0.5);
   factors.push({
     id: "interior",
@@ -191,12 +193,12 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   const equip = car.equipment ?? [];
   let equipWeightedScore = 0;
   equip.forEach((eq) => {
-    if (safetyFeatures.includes(eq)) equipWeightedScore += 3;
-    else if (techFeatures.includes(eq)) equipWeightedScore += 2;
-    else if (comfortFeatures.includes(eq)) equipWeightedScore += 1.5;
+    if (safetyFeatures.includes(eq)) equipWeightedScore += 3.5;
+    else if (techFeatures.includes(eq)) equipWeightedScore += 2.5;
+    else if (comfortFeatures.includes(eq)) equipWeightedScore += 1.8;
     else equipWeightedScore += 1;
   });
-  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.003, 0.15);
+  const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.004, 0.20);
   const equipEuro = Math.round(basePrice * depreciationFactor * (equipmentIndex - 1));
   factors.push({
     id: "equipment",
@@ -218,7 +220,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
 
   // 7. BRAND & MARKET DEMAND
   const highDemandBodies = ["SUV", "Hatchback"];
-  const moderateDemandBodies = ["Sedan", "Wagon"];
+  const moderateDemandBodies = ["Sedan", "Wagon", "Coupe", "Convertible"];
   const bodyDemand = highDemandBodies.includes(car.body_type) ? 1.06
     : moderateDemandBodies.includes(car.body_type) ? 1.02 : 0.97;
   const highDemandMakes = ["Toyota", "Honda", "Porsche", "Tesla"];

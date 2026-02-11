@@ -6,11 +6,17 @@ import Navbar from "@/components/Navbar";
 import ConciergeChat from "@/components/ConciergeChat";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   Car, TrendingUp, Users, DollarSign, Plus, Eye, Edit,
-  ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle,
+  ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle, Trash2, Pencil,
 } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { User } from "@supabase/supabase-js";
 
 type CarListing = {
@@ -191,9 +197,39 @@ const Dashboard: React.FC = () => {
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/fair-value/${car.id}`)}>
                           <Eye className="h-4 w-4" />
                         </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
                           <Users className="h-4 w-4" />
                         </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive/60 hover:text-destructive">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="bg-secondary border-border">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className="text-white">Delete {car.year} {car.make} {car.model}?</AlertDialogTitle>
+                              <AlertDialogDescription>This action cannot be undone. The listing and all associated data will be permanently removed.</AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel className="border-border text-silver">Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                onClick={async () => {
+                                  const { error } = await supabase.from("cars").delete().eq("id", car.id);
+                                  if (error) { toast.error(error.message); return; }
+                                  setCars((prev) => prev.filter((c) => c.id !== car.id));
+                                  toast.success("Car deleted successfully");
+                                }}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   ))}

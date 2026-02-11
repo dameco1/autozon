@@ -184,6 +184,17 @@ const CarUpload: React.FC = () => {
       if (error) { toast.error(error.message); setLoading(false); return; }
       resultId = editId;
     } else {
+      // Check for duplicate car before inserting
+      const dupQuery = supabase.from("cars").select("id").eq("owner_id", userId).eq("make", formData.make).eq("model", formData.model).eq("year", formData.year);
+      if (formData.vin && formData.vin.length >= 5) dupQuery.eq("vin", formData.vin);
+      const { data: existing } = await dupQuery.maybeSingle();
+      if (existing) {
+        toast.info("This car already exists in your listings. Redirecting to edit mode.");
+        setLoading(false);
+        navigate(`/car-upload?edit=${existing.id}`);
+        return;
+      }
+
       const { data, error } = await supabase.from("cars").insert(carData).select("id").single();
       if (error) { toast.error(error.message); setLoading(false); return; }
       resultId = data?.id ?? null;
