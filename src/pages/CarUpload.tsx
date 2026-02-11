@@ -14,6 +14,7 @@ import StepEquipment from "@/components/car-upload/StepEquipment";
 import StepCondition from "@/components/car-upload/StepCondition";
 import StepPhotos from "@/components/car-upload/StepPhotos";
 import StepDamageReview from "@/components/car-upload/StepDamageReview";
+import AppraisalDisclaimer from "@/components/car-upload/AppraisalDisclaimer";
 import type { DamageReport } from "@/components/car-upload/damageTypes";
 
 const CarUpload: React.FC = () => {
@@ -22,7 +23,8 @@ const CarUpload: React.FC = () => {
   const [searchParams] = useSearchParams();
   const editId = searchParams.get("edit");
   const initialStep = searchParams.get("step");
-  const [step, setStep] = useState(initialStep ? Number(initialStep) : 1);
+  const [step, setStep] = useState(initialStep ? Number(initialStep) : 0);
+  const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [formData, setFormData] = useState<CarFormData>(defaultCarFormData);
@@ -268,72 +270,80 @@ const CarUpload: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
-          {[1, 2, 3, 4, 5].map((s) => {
-            const Icon = stepIcons[s - 1];
-            return (
-              <div key={s} className="flex items-center gap-2">
-                <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                  s === step ? "bg-primary text-primary-foreground" : s < step ? "bg-primary/20 text-primary" : "bg-secondary text-silver/40"
-                }`}>
-                  {s < step ? <Check className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
-                </div>
-                <span className={`text-xs hidden sm:block ${s === step ? "text-white font-medium" : "text-silver/40"}`}>
-                  {stepLabels[s - 1]}
-                </span>
-                {s < STEPS && <div className={`w-6 h-0.5 ${s < step ? "bg-primary" : "bg-border"}`} />}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="bg-secondary/50 border border-border rounded-2xl p-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={step}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.25 }}
-            >
-              {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} />}
-              {step === 2 && <StepPhotos photos={formData.photos} userId={userId} onPhotosChange={(photos) => updateForm({ photos })} />}
-              {step === 3 && (
-                <StepDamageReview
-                  report={damageReport}
-                  analyzing={analyzingDamage}
-                  onConfirm={confirmDamage}
-                  onDismiss={dismissDamage}
-                  onRunAnalysis={runDamageDetection}
-                  hasPhotos={formData.photos.length > 0}
-                />
-              )}
-              {step === 4 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
-              {step === 5 && <StepCondition data={formData} onChange={updateForm} />}
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="flex justify-between mt-8">
-            {step > 1 ? (
-              <Button variant="ghost" className="text-silver/60" onClick={() => setStep(step - 1)}>
-                <ArrowLeft className="mr-2 h-4 w-4" /> {t.carUpload.back}
-              </Button>
-            ) : <div />}
-            {step < STEPS ? (
-              <Button
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-                onClick={handleNext}
-                disabled={step === 3 && analyzingDamage}
-              >
-                {t.carUpload.next} <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            ) : (
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold" onClick={handleSubmit} disabled={loading}>
-                {loading ? "..." : t.carUpload.submit} <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            )}
+        {step === 0 ? (
+          <div className="bg-secondary/50 border border-border rounded-2xl p-8">
+            <AppraisalDisclaimer onAccept={() => { setDisclaimerAccepted(true); setStep(1); }} />
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
+              {[1, 2, 3, 4, 5].map((s) => {
+                const Icon = stepIcons[s - 1];
+                return (
+                  <div key={s} className="flex items-center gap-2">
+                    <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                      s === step ? "bg-primary text-primary-foreground" : s < step ? "bg-primary/20 text-primary" : "bg-secondary text-silver/40"
+                    }`}>
+                      {s < step ? <Check className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
+                    </div>
+                    <span className={`text-xs hidden sm:block ${s === step ? "text-white font-medium" : "text-silver/40"}`}>
+                      {stepLabels[s - 1]}
+                    </span>
+                    {s < STEPS && <div className={`w-6 h-0.5 ${s < step ? "bg-primary" : "bg-border"}`} />}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="bg-secondary/50 border border-border rounded-2xl p-8">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} />}
+                  {step === 2 && <StepPhotos photos={formData.photos} userId={userId} onPhotosChange={(photos) => updateForm({ photos })} />}
+                  {step === 3 && (
+                    <StepDamageReview
+                      report={damageReport}
+                      analyzing={analyzingDamage}
+                      onConfirm={confirmDamage}
+                      onDismiss={dismissDamage}
+                      onRunAnalysis={runDamageDetection}
+                      hasPhotos={formData.photos.length > 0}
+                    />
+                  )}
+                  {step === 4 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
+                  {step === 5 && <StepCondition data={formData} onChange={updateForm} />}
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="flex justify-between mt-8">
+                {step > 1 ? (
+                  <Button variant="ghost" className="text-silver/60" onClick={() => setStep(step - 1)}>
+                    <ArrowLeft className="mr-2 h-4 w-4" /> {t.carUpload.back}
+                  </Button>
+                ) : <div />}
+                {step < STEPS ? (
+                  <Button
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+                    onClick={handleNext}
+                    disabled={step === 3 && analyzingDamage}
+                  >
+                    {t.carUpload.next} <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold" onClick={handleSubmit} disabled={loading}>
+                    {loading ? "..." : t.carUpload.submit} <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
