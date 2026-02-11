@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Zap, Target, Truck, Bell, ChevronRight, CheckCircle2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import HeroCarShowcase from "@/components/home/HeroCarShowcase";
+import CarTicker from "@/components/home/CarTicker";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -37,46 +39,60 @@ const Index: React.FC = () => {
           />
         ))}
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-          <motion.h1
-            className="text-5xl sm:text-7xl lg:text-8xl font-display font-black text-white leading-[0.95] tracking-tight mb-6"
-            initial="hidden" animate="visible" variants={fadeUp} custom={1}
-          >
-            {t.hero.title}
-            <br />
-            <span className="text-gradient">{t.hero.titleAccent}</span>
-          </motion.h1>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <motion.h1
+              className="text-5xl sm:text-7xl lg:text-8xl font-display font-black text-white leading-[0.95] tracking-tight mb-6"
+              initial="hidden" animate="visible" variants={fadeUp} custom={1}
+            >
+              {t.hero.title}
+              <br />
+              <span className="text-gradient">{t.hero.titleAccent}</span>
+            </motion.h1>
 
-          <motion.p
-            className="text-lg sm:text-xl text-silver/70 max-w-2xl mx-auto mb-10 leading-relaxed"
-            initial="hidden" animate="visible" variants={fadeUp} custom={2}
-          >
-            {t.hero.subtitle}
-          </motion.p>
+            <motion.p
+              className="text-lg sm:text-xl text-silver/70 max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed"
+              initial="hidden" animate="visible" variants={fadeUp} custom={2}
+            >
+              {t.hero.subtitle}
+            </motion.p>
+
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              initial="hidden" animate="visible" variants={fadeUp} custom={3}
+            >
+              <Button
+                size="lg"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-base px-8 py-6 rounded-xl shadow-[0_0_30px_hsl(155_100%_42%/0.3)]"
+                onClick={() => navigate("/intent")}
+              >
+                {t.hero.cta}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-silver/20 text-silver hover:bg-silver/5 font-semibold text-base px-8 py-6 rounded-xl"
+                onClick={() => navigate("/intent")}
+              >
+                {t.hero.ctaSecondary}
+              </Button>
+            </motion.div>
+          </div>
 
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-            initial="hidden" animate="visible" variants={fadeUp} custom={3}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:block"
           >
-            <Button
-              size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-base px-8 py-6 rounded-xl shadow-[0_0_30px_hsl(155_100%_42%/0.3)]"
-              onClick={() => navigate("/intent")}
-            >
-              {t.hero.cta}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-silver/20 text-silver hover:bg-silver/5 font-semibold text-base px-8 py-6 rounded-xl"
-              onClick={() => navigate("/intent")}
-            >
-              {t.hero.ctaSecondary}
-            </Button>
+            <HeroCarShowcase />
           </motion.div>
         </div>
       </section>
+
+      {/* Car Ticker */}
+      <CarTicker />
 
       {/* Problem */}
       <section className="py-24 sm:py-32 bg-secondary">
