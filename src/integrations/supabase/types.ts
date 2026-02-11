@@ -123,6 +123,7 @@ export type Database = {
           mileage: number
           model: string
           owner_id: string | null
+          photos: string[] | null
           power_hp: number | null
           price: number
           status: string
@@ -153,6 +154,7 @@ export type Database = {
           mileage?: number
           model: string
           owner_id?: string | null
+          photos?: string[] | null
           power_hp?: number | null
           price?: number
           status?: string
@@ -183,6 +185,7 @@ export type Database = {
           mileage?: number
           model?: string
           owner_id?: string | null
+          photos?: string[] | null
           power_hp?: number | null
           price?: number
           status?: string

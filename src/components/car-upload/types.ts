@@ -16,6 +16,7 @@ export interface CarFormData {
   accidentHistory: boolean;
   accidentDetails: string;
   description: string;
+  photos: string[];
 }
 
 export const defaultCarFormData: CarFormData = {
@@ -36,4 +37,5 @@ export const defaultCarFormData: CarFormData = {
   accidentHistory: false,
   accidentDetails: "",
   description: "",
+  photos: [],
 };
