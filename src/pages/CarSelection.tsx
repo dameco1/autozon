@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar } from "lucide-react";
+import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 
@@ -26,6 +26,7 @@ type CarRow = {
   condition_score: number | null;
   demand_score: number | null;
   image_url: string | null;
+  detected_damages: unknown;
 };
 
 const CarSelection: React.FC = () => {
@@ -239,6 +240,11 @@ const CarSelection: React.FC = () => {
                               {car.make} {car.model}
                             </h3>
                             <p className="text-silver/40 text-sm">{car.year} · {car.body_type}</p>
+                            {Array.isArray(car.detected_damages) && (
+                              <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-medium">
+                                <ShieldCheck className="h-3 w-3" /> {t.carSelection.aiVerified}
+                              </span>
+                            )}
                           </div>
                           <button
                             onClick={(e) => {

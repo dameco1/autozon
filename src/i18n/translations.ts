@@ -420,6 +420,7 @@ export const translations = {
       moreAdded: "more matches added",
       removed: "unselected cars removed",
       noMore: "No more matching cars available",
+      aiVerified: "AI Verified",
     },
     compare: {
       title: "Side-by-Side Comparison",
@@ -878,6 +879,7 @@ export const translations = {
       moreAdded: "weitere Matches hinzugefügt",
       removed: "nicht ausgewählte Autos entfernt",
       noMore: "Keine weiteren passenden Autos verfügbar",
+      aiVerified: "KI-geprüft",
     },
     compare: {
       title: "Seite-an-Seite Vergleich",
