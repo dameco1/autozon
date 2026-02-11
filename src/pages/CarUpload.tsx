@@ -73,6 +73,7 @@ const CarUpload: React.FC = () => {
         description: data.description ?? "",
         photos: (data as any).photos ?? [],
         damageScanned: false,
+      });
     });
   }, [editId]);
 
