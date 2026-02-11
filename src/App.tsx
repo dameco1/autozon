@@ -18,6 +18,10 @@ import IntentSelection from "./pages/IntentSelection";
 import BuyerQuestionnaire from "./pages/BuyerQuestionnaire";
 import CarSelection from "./pages/CarSelection";
 import CarComparison from "./pages/CarComparison";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import CookiePolicy from "./pages/CookiePolicy";
+import Impressum from "./pages/Impressum";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +48,10 @@ const App = () => (
             <Route path="/buyer-questionnaire" element={<BuyerQuestionnaire />} />
             <Route path="/car-selection" element={<CarSelection />} />
             <Route path="/compare" element={<CarComparison />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/impressum" element={<Impressum />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
