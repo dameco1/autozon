@@ -125,9 +125,13 @@ const CarSelection: React.FC = () => {
 
   const handleShowMore = async () => {
     if (!userId) return;
+
+    // Remove unselected cars first, keep only liked ones
+    const keptCars = cars.filter((c) => liked.has(c.id));
+    const keptIds = keptCars.map((c) => c.id);
+
     setLoading(true);
 
-    const existingIds = cars.map((c) => c.id);
     const { data: prefs } = await supabase
       .from("user_preferences")
       .select("*")
@@ -138,23 +142,43 @@ const CarSelection: React.FC = () => {
       .from("cars")
       .select("*")
       .eq("status", "available")
-      .limit(5);
+      .limit(10);
 
-    if (existingIds.length > 0) {
-      query = query.not("id", "in", `(${existingIds.join(",")})`);
+    if (keptIds.length > 0) {
+      query = query.not("id", "in", `(${keptIds.join(",")})`);
     }
 
     if (prefs) {
       if (prefs.min_budget) query = query.gte("price", prefs.min_budget);
       if (prefs.max_budget) query = query.lte("price", prefs.max_budget);
+      if (prefs.min_year) query = query.gte("year", prefs.min_year);
+      if (prefs.max_year) query = query.lte("year", prefs.max_year);
+      if (prefs.max_mileage) query = query.lte("mileage", prefs.max_mileage);
+      if (prefs.preferred_fuel_types && prefs.preferred_fuel_types.length > 0) {
+        query = query.in("fuel_type", prefs.preferred_fuel_types);
+      }
+      if (prefs.preferred_body_types && prefs.preferred_body_types.length > 0) {
+        query = query.in("body_type", prefs.preferred_body_types);
+      }
+      if (prefs.preferred_transmission) {
+        query = query.eq("transmission", prefs.preferred_transmission);
+      }
     }
 
     const { data } = await query;
     setLoading(false);
 
     if (data && data.length > 0) {
-      setCars((prev) => [...prev, ...data]);
-      toast.success(`${data.length} ${t.carSelection.moreAdded}`);
+      setCars([...keptCars, ...data]);
+      setLiked(new Set());
+      setRound((r) => r + 1);
+      const removed = cars.length - keptCars.length;
+      toast.success(`${removed > 0 ? `${removed} ${t.carSelection.removed}. ` : ""}${data.length} ${t.carSelection.moreAdded}`);
+    } else if (keptCars.length > 0) {
+      setCars(keptCars);
+      setLiked(new Set());
+      setRound((r) => r + 1);
+      toast.info(t.carSelection.noMore);
     } else {
       toast.info(t.carSelection.noMore);
     }

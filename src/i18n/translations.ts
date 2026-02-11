@@ -418,6 +418,7 @@ export const translations = {
       narrowDown: "Narrow Down",
       compare: "Compare Finalists",
       moreAdded: "more matches added",
+      removed: "unselected cars removed",
       noMore: "No more matching cars available",
     },
     compare: {
@@ -875,6 +876,7 @@ export const translations = {
       narrowDown: "Eingrenzen",
       compare: "Finalisten vergleichen",
       moreAdded: "weitere Matches hinzugefügt",
+      removed: "nicht ausgewählte Autos entfernt",
       noMore: "Keine weiteren passenden Autos verfügbar",
     },
     compare: {
