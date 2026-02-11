@@ -51,7 +51,7 @@ const CarUpload: React.FC = () => {
 
   useEffect(() => {
     if (!editId) return;
-    supabase.from("cars").select("*").eq("id", editId).maybeSingle().then(({ data }) => {
+    supabase.from("cars").select("id, make, model, year, vin, mileage, fuel_type, transmission, body_type, color, power_hp, price, equipment, condition_exterior, condition_interior, accident_history, accident_details, description, photos, detected_damages").eq("id", editId).maybeSingle().then(({ data }) => {
       if (!data) return;
       setFormData({
         make: data.make,

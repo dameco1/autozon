@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
       setUser(session.user);
 
       const [carsResult, matchesResult] = await Promise.all([
-        supabase.from("cars").select("*").eq("owner_id", session.user.id).order("created_at", { ascending: false }),
+        supabase.from("cars").select("id, make, model, year, price, fair_value_price, status, image_url, condition_score, demand_score, created_at").eq("owner_id", session.user.id).order("created_at", { ascending: false }),
         supabase.from("matches").select("*").eq("user_id", session.user.id).order("created_at", { ascending: false }),
       ]);
 
