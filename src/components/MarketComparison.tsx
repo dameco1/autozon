@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import React from "react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Globe, TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface MarketData {
+export interface MarketData {
   min_price: number;
   max_price: number;
   avg_price: number;
@@ -14,56 +13,16 @@ interface MarketData {
   sources_note: string;
 }
 
-interface CarForComparison {
-  make: string;
-  model: string;
-  year: number;
-  mileage: number;
-  condition_score: number;
-  price: number;
-  fuel_type: string;
-  body_type: string;
-  transmission: string;
-}
-
 interface Props {
-  car: CarForComparison;
+  data: MarketData | null;
+  loading: boolean;
+  error: boolean;
+  askingPrice: number;
+  blendedFairValue?: number | null;
 }
 
-const MarketComparison: React.FC<Props> = ({ car }) => {
+const MarketComparison: React.FC<Props> = ({ data, loading, error, askingPrice, blendedFairValue }) => {
   const { t } = useLanguage();
-  const [data, setData] = useState<MarketData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const fetchMarketData = async () => {
-      try {
-        const { data: result, error: fnError } = await supabase.functions.invoke("market-comparison", {
-          body: {
-            make: car.make,
-            model: car.model,
-            year: car.year,
-            mileage: car.mileage,
-            condition_score: car.condition_score,
-            price: car.price,
-            fuel_type: car.fuel_type,
-            body_type: car.body_type,
-            transmission: car.transmission,
-          },
-        });
-        if (fnError) throw fnError;
-        if (result?.error) throw new Error(result.error);
-        setData(result);
-      } catch (e) {
-        console.error("Market comparison error:", e);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMarketData();
-  }, [car]);
 
   if (error) return null;
 
@@ -92,7 +51,7 @@ const MarketComparison: React.FC<Props> = ({ car }) => {
 
   const range = data.max_price - data.min_price;
   const pricePosition = range > 0
-    ? Math.max(0, Math.min(100, ((car.price - data.min_price) / range) * 100))
+    ? Math.max(0, Math.min(100, ((askingPrice - data.min_price) / range) * 100))
     : 50;
 
   const positionIcon = data.market_position === "below_market"
@@ -125,6 +84,17 @@ const MarketComparison: React.FC<Props> = ({ car }) => {
         <h3 className="text-lg font-display font-bold text-white">Market Comparison</h3>
       </div>
 
+      {/* Blended fair value callout */}
+      {blendedFairValue && (
+        <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6 text-center">
+          <div className="text-xs text-silver/50 mb-1">Market-Adjusted Fair Value</div>
+          <div className="text-2xl font-display font-black text-primary">
+            €{blendedFairValue.toLocaleString()}
+          </div>
+          <div className="text-[11px] text-silver/40 mt-1">60% algorithm + 40% market average</div>
+        </div>
+      )}
+
       {/* Price range bar */}
       <div className="mb-6">
         <div className="flex justify-between text-xs text-silver/50 mb-2">
@@ -133,14 +103,11 @@ const MarketComparison: React.FC<Props> = ({ car }) => {
           <span>€{data.max_price.toLocaleString()}</span>
         </div>
         <div className="relative h-4 bg-charcoal/80 rounded-full overflow-hidden">
-          {/* Range fill */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/40 to-destructive/20 rounded-full" />
-          {/* Avg marker */}
           <div
             className="absolute top-0 bottom-0 w-0.5 bg-silver/30"
             style={{ left: `${range > 0 ? ((data.avg_price - data.min_price) / range) * 100 : 50}%` }}
           />
-          {/* Price marker */}
           <div
             className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary border-2 border-white shadow-lg"
             style={{ left: `calc(${pricePosition}% - 8px)` }}
@@ -161,7 +128,7 @@ const MarketComparison: React.FC<Props> = ({ car }) => {
         </div>
         <div className="bg-charcoal/60 rounded-xl p-3 text-center">
           <div className="text-[10px] text-silver/40 mb-1">Your Price</div>
-          <div className={`text-sm font-bold ${positionColor}`}>€{car.price.toLocaleString()}</div>
+          <div className={`text-sm font-bold ${positionColor}`}>€{askingPrice.toLocaleString()}</div>
         </div>
         <div className="bg-charcoal/60 rounded-xl p-3 text-center">
           <div className="text-[10px] text-silver/40 mb-1">Highest</div>

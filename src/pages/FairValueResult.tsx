@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import AppraisalBreakdown from "@/components/AppraisalBreakdown";
-import MarketComparison from "@/components/MarketComparison";
+import MarketComparison, { type MarketData } from "@/components/MarketComparison";
 
 interface CarData {
   id: string;
@@ -42,6 +42,12 @@ const FairValueResult: React.FC = () => {
   const [car, setCar] = useState<CarData | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Market comparison state (lifted from MarketComparison)
+  const [marketData, setMarketData] = useState<MarketData | null>(null);
+  const [marketLoading, setMarketLoading] = useState(true);
+  const [marketError, setMarketError] = useState(false);
+  const [blendedValue, setBlendedValue] = useState<number | null>(null);
+
   useEffect(() => {
     if (!id) return;
     supabase
@@ -54,6 +60,50 @@ const FairValueResult: React.FC = () => {
         setLoading(false);
       });
   }, [id]);
+
+  // Fetch market comparison and blend with formula value
+  const fetchAndBlend = useCallback(async (carData: CarData) => {
+    try {
+      const { data: result, error: fnError } = await supabase.functions.invoke("market-comparison", {
+        body: {
+          make: carData.make,
+          model: carData.model,
+          year: carData.year,
+          mileage: carData.mileage,
+          condition_score: carData.condition_score,
+          price: carData.price,
+          fuel_type: carData.fuel_type,
+          body_type: carData.body_type,
+          transmission: carData.transmission,
+        },
+      });
+      if (fnError) throw fnError;
+      if (result?.error) throw new Error(result.error);
+
+      const md = result as MarketData;
+      setMarketData(md);
+
+      // Blend: 60% formula-based + 40% market average, capped at 105% of asking
+      const blended = Math.round(carData.fair_value_price * 0.6 + md.avg_price * 0.4);
+      const capped = Math.min(blended, Math.round(carData.price * 1.05));
+      setBlendedValue(capped);
+
+      // Update the car record with the blended fair value
+      await supabase.from("cars").update({ fair_value_price: capped } as any).eq("id", carData.id);
+      setCar((prev) => prev ? { ...prev, fair_value_price: capped } : prev);
+    } catch (e) {
+      console.error("Market comparison error:", e);
+      setMarketError(true);
+    } finally {
+      setMarketLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (car && marketLoading && !marketData) {
+      fetchAndBlend(car);
+    }
+  }, [car, marketLoading, marketData, fetchAndBlend]);
 
   if (loading) {
     return (
@@ -71,9 +121,11 @@ const FairValueResult: React.FC = () => {
     );
   }
 
+  const displayFairValue = blendedValue ?? car.fair_value_price;
+
   const depreciationData = Array.from({ length: 13 }, (_, i) => ({
     month: `M${i}`,
-    value: Math.round(car.fair_value_price * Math.pow(0.993, i)),
+    value: Math.round(displayFairValue * Math.pow(0.993, i)),
   }));
 
   const scoreBadge = (score: number) => {
@@ -136,21 +188,18 @@ const FairValueResult: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Full Appraisal Breakdown */}
-        <AppraisalBreakdown car={car} />
+        {/* Full Appraisal Breakdown — uses displayFairValue */}
+        <AppraisalBreakdown car={{ ...car, fair_value_price: displayFairValue }} />
 
-        {/* Market Comparison */}
-        <MarketComparison car={{
-          make: car.make,
-          model: car.model,
-          year: car.year,
-          mileage: car.mileage,
-          condition_score: car.condition_score,
-          price: car.price,
-          fuel_type: car.fuel_type,
-          body_type: car.body_type,
-          transmission: car.transmission,
-        }} />
+        {/* Market Comparison — with blended value */}
+        <MarketComparison
+          data={marketData}
+          loading={marketLoading}
+          error={marketError}
+          askingPrice={car.price}
+          blendedFairValue={blendedValue}
+        />
+
         <motion.div
           className="bg-secondary/50 border border-border rounded-2xl p-8 mt-10 mb-10"
           initial={{ opacity: 0, y: 20 }}
