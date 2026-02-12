@@ -33,6 +33,39 @@ serve(async (req) => {
     }
 
     const { messages } = await req.json();
+    
+    // Validate messages input
+    if (!Array.isArray(messages)) {
+      return new Response(JSON.stringify({ error: "Messages must be an array" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const MAX_MESSAGES = 50;
+    if (messages.length > MAX_MESSAGES) {
+      return new Response(JSON.stringify({ error: `Maximum ${MAX_MESSAGES} messages allowed` }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Validate and sanitize each message
+    const sanitizedMessages = messages.map((msg) => {
+      if (!msg || typeof msg !== 'object') {
+        throw new Error("Invalid message format");
+      }
+      if (!msg.role || !['user', 'assistant'].includes(msg.role)) {
+        throw new Error("Invalid message role. Only 'user' and 'assistant' roles allowed");
+      }
+      if (typeof msg.content !== 'string') {
+        throw new Error("Message content must be a string");
+      }
+      const MAX_CONTENT_LENGTH = 4000;
+      if (msg.content.length > MAX_CONTENT_LENGTH) {
+        throw new Error(`Message content exceeds ${MAX_CONTENT_LENGTH} characters`);
+      }
+      return { role: msg.role, content: msg.content.trim() };
+    });
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -62,7 +95,7 @@ If asked about specific prices or valuations, remind users to use the valuation 
 You work for Autozon — a platform that provides fair-value car pricing, AI damage detection, buyer-seller matching, and full transaction handling.
 Answer in the same language the user writes in (English or German).`,
           },
-          ...messages,
+          ...sanitizedMessages,
         ],
         stream: true,
       }),

@@ -6,6 +6,28 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+// Helper function to validate JWT and check admin status
+async function validateAdmin(authHeader: string | null) {
+  if (!authHeader?.startsWith("Bearer ")) {
+    return { valid: false, error: "Missing or invalid authorization header" };
+  }
+
+  const token = authHeader.replace("Bearer ", "");
+  const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
+  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+
+  const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+    global: { headers: { Authorization: authHeader } },
+  });
+
+  const { data: claimsData, error: claimsError } = await supabaseClient.auth.getClaims(token);
+  if (claimsError || !claimsData?.claims) {
+    return { valid: false, error: "Invalid or expired token" };
+  }
+
+  return { valid: true, userId: claimsData.claims.sub };
+}
+
 interface CarVariant {
   make: string;
   model: string;
@@ -459,6 +481,15 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    // Validate authentication
+    const authHeader = req.headers.get("Authorization");
+    const { valid, error } = await validateAdmin(authHeader);
+    if (!valid) {
+      return new Response(JSON.stringify({ error }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
