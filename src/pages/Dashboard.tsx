@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
 import Navbar from "@/components/Navbar";
@@ -104,6 +105,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-charcoal text-silver">
+      <SEO title="Dashboard" description="Manage your car listings, track valuations, view buyer matches, and monitor your portfolio." path="/dashboard" noIndex />
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 pt-24 pb-16">
         {/* Header */}

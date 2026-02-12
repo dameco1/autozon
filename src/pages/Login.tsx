@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Car, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import SEO from "@/components/SEO";
 
 const Login: React.FC = () => {
   const { t } = useLanguage();
@@ -29,6 +30,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center px-4">
+      <SEO title="Log In" description="Log in to your Autozon account to manage your cars, track valuations, and connect with buyers." path="/login" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
