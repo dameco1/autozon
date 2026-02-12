@@ -1,11 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import SEO from "@/components/SEO";
 import { ArrowLeft } from "lucide-react";
 
 const TermsAndConditions: React.FC = () => {
   return (
     <div className="min-h-screen bg-charcoal text-silver">
+      <SEO 
+        title="Terms & Conditions"
+        description="Read Autozon's complete terms and conditions for using our car trading platform, including user agreements, liability disclaimers, and service policies."
+        path="/terms"
+      />
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 mb-8 text-sm">
