@@ -4,6 +4,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,11 +30,16 @@ interface CarFull {
 }
 
 const CarDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const { t } = useLanguage();
-  const navigate = useNavigate();
-  const [car, setCar] = useState<CarFull | null>(null);
-  const [loading, setLoading] = useState(true);
+   const { id } = useParams<{ id: string }>();
+   const { t } = useLanguage();
+   const navigate = useNavigate();
+   const [car, setCar] = useState<CarFull | null>(null);
+   const [loading, setLoading] = useState(true);
+   
+   const pageTitle = car ? `${car.year} ${car.make} ${car.model} - Fair Value & Details` : "Car Details";
+   const pageDescription = car 
+     ? `Detailed appraisal for ${car.year} ${car.make} ${car.model}. Fair value: €${car.fair_value_price?.toLocaleString()}. Condition score: ${car.condition_score}/100.`
+     : "Explore detailed car appraisals, fair value pricing, and condition analysis on Autozon.";
 
   // Financing calculator
   const [downPayment, setDownPayment] = useState(5000);
@@ -96,6 +102,11 @@ const CarDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-charcoal text-silver">
+      <SEO 
+        title={pageTitle}
+        description={pageDescription}
+        path={`/car/${id}`}
+      />
       <Navbar />
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
         {/* Back */}

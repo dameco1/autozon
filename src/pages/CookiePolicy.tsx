@@ -1,11 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import SEO from "@/components/SEO";
 import { ArrowLeft } from "lucide-react";
 
 const CookiePolicy: React.FC = () => {
   return (
     <div className="min-h-screen bg-charcoal text-silver">
+      <SEO 
+        title="Cookie Policy"
+        description="Learn about how Autozon uses cookies and similar tracking technologies. Understand essential, analytics, and marketing cookies on our platform."
+        path="/cookie-policy"
+      />
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 mb-8 text-sm">
