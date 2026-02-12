@@ -25,7 +25,44 @@ const stat = "font-display text-[96px] font-black text-green leading-none";
 const cardBg = "bg-white/5 border border-white/10 rounded-2xl p-8";
 const sourceText = "absolute bottom-8 left-40 right-40 text-[16px] text-silver/40 italic";
 
-// Slide 1: Title
+// Slide 1: Cover / Investor Intro
+export const SlideCover = () => (
+  <div className="flex flex-col justify-center h-full px-40 relative">
+    <div className="flex items-center gap-6 mb-10">
+      <Car className={green} size={72} />
+      <div>
+        <h1 className="font-display text-[88px] font-black text-white leading-none">
+          auto<span className={green}>zon</span>
+        </h1>
+        <p className="text-[28px] text-silver mt-1 font-light">Fair Value, Best Prices. Zero Friction.</p>
+      </div>
+    </div>
+
+    <p className={`${body} max-w-[1400px] leading-[1.7]`}>
+      I'm building <span className="text-white font-bold">Autozon</span>, the first fair‑value automotive platform that eliminates dealership‑engineered depreciation. Sellers lose <span className={`${green} font-bold`}>10–20% instantly</span> because the system is opaque and designed against them. Autozon fixes this with real‑time valuation, intelligent matching, and full‑service transaction handling.
+    </p>
+
+    <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
+      The platform is <span className="text-white font-bold">free for buyers</span>. Sellers pay a success fee because they receive a higher sale price, faster liquidity, and zero friction. The European used‑car market is <span className={`${green} font-bold`}>€300B+</span>, and no dominant "Amazon of cars" exists.
+    </p>
+
+    <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
+      We've built the full product blueprint, matching engine, valuation logic, roadmap, and go‑to‑market plan. We're now <span className="text-white font-bold">raising capital</span> to build the MVP and scale across DACH and CEE.
+    </p>
+
+    <p className={`text-[26px] ${green} font-semibold mt-10`}>
+      If this aligns with your thesis in mobility, marketplaces, or AI — I'd love to share more.
+    </p>
+
+    <div className="absolute bottom-8 left-40 right-40 flex items-center gap-3">
+      <div className="w-12 h-[2px] bg-green" />
+      <span className={`text-[20px] ${dim}`}>Investor Presentation 2026</span>
+      <div className="w-12 h-[2px] bg-green" />
+    </div>
+  </div>
+);
+
+// Slide 2: Title
 export const SlideTitle = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
     <Car className={green} size={80} />
@@ -513,7 +550,7 @@ export const SlideClosing = () => (
 );
 
 export const allSlides = [
-  SlideTitle, SlideProblem, SlideInsight, SlideSolution, SlideProduct,
+  SlideCover, SlideTitle, SlideProblem, SlideInsight, SlideSolution, SlideProduct,
   SlideWhyNow, SlideBusinessModel, SlideRevenueStreams, SlideFlywheel,
   SlidePricing, SlideMarketSize, SlideFinancials, SlideCompetition,
   SlideMoatRoadmap, SlideAsk, SlideFounder, SlideClosing,
