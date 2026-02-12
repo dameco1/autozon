@@ -13,7 +13,7 @@ const SITE_NAME = "Autozon";
 const BASE_URL = "https://autozon.lovable.app";
 const DEFAULT_DESCRIPTION =
   "Buy and sell cars at fair prices. AI-powered valuations, verified buyer matching, and zero friction — Autozon is the smarter way to trade cars.";
-const OG_IMAGE = `${BASE_URL}/favicon.png`;
+const OG_IMAGE = `${BASE_URL}/og-image.png`;
 
 const SEO = ({
   title,
