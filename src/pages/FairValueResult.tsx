@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Car, TrendingDown, Users, ArrowRight, Plus, BarChart3, Shield, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
+import SEO from "@/components/SEO";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import AppraisalBreakdown from "@/components/AppraisalBreakdown";
 import MarketComparison, { type MarketData } from "@/components/MarketComparison";
@@ -140,6 +141,11 @@ const FairValueResult: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-charcoal text-silver">
+      <SEO 
+        title={`${car.year} ${car.make} ${car.model} - Fair Value: €${displayFairValue.toLocaleString()}`}
+        description={`Fair value appraisal for ${car.year} ${car.make} ${car.model} (${car.mileage.toLocaleString()} km). Condition: ${car.condition_score}/100. Market value: €${displayFairValue.toLocaleString()}.`}
+        path={`/fair-value/${id}`}
+      />
       <Navbar />
 
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
