@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck } from "lucide-react";
+import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 
@@ -199,6 +199,11 @@ const CarSelection: React.FC = () => {
   return (
     <div className="min-h-screen bg-charcoal px-4 py-12">
       <div className="max-w-6xl mx-auto">
+        <div className="flex justify-end mb-4">
+          <Button variant="ghost" className="text-silver/50 hover:text-white" onClick={() => navigate("/dashboard")}>
+            <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+          </Button>
+        </div>
         <div className="text-center mb-10">
           <h1 className="text-3xl font-display font-bold text-white mb-2">{t.carSelection.title}</h1>
           <p className="text-silver/60">

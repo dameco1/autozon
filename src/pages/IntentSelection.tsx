@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Car, ShoppingCart, Tag, ArrowRight, RotateCcw, Play } from "lucide-react";
+import { Car, ShoppingCart, Tag, ArrowRight, RotateCcw, Play, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -88,6 +88,13 @@ const IntentSelection: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center px-4">
+      <Button
+        variant="ghost"
+        className="absolute top-6 right-6 text-silver/50 hover:text-white"
+        onClick={() => navigate("/dashboard")}
+      >
+        <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+      </Button>
       <AnimatePresence mode="wait">
         {showWelcomeBack ? (
           <motion.div

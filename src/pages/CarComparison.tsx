@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Car, Trophy, CreditCard, Building, ArrowLeftRight, CheckCircle, ArrowLeft } from "lucide-react";
+import { Car, Trophy, CreditCard, Building, ArrowLeftRight, CheckCircle, ArrowLeft, LayoutDashboard } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 
@@ -131,9 +131,14 @@ const CarComparison: React.FC = () => {
           <p className="text-silver/60">{t.compare.subtitle}</p>
         </div>
 
-        <Button variant="ghost" className="text-silver/40 mb-6" onClick={() => navigate("/car-selection")}>
-          <ArrowLeft className="mr-2 h-4 w-4" /> {t.compare.backToSelection}
-        </Button>
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="ghost" className="text-silver/40" onClick={() => navigate("/car-selection")}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> {t.compare.backToSelection}
+          </Button>
+          <Button variant="ghost" className="text-silver/50 hover:text-white" onClick={() => navigate("/dashboard")}>
+            <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+          </Button>
+        </div>
 
         {/* Spec Comparison Grid */}
         <div className="bg-secondary/50 border border-border rounded-2xl overflow-hidden mb-8">

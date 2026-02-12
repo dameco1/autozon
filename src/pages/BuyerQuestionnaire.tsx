@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
-import { Car, ArrowRight, ArrowLeft } from "lucide-react";
+import { Car, ArrowRight, ArrowLeft, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 
@@ -224,6 +224,11 @@ const BuyerQuestionnaire: React.FC = () => {
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl">
+        <div className="flex justify-end mb-4">
+          <Button variant="ghost" className="text-silver/50 hover:text-white" onClick={() => navigate("/dashboard")}>
+            <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+          </Button>
+        </div>
         <div className="text-center mb-6">
           <Car className="h-10 w-10 text-primary mx-auto mb-4" />
           <h1 className="text-3xl font-display font-bold text-white">{t.buyerQ.title}</h1>
