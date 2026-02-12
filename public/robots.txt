@@ -12,3 +12,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /onboarding
+Disallow: /car-upload
+Disallow: /fair-value/
+Disallow: /buyer-matches/
+Disallow: /recommendations
+Disallow: /compare
+
+Sitemap: https://autozon.lovable.app/sitemap.xml

@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import HeroCarShowcase from "@/components/home/HeroCarShowcase";
 import CarTicker from "@/components/home/CarTicker";
 import CookieConsent from "@/components/CookieConsent";
+import SEO from "@/components/SEO";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -25,6 +26,22 @@ const Index: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-charcoal text-silver">
+      <SEO
+        path="/"
+        description="Buy and sell cars at fair prices. AI-powered valuations, verified buyer matching, and zero hassle — Autozon is the smarter way to trade cars."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Autozon",
+          url: "https://autozon.lovable.app",
+          description: "Fair value car trading platform with AI-powered valuations.",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://autozon.lovable.app/car-selection?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+        }}
+      />
       <Navbar />
 
       {/* Hero */}
