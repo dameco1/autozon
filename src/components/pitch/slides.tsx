@@ -51,8 +51,14 @@ export const SlideCover = () => (
     </p>
 
     <p className={`text-[26px] ${green} font-semibold mt-10`}>
-      If this aligns with your thesis in mobility, marketplaces, or AI — I'd love to share more.
+      If this aligns with your investment strategy and goals in mobility, marketplace, or AI — I'd love to share more.
     </p>
+
+    <div className="absolute bottom-24 left-40 right-40">
+      <p className="text-[24px] text-white font-light">
+        <span className="font-semibold">Damir Buljubasic</span>, Founder
+      </p>
+    </div>
 
     <div className="absolute bottom-8 left-40 right-40 flex items-center gap-3">
       <div className="w-12 h-[2px] bg-green" />
