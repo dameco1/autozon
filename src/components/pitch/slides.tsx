@@ -76,7 +76,7 @@ export const SlideTitle = () => (
       auto<span className={green}>zon</span>
     </h1>
     <p className="text-[36px] text-silver mt-4 font-light">
-      Fair Value, Best Prices. Zero Friction.
+      Fair Value. Best Prices. Zero Friction.
     </p>
     <div className="mt-16 flex items-center gap-3">
       <div className="w-12 h-[2px] bg-green" />
