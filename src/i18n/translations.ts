@@ -340,6 +340,12 @@ export const translations = {
       perfect: "Perfect Match",
       strong: "Strong Match",
       acceptable: "Acceptable",
+      paywall: {
+        title: "Unlock Buyer Details",
+        subtitle: "Pay the placement fee to reveal buyer names, contact info, and accept offers on your listing.",
+        cta: "Pay Placement Fee",
+        badge: "Premium",
+      },
     },
     nextCar: {
       title: "Your Next Car",
@@ -811,6 +817,12 @@ export const translations = {
       perfect: "Perfektes Match",
       strong: "Starkes Match",
       acceptable: "Akzeptabel",
+      paywall: {
+        title: "Käuferdetails freischalten",
+        subtitle: "Zahlen Sie die Platzierungsgebühr, um Käufernamen, Kontaktdaten und Angebote freizuschalten.",
+        cta: "Platzierungsgebühr zahlen",
+        badge: "Premium",
+      },
     },
     nextCar: {
       title: "Ihr nächstes Auto",
