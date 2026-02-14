@@ -116,6 +116,7 @@ export const translations = {
       loginLink: "Log in",
       checkEmail: "Check your email for a verification link.",
       error: "Something went wrong. Please try again.",
+      back: "Back",
     },
     onboarding: {
       title: "Let's set up your profile",
@@ -688,6 +689,7 @@ export const translations = {
       loginLink: "Anmelden",
       checkEmail: "Überprüfen Sie Ihre E-Mail auf einen Bestätigungslink.",
       error: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+      back: "Zurück",
     },
     onboarding: {
       title: "Richten wir Ihr Profil ein",

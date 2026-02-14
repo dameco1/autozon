@@ -75,7 +75,7 @@ const Login: React.FC = () => {
 
         <div className="mt-6 text-center">
           <Link to="/" className="text-silver/40 text-sm hover:text-silver/60 inline-flex items-center gap-1">
-            <ArrowLeft className="h-3 w-3" /> Back
+            <ArrowLeft className="h-3 w-3" /> {t.auth.back}
           </Link>
         </div>
       </div>
