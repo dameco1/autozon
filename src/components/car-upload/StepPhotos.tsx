@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Label } from "@/components/ui/label";
 import { ImagePlus, X, Loader2, Camera, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import imageCompression from "browser-image-compression";
 import { PHOTO_SLOTS, MAX_EXTRA_PHOTOS, type PhotoMap } from "./photoSlots";
 
 interface Props {
@@ -21,11 +22,28 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
   const [uploading, setUploading] = useState<string | null>(null); // slot id or "extra"
   const [activeSlot, setActiveSlot] = useState<string | null>(null);
 
+  const compressFile = async (file: File): Promise<File> => {
+    // High quality to preserve defect visibility; cap at 2048px and 1.5MB
+    const options = {
+      maxSizeMB: 1.5,
+      maxWidthOrHeight: 2048,
+      useWebWorker: true,
+      initialQuality: 0.88,
+      preserveExif: true,
+    };
+    try {
+      return await imageCompression(file, options);
+    } catch {
+      return file; // fallback to original if compression fails
+    }
+  };
+
   const uploadFile = async (file: File): Promise<string | null> => {
     if (!userId) return null;
-    const ext = file.name.split(".").pop();
+    const compressed = await compressFile(file);
+    const ext = compressed.name.split(".").pop() || "jpg";
     const path = `${userId}/${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from("car-images").upload(path, file, { upsert: false });
+    const { error } = await supabase.storage.from("car-images").upload(path, compressed, { upsert: false });
     if (error) { toast.error(error.message); return null; }
     const { data: urlData } = supabase.storage.from("car-images").getPublicUrl(path);
     return urlData.publicUrl;
