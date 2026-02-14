@@ -95,8 +95,7 @@ const Index: React.FC = () => {
                 <p className="text-silver/60 text-sm leading-relaxed mb-4">{t.hero.buyerBody}</p>
                 <Button
                   size="sm"
-                  variant="outline"
-                  className="border-silver/20 text-silver hover:bg-silver/5 font-semibold rounded-lg"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-lg"
                   onClick={() => navigate("/intent")}
                 >
                   {t.hero.buyerCta}
