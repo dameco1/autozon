@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Progress } from "@/components/ui/progress";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import {
   TrendingDown, Gauge, Shield, Wrench, BarChart3, Globe, Eye,
@@ -56,7 +57,8 @@ interface AppraisalFactor {
   icon: React.ReactNode;
   actionable: boolean;
   actionLabel?: string;
-  actionStep?: number; // which CarUpload step to navigate to
+  actionStep?: number;
+  formulaTooltip: string;
 }
 
 function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
@@ -92,6 +94,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     type: "reducer",
     icon: <TrendingDown className="h-5 w-5" />,
     actionable: false,
+    formulaTooltip: `Age: ${carAge}y · Rate: ${(depRate * 100).toFixed(0)}%/y (${isIconic ? "iconic" : isPremium ? "premium" : "standard"}) · Factor: (1-${depRate})^(${carAge}×0.75) = ${depreciationFactor.toFixed(3)}`,
   });
 
   // 2. MILEAGE
@@ -115,6 +118,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     type: milePct >= 0 ? "booster" : "reducer",
     icon: <Gauge className="h-5 w-5" />,
     actionable: false,
+    formulaTooltip: `${car.mileage.toLocaleString()} km vs expected ${expectedKm.toLocaleString()} km · Ratio: ${mileageRatio.toFixed(2)} · Factor: ${mileageFactor.toFixed(3)}`,
   });
 
   // 3. EXTERIOR CONDITION (recentered: avg 75 = ~1.0)
@@ -152,6 +156,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: condExt < 85,
     actionLabel: a.exterior.action,
     actionStep: 3,
+    formulaTooltip: `Score: ${condExt}/100 · Factor: 0.85 + (${condExt}/100)×0.17 = ${condExtFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
   });
 
   // 4. INTERIOR CONDITION (recentered: avg 75 = ~1.0)
@@ -176,6 +181,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: condInt < 85,
     actionLabel: a.interior.action,
     actionStep: 3,
+    formulaTooltip: `Score: ${condInt}/100 · Factor: 0.85 + (${condInt}/100)×0.17 = ${condIntFactor.toFixed(3)} · Weight: 50%`,
   });
 
   // 5. ACCIDENT / DAMAGE HISTORY (actionable)
@@ -197,6 +203,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: car.accident_history === true,
     actionLabel: a.damage.action,
     actionStep: 3,
+    formulaTooltip: `Accident: ${car.accident_history ? "yes → ×0.82 penalty" : "none → ×1.0 (no penalty)"}`,
   });
 
   // 6. EQUIPMENT VALUE (actionable — add more features)
@@ -229,6 +236,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: equip.length < 10,
     actionLabel: a.equipment.action,
     actionStep: 2,
+    formulaTooltip: `${equip.length} features · Weighted score: ${equipWeightedScore.toFixed(1)} · Bonus: min(${equipWeightedScore.toFixed(1)}×0.3%, 10%) = +${((equipmentIndex - 1) * 100).toFixed(1)}%`,
   });
 
   // 7. BRAND & MARKET DEMAND
@@ -254,6 +262,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     type: marketPositionFactor >= 1.0 ? "booster" : "reducer",
     icon: <BarChart3 className="h-5 w-5" />,
     actionable: false,
+    formulaTooltip: `Body (${car.body_type}): ×${bodyDemand.toFixed(2)} · Make (${car.make}): ×${makeDemand.toFixed(2)} · Combined: ${marketPositionFactor.toFixed(3)}`,
   });
 
   // 8. UNIQUENESS / RARITY
@@ -273,6 +282,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     type: rarityFactor > 1.0 ? "booster" : "neutral",
     icon: <Gem className="h-5 w-5" />,
     actionable: false,
+    formulaTooltip: `Brand tier: ${isPremium ? "premium +3%" : "standard +0%"} · Color (${car.color || "unknown"}): ${colorBonus > 0 ? "+1% unique" : "+0% common"} · Factor: ${rarityFactor.toFixed(3)}`,
   });
 
   // 9. FUEL TYPE / REGIONAL DEMAND
@@ -291,6 +301,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     type: regionalDemandMultiplier >= 1.0 ? "booster" : "reducer",
     icon: <Globe className="h-5 w-5" />,
     actionable: false,
+    formulaTooltip: `Fuel: ${car.fuel_type} · Demand multiplier: ×${regionalDemandMultiplier.toFixed(2)}`,
   });
 
   // 10. DATA TRANSPARENCY (actionable — add more info)
@@ -321,6 +332,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: missingItems.length > 0,
     actionLabel: a.transparency.action,
     actionStep: 1,
+    formulaTooltip: `Points: ${transparencyPoints}/10 · Bonus: min(${transparencyPoints}/10, 1) × 4% = +${((transparencyBonus - 1) * 100).toFixed(1)}%`,
   });
 
   return factors;
@@ -389,11 +401,20 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           </div>
         </div>
         <div className="text-right flex-shrink-0 min-w-[60px]">
-          <div className={`text-sm font-bold ${
-            factor.percentImpact >= 0 ? "text-primary" : "text-destructive"
-          }`}>
-            {factor.percentImpact >= 0 ? "+" : ""}{factor.percentImpact.toFixed(1)}%
-          </div>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className={`text-sm font-bold cursor-help ${
+                  factor.percentImpact >= 0 ? "text-primary" : "text-destructive"
+                }`}>
+                  {factor.percentImpact >= 0 ? "+" : ""}{factor.percentImpact.toFixed(1)}%
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="max-w-xs text-xs bg-charcoal border-border text-silver">
+                <p className="font-mono text-[11px] leading-relaxed">{factor.formulaTooltip}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           {factor.actionable && (
             <Button
               size="sm"
