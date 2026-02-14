@@ -39,15 +39,15 @@ export const SlideCover = () => (
     </div>
 
     <p className={`${body} max-w-[1400px] leading-[1.7]`}>
-      I'm building <span className="text-white font-bold">Autozon</span>, the first fair‑value automotive platform that eliminates dealership‑engineered depreciation. Sellers lose <span className={`${green} font-bold`}>10–20% instantly</span> because the system is opaque and designed against them. Autozon fixes this with real‑time valuation, intelligent matching, and full‑service transaction handling.
+      I'm building <span className="text-white font-bold">Autozon</span>, the first fair‑value automotive platform that eliminates dealership‑engineered depreciation. Sellers lose <span className={`${green} font-bold`}>10–20% instantly</span> because the system is opaque and designed against them. Autozon fixes this with AI‑powered valuation blended with real market data, intelligent buyer matching, and structured negotiations that maximize seller profit.
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      The platform is <span className="text-white font-bold">free for buyers</span>. Sellers pay a success fee because they receive a higher sale price, faster liquidity, and zero friction. The European used‑car market is <span className={`${green} font-bold`}>€300B+</span>, and no dominant "Amazon of cars" exists.
+      The platform is <span className="text-white font-bold">free for buyers</span>. Sellers pay a success fee because they receive a higher sale price, faster liquidity, and zero friction. The European used‑car market is <span className={`${green} font-bold`}>€300B+</span>, and no dominant fair‑value car platform exists.
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      We've built the full product blueprint, matching engine, valuation logic, roadmap, and go‑to‑market plan. We're now <span className="text-white font-bold">raising capital</span> to build the MVP and scale across DACH and CEE.
+      We've built a <span className="text-white font-bold">working product</span> — the fair‑value engine, AI damage detection, market comparison, buyer discovery questionnaire, iterative matching, and structured negotiation system are all live. We're now <span className="text-white font-bold">raising capital</span> to scale across DACH and CEE.
     </p>
 
     <p className={`text-[26px] ${green} font-semibold mt-10`}>
@@ -136,14 +136,14 @@ export const SlideSolution = () => (
       <h2 className={heading}>The Solution</h2>
     </div>
     <p className={`${body} mb-16 max-w-[1200px]`}>
-      Autozon calculates <span className="text-white font-bold">real value</span>, matches sellers with the best buyers instantly, and manages the entire transaction with transparency and intelligence.
+      Autozon calculates <span className="text-white font-bold">true market value</span> by blending a multi-factor formula (brand, age, mileage, condition, equipment) with <span className="text-white font-bold">live market comparison data</span> — then connects sellers directly with high-intent, pre-qualified buyers.
     </p>
     <div className="grid grid-cols-2 gap-8">
       {[
-        { icon: Brain, title: "Fair-Value Engine", desc: "AI-powered appraisal based on real market data" },
-        { icon: Users, title: "Intelligent Matching", desc: "Connect sellers with pre-qualified, high-intent buyers" },
-        { icon: Car, title: "Next-Car Recommendations", desc: "Curated suggestions for the perfect upgrade" },
-        { icon: Handshake, title: "Full Concierge Execution", desc: "Pickup, paperwork, delivery — all handled" },
+        { icon: Brain, title: "Blended Fair-Value Engine", desc: "30% formula-based appraisal + 70% real market data — no more guessing" },
+        { icon: Users, title: "Smart Buyer Matching", desc: "10-step buyer questionnaire → iterative selection → 2 finalists side-by-side" },
+        { icon: Handshake, title: "Structured Negotiation", desc: "Max 3 rounds of offer/counter — transparent, fair, and fast" },
+        { icon: Car, title: "Full Lifecycle", desc: "Acquisition options (credit, leasing, trade-in), concierge, and next-car recommendations" },
       ].map(({ icon: Icon, title, desc }) => (
         <div key={title} className={`${cardBg} flex items-start gap-6`}>
           <Icon className={green} size={36} />
@@ -157,27 +157,78 @@ export const SlideSolution = () => (
   </div>
 );
 
-// Slide 5: Product
-export const SlideProduct = () => (
+// Slide 5: How It Works — Seller
+export const SlideHowItWorksSeller = () => (
   <div className="flex flex-col justify-center h-full px-40">
-    <div className="flex items-center gap-4 mb-12">
+    <div className="flex items-center gap-4 mb-10">
       <Zap className={green} size={48} />
-      <h2 className={heading}>Product</h2>
+      <h2 className={heading}>How It Works — Seller</h2>
     </div>
-    <div className="grid grid-cols-5 gap-6">
+    <p className={`${body} mb-10 max-w-[1200px]`}>
+      From upload to sale in <span className="text-white font-bold">minutes, not weeks</span>. The seller keeps more money because the system finds the <span className={`${green} font-bold`}>real value</span> — not a dealer's lowball.
+    </p>
+    <div className="grid grid-cols-4 gap-6">
       {[
-        { icon: Brain, title: "AI Appraisal", desc: "Market-adjusted fair value in seconds" },
-        { icon: Users, title: "Buyer Matching", desc: "Intelligent pairing based on preferences" },
-        { icon: Handshake, title: "Concierge", desc: "End-to-end transaction handling" },
-        { icon: Search, title: "Damage Detection", desc: "AI-powered condition analysis" },
-        { icon: BarChart3, title: "Market Comparison", desc: "Real-time competitive pricing" },
-      ].map(({ icon: Icon, title, desc }) => (
-        <div key={title} className={`${cardBg} flex flex-col items-center text-center`}>
-          <Icon className={green} size={48} />
-          <h3 className="text-[24px] text-white font-bold mt-6">{title}</h3>
-          <p className="text-[20px] text-silver mt-3">{desc}</p>
+        { step: "1", icon: Car, title: "Upload Vehicle", desc: "5-step guided form: specs, photos, condition sliders, equipment checklist" },
+        { step: "2", icon: Search, title: "AI Damage Scan", desc: "Upload photos → AI detects scratches, dents, rust — auto-adjusts condition score" },
+        { step: "3", icon: Brain, title: "Fair Value Engine", desc: "Multi-factor formula (brand tier, depreciation curve, mileage, equipment) blended 30/70 with live market data" },
+        { step: "4", icon: BarChart3, title: "Market Comparison", desc: "Real-time scan of comparable listings — avg price, range, depreciation forecast, market position" },
+      ].map(({ step, icon: Icon, title, desc }) => (
+        <div key={title} className={cardBg}>
+          <div className="flex items-center gap-3 mb-4">
+            <span className={`font-display text-[36px] font-black ${green}`}>{step}</span>
+            <Icon className={green} size={28} />
+          </div>
+          <h3 className="text-[22px] text-white font-bold">{title}</h3>
+          <p className="text-[18px] text-silver mt-2 leading-relaxed">{desc}</p>
         </div>
       ))}
+    </div>
+  </div>
+);
+
+// Slide 6: How It Works — Buyer & Match
+export const SlideHowItWorksBuyer = () => (
+  <div className="flex flex-col justify-center h-full px-40">
+    <div className="flex items-center gap-4 mb-10">
+      <Users className={green} size={48} />
+      <h2 className={heading}>How It Works — Buyer & Match</h2>
+    </div>
+    <div className="grid grid-cols-2 gap-12">
+      <div>
+        <h3 className={subheading + " mb-6"}>Buyer Discovery</h3>
+        <div className="space-y-4">
+          {[
+            "10-step questionnaire: budget, body type, fuel, brand, mileage, power, timing, usage, parking, insurance",
+            "AI scores every available car against buyer preferences",
+            "Round 1: 10 best matches presented — buyer swipes like/dislike",
+            "Round 2: narrowed to 5 → then 3 → final 2 finalists",
+            "Side-by-side comparison with acquisition options",
+          ].map((t, i) => (
+            <div key={i} className="flex items-start gap-4">
+              <ChevronRight className={`${green} shrink-0 mt-1`} size={24} />
+              <p className="text-[22px] text-silver">{t}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <h3 className={subheading + " mb-6"}>Structured Negotiation</h3>
+        <div className="space-y-4">
+          {[
+            "Buyer makes an offer — seller sees it in real-time",
+            "Max 3 rounds of offer / counter-offer cards",
+            "AI concierge assists with strategy and fair pricing",
+            "Once agreed: downloadable PDF deal summary",
+            "Acquisition: Credit (amortization), Leasing (residual), Trade-in",
+          ].map((t, i) => (
+            <div key={i} className="flex items-start gap-4">
+              <ChevronRight className={`${green} shrink-0 mt-1`} size={24} />
+              <p className="text-[22px] text-silver">{t}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   </div>
 );
@@ -435,7 +486,7 @@ export const SlideMoatRoadmap = () => (
       <div>
         <h3 className={subheading + " mb-6"}>Roadmap</h3>
         {[
-          { phase: "MVP", desc: "Core valuation + matching" },
+          { phase: "MVP", desc: "Core valuation + matching + negotiation ✅" },
           { phase: "V1", desc: "Concierge + dealer network" },
           { phase: "V1.5", desc: "Seller KYC — ownership verification + financing automation" },
           { phase: "V2", desc: "Financing, insurance, logistics" },
@@ -461,11 +512,11 @@ export const SlideAsk = () => (
     <Rocket className={green} size={64} />
     <h2 className={heading + " mt-8"}>The Ask</h2>
     <p className={`${body} mt-8 max-w-[1000px]`}>
-      We're raising capital to:
+      The product is built. We're raising capital to:
     </p>
     <div className="grid grid-cols-3 gap-8 mt-12">
       {[
-        { icon: Zap, text: "Build the MVP" },
+        { icon: Zap, text: "Scale infrastructure & team" },
         { icon: Users, text: "Seed initial liquidity" },
         { icon: Globe, text: "Expand DACH → CEE" },
       ].map(({ icon: Icon, text }) => (
@@ -556,7 +607,8 @@ export const SlideClosing = () => (
 );
 
 export const allSlides = [
-  SlideCover, SlideTitle, SlideProblem, SlideInsight, SlideSolution, SlideProduct,
+  SlideCover, SlideTitle, SlideProblem, SlideInsight, SlideSolution,
+  SlideHowItWorksSeller, SlideHowItWorksBuyer,
   SlideWhyNow, SlideBusinessModel, SlideRevenueStreams, SlideFlywheel,
   SlidePricing, SlideMarketSize, SlideFinancials, SlideCompetition,
   SlideMoatRoadmap, SlideAsk, SlideFounder, SlideClosing,
