@@ -121,7 +121,7 @@ const HeroSection: React.FC = () => {
           className="mt-16 pt-8 border-t border-border/50 text-center"
           initial="hidden" animate="visible" variants={fadeUp} custom={3}
         >
-          <p className="text-silver/40 text-sm max-w-2xl mx-auto leading-relaxed">
+          <p className="text-silver/50 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             Whether you're selling your car at its true worth or finding the perfect next ride — Autozon gives you fair prices, verified matches, and zero hassle.
           </p>
         </motion.div>
