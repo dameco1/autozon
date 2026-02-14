@@ -11,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
   Handshake, ArrowRight, CheckCircle2, XCircle, RotateCcw,
-  MessageSquare, BarChart3, ShieldCheck, AlertTriangle,
+  MessageSquare, ShieldCheck, AlertTriangle, Download,
 } from "lucide-react";
+import { generateNegotiationPdf } from "@/lib/generateNegotiationPdf";
 import type { User } from "@supabase/supabase-js";
 
 interface OfferRow {
@@ -59,6 +60,8 @@ const Negotiation: React.FC = () => {
   const [counterAmount, setCounterAmount] = useState("");
   const [counterMessage, setCounterMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [sellerName, setSellerName] = useState("Seller");
+  const [buyerName, setBuyerName] = useState("Buyer");
 
   const fetchData = useCallback(async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -84,6 +87,15 @@ const Negotiation: React.FC = () => {
       .single();
 
     if (carData) setCar(carData as CarInfo);
+
+    // Fetch party names
+    const [profileRes, buyerRes] = await Promise.all([
+      supabase.from("profiles").select("full_name").eq("user_id", o.seller_id).maybeSingle(),
+      supabase.from("buyers").select("name").eq("id", o.buyer_id).maybeSingle(),
+    ]);
+    if (profileRes.data?.full_name) setSellerName(profileRes.data.full_name);
+    if (buyerRes.data?.name) setBuyerName(buyerRes.data.name);
+
     setLoading(false);
   }, [offerId, navigate]);
 
@@ -413,13 +425,30 @@ const Negotiation: React.FC = () => {
             <p className="text-sm text-silver/40 mb-6">
               {t.negotiation.youSaved} €{(car.price - offer.agreed_price).toLocaleString()} ({Math.round((1 - offer.agreed_price / car.price) * 100)}%)
             </p>
-            <Button
-              size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-10 py-6 rounded-xl"
-              onClick={() => navigate(`/acquire/${offer.id}`)}
-            >
-              {t.negotiation.proceedToAcquisition} <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button
+                size="lg"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-10 py-6 rounded-xl"
+                onClick={() => navigate(`/acquire/${offer.id}`)}
+              >
+                {t.negotiation.proceedToAcquisition} <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-border text-silver hover:bg-secondary font-semibold px-8 py-6 rounded-xl"
+                onClick={() =>
+                  generateNegotiationPdf({
+                    car,
+                    offer: { ...offer, agreed_price: offer.agreed_price! },
+                    sellerName,
+                    buyerName,
+                  })
+                }
+              >
+                <Download className="mr-2 h-5 w-5" /> Download Summary
+              </Button>
+            </div>
           </motion.div>
         )}
 
