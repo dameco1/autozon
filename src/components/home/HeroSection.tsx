@@ -80,16 +80,16 @@ const HeroSection: React.FC = () => {
           <div className="flex gap-5">
             <div className="w-1 shrink-0 rounded-full bg-primary" />
             <div>
-              <h2 className="text-xl font-display font-bold text-white mb-3">Selling a Car</h2>
+              <h2 className="text-xl font-display font-bold text-white mb-3">{t.hero.sellingTitle}</h2>
               <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                Welcome to the first platform that dynamically scores your car's value and maximizes your sale price. We analyze condition, demand, and market data in real time — then match you with verified buyers ready to pay what it's truly worth.
+                {t.hero.sellingDesc}
               </p>
               <Button
                 size="sm"
                 className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-lg shadow-[0_0_30px_hsl(155_100%_42%/0.2)] hover:shadow-[0_0_50px_hsl(155_100%_42%/0.3)] transition-shadow"
                 onClick={() => navigate("/intent")}
               >
-                Sell My Car
+                {t.hero.sellerCta}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -99,9 +99,9 @@ const HeroSection: React.FC = () => {
           <div className="flex gap-5">
             <div className="w-1 shrink-0 rounded-full bg-primary" />
             <div>
-              <h2 className="text-xl font-display font-bold text-white mb-3">Buying a Car</h2>
+              <h2 className="text-xl font-display font-bold text-white mb-3">{t.hero.buyingTitle}</h2>
               <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                Set up your profile, tell us what you're looking for, and we'll do the rest. Autozon finds the right car, helps you buy it at a fair price, and delivers it straight to your door — inspected, verified, and hassle-free.
+                {t.hero.buyingDesc}
               </p>
               <Button
                 size="sm"
@@ -109,7 +109,7 @@ const HeroSection: React.FC = () => {
                 className="border-border text-white hover:bg-secondary hover:text-white font-semibold rounded-lg"
                 onClick={() => navigate("/intent")}
               >
-                Find My Car
+                {t.hero.buyerCta}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -122,7 +122,7 @@ const HeroSection: React.FC = () => {
           initial="hidden" animate="visible" variants={fadeUp} custom={3}
         >
           <p className="text-silver/50 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Whether you're selling your car at its true worth or finding the perfect next ride — Autozon gives you fair prices, verified matches, and zero hassle.
+            {t.hero.subtitle}
           </p>
         </motion.div>
       </div>
