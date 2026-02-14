@@ -160,19 +160,28 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   });
 
   // 4. INTERIOR CONDITION (recentered: avg 75 = ~1.0)
+  // Cross-reference with AI damage scan (interior damages would show in scan too)
   const condInt = car.condition_interior ?? 80;
   const condIntFactor = 0.85 + (condInt / 100) * 0.17;
   const intEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condIntFactor - 1) * 0.5);
+
+  let intExplanation: string;
+  if (condInt >= 90) {
+    intExplanation = a.interior.explainExcellent;
+  } else if (condInt >= 70) {
+    intExplanation = a.interior.explainGood;
+  } else if (aiFoundNoDamages && condInt < 70) {
+    intExplanation = a.interior.explainAiMismatch ?? `You rated the interior at ${condInt}/100, but the AI damage scan found no visible defects. Consider re-evaluating your rating to better reflect the car's actual condition.`;
+  } else if (condInt >= 50) {
+    intExplanation = a.interior.explainFair;
+  } else {
+    intExplanation = a.interior.explainPoor;
+  }
+
   factors.push({
     id: "interior",
     label: a.interior.label,
-    explanation: condInt >= 90
-      ? a.interior.explainExcellent
-      : condInt >= 70
-        ? a.interior.explainGood
-        : condInt >= 50
-          ? a.interior.explainFair
-          : a.interior.explainPoor,
+    explanation: intExplanation,
     euroImpact: intEuro,
     percentImpact: (condIntFactor - 1) * 100 * 0.5,
     barValue: condInt,
@@ -181,7 +190,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: condInt < 85,
     actionLabel: a.interior.action,
     actionStep: 3,
-    formulaTooltip: `Score: ${condInt}/100 · Factor: 0.85 + (${condInt}/100)×0.17 = ${condIntFactor.toFixed(3)} · Weight: 50%`,
+    formulaTooltip: `Score: ${condInt}/100 · Factor: 0.85 + (${condInt}/100)×0.17 = ${condIntFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
   });
 
   // 5. ACCIDENT / DAMAGE HISTORY (actionable)
