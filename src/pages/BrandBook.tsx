@@ -127,6 +127,44 @@ const BrandBook = () => {
             </div>
           </div>
 
+          {/* Download buttons */}
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              onClick={() => {
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" width="400" height="100">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900');</style>
+  <text x="200" y="60" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="64" fill="#ffffff">auto<tspan fill="#00D97E">zon</tspan></text>
+  <text x="200" y="82" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="11" letter-spacing="4" fill="#D9D9D980">BUY.SELL.CARS.</text>
+</svg>`;
+                const blob = new Blob([svg], { type: "image/svg+xml" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url; a.download = "autozon-logo-dark.svg"; a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="bg-secondary text-silver text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
+            >
+              ↓ SVG (white on transparent)
+            </button>
+            <button
+              onClick={() => {
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" width="400" height="100">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900');</style>
+  <text x="200" y="60" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="64" fill="#19191F">auto<tspan fill="#00D97E">zon</tspan></text>
+  <text x="200" y="82" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="11" letter-spacing="4" fill="#19191F66">BUY.SELL.CARS.</text>
+</svg>`;
+                const blob = new Blob([svg], { type: "image/svg+xml" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url; a.download = "autozon-logo-light.svg"; a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="bg-secondary text-silver text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
+            >
+              ↓ SVG (dark on transparent)
+            </button>
+          </div>
+
           <div className="mt-8 bg-secondary/50 rounded-2xl p-6 border border-white/5">
             <h4 className="font-display font-bold text-white text-sm mb-3">Logo Clear Space</h4>
             <p className="text-silver/50 text-sm leading-relaxed">
