@@ -62,8 +62,12 @@ const FairValueResult: React.FC = () => {
       });
   }, [id]);
 
-  // Fetch market comparison and blend with formula value
+  // Fetch market comparison and blend with formula value — only if not already blended
   const fetchAndBlend = useCallback(async (carData: CarData) => {
+    if ((carData as any).market_blended) {
+      setMarketLoading(false);
+      return;
+    }
     try {
       const { data: result, error: fnError } = await supabase.functions.invoke("market-comparison", {
         body: {
@@ -90,7 +94,7 @@ const FairValueResult: React.FC = () => {
       setBlendedValue(capped);
 
       // Update the car record with the blended fair value
-      await supabase.from("cars").update({ fair_value_price: capped } as any).eq("id", carData.id);
+      await supabase.from("cars").update({ fair_value_price: capped, market_blended: true } as any).eq("id", carData.id);
       setCar((prev) => prev ? { ...prev, fair_value_price: capped } : prev);
     } catch (e) {
       console.error("Market comparison error:", e);

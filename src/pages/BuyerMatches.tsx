@@ -4,8 +4,9 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
-import { Users, MapPin, Target, Clock, Star, Building2, User } from "lucide-react";
+import { Users, MapPin, Target, Clock, Star, Building2, User, Lock, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface Buyer {
   id: string;
@@ -25,6 +26,7 @@ interface CarInfo {
   price: number;
   body_type: string;
   fuel_type: string;
+  placement_paid: boolean;
 }
 
 const BuyerMatches: React.FC = () => {
@@ -34,20 +36,22 @@ const BuyerMatches: React.FC = () => {
   const [buyers, setBuyers] = useState<(Buyer & { matchScore: number })[]>([]);
   const [car, setCar] = useState<CarInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPaid, setIsPaid] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!carId) return;
 
       const [carRes, buyersRes] = await Promise.all([
-        supabase.from("cars").select("make, model, year, price, body_type, fuel_type").eq("id", carId).single(),
+        supabase.from("cars").select("make, model, year, price, body_type, fuel_type, placement_paid").eq("id", carId).single(),
         supabase.from("buyers").select("*").eq("is_seed", true),
       ]);
 
       if (carRes.data) {
-        setCar(carRes.data as CarInfo);
+        const carData = carRes.data as CarInfo;
+        setCar(carData);
+        setIsPaid(carData.placement_paid ?? false);
 
-        // Calculate match scores
         const scored = ((buyersRes.data || []) as Buyer[]).map((buyer) => {
           const carPrice = carRes.data.price as number;
           const budgetFit = (carPrice >= buyer.budget_min && carPrice <= buyer.budget_max) ? 100 : Math.max(0, 100 - Math.abs(carPrice - buyer.budget_max) / 500);
@@ -63,6 +67,21 @@ const BuyerMatches: React.FC = () => {
     };
     fetchData();
   }, [carId]);
+
+  const handlePayPlacement = async () => {
+    // TODO: Integrate with Stripe for real payment
+    toast.info("Payment integration coming soon. For now, placement is activated.");
+    if (carId) {
+      await supabase.from("cars").update({ placement_paid: true } as any).eq("id", carId);
+      setIsPaid(true);
+    }
+  };
+
+  const blurName = (name: string) => {
+    if (isPaid) return name;
+    // Show first letter + blur rest
+    return name.charAt(0) + "••••••";
+  };
 
   const scoreBadge = (score: number) => {
     if (score >= 85) return { label: t.buyerMatches.perfect, bg: "bg-primary/10 border-primary text-primary" };
@@ -90,6 +109,31 @@ const BuyerMatches: React.FC = () => {
           <p className="text-silver/60 mt-2">{t.buyerMatches.subtitle}</p>
         </motion.div>
 
+        {/* Payment Gate Banner */}
+        {!isPaid && buyers.length > 0 && (
+          <motion.div
+            className="bg-primary/5 border border-primary/20 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <div className="flex items-center gap-3 flex-1">
+              <Lock className="h-6 w-6 text-primary flex-shrink-0" />
+              <div>
+                <h3 className="text-white font-display font-bold">{t.buyerMatches.paywall.title}</h3>
+                <p className="text-silver/60 text-sm">{t.buyerMatches.paywall.subtitle}</p>
+              </div>
+            </div>
+            <Button
+              size="lg"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-8 rounded-xl whitespace-nowrap"
+              onClick={handlePayPlacement}
+            >
+              <CreditCard className="mr-2 h-5 w-5" /> {t.buyerMatches.paywall.cta}
+            </Button>
+          </motion.div>
+        )}
+
         {buyers.length === 0 ? (
           <div className="text-center py-20 text-silver/40">{t.buyerMatches.noBuyers}</div>
         ) : (
@@ -110,7 +154,9 @@ const BuyerMatches: React.FC = () => {
                         {buyer.type === "dealer" ? <Building2 className="h-5 w-5 text-primary" /> : <User className="h-5 w-5 text-silver/60" />}
                       </div>
                       <div>
-                        <h3 className="font-display font-bold text-white">{buyer.name}</h3>
+                        <h3 className={`font-display font-bold text-white ${!isPaid ? "select-none" : ""}`}>
+                          {blurName(buyer.name)}
+                        </h3>
                         <span className="text-xs text-silver/40">
                           {buyer.type === "dealer" ? t.buyerMatches.types.dealer : t.buyerMatches.types.private}
                         </span>
@@ -139,12 +185,25 @@ const BuyerMatches: React.FC = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="flex-1 border-border text-silver/60 hover:border-primary hover:text-primary">
-                      {t.buyerMatches.shortlist}
-                    </Button>
-                    <Button size="sm" className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
-                      {t.buyerMatches.accept}
-                    </Button>
+                    {isPaid ? (
+                      <>
+                        <Button size="sm" variant="outline" className="flex-1 border-border text-silver/60 hover:border-primary hover:text-primary">
+                          {t.buyerMatches.shortlist}
+                        </Button>
+                        <Button size="sm" className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
+                          {t.buyerMatches.accept}
+                        </Button>
+                      </>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 border-border text-silver/40 cursor-not-allowed"
+                        disabled
+                      >
+                        <Lock className="mr-2 h-3 w-3" /> {t.buyerMatches.paywall.badge}
+                      </Button>
+                    )}
                   </div>
                 </motion.div>
               );

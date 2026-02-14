@@ -160,10 +160,12 @@ export type Database = {
           image_url: string | null
           is_seed: boolean
           make: string
+          market_blended: boolean
           mileage: number
           model: string
           owner_id: string | null
           photos: string[] | null
+          placement_paid: boolean
           power_hp: number | null
           price: number
           status: string
@@ -192,10 +194,12 @@ export type Database = {
           image_url?: string | null
           is_seed?: boolean
           make: string
+          market_blended?: boolean
           mileage?: number
           model: string
           owner_id?: string | null
           photos?: string[] | null
+          placement_paid?: boolean
           power_hp?: number | null
           price?: number
           status?: string
@@ -224,10 +228,12 @@ export type Database = {
           image_url?: string | null
           is_seed?: boolean
           make?: string
+          market_blended?: boolean
           mileage?: number
           model?: string
           owner_id?: string | null
           photos?: string[] | null
+          placement_paid?: boolean
           power_hp?: number | null
           price?: number
           status?: string
