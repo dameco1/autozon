@@ -61,6 +61,7 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [carStats, setCarStats] = useState<Record<string, { views: number; shortlists: number; negotiations: number }>>({});
   const [placingCarId, setPlacingCarId] = useState<string | null>(null);
+  const [activeOffers, setActiveOffers] = useState<{ id: string; car_id: string; amount: number; status: string; current_round: number; created_at: string }[]>([]);
 
   useEffect(() => {
     const init = async () => {
@@ -71,9 +72,10 @@ const Dashboard: React.FC = () => {
       }
       setUser(session.user);
 
-      const [carsResult, matchesResult] = await Promise.all([
+      const [carsResult, matchesResult, sellerOffersResult] = await Promise.all([
         supabase.from("cars").select("id, make, model, year, price, fair_value_price, status, image_url, condition_score, demand_score, created_at, placement_paid").eq("owner_id", session.user.id).order("created_at", { ascending: false }),
         supabase.from("matches").select("id, car_id, match_score, status, created_at").eq("user_id", session.user.id).order("created_at", { ascending: false }),
+        supabase.from("offers").select("id, car_id, amount, status, current_round, created_at").eq("seller_id", session.user.id).order("created_at", { ascending: false }),
       ]);
 
       if (carsResult.data) {
@@ -99,6 +101,7 @@ const Dashboard: React.FC = () => {
         }
       }
       if (matchesResult.data) setMatches(matchesResult.data);
+      if (sellerOffersResult.data) setActiveOffers(sellerOffersResult.data as any);
       setLoading(false);
     };
     init();
@@ -330,6 +333,49 @@ const Dashboard: React.FC = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Active Negotiations */}
+            {activeOffers.length > 0 && (
+              <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={5.5}>
+                <Card className="bg-secondary/50 border-border">
+                  <div className="px-6 py-4 border-b border-border">
+                    <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                      <Handshake className="h-5 w-5 text-primary" /> {(t.dashboard as any).activeNegotiations}
+                    </h2>
+                  </div>
+                  <div className="divide-y divide-border">
+                    {activeOffers.slice(0, 5).map((offer) => {
+                      const offerCar = cars.find((c) => c.id === offer.car_id);
+                      return (
+                        <div
+                          key={offer.id}
+                          className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-charcoal/20 transition-colors"
+                          onClick={() => navigate(`/negotiate/${offer.id}`)}
+                        >
+                          <div>
+                            <p className="text-sm text-white font-semibold">
+                              {offerCar ? `${offerCar.year} ${offerCar.make} ${offerCar.model}` : "Car"}
+                            </p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <span className="text-xs text-silver/40">€{offer.amount.toLocaleString()}</span>
+                              <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${
+                                offer.status === "accepted" ? "bg-emerald-500/10 text-emerald-400" :
+                                offer.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                                offer.status === "countered" ? "bg-amber-500/10 text-amber-400" :
+                                "bg-primary/10 text-primary"
+                              }`}>
+                                {offer.status}
+                              </span>
+                            </div>
+                          </div>
+                          <ArrowRight className="h-4 w-4 text-silver/30" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+              </motion.div>
+            )}
+
             {/* Recent Matches */}
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6}>
               <Card className="bg-secondary/50 border-border">
