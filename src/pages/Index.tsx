@@ -62,7 +62,7 @@ const Index: React.FC = () => {
             className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-[0.95] tracking-tight mb-6"
             initial="hidden" animate="visible" variants={fadeUp} custom={1}
           >
-            {t.hero.title}{" "}<span className="text-gradient">{t.hero.titleAccent}</span>
+            {t.hero.title}<br /><span className="text-gradient">{t.hero.titleAccent}</span>
           </motion.h1>
 
           <motion.p
