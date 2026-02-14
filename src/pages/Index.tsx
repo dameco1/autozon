@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Zap, Target, Truck, Bell, ChevronRight, CheckCircle2, TrendingUp, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import HeroProcessCircle from "@/components/home/HeroProcessCircle";
+import { Car, UserCheck } from "lucide-react";
 import CarTicker from "@/components/home/CarTicker";
 import CookieConsent from "@/components/CookieConsent";
 import SEO from "@/components/SEO";
@@ -106,12 +106,30 @@ const Index: React.FC = () => {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:flex lg:justify-center"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:flex flex-col gap-6"
           >
-            <HeroProcessCircle />
+            <div className="bg-secondary/40 border border-border rounded-2xl p-8 hover:border-primary/30 transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center">
+                  <TrendingUp className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-xl font-display font-bold text-white">{t.hero.sellingTitle}</h3>
+              </div>
+              <p className="text-silver/70 text-sm leading-relaxed">{t.hero.sellingDesc}</p>
+            </div>
+
+            <div className="bg-secondary/40 border border-border rounded-2xl p-8 hover:border-primary/30 transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center">
+                  <Car className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-xl font-display font-bold text-white">{t.hero.buyingTitle}</h3>
+              </div>
+              <p className="text-silver/70 text-sm leading-relaxed">{t.hero.buyingDesc}</p>
+            </div>
           </motion.div>
         </div>
       </section>
