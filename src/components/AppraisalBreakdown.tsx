@@ -375,14 +375,9 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
             </div>
           </div>
         </div>
-        <div className="text-right flex-shrink-0 min-w-[80px]">
+        <div className="text-right flex-shrink-0 min-w-[60px]">
           <div className={`text-sm font-bold ${
-            factor.euroImpact >= 0 ? "text-primary" : "text-destructive"
-          }`}>
-            {factor.euroImpact >= 0 ? "+" : ""}€{Math.abs(factor.euroImpact).toLocaleString()}
-          </div>
-          <div className={`text-[10px] ${
-            factor.percentImpact >= 0 ? "text-primary/70" : "text-destructive/70"
+            factor.percentImpact >= 0 ? "text-primary" : "text-destructive"
           }`}>
             {factor.percentImpact >= 0 ? "+" : ""}{factor.percentImpact.toFixed(1)}%
           </div>
@@ -425,13 +420,13 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
             <div className="text-xs text-primary/70 mb-1 flex items-center justify-center gap-1">
               <ArrowUpRight className="h-3 w-3" /> {a.totalBoost}
             </div>
-            <div className="text-xl font-bold text-primary">+€{totalBoost.toLocaleString()}</div>
+            <div className="text-xl font-bold text-primary">{boosters.length} {a.factors}</div>
           </div>
           <div className="bg-charcoal/80 rounded-xl p-4 text-center">
             <div className="text-xs text-destructive/70 mb-1 flex items-center justify-center gap-1">
               <TrendingDown className="h-3 w-3" /> {a.totalReduction}
             </div>
-            <div className="text-xl font-bold text-destructive">-€{Math.abs(totalReduction).toLocaleString()}</div>
+            <div className="text-xl font-bold text-destructive">{reducers.length} {a.factors}</div>
           </div>
         </div>
 
