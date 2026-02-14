@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { RotateCw } from "lucide-react";
 
 interface SlideLayoutProps {
   children: ReactNode;
@@ -6,17 +7,37 @@ interface SlideLayoutProps {
 
 const SlideLayout = ({ children }: SlideLayoutProps) => {
   const [scale, setScale] = useState(1);
+  const [isPortrait, setIsPortrait] = useState(false);
 
   useEffect(() => {
-    const updateScale = () => {
+    const update = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       setScale(Math.min(vw / 1920, vh / 1080));
+      setIsPortrait(vw < 768 && vh > vw);
     };
-    updateScale();
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("orientationchange", update);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("orientationchange", update);
+    };
   }, []);
+
+  if (isPortrait) {
+    return (
+      <div className="relative w-full h-screen overflow-hidden bg-charcoal flex flex-col items-center justify-center gap-6 px-8 text-center">
+        <RotateCw size={64} className="text-green animate-pulse" />
+        <p className="text-white text-xl font-display font-semibold">
+          Rotate your phone to landscape
+        </p>
+        <p className="text-silver text-sm">
+          This presentation is best viewed horizontally
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-charcoal">
