@@ -3,7 +3,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, Zap, Target, Truck, Bell, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Shield, Zap, Target, Truck, Bell, ChevronRight, CheckCircle2, TrendingUp, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import HeroCarShowcase from "@/components/home/HeroCarShowcase";
 import CarTicker from "@/components/home/CarTicker";
@@ -60,7 +60,7 @@ const Index: React.FC = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
             <motion.h1
-              className="text-5xl sm:text-7xl lg:text-8xl font-display font-black text-white leading-[0.95] tracking-tight mb-6"
+              className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-[0.95] tracking-tight mb-8"
               initial="hidden" animate="visible" variants={fadeUp} custom={1}
             >
               {t.hero.title}
@@ -68,34 +68,42 @@ const Index: React.FC = () => {
               <span className="text-gradient">{t.hero.titleAccent}</span>
             </motion.h1>
 
-            <motion.p
-              className="text-lg sm:text-xl text-silver/70 max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed"
-              initial="hidden" animate="visible" variants={fadeUp} custom={2}
-            >
-              {t.hero.subtitle}
-            </motion.p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              <motion.div
+                className="bg-secondary/60 border border-border rounded-2xl p-6 hover:border-primary/40 transition-all"
+                initial="hidden" animate="visible" variants={fadeUp} custom={2}
+              >
+                <TrendingUp className="h-8 w-8 text-primary mb-3" />
+                <h3 className="text-lg font-display font-bold text-white mb-2">{t.hero.sellerHook}</h3>
+                <p className="text-silver/60 text-sm leading-relaxed mb-4">{t.hero.sellerBody}</p>
+                <Button
+                  size="sm"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-lg"
+                  onClick={() => navigate("/intent")}
+                >
+                  {t.hero.sellerCta}
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
+              </motion.div>
 
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-              initial="hidden" animate="visible" variants={fadeUp} custom={3}
-            >
-              <Button
-                size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-base px-8 py-6 rounded-xl shadow-[0_0_30px_hsl(155_100%_42%/0.3)]"
-                onClick={() => navigate("/intent")}
+              <motion.div
+                className="bg-secondary/60 border border-border rounded-2xl p-6 hover:border-primary/40 transition-all"
+                initial="hidden" animate="visible" variants={fadeUp} custom={3}
               >
-                {t.hero.cta}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-silver/20 text-silver hover:bg-silver/5 font-semibold text-base px-8 py-6 rounded-xl"
-                onClick={() => navigate("/intent")}
-              >
-                {t.hero.ctaSecondary}
-              </Button>
-            </motion.div>
+                <ShieldCheck className="h-8 w-8 text-primary mb-3" />
+                <h3 className="text-lg font-display font-bold text-white mb-2">{t.hero.buyerHook}</h3>
+                <p className="text-silver/60 text-sm leading-relaxed mb-4">{t.hero.buyerBody}</p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-silver/20 text-silver hover:bg-silver/5 font-semibold rounded-lg"
+                  onClick={() => navigate("/intent")}
+                >
+                  {t.hero.buyerCta}
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
+              </motion.div>
+            </div>
           </div>
 
           <motion.div
