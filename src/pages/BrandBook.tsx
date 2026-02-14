@@ -78,6 +78,9 @@ const BrandBook = () => {
           <p className="text-silver/60 text-xl max-w-xl leading-relaxed">
             Fair Value. Best Prices. Zero Friction.
           </p>
+          <p className="font-display font-black text-2xl md:text-3xl text-primary tracking-widest mt-4">
+            BUY.SELL.CARS.
+          </p>
           <p className="text-silver/40 text-sm mt-6 max-w-lg">
             This brand book defines the visual identity, tone, and design language of Autozon — the AI-powered car marketplace built on transparency and trust.
           </p>
