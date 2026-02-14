@@ -14,6 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      acquisition_quotes: {
+        Row: {
+          agreed_price: number
+          annual_mileage: number | null
+          created_at: string
+          down_payment: number | null
+          id: string
+          interest_rate: number | null
+          monthly_payment: number | null
+          offer_id: string
+          partner_id: string
+          quote_type: string
+          residual_value: number | null
+          selected: boolean
+          term_months: number | null
+          total_cost: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agreed_price: number
+          annual_mileage?: number | null
+          created_at?: string
+          down_payment?: number | null
+          id?: string
+          interest_rate?: number | null
+          monthly_payment?: number | null
+          offer_id: string
+          partner_id: string
+          quote_type?: string
+          residual_value?: number | null
+          selected?: boolean
+          term_months?: number | null
+          total_cost?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agreed_price?: number
+          annual_mileage?: number | null
+          created_at?: string
+          down_payment?: number | null
+          id?: string
+          interest_rate?: number | null
+          monthly_payment?: number | null
+          offer_id?: string
+          partner_id?: string
+          quote_type?: string
+          residual_value?: number | null
+          selected?: boolean
+          term_months?: number | null
+          total_cost?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "acquisition_quotes_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "acquisition_quotes_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "financing_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       buyer_selections: {
         Row: {
           car_id: string
@@ -268,6 +340,39 @@ export type Database = {
         }
         Relationships: []
       }
+      financing_partners: {
+        Row: {
+          base_rate: number
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          type: string
+        }
+        Insert: {
+          base_rate?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          type?: string
+        }
+        Update: {
+          base_rate?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          type?: string
+        }
+        Relationships: []
+      }
       matches: {
         Row: {
           car_id: string
@@ -338,36 +443,45 @@ export type Database = {
       }
       offers: {
         Row: {
+          agreed_price: number | null
           amount: number
           buyer_id: string
           car_id: string
           counter_amount: number | null
           created_at: string
+          current_round: number
           id: string
+          max_rounds: number
           message: string | null
           seller_id: string
           status: string
           updated_at: string
         }
         Insert: {
+          agreed_price?: number | null
           amount: number
           buyer_id: string
           car_id: string
           counter_amount?: number | null
           created_at?: string
+          current_round?: number
           id?: string
+          max_rounds?: number
           message?: string | null
           seller_id: string
           status?: string
           updated_at?: string
         }
         Update: {
+          agreed_price?: number | null
           amount?: number
           buyer_id?: string
           car_id?: string
           counter_amount?: number | null
           created_at?: string
+          current_round?: number
           id?: string
+          max_rounds?: number
           message?: string | null
           seller_id?: string
           status?: string

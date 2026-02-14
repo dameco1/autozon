@@ -25,6 +25,8 @@ import CookiePolicy from "./pages/CookiePolicy";
 import Impressum from "./pages/Impressum";
 import NotFound from "./pages/NotFound";
 import InvestorPitch from "./pages/InvestorPitch";
+import Negotiation from "./pages/Negotiation";
+import AcquisitionOptions from "./pages/AcquisitionOptions";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +58,8 @@ const App = () => (
               <Route path="/cookie-policy" element={<CookiePolicy />} />
               <Route path="/impressum" element={<Impressum />} />
               <Route path="/pitch" element={<InvestorPitch />} />
+              <Route path="/negotiate/:offerId" element={<Negotiation />} />
+              <Route path="/acquire/:offerId" element={<AcquisitionOptions />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
