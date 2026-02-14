@@ -1,3 +1,5 @@
+import type { PhotoMap } from "./photoSlots";
+
 export interface CarFormData {
   make: string;
   model: string;
@@ -18,6 +20,7 @@ export interface CarFormData {
   accidentDetails: string;
   description: string;
   photos: string[];
+  photoSlots: PhotoMap;
   damageScanned: boolean;
 }
 
@@ -41,5 +44,6 @@ export const defaultCarFormData: CarFormData = {
   accidentDetails: "",
   description: "",
   photos: [],
+  photoSlots: {},
   damageScanned: false,
 };

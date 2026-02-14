@@ -7,6 +7,7 @@ import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText, Camera, ShieldAler
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { STEPS } from "@/components/car-upload/constants";
+import { PHOTO_SLOTS } from "@/components/car-upload/photoSlots";
 import { defaultCarFormData, type CarFormData } from "@/components/car-upload/types";
 import { calculateFairValue } from "@/components/car-upload/calculateFairValue";
 import StepBasicInfo from "@/components/car-upload/StepBasicInfo";
@@ -75,17 +76,24 @@ const CarUpload: React.FC = () => {
         accidentDetails: data.accident_details ?? "",
         description: data.description ?? "",
         photos: (data as any).photos ?? [],
+        photoSlots: {},
         damageScanned: false,
       });
     });
   }, [editId]);
 
+  const getAllPhotos = useCallback(() => {
+    const slotUrls = Object.values(formData.photoSlots);
+    return [...slotUrls, ...formData.photos];
+  }, [formData.photoSlots, formData.photos]);
+
   const runDamageDetection = useCallback(async () => {
-    if (formData.photos.length === 0) return;
+    const allPhotos = getAllPhotos();
+    if (allPhotos.length === 0) return;
     setAnalyzingDamage(true);
     try {
       const { data, error } = await supabase.functions.invoke("detect-damage", {
-        body: { photoUrls: formData.photos },
+        body: { photoUrls: allPhotos },
       });
       if (error) throw error;
       // Mark high-confidence damages as auto-confirmed, low-confidence as needing review
@@ -101,7 +109,7 @@ const CarUpload: React.FC = () => {
     } finally {
       setAnalyzingDamage(false);
     }
-  }, [formData.photos]);
+  }, [getAllPhotos]);
 
   const confirmDamage = useCallback((index: number) => {
     setDamageReport((prev) => {
@@ -123,10 +131,11 @@ const CarUpload: React.FC = () => {
 
   // Auto-trigger damage detection when entering step 3
   useEffect(() => {
-    if (step === 3 && formData.photos.length > 0 && !damageReport && !analyzingDamage) {
+    const allPhotos = getAllPhotos();
+    if (step === 3 && allPhotos.length > 0 && !damageReport && !analyzingDamage) {
       runDamageDetection();
     }
-  }, [step, formData.photos.length, damageReport, analyzingDamage, runDamageDetection]);
+  }, [step, getAllPhotos, damageReport, analyzingDamage, runDamageDetection]);
 
   const handleSubmit = async () => {
     if (!userId || !formData.make || !formData.model) return;
@@ -170,8 +179,8 @@ const CarUpload: React.FC = () => {
       accident_history: formData.accidentHistory || confirmedDamages.some((d) => d.severity === "high"),
       accident_details: formData.accidentDetails,
       description: formData.description,
-      photos: formData.photos,
-      image_url: formData.photos[0] ?? null,
+      photos: getAllPhotos(),
+      image_url: Object.values(formData.photoSlots)[0] ?? formData.photos[0] ?? null,
       condition_score: adjustedCondScore,
       fair_value_price: fairValue,
       demand_score: demandScore,
@@ -224,9 +233,11 @@ const CarUpload: React.FC = () => {
         if (formData.mileage <= 0) return "Please enter a valid mileage";
         if (formData.price <= 0) return "Please enter a valid price";
         return null;
-      case 2:
-        if (formData.photos.length === 0) return "Please upload at least one photo";
+      case 2: {
+        const missingSlots = PHOTO_SLOTS.filter((s) => s.required && !formData.photoSlots[s.id]);
+        if (missingSlots.length > 0) return `Please upload all required photos (${missingSlots.length} missing)`;
         return null;
+      }
       case 3:
         if (analyzingDamage) return "Please wait for damage analysis to finish";
         return null;
@@ -305,7 +316,15 @@ const CarUpload: React.FC = () => {
                   transition={{ duration: 0.25 }}
                 >
                   {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} />}
-                  {step === 2 && <StepPhotos photos={formData.photos} userId={userId} onPhotosChange={(photos) => updateForm({ photos })} />}
+                  {step === 2 && (
+                    <StepPhotos
+                      photoSlots={formData.photoSlots}
+                      extraPhotos={formData.photos}
+                      userId={userId}
+                      onSlotsChange={(slots) => updateForm({ photoSlots: slots })}
+                      onExtrasChange={(extras) => updateForm({ photos: extras })}
+                    />
+                  )}
                   {step === 3 && (
                     <StepDamageReview
                       report={damageReport}
@@ -313,7 +332,7 @@ const CarUpload: React.FC = () => {
                       onConfirm={confirmDamage}
                       onDismiss={dismissDamage}
                       onRunAnalysis={runDamageDetection}
-                      hasPhotos={formData.photos.length > 0}
+                      hasPhotos={getAllPhotos().length > 0}
                     />
                   )}
                   {step === 4 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
