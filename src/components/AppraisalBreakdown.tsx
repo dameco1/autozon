@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Progress } from "@/components/ui/progress";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import {
   TrendingDown, Gauge, Shield, Wrench, BarChart3, Globe, Eye,
@@ -410,20 +410,18 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           </div>
         </div>
         <div className="text-right flex-shrink-0 min-w-[60px]">
-          <TooltipProvider delayDuration={200}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className={`text-sm font-bold cursor-help ${
-                  factor.percentImpact >= 0 ? "text-primary" : "text-destructive"
-                }`}>
-                  {factor.percentImpact >= 0 ? "+" : ""}{factor.percentImpact.toFixed(1)}%
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="left" className="max-w-xs text-xs bg-charcoal border-border text-silver">
-                <p className="font-mono text-[11px] leading-relaxed">{factor.formulaTooltip}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className={`text-sm font-bold cursor-help ${
+                factor.percentImpact >= 0 ? "text-primary" : "text-destructive"
+              }`}>
+                {factor.percentImpact >= 0 ? "+" : ""}{factor.percentImpact.toFixed(1)}%
+              </button>
+            </PopoverTrigger>
+            <PopoverContent side="left" className="max-w-xs text-xs bg-charcoal border-border text-silver p-3">
+              <p className="font-mono text-[11px] leading-relaxed">{factor.formulaTooltip}</p>
+            </PopoverContent>
+          </Popover>
           {factor.actionable && (
             <Button
               size="sm"
