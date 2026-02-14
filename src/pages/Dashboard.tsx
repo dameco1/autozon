@@ -277,7 +277,7 @@ const Dashboard: React.FC = () => {
                                   body: { carId: car.id },
                                 });
                                 if (error) throw error;
-                                if (data?.url) window.location.href = data.url;
+                                if (data?.url) window.open(data.url, '_blank');
                               } catch (err) {
                                 console.error(err);
                                 toast.error("Failed to start checkout.");
