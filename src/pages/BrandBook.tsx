@@ -107,16 +107,22 @@ const BrandBook = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Dark bg */}
             <div className="bg-charcoal rounded-2xl border border-white/10 p-12 flex flex-col items-center justify-center gap-6">
-              <span className="font-display font-black text-5xl text-white">
-                auto<span className="text-primary">zon</span>
-              </span>
+              <div className="flex flex-col items-center">
+                <span className="font-display font-black text-5xl text-white">
+                  auto<span className="text-primary">zon</span>
+                </span>
+                <span className="text-[9px] font-display font-bold text-silver/50 tracking-[0.3em] uppercase leading-none mt-1">BUY.SELL.CARS.</span>
+              </div>
               <span className="text-silver/40 text-xs">Primary — on dark background</span>
             </div>
             {/* Light bg */}
             <div className="bg-white rounded-2xl border border-white/10 p-12 flex flex-col items-center justify-center gap-6">
-              <span className="font-display font-black text-5xl text-charcoal">
-                auto<span style={{ color: "hsl(155, 100%, 42%)" }}>zon</span>
-              </span>
+              <div className="flex flex-col items-center">
+                <span className="font-display font-black text-5xl text-charcoal">
+                  auto<span style={{ color: "hsl(155, 100%, 42%)" }}>zon</span>
+                </span>
+                <span className="text-[9px] font-display font-bold text-charcoal/40 tracking-[0.3em] uppercase leading-none mt-1">BUY.SELL.CARS.</span>
+              </div>
               <span className="text-charcoal/40 text-xs">Primary — on light background</span>
             </div>
           </div>
