@@ -51,7 +51,14 @@ serve(async (req: Request) => {
 - Body Type: ${body_type}
 - Transmission: ${transmission}
 
-Estimate the current market price range in EUR for this car on major European car marketplaces (mobile.de, AutoScout24, etc.). Return your estimate using the provided function.`;
+1. Estimate the current market price range in EUR for this car on major European car marketplaces (mobile.de, AutoScout24, etc.).
+2. Provide a realistic 12-month depreciation forecast (monthly values) starting from the estimated average market price. Consider:
+   - The car's age (${year}) and how depreciation flattens for older vehicles
+   - ${fuel_type} demand trends in Europe (EVs hold value better, diesel drops faster)
+   - ${make} ${model} brand-specific resale patterns
+   - Seasonal fluctuations (spring/summer demand is higher for convertibles/SUVs)
+   - Current mileage of ${mileage} km
+Return your estimates using the provided function.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -62,7 +69,7 @@ Estimate the current market price range in EUR for this car on major European ca
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: "You are a European used car pricing expert with deep knowledge of mobile.de, AutoScout24, and other major European car listing platforms." },
+          { role: "system", content: "You are a European used car pricing expert with deep knowledge of mobile.de, AutoScout24, and other major European car listing platforms. You understand seasonal trends, brand depreciation curves, and fuel-type demand shifts." },
           { role: "user", content: prompt },
         ],
         tools: [
@@ -70,7 +77,7 @@ Estimate the current market price range in EUR for this car on major European ca
             type: "function",
             function: {
               name: "market_estimate",
-              description: "Return the estimated market price range and comparison data",
+              description: "Return the estimated market price range, comparison data, and 12-month depreciation forecast",
               parameters: {
                 type: "object",
                 properties: {
@@ -80,8 +87,15 @@ Estimate the current market price range in EUR for this car on major European ca
                   market_position: { type: "string", enum: ["below_market", "at_market", "above_market"], description: "How the asking price compares to market average" },
                   confidence: { type: "string", enum: ["low", "medium", "high"], description: "Confidence level of the estimate" },
                   sources_note: { type: "string", description: "Brief note about which marketplaces this estimate is based on (e.g. mobile.de, AutoScout24)" },
+                  depreciation_forecast: {
+                    type: "array",
+                    description: "Array of 13 monthly projected values (M0 = current, M1-M12 = next 12 months) in EUR, reflecting realistic brand/fuel/age depreciation",
+                    items: { type: "number" },
+                    minItems: 13,
+                    maxItems: 13,
+                  },
                 },
-                required: ["min_price", "max_price", "avg_price", "market_position", "confidence", "sources_note"],
+                required: ["min_price", "max_price", "avg_price", "market_position", "confidence", "sources_note", "depreciation_forecast"],
                 additionalProperties: false,
               },
             },

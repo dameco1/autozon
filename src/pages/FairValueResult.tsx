@@ -128,23 +128,28 @@ const FairValueResult: React.FC = () => {
 
   const displayFairValue = blendedValue ?? car.fair_value_price;
 
-  // Car-specific depreciation curve based on brand tier, age, fuel type
-  const iconicBrands = ["Porsche", "Tesla"];
-  const premiumBrands = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
-  const isIconic = iconicBrands.includes(car.make);
-  const isPremium = premiumBrands.includes(car.make);
-  // Monthly depreciation rate varies by brand tier and fuel type
-  const baseMonthlyDep = isIconic ? 0.003 : isPremium ? 0.005 : 0.008;
-  const fuelAdjust: Record<string, number> = { Electric: 0.85, Hybrid: 0.92, "Plug-in Hybrid": 0.90, Petrol: 1.0, Diesel: 1.1 };
-  const monthlyDep = baseMonthlyDep * (fuelAdjust[car.fuel_type] ?? 1.0);
-  // Older cars depreciate slower (flattening curve)
-  const carAge = 2026 - car.year;
-  const ageFlatFactor = carAge > 5 ? 0.6 : carAge > 3 ? 0.8 : 1.0;
+  // Use AI market depreciation forecast if available, otherwise fall back to formula
+  const aiForecast = marketData?.depreciation_forecast;
+  const hasAiForecast = aiForecast && Array.isArray(aiForecast) && aiForecast.length === 13;
 
-  const depreciationData = Array.from({ length: 13 }, (_, i) => ({
-    month: `M${i}`,
-    value: Math.round(displayFairValue * Math.pow(1 - monthlyDep * ageFlatFactor, i)),
-  }));
+  const depreciationData = hasAiForecast
+    ? aiForecast.map((value, i) => ({ month: `M${i}`, value: Math.round(value) }))
+    : (() => {
+        // Fallback: formula-based curve
+        const iconicBrands = ["Porsche", "Tesla"];
+        const premiumBrands = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
+        const isIconic = iconicBrands.includes(car.make);
+        const isPremium = premiumBrands.includes(car.make);
+        const baseMonthlyDep = isIconic ? 0.003 : isPremium ? 0.005 : 0.008;
+        const fuelAdjust: Record<string, number> = { Electric: 0.85, Hybrid: 0.92, "Plug-in Hybrid": 0.90, Petrol: 1.0, Diesel: 1.1 };
+        const monthlyDep = baseMonthlyDep * (fuelAdjust[car.fuel_type] ?? 1.0);
+        const carAge = 2026 - car.year;
+        const ageFlatFactor = carAge > 5 ? 0.6 : carAge > 3 ? 0.8 : 1.0;
+        return Array.from({ length: 13 }, (_, i) => ({
+          month: `M${i}`,
+          value: Math.round(displayFairValue * Math.pow(1 - monthlyDep * ageFlatFactor, i)),
+        }));
+      })();
 
   const scoreBadge = (score: number) => {
     if (score >= 85) return { label: "Excellent", color: "text-primary" };
@@ -229,9 +234,14 @@ const FairValueResult: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <h3 className="text-lg font-display font-bold text-white mb-6 flex items-center gap-2">
+          <h3 className="text-lg font-display font-bold text-white mb-1 flex items-center gap-2">
             <TrendingDown className="h-5 w-5 text-primary" /> {t.fairValue.depreciationTitle}
           </h3>
+          <p className="text-silver/40 text-xs mb-6">
+            {hasAiForecast
+              ? `AI-powered forecast based on ${car.make} ${car.model} market trends`
+              : "Formula-based estimate (market data unavailable)"}
+          </p>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={depreciationData}>

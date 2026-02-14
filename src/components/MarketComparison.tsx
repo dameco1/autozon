@@ -11,6 +11,7 @@ export interface MarketData {
   market_position: "below_market" | "at_market" | "above_market";
   confidence: string;
   sources_note: string;
+  depreciation_forecast?: number[];
 }
 
 interface Props {
