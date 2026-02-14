@@ -385,6 +385,11 @@ const Dashboard: React.FC = () => {
                 <div className="px-6 py-4 border-b border-border">
                   <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
                     <Users className="h-5 w-5 text-amber-400" /> {t.dashboard.recentMatches}
+                    {recentShortlists.length > 0 && (
+                      <span className="ml-1 inline-flex items-center justify-center h-6 min-w-[24px] px-1.5 rounded-full bg-amber-400/20 text-amber-400 text-xs font-bold">
+                        {recentShortlists.length}
+                      </span>
+                    )}
                   </h2>
                 </div>
                 {recentShortlists.length === 0 ? (
