@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import bannerImg from "@/assets/autozon-banner.jpg";
+
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
@@ -175,21 +175,33 @@ const BrandBook = () => {
         </Section>
 
         {/* ─── Banner ─── */}
-        <Section title="Banner" subtitle="A ready-to-use 1088×512 banner featuring the autozon wordmark and tagline on charcoal. Suitable for social headers, event backdrops, and email headers.">
+        <Section title="Banner" subtitle="A ready-to-use 1080×450 banner built from the brand logo and tagline. Suitable for social headers, event backdrops, and email headers.">
           <div className="space-y-6">
-            <div className="rounded-2xl border border-white/10 overflow-hidden shadow-lg">
-              <img src={bannerImg} alt="autozon banner" className="w-full h-auto" />
+            <div className="rounded-2xl border border-white/10 overflow-hidden shadow-lg" style={{ aspectRatio: "1080/450" }}>
+              <div className="w-full h-full bg-charcoal flex flex-col items-center justify-center gap-2">
+                <span className="font-display font-black text-5xl md:text-7xl text-white">
+                  auto<span className="text-primary">zon</span>
+                </span>
+                <span className="text-[10px] md:text-xs font-display font-bold text-silver/50 tracking-[0.3em] uppercase leading-none">BUY.SELL.CARS.</span>
+              </div>
             </div>
             <button
               onClick={() => {
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="450" viewBox="0 0 1080 450">
+  <rect width="1080" height="450" fill="#19191F"/>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900');</style>
+  <text x="540" y="235" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="96" fill="#ffffff">auto<tspan fill="#00D97E">zon</tspan></text>
+  <text x="540" y="275" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="16" letter-spacing="6" fill="#D9D9D980">BUY.SELL.CARS.</text>
+</svg>`;
+                const blob = new Blob([svg], { type: "image/svg+xml" });
+                const url = URL.createObjectURL(blob);
                 const a = document.createElement("a");
-                a.href = bannerImg;
-                a.download = "autozon-banner.jpg";
-                a.click();
+                a.href = url; a.download = "autozon-banner-1080x450.svg"; a.click();
+                URL.revokeObjectURL(url);
               }}
               className="bg-secondary text-silver text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
             >
-              ↓ Download Banner (JPG)
+              ↓ Download Banner SVG (1080×450)
             </button>
           </div>
         </Section>
