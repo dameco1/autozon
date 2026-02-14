@@ -89,6 +89,20 @@ const Negotiation: React.FC = () => {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
+  // Realtime subscription for live offer updates
+  useEffect(() => {
+    if (!offerId) return;
+    const channel = supabase
+      .channel(`offer-${offerId}`)
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "offers", filter: `id=eq.${offerId}` },
+        () => { fetchData(); }
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [offerId, fetchData]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-charcoal flex items-center justify-center">
