@@ -57,15 +57,13 @@ const Index: React.FC = () => {
           />
         ))}
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center justify-items-center">
           <div className="text-center lg:text-left">
             <motion.h1
               className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-[0.95] tracking-tight mb-8"
               initial="hidden" animate="visible" variants={fadeUp} custom={1}
             >
-              {t.hero.title}
-              <br />
-              <span className="text-gradient">{t.hero.titleAccent}</span>
+              {t.hero.title}{" "}<span className="text-gradient">{t.hero.titleAccent}</span>
             </motion.h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
