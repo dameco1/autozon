@@ -12,9 +12,88 @@ const SAFETY_FEATURES = ["Adaptive Cruise Control", "Lane Assist", "Blind Spot M
 const TECH_FEATURES = ["Navigation", "Apple CarPlay", "Android Auto", "Heads-Up Display", "LED Headlights"];
 const COMFORT_FEATURES = ["Heated Seats", "Leather Interior", "Sunroof", "Cruise Control", "Keyless Entry", "Seat Memory", "Heated Steering Wheel"];
 
+/**
+ * Estimate a new-car reference MSRP from the car's intrinsic attributes.
+ * This is intentionally independent of the user's asking price.
+ */
+function estimateReferenceMSRP(
+  make: string,
+  bodyType: string,
+  powerHp: number,
+  fuelType: string
+): number {
+  // Brand-tier base prices (approximate new-car MSRP in EUR)
+  const brandBase: Record<string, number> = {
+    Porsche: 85000,
+    Tesla: 52000,
+    "Mercedes-Benz": 50000,
+    BMW: 48000,
+    Audi: 45000,
+    Volvo: 42000,
+    Volkswagen: 32000,
+    Toyota: 30000,
+    Honda: 28000,
+    Mazda: 28000,
+    Hyundai: 27000,
+    Kia: 26000,
+    Skoda: 26000,
+    Renault: 25000,
+    Peugeot: 25000,
+    Citroën: 25000,
+    Ford: 28000,
+    Opel: 26000,
+    Seat: 24000,
+    Fiat: 22000,
+    Dacia: 18000,
+    Nissan: 28000,
+    Subaru: 32000,
+    Suzuki: 22000,
+    "Land Rover": 60000,
+    Jaguar: 55000,
+    Lexus: 50000,
+    Maserati: 80000,
+    "Alfa Romeo": 38000,
+    Mini: 30000,
+  };
+
+  let base = brandBase[make] ?? 30000;
+
+  // Body-type multiplier
+  const bodyMultiplier: Record<string, number> = {
+    SUV: 1.20,
+    Coupe: 1.15,
+    Convertible: 1.25,
+    Wagon: 1.05,
+    Sedan: 1.00,
+    Hatchback: 0.90,
+    Van: 0.95,
+    Pickup: 1.10,
+  };
+  base *= bodyMultiplier[bodyType] ?? 1.0;
+
+  // Power adjustment: scale linearly around 150 HP baseline
+  const powerFactor = 1 + (powerHp - 150) * 0.0015;
+  base *= Math.max(0.7, Math.min(powerFactor, 1.8));
+
+  // Fuel-type premium
+  const fuelPremium: Record<string, number> = {
+    Electric: 1.12,
+    "Plug-in Hybrid": 1.08,
+    Hybrid: 1.04,
+    Petrol: 1.0,
+    Diesel: 0.98,
+  };
+  base *= fuelPremium[fuelType] ?? 1.0;
+
+  return Math.round(base);
+}
+
 export function calculateFairValue(data: CarFormData): FairValueResult {
   const currentYear = 2026;
   const carAge = currentYear - data.year;
+
+  // 0. Attribute-based reference MSRP (independent of asking price)
+  const referenceMSRP = estimateReferenceMSRP(data.make, data.bodyType, data.powerHp, data.fuelType);
 
   // 1. Non-Linear Depreciation Curve (brand-tiered)
   const isPremium = PREMIUM_BRANDS.includes(data.make);
@@ -30,13 +109,12 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
     ? 1 + (1 - mileageRatio) * 0.05
     : Math.max(0.55, 1 - Math.pow(mileageRatio - 1, 1.4) * 0.25);
 
-  // 3. Condition Factor (recentered: avg 75 = ~1.0 neutral)
+  // 3. Condition Factor
   const condAvg = (data.conditionExterior + data.conditionInterior) / 2;
   const conditionFactor = 0.85 + (condAvg / 100) * 0.17;
-  // At 50: 0.935, At 75: 0.9775, At 90: 1.003, At 100: 1.02
   const accidentPenalty = data.accidentHistory ? 0.82 : 1;
 
-  // 4. Equipment Value Index (reduced cap: 10%)
+  // 4. Equipment Value Index (capped at 10%)
   let equipWeightedScore = 0;
   data.equipment.forEach((eq) => {
     if (SAFETY_FEATURES.includes(eq)) equipWeightedScore += 2.5;
@@ -46,7 +124,7 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   });
   const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.003, 0.10);
 
-  // 5. Market Position Factor (dampened)
+  // 5. Market Position Factor
   const highDemandBodies = ["SUV", "Hatchback"];
   const moderateDemandBodies = ["Sedan", "Wagon", "Coupe", "Convertible"];
   const bodyDemand = highDemandBodies.includes(data.bodyType) ? 1.04
@@ -64,7 +142,7 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   };
   const regionalDemandMultiplier = fuelDemand[data.fuelType] ?? 1.0;
 
-  // 7. Transparency Score (reduced: max 4%)
+  // 7. Transparency Score (max 4%)
   let transparencyPoints = 0;
   if (data.vin.length >= 10) transparencyPoints += 3;
   if (data.description.length > 50) transparencyPoints += 2;
@@ -79,9 +157,9 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   if (data.damageScanned) transparencyPoints += 3;
   const transparencyBonus = 1 + Math.min(transparencyPoints / 15, 1) * 0.04;
 
-  // Compute raw fair value
-  const computedValue = Math.round(
-    data.price
+  // Compute attribute-based fair value (from reference MSRP, NOT asking price)
+  const attributeValue = Math.round(
+    referenceMSRP
     * depreciationFactor
     * mileageFactor
     * conditionFactor
@@ -92,8 +170,9 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
     * transparencyBonus
   );
 
-  // No cap: fair value is determined by market factors, NOT by user's asking price
-  const fairValue = computedValue;
+  // Blend: 85% attribute-based + 15% asking price as a soft market signal
+  // This ensures the user's price has minor influence but cannot dominate
+  const fairValue = Math.round(attributeValue * 0.85 + data.price * 0.15);
 
   // Condition Score (0-100)
   const condScore = Math.round(
