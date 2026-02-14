@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Sparkles, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import type { CarFormData } from "./types";
 
 interface Props {
@@ -10,13 +14,48 @@ interface Props {
 }
 
 const StepCondition: React.FC<Props> = ({ data, onChange }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [generating, setGenerating] = useState(false);
 
   const conditionLabel = (val: number) => {
     if (val >= 90) return t.carUpload.conditionScale.excellent;
     if (val >= 70) return t.carUpload.conditionScale.good;
     if (val >= 50) return t.carUpload.conditionScale.fair;
     return t.carUpload.conditionScale.poor;
+  };
+
+  const generateDescription = async () => {
+    setGenerating(true);
+    try {
+      const { data: result, error } = await supabase.functions.invoke("generate-description", {
+        body: {
+          make: data.make,
+          model: data.model,
+          year: data.year,
+          mileage: data.mileage,
+          fuelType: data.fuelType,
+          transmission: data.transmission,
+          bodyType: data.bodyType,
+          color: data.color,
+          powerHp: data.powerHp,
+          equipment: data.equipment,
+          conditionExterior: data.conditionExterior,
+          conditionInterior: data.conditionInterior,
+          accidentHistory: data.accidentHistory,
+          language,
+        },
+      });
+      if (error) throw error;
+      if (result?.error) throw new Error(result.error);
+      if (result?.description) {
+        onChange({ description: result.description });
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err.message || "Failed to generate description");
+    } finally {
+      setGenerating(false);
+    }
   };
 
   return (
@@ -82,12 +121,29 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
         </div>
       )}
       <div>
-        <Label className="text-silver/80 text-sm">{t.carUpload.description}</Label>
+        <div className="flex items-center justify-between mb-1">
+          <Label className="text-silver/80 text-sm">{t.carUpload.description}</Label>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="text-primary hover:text-primary/80 text-xs gap-1.5 h-7"
+            onClick={generateDescription}
+            disabled={generating || !data.make}
+          >
+            {generating ? (
+              <><Loader2 className="h-3 w-3 animate-spin" /> {t.carUpload.generatingDescription}</>
+            ) : (
+              <><Sparkles className="h-3 w-3" /> {t.carUpload.generateDescription}</>
+            )}
+          </Button>
+        </div>
         <Textarea
           value={data.description}
           onChange={(e) => onChange({ description: e.target.value })}
           className="bg-charcoal border-border text-white mt-1"
-          rows={3}
+          rows={5}
+          placeholder={language === "de" ? "Beschreiben Sie Ihr Fahrzeug oder lassen Sie KI eine Beschreibung generieren..." : "Describe your vehicle or let AI generate a description..."}
         />
       </div>
     </div>
