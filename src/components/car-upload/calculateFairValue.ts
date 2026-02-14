@@ -92,8 +92,8 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
     * transparencyBonus
   );
 
-  // Hard cap: fair value cannot exceed 105% of asking price
-  const fairValue = Math.min(computedValue, Math.round(data.price * 1.05));
+  // No cap: fair value is determined by market factors, NOT by user's asking price
+  const fairValue = computedValue;
 
   // Condition Score (0-100)
   const condScore = Math.round(
