@@ -111,7 +111,7 @@ const Dashboard: React.FC = () => {
   const avgCondition = cars.length > 0
     ? Math.round(cars.reduce((sum, c) => sum + (c.condition_score || 0), 0) / cars.length)
     : 0;
-  const activeMatches = matches.filter((m) => m.status === "pending").length;
+  const activeMatches = matches.filter((m) => m.status === "pending").length + activeOffers.length;
 
   const stats = [
     { label: t.dashboard.listedCars, value: cars.length, icon: Car, color: "text-primary" },
