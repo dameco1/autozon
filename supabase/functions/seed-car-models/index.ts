@@ -473,6 +473,150 @@ const DATA: CarVariant[] = [
   { make:"Jaguar", model:"F-Type", variant:"P300", year_from:2019, year_to:null, power_hp:300, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
   { make:"Jaguar", model:"F-Type", variant:"P450", year_from:2019, year_to:null, power_hp:450, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
   { make:"Jaguar", model:"XE", variant:"P250", year_from:2019, year_to:null, power_hp:250, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+
+  // ── DS Automobiles ──
+  { make:"DS", model:"DS 3 Crossback", variant:"1.2 PureTech 130", year_from:2019, year_to:null, power_hp:130, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"DS", model:"DS 3 Crossback", variant:"E-Tense", year_from:2019, year_to:null, power_hp:136, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"DS", model:"DS 4", variant:"1.2 PureTech 130", year_from:2021, year_to:null, power_hp:130, fuel_type:"Petrol", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"DS", model:"DS 4", variant:"1.6 E-Tense 225", year_from:2021, year_to:null, power_hp:225, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"DS", model:"DS 7", variant:"1.2 PureTech 130", year_from:2022, year_to:null, power_hp:130, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"DS", model:"DS 7", variant:"E-Tense 4x4 360", year_from:2022, year_to:null, power_hp:360, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"DS", model:"DS 9", variant:"E-Tense 250", year_from:2020, year_to:null, power_hp:250, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"Sedan" },
+
+  // ── MG ──
+  { make:"MG", model:"ZS", variant:"1.5 VTi", year_from:2020, year_to:null, power_hp:106, fuel_type:"Petrol", transmission:"Manual", body_type:"SUV" },
+  { make:"MG", model:"ZS EV", variant:"Standard Range", year_from:2020, year_to:null, power_hp:177, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"MG", model:"ZS EV", variant:"Long Range", year_from:2022, year_to:null, power_hp:177, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"MG", model:"MG4", variant:"Standard", year_from:2022, year_to:null, power_hp:170, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"MG", model:"MG4", variant:"Luxury", year_from:2022, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"MG", model:"MG4", variant:"XPOWER", year_from:2023, year_to:null, power_hp:435, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"MG", model:"MG5", variant:"Standard Range", year_from:2022, year_to:null, power_hp:177, fuel_type:"Electric", transmission:"Automatic", body_type:"Wagon" },
+  { make:"MG", model:"MG5", variant:"Long Range", year_from:2022, year_to:null, power_hp:177, fuel_type:"Electric", transmission:"Automatic", body_type:"Wagon" },
+  { make:"MG", model:"Marvel R", variant:"Performance", year_from:2021, year_to:null, power_hp:288, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"MG", model:"HS", variant:"1.5 Turbo", year_from:2020, year_to:null, power_hp:162, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"MG", model:"HS", variant:"PHEV", year_from:2021, year_to:null, power_hp:258, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
+
+  // ── smart ──
+  { make:"smart", model:"fortwo", variant:"EQ", year_from:2020, year_to:null, power_hp:82, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"smart", model:"forfour", variant:"EQ", year_from:2020, year_to:null, power_hp:82, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"smart", model:"#1", variant:"Pro+", year_from:2023, year_to:null, power_hp:272, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"smart", model:"#1", variant:"BRABUS", year_from:2023, year_to:null, power_hp:428, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"smart", model:"#3", variant:"Pro+", year_from:2024, year_to:null, power_hp:272, fuel_type:"Electric", transmission:"Automatic", body_type:"Coupe" },
+
+  // ── Subaru ──
+  { make:"Subaru", model:"Impreza", variant:"2.0i e-Boxer", year_from:2020, year_to:null, power_hp:150, fuel_type:"Hybrid", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"Subaru", model:"XV", variant:"2.0i e-Boxer", year_from:2019, year_to:null, power_hp:150, fuel_type:"Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"Subaru", model:"Forester", variant:"2.0i e-Boxer", year_from:2019, year_to:null, power_hp:150, fuel_type:"Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"Subaru", model:"Outback", variant:"2.5i", year_from:2021, year_to:null, power_hp:169, fuel_type:"Petrol", transmission:"Automatic", body_type:"Wagon" },
+  { make:"Subaru", model:"BRZ", variant:"2.4", year_from:2022, year_to:null, power_hp:234, fuel_type:"Petrol", transmission:"Manual", body_type:"Coupe" },
+  { make:"Subaru", model:"Solterra", variant:"AWD", year_from:2023, year_to:null, power_hp:218, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+
+  // ── Lexus ──
+  { make:"Lexus", model:"UX", variant:"250h", year_from:2019, year_to:null, power_hp:184, fuel_type:"Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lexus", model:"UX", variant:"300e", year_from:2021, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lexus", model:"NX", variant:"350h", year_from:2021, year_to:null, power_hp:244, fuel_type:"Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lexus", model:"NX", variant:"450h+", year_from:2021, year_to:null, power_hp:309, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lexus", model:"RX", variant:"350h", year_from:2022, year_to:null, power_hp:250, fuel_type:"Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lexus", model:"RX", variant:"450h+", year_from:2022, year_to:null, power_hp:309, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lexus", model:"ES", variant:"300h", year_from:2018, year_to:null, power_hp:218, fuel_type:"Hybrid", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Lexus", model:"IS", variant:"300h", year_from:2020, year_to:null, power_hp:227, fuel_type:"Hybrid", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Lexus", model:"LC", variant:"500", year_from:2017, year_to:null, power_hp:477, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Lexus", model:"LC", variant:"500h", year_from:2017, year_to:null, power_hp:359, fuel_type:"Hybrid", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Lexus", model:"RZ", variant:"450e", year_from:2023, year_to:null, power_hp:313, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+
+  // ── Polestar ──
+  { make:"Polestar", model:"2", variant:"Standard Range", year_from:2020, year_to:null, power_hp:231, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Polestar", model:"2", variant:"Long Range Single Motor", year_from:2020, year_to:null, power_hp:231, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Polestar", model:"2", variant:"Long Range Dual Motor", year_from:2020, year_to:null, power_hp:408, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Polestar", model:"2", variant:"BST Edition", year_from:2022, year_to:null, power_hp:476, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Polestar", model:"3", variant:"Long Range Dual Motor", year_from:2024, year_to:null, power_hp:489, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"Polestar", model:"4", variant:"Long Range Single Motor", year_from:2024, year_to:null, power_hp:272, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+
+  // ── BYD ──
+  { make:"BYD", model:"Atto 3", variant:"Comfort", year_from:2022, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"BYD", model:"Atto 3", variant:"Design", year_from:2022, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"BYD", model:"Dolphin", variant:"Comfort", year_from:2023, year_to:null, power_hp:95, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"BYD", model:"Dolphin", variant:"Design", year_from:2023, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"BYD", model:"Seal", variant:"Design", year_from:2023, year_to:null, power_hp:313, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"BYD", model:"Seal", variant:"Excellence AWD", year_from:2023, year_to:null, power_hp:530, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"BYD", model:"Tang", variant:"EV", year_from:2022, year_to:null, power_hp:517, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"BYD", model:"Han", variant:"EV", year_from:2022, year_to:null, power_hp:517, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"BYD", model:"Seal U", variant:"Comfort", year_from:2024, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"BYD", model:"Seal U", variant:"DM-i PHEV", year_from:2024, year_to:null, power_hp:217, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
+
+  // ── Aston Martin ──
+  { make:"Aston Martin", model:"Vantage", variant:"V8", year_from:2018, year_to:null, power_hp:510, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Aston Martin", model:"DB11", variant:"V8", year_from:2017, year_to:null, power_hp:510, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Aston Martin", model:"DB11", variant:"V12", year_from:2016, year_to:null, power_hp:639, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Aston Martin", model:"DBX", variant:"V8", year_from:2020, year_to:null, power_hp:550, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Aston Martin", model:"DBX", variant:"707", year_from:2022, year_to:null, power_hp:707, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Aston Martin", model:"DBS", variant:"Superleggera", year_from:2018, year_to:null, power_hp:725, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+
+  // ── Bentley ──
+  { make:"Bentley", model:"Continental GT", variant:"V8", year_from:2018, year_to:null, power_hp:550, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Bentley", model:"Continental GT", variant:"W12", year_from:2018, year_to:null, power_hp:635, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Bentley", model:"Flying Spur", variant:"V8", year_from:2019, year_to:null, power_hp:550, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Bentley", model:"Flying Spur", variant:"W12", year_from:2019, year_to:null, power_hp:635, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Bentley", model:"Bentayga", variant:"V8", year_from:2020, year_to:null, power_hp:550, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Bentley", model:"Bentayga", variant:"Hybrid", year_from:2021, year_to:null, power_hp:462, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"SUV" },
+
+  // ── Maserati ──
+  { make:"Maserati", model:"Ghibli", variant:"GT", year_from:2020, year_to:null, power_hp:350, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Maserati", model:"Ghibli", variant:"Trofeo", year_from:2020, year_to:null, power_hp:580, fuel_type:"Petrol", transmission:"Automatic", body_type:"Sedan" },
+  { make:"Maserati", model:"Levante", variant:"GT", year_from:2020, year_to:null, power_hp:350, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Maserati", model:"Levante", variant:"Trofeo", year_from:2020, year_to:null, power_hp:580, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Maserati", model:"GranTurismo", variant:"Modena", year_from:2023, year_to:null, power_hp:490, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Maserati", model:"GranTurismo", variant:"Folgore", year_from:2023, year_to:null, power_hp:761, fuel_type:"Electric", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Maserati", model:"Grecale", variant:"GT", year_from:2022, year_to:null, power_hp:300, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Maserati", model:"Grecale", variant:"Folgore", year_from:2023, year_to:null, power_hp:557, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+
+  // ── Lamborghini ──
+  { make:"Lamborghini", model:"Huracán", variant:"EVO", year_from:2019, year_to:null, power_hp:640, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Lamborghini", model:"Huracán", variant:"STO", year_from:2021, year_to:null, power_hp:640, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Lamborghini", model:"Huracán", variant:"Tecnica", year_from:2022, year_to:null, power_hp:640, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Lamborghini", model:"Urus", variant:"V8", year_from:2018, year_to:null, power_hp:650, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lamborghini", model:"Urus", variant:"S", year_from:2022, year_to:null, power_hp:666, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lamborghini", model:"Urus", variant:"Performante", year_from:2022, year_to:null, power_hp:666, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Lamborghini", model:"Revuelto", variant:"V12 Hybrid", year_from:2024, year_to:null, power_hp:1015, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"Coupe" },
+
+  // ── Ferrari ──
+  { make:"Ferrari", model:"Roma", variant:"V8", year_from:2020, year_to:null, power_hp:620, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Ferrari", model:"296 GTB", variant:"V6 Hybrid", year_from:2022, year_to:null, power_hp:830, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Ferrari", model:"F8 Tributo", variant:"V8", year_from:2019, year_to:null, power_hp:720, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Ferrari", model:"SF90 Stradale", variant:"V8 PHEV", year_from:2020, year_to:null, power_hp:1000, fuel_type:"Plug-in Hybrid", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Ferrari", model:"812 Superfast", variant:"V12", year_from:2017, year_to:null, power_hp:800, fuel_type:"Petrol", transmission:"Automatic", body_type:"Coupe" },
+  { make:"Ferrari", model:"Purosangue", variant:"V12", year_from:2023, year_to:null, power_hp:725, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"Ferrari", model:"Portofino M", variant:"V8", year_from:2021, year_to:null, power_hp:620, fuel_type:"Petrol", transmission:"Automatic", body_type:"Convertible" },
+
+  // ── Lancia ──
+  { make:"Lancia", model:"Ypsilon", variant:"1.0 Hybrid", year_from:2020, year_to:null, power_hp:70, fuel_type:"Hybrid", transmission:"Manual", body_type:"Hatchback" },
+  { make:"Lancia", model:"Ypsilon", variant:"Electric", year_from:2024, year_to:null, power_hp:156, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+
+  // ── Ssangyong / KGM ──
+  { make:"SsangYong", model:"Tivoli", variant:"1.5 GDI Turbo", year_from:2019, year_to:null, power_hp:163, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"SsangYong", model:"Korando", variant:"1.5 GDI Turbo", year_from:2019, year_to:null, power_hp:163, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"SsangYong", model:"Korando", variant:"e-Motion EV", year_from:2022, year_to:null, power_hp:190, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"SsangYong", model:"Torres", variant:"1.5 GDI Turbo", year_from:2023, year_to:null, power_hp:163, fuel_type:"Petrol", transmission:"Automatic", body_type:"SUV" },
+  { make:"SsangYong", model:"Rexton", variant:"2.2 Diesel", year_from:2017, year_to:null, power_hp:202, fuel_type:"Diesel", transmission:"Automatic", body_type:"SUV" },
+
+  // ── GWM / ORA ──
+  { make:"ORA", model:"Funky Cat", variant:"GT", year_from:2023, year_to:null, power_hp:171, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+  { make:"ORA", model:"Funky Cat", variant:"GT Pro", year_from:2023, year_to:null, power_hp:171, fuel_type:"Electric", transmission:"Automatic", body_type:"Hatchback" },
+
+  // ── Aiways ──
+  { make:"Aiways", model:"U5", variant:"Standard", year_from:2021, year_to:null, power_hp:204, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"Aiways", model:"U6", variant:"Standard", year_from:2023, year_to:null, power_hp:218, fuel_type:"Electric", transmission:"Automatic", body_type:"Coupe" },
+
+  // ── NIO ──
+  { make:"NIO", model:"ET5", variant:"75 kWh", year_from:2022, year_to:null, power_hp:490, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"NIO", model:"ET7", variant:"75 kWh", year_from:2022, year_to:null, power_hp:653, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
+  { make:"NIO", model:"EL6", variant:"75 kWh", year_from:2022, year_to:null, power_hp:490, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"NIO", model:"EL7", variant:"75 kWh", year_from:2022, year_to:null, power_hp:653, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+
+  // ── XPeng ──
+  { make:"XPeng", model:"G6", variant:"Standard Range", year_from:2024, year_to:null, power_hp:296, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"XPeng", model:"G9", variant:"Standard Range", year_from:2023, year_to:null, power_hp:313, fuel_type:"Electric", transmission:"Automatic", body_type:"SUV" },
+  { make:"XPeng", model:"P7", variant:"Standard", year_from:2023, year_to:null, power_hp:308, fuel_type:"Electric", transmission:"Automatic", body_type:"Sedan" },
 ];
 
 Deno.serve(async (req: Request) => {
