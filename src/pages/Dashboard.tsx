@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import {
   Car, TrendingUp, Users, DollarSign, Plus, Eye, Edit,
   ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle, Trash2, Pencil, Lock, CreditCard,
+  Bookmark, Handshake,
 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
@@ -58,6 +59,7 @@ const Dashboard: React.FC = () => {
   const [cars, setCars] = useState<CarListing[]>([]);
   const [matches, setMatches] = useState<MatchData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [carStats, setCarStats] = useState<Record<string, { views: number; shortlists: number; negotiations: number }>>({});
 
   useEffect(() => {
     const init = async () => {
@@ -73,7 +75,28 @@ const Dashboard: React.FC = () => {
         supabase.from("matches").select("id, car_id, match_score, status, created_at").eq("user_id", session.user.id).order("created_at", { ascending: false }),
       ]);
 
-      if (carsResult.data) setCars(carsResult.data);
+      if (carsResult.data) {
+        setCars(carsResult.data);
+
+        // Fetch engagement stats for all cars
+        const carIds = carsResult.data.map((c: any) => c.id);
+        if (carIds.length > 0) {
+          const [viewsRes, shortlistsRes, offersRes] = await Promise.all([
+            supabase.from("car_views").select("car_id").in("car_id", carIds),
+            supabase.from("car_shortlists").select("car_id").in("car_id", carIds),
+            supabase.from("offers").select("car_id").in("car_id", carIds),
+          ]);
+
+          const statsMap: Record<string, { views: number; shortlists: number; negotiations: number }> = {};
+          carIds.forEach((id: string) => { statsMap[id] = { views: 0, shortlists: 0, negotiations: 0 }; });
+
+          (viewsRes.data || []).forEach((r: any) => { if (statsMap[r.car_id]) statsMap[r.car_id].views++; });
+          (shortlistsRes.data || []).forEach((r: any) => { if (statsMap[r.car_id]) statsMap[r.car_id].shortlists++; });
+          (offersRes.data || []).forEach((r: any) => { if (statsMap[r.car_id]) statsMap[r.car_id].negotiations++; });
+
+          setCarStats(statsMap);
+        }
+      }
       if (matchesResult.data) setMatches(matchesResult.data);
       setLoading(false);
     };
@@ -196,6 +219,18 @@ const Dashboard: React.FC = () => {
                               <Lock className="h-2.5 w-2.5" /> Not Placed
                             </span>
                           )}
+                        </div>
+                        {/* Engagement Stats */}
+                        <div className="flex items-center gap-3 mt-1.5">
+                          <span className="flex items-center gap-1 text-[11px] text-silver/40">
+                            <Eye className="h-3 w-3" /> {carStats[car.id]?.views ?? 0}
+                          </span>
+                          <span className="flex items-center gap-1 text-[11px] text-silver/40">
+                            <Bookmark className="h-3 w-3" /> {carStats[car.id]?.shortlists ?? 0}
+                          </span>
+                          <span className="flex items-center gap-1 text-[11px] text-silver/40">
+                            <Handshake className="h-3 w-3" /> {carStats[car.id]?.negotiations ?? 0}
+                          </span>
                         </div>
                       </div>
                       <div className="flex gap-1 shrink-0">
