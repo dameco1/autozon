@@ -11,3 +11,9 @@ verify_jwt = false
 
 [functions.market-comparison]
 verify_jwt = false
+
+[functions.create-placement-checkout]
+verify_jwt = false
+
+[functions.verify-placement]
+verify_jwt = false

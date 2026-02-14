@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
-import { Users, MapPin, Target, Clock, Star, Building2, User, Lock, CreditCard } from "lucide-react";
+import { Users, MapPin, Target, Clock, Star, Building2, User, Lock, CreditCard, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -31,12 +31,30 @@ interface CarInfo {
 
 const BuyerMatches: React.FC = () => {
   const { carId } = useParams<{ carId: string }>();
+  const [searchParams] = useSearchParams();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [buyers, setBuyers] = useState<(Buyer & { matchScore: number })[]>([]);
   const [car, setCar] = useState<CarInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPaid, setIsPaid] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+
+  // Verify payment on return from Stripe
+  useEffect(() => {
+    const verifyPayment = async () => {
+      if (searchParams.get("placement") === "success" && carId) {
+        const { data } = await supabase.functions.invoke("verify-placement", {
+          body: { carId },
+        });
+        if (data?.paid) {
+          setIsPaid(true);
+          toast.success("Placement activated!");
+        }
+      }
+    };
+    verifyPayment();
+  }, [searchParams, carId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,11 +87,20 @@ const BuyerMatches: React.FC = () => {
   }, [carId]);
 
   const handlePayPlacement = async () => {
-    // TODO: Integrate with Stripe for real payment
-    toast.info("Payment integration coming soon. For now, placement is activated.");
-    if (carId) {
-      await supabase.from("cars").update({ placement_paid: true } as any).eq("id", carId);
-      setIsPaid(true);
+    setPaymentLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-placement-checkout", {
+        body: { carId },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to start checkout. Please try again.");
+    } finally {
+      setPaymentLoading(false);
     }
   };
 
@@ -128,8 +155,10 @@ const BuyerMatches: React.FC = () => {
               size="lg"
               className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-8 rounded-xl whitespace-nowrap"
               onClick={handlePayPlacement}
+              disabled={paymentLoading}
             >
-              <CreditCard className="mr-2 h-5 w-5" /> {t.buyerMatches.paywall.cta}
+              {paymentLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <CreditCard className="mr-2 h-5 w-5" />}
+              {paymentLoading ? "Redirecting..." : t.buyerMatches.paywall.cta}
             </Button>
           </motion.div>
         )}
