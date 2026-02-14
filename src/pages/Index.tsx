@@ -9,6 +9,8 @@ import HeroProcessCircle from "@/components/home/HeroProcessCircle";
 import CarTicker from "@/components/home/CarTicker";
 import CookieConsent from "@/components/CookieConsent";
 import SEO from "@/components/SEO";
+import graffitiSellers from "@/assets/home/graffiti-sellers.png";
+import graffitiBuyers from "@/assets/home/graffiti-buyers.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -71,6 +73,7 @@ const Index: React.FC = () => {
                 className="bg-secondary/60 border border-border rounded-2xl p-6 hover:border-primary/40 transition-all"
                 initial="hidden" animate="visible" variants={fadeUp} custom={2}
               >
+                <img src={graffitiSellers} alt="Hey Sellers!" className="h-10 object-contain mb-2" />
                 <TrendingUp className="h-8 w-8 text-primary mb-3" />
                 <h3 className="text-lg font-display font-bold text-white mb-2">{t.hero.sellerHook}</h3>
                 <p className="text-silver/60 text-sm leading-relaxed mb-4">{t.hero.sellerBody}</p>
@@ -88,6 +91,7 @@ const Index: React.FC = () => {
                 className="bg-secondary/60 border border-border rounded-2xl p-6 hover:border-primary/40 transition-all"
                 initial="hidden" animate="visible" variants={fadeUp} custom={3}
               >
+                <img src={graffitiBuyers} alt="Hey Buyers!" className="h-10 object-contain mb-2" />
                 <ShieldCheck className="h-8 w-8 text-primary mb-3" />
                 <h3 className="text-lg font-display font-bold text-white mb-2">{t.hero.buyerHook}</h3>
                 <p className="text-silver/60 text-sm leading-relaxed mb-4">{t.hero.buyerBody}</p>
