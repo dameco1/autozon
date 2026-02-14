@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 
 interface CarFull {
   id: string;
@@ -37,6 +37,24 @@ const CarDetail: React.FC = () => {
    const [car, setCar] = useState<CarFull | null>(null);
    const [loading, setLoading] = useState(true);
    const [activePhoto, setActivePhoto] = useState(0);
+   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+   const openLightbox = useCallback((index: number) => {
+     setActivePhoto(index);
+     setLightboxOpen(true);
+   }, []);
+
+   useEffect(() => {
+     if (!lightboxOpen) return;
+     const handleKey = (e: KeyboardEvent) => {
+       if (e.key === "Escape") setLightboxOpen(false);
+       if (e.key === "ArrowRight") setActivePhoto((p) => (p + 1) % (car?.photos?.length || 1));
+       if (e.key === "ArrowLeft") setActivePhoto((p) => (p - 1 + (car?.photos?.length || 1)) % (car?.photos?.length || 1));
+     };
+     document.body.style.overflow = "hidden";
+     window.addEventListener("keydown", handleKey);
+     return () => { window.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
+   }, [lightboxOpen, car?.photos?.length]);
    
    const pageTitle = car ? `${car.year} ${car.make} ${car.model} - Fair Value & Details` : "Car Details";
    const pageDescription = car 
@@ -145,22 +163,25 @@ const CarDetail: React.FC = () => {
             className="mb-8 rounded-2xl overflow-hidden border border-border"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
           >
-            <div className="relative aspect-[16/9] bg-charcoal/50">
+            <div className="relative aspect-[16/9] bg-charcoal/50 cursor-pointer group" onClick={() => openLightbox(activePhoto)}>
               <img
                 src={photos[activePhoto]}
                 alt={`${car.make} ${car.model} photo ${activePhoto + 1}`}
                 className="w-full h-full object-cover"
               />
+              <div className="absolute top-3 right-3 w-9 h-9 rounded-full bg-charcoal/70 border border-border flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                <Maximize2 className="h-4 w-4" />
+              </div>
               {photos.length > 1 && (
                 <>
                   <button
-                    onClick={() => setActivePhoto((p) => (p - 1 + photos.length) % photos.length)}
+                    onClick={(e) => { e.stopPropagation(); setActivePhoto((p) => (p - 1 + photos.length) % photos.length); }}
                     className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-charcoal/70 border border-border flex items-center justify-center text-white hover:bg-charcoal transition-colors"
                   >
                     <ChevronLeft className="h-5 w-5" />
                   </button>
                   <button
-                    onClick={() => setActivePhoto((p) => (p + 1) % photos.length)}
+                    onClick={(e) => { e.stopPropagation(); setActivePhoto((p) => (p + 1) % photos.length); }}
                     className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-charcoal/70 border border-border flex items-center justify-center text-white hover:bg-charcoal transition-colors"
                   >
                     <ChevronRight className="h-5 w-5" />
@@ -169,7 +190,7 @@ const CarDetail: React.FC = () => {
                     {photos.map((_, i) => (
                       <button
                         key={i}
-                        onClick={() => setActivePhoto(i)}
+                        onClick={(e) => { e.stopPropagation(); setActivePhoto(i); }}
                         className={`w-2 h-2 rounded-full transition-all ${i === activePhoto ? "bg-primary w-5" : "bg-white/40 hover:bg-white/60"}`}
                       />
                     ))}
@@ -331,6 +352,67 @@ const CarDetail: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Fullscreen Lightbox */}
+      <AnimatePresence>
+        {lightboxOpen && photos.length > 0 && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/95 flex flex-col"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setLightboxOpen(false)}
+          >
+            {/* Top bar */}
+            <div className="flex items-center justify-between p-4">
+              <span className="text-white/60 text-sm">{activePhoto + 1} / {photos.length}</span>
+              <button onClick={() => setLightboxOpen(false)} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Main image */}
+            <div className="flex-1 flex items-center justify-center px-16 pb-4 relative" onClick={(e) => e.stopPropagation()}>
+              {photos.length > 1 && (
+                <button
+                  onClick={() => setActivePhoto((p) => (p - 1 + photos.length) % photos.length)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+              )}
+              <motion.img
+                key={activePhoto}
+                src={photos[activePhoto]}
+                alt={`${car.make} ${car.model} photo ${activePhoto + 1}`}
+                className="max-h-full max-w-full object-contain rounded-lg"
+                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.2 }}
+              />
+              {photos.length > 1 && (
+                <button
+                  onClick={() => setActivePhoto((p) => (p + 1) % photos.length)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              )}
+            </div>
+
+            {/* Thumbnail strip */}
+            {photos.length > 1 && (
+              <div className="flex gap-2 justify-center p-4 overflow-x-auto" onClick={(e) => e.stopPropagation()}>
+                {photos.map((url, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActivePhoto(i)}
+                    className={`w-16 h-12 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${i === activePhoto ? "border-primary" : "border-transparent opacity-50 hover:opacity-100"}`}
+                  >
+                    <img src={url} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
