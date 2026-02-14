@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useCarMakes } from "@/hooks/useCarModels";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Car, ArrowRight, ArrowLeft, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-
-const BRANDS = ["Audi", "BMW", "Mercedes-Benz", "Volkswagen", "Porsche", "Opel", "Ford", "Toyota", "Hyundai", "Kia", "Skoda", "SEAT", "Peugeot", "Renault", "Volvo", "Fiat", "Mazda", "Honda", "Nissan", "Tesla"];
 const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
 const FUEL_TYPES = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
 const TRANSMISSIONS = ["Manual", "Automatic"];
@@ -22,6 +21,7 @@ const TOTAL_STEPS = 10;
 const BuyerQuestionnaire: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { data: dbMakes } = useCarMakes();
   const [step, setStep] = useState(1);
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -124,7 +124,7 @@ const BuyerQuestionnaire: React.FC = () => {
         return (
           <div>
             <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q1}</h2>
-            {renderMultiSelect(BRANDS, brands, setBrands, 3)}
+            {renderMultiSelect(dbMakes || [], brands, setBrands, 3)}
           </div>
         );
       case 2:
