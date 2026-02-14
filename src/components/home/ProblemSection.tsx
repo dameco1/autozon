@@ -20,7 +20,7 @@ const ProblemSection: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 relative z-10">
         <motion.div className="mb-20" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <span className="text-xs font-semibold tracking-widest uppercase text-destructive/80 mb-4 block">{t.problem.badge}</span>
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-display font-black text-white leading-[0.92]">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-[0.95]">
             {t.problem.title}
             <br />
             <span className="text-destructive">{t.problem.titleAccent}</span>

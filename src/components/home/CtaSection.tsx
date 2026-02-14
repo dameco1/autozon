@@ -21,7 +21,7 @@ const CtaSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h2 className="text-5xl sm:text-7xl font-display font-black text-white leading-[0.92] mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-[0.95] mb-4">
             {t.cta.title}
             <br />
             <span className="text-gradient">{t.cta.titleAccent}</span>
