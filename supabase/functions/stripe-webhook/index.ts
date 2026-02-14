@@ -55,17 +55,39 @@ serve(async (req) => {
         { auth: { persistSession: false } },
       );
 
-      const { error } = await supabase
-        .from("cars")
-        .update({ placement_paid: true })
-        .eq("id", carId);
+      // Fetch car details for notification message
+      const [updateResult, carResult] = await Promise.all([
+        supabase.from("cars").update({ placement_paid: true }).eq("id", carId),
+        supabase.from("cars").select("make, model, year").eq("id", carId).single(),
+      ]);
 
-      if (error) {
-        console.error(`[STRIPE-WEBHOOK] DB update failed:`, error);
+      if (updateResult.error) {
+        console.error(`[STRIPE-WEBHOOK] DB update failed:`, updateResult.error);
         return new Response("DB update failed", { status: 500 });
       }
 
       console.log(`[STRIPE-WEBHOOK] Car ${carId} placement_paid set to true`);
+
+      // Create notification for the seller
+      if (userId) {
+        const carLabel = carResult.data
+          ? `${carResult.data.year} ${carResult.data.make} ${carResult.data.model}`
+          : "Your car";
+
+        const { error: notifError } = await supabase.from("notifications").insert({
+          user_id: userId,
+          title: "Placement Confirmed ✅",
+          message: `Payment received — ${carLabel} is now live and visible to matched buyers.`,
+          type: "payment",
+          link: `/buyer-matches/${carId}`,
+        });
+
+        if (notifError) {
+          console.error(`[STRIPE-WEBHOOK] Notification insert failed:`, notifError);
+        } else {
+          console.log(`[STRIPE-WEBHOOK] Notification created for user ${userId}`);
+        }
+      }
     }
   }
 
