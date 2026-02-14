@@ -88,14 +88,14 @@ const FairValueResult: React.FC = () => {
       const md = result as MarketData;
       setMarketData(md);
 
-      // Blend: 60% formula-based + 40% market average, capped at 105% of asking
-      const blended = Math.round(carData.fair_value_price * 0.6 + md.avg_price * 0.4);
-      const capped = Math.min(blended, Math.round(carData.price * 1.05));
-      setBlendedValue(capped);
+      // Blend: 30% formula-based + 70% market average — market insists on fair value
+      // No cap on asking price: if user overprices, fair value will reflect true market
+      const blended = Math.round(carData.fair_value_price * 0.3 + md.avg_price * 0.7);
+      setBlendedValue(blended);
 
       // Update the car record with the blended fair value
-      await supabase.from("cars").update({ fair_value_price: capped, market_blended: true } as any).eq("id", carData.id);
-      setCar((prev) => prev ? { ...prev, fair_value_price: capped } : prev);
+      await supabase.from("cars").update({ fair_value_price: blended, market_blended: true } as any).eq("id", carData.id);
+      setCar((prev) => prev ? { ...prev, fair_value_price: blended } : prev);
     } catch (e) {
       console.error("Market comparison error:", e);
       setMarketError(true);
