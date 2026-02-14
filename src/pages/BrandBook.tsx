@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import bannerImg from "@/assets/autozon-banner.jpg";
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
@@ -170,6 +171,26 @@ const BrandBook = () => {
             <p className="text-silver/50 text-sm leading-relaxed">
               Maintain a minimum clear space equal to the height of the letter "a" around all sides of the wordmark. Never stretch, rotate, or apply effects to the logo.
             </p>
+          </div>
+        </Section>
+
+        {/* ─── Banner ─── */}
+        <Section title="Banner" subtitle="A ready-to-use 1088×512 banner featuring the autozon wordmark and tagline on charcoal. Suitable for social headers, event backdrops, and email headers.">
+          <div className="space-y-6">
+            <div className="rounded-2xl border border-white/10 overflow-hidden shadow-lg">
+              <img src={bannerImg} alt="autozon banner" className="w-full h-auto" />
+            </div>
+            <button
+              onClick={() => {
+                const a = document.createElement("a");
+                a.href = bannerImg;
+                a.download = "autozon-banner.jpg";
+                a.click();
+              }}
+              className="bg-secondary text-silver text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
+            >
+              ↓ Download Banner (JPG)
+            </button>
           </div>
         </Section>
 
