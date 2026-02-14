@@ -118,19 +118,32 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   });
 
   // 3. EXTERIOR CONDITION (recentered: avg 75 = ~1.0)
+  // Cross-reference with AI damage scan to avoid contradictory messaging
   const condExt = car.condition_exterior ?? 80;
+  const damages = car.detected_damages ?? [];
+  const aiFoundNoDamages = Array.isArray(damages) && damages.length === 0;
   const condExtFactor = 0.85 + (condExt / 100) * 0.17;
   const extEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condExtFactor - 1) * 0.5);
+
+  // If AI scan passed clean but user rated low, nudge them to re-evaluate
+  let extExplanation: string;
+  if (condExt >= 90) {
+    extExplanation = a.exterior.explainExcellent;
+  } else if (condExt >= 70) {
+    extExplanation = a.exterior.explainGood;
+  } else if (aiFoundNoDamages && condExt < 70) {
+    // AI found no damage but user self-rated low — highlight mismatch
+    extExplanation = a.exterior.explainAiMismatch ?? `You rated the exterior at ${condExt}/100, but the AI damage scan found no visible defects. Consider re-evaluating your rating to better reflect the car's actual condition.`;
+  } else if (condExt >= 50) {
+    extExplanation = a.exterior.explainFair;
+  } else {
+    extExplanation = a.exterior.explainPoor;
+  }
+
   factors.push({
     id: "exterior",
     label: a.exterior.label,
-    explanation: condExt >= 90
-      ? a.exterior.explainExcellent
-      : condExt >= 70
-        ? a.exterior.explainGood
-        : condExt >= 50
-          ? a.exterior.explainFair
-          : a.exterior.explainPoor,
+    explanation: extExplanation,
     euroImpact: extEuro,
     percentImpact: (condExtFactor - 1) * 100 * 0.5,
     barValue: condExt,
