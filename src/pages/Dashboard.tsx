@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
-  Car, TrendingUp, Users, DollarSign, Plus, Eye, Edit,
+  Car, TrendingUp, Users, DollarSign, Plus, Eye, Edit, ExternalLink,
   ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle, Trash2, Pencil, Lock, CreditCard,
   Bookmark, Handshake, BadgeCheck, Loader2,
 } from "lucide-react";
@@ -254,8 +254,11 @@ const Dashboard: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex gap-1 shrink-0">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/fair-value/${car.id}`)}>
-                          <Eye className="h-4 w-4" />
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" title={t.dashboard.viewAd} onClick={() => navigate(`/car/${car.id}`)}>
+                          <ExternalLink className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
+                          <BarChart3 className="h-4 w-4" />
                         </Button>
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
                           <Pencil className="h-4 w-4" />

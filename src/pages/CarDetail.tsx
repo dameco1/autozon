@@ -8,7 +8,7 @@ import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check } from "lucide-react";
+import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CarFull {
   id: string;
@@ -27,6 +27,7 @@ interface CarFull {
   demand_score: number;
   equipment: string[] | null;
   description: string | null;
+  photos: string[] | null;
 }
 
 const CarDetail: React.FC = () => {
@@ -35,6 +36,7 @@ const CarDetail: React.FC = () => {
    const navigate = useNavigate();
    const [car, setCar] = useState<CarFull | null>(null);
    const [loading, setLoading] = useState(true);
+   const [activePhoto, setActivePhoto] = useState(0);
    
    const pageTitle = car ? `${car.year} ${car.make} ${car.model} - Fair Value & Details` : "Car Details";
    const pageDescription = car 
@@ -50,7 +52,7 @@ const CarDetail: React.FC = () => {
     if (!id) return;
     supabase
       .from("cars")
-      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description")
+      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos")
       .eq("id", id)
       .single()
       .then(({ data }) => {
@@ -68,6 +70,8 @@ const CarDetail: React.FC = () => {
   if (!car) {
     return <div className="min-h-screen bg-charcoal flex items-center justify-center"><span className="text-silver/60">Car not found</span></div>;
   }
+
+  const photos = car.photos && car.photos.length > 0 ? car.photos : [];
 
   // Financing calculations
   const loanAmount = Math.max(0, car.price - downPayment);
@@ -115,14 +119,13 @@ const CarDetail: React.FC = () => {
         </Button>
 
         {/* Header */}
-        <motion.div className="mb-10" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div className="mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="text-4xl sm:text-5xl font-display font-black text-white">
             {car.year} {car.make} {car.model}
           </h1>
-          {car.description && <p className="text-silver/60 mt-3 text-lg">{car.description}</p>}
 
           {/* Price row */}
-          <div className="flex items-center gap-6 mt-6">
+          <div className="flex items-center gap-6 mt-4">
             <div>
               <div className="text-xs text-silver/40">{t.carDetail.price}</div>
               <div className="text-3xl font-display font-black text-white">€{car.price.toLocaleString()}</div>
@@ -135,6 +138,72 @@ const CarDetail: React.FC = () => {
             )}
           </div>
         </motion.div>
+
+        {/* Photo Gallery */}
+        {photos.length > 0 && (
+          <motion.div
+            className="mb-8 rounded-2xl overflow-hidden border border-border"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
+          >
+            <div className="relative aspect-[16/9] bg-charcoal/50">
+              <img
+                src={photos[activePhoto]}
+                alt={`${car.make} ${car.model} photo ${activePhoto + 1}`}
+                className="w-full h-full object-cover"
+              />
+              {photos.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setActivePhoto((p) => (p - 1 + photos.length) % photos.length)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-charcoal/70 border border-border flex items-center justify-center text-white hover:bg-charcoal transition-colors"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => setActivePhoto((p) => (p + 1) % photos.length)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-charcoal/70 border border-border flex items-center justify-center text-white hover:bg-charcoal transition-colors"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                    {photos.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActivePhoto(i)}
+                        className={`w-2 h-2 rounded-full transition-all ${i === activePhoto ? "bg-primary w-5" : "bg-white/40 hover:bg-white/60"}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            {/* Thumbnail strip */}
+            {photos.length > 1 && (
+              <div className="flex gap-1 p-2 bg-secondary/50 overflow-x-auto">
+                {photos.map((url, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActivePhoto(i)}
+                    className={`w-20 h-14 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${i === activePhoto ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"}`}
+                  >
+                    <img src={url} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* Description */}
+        {car.description && (
+          <motion.div
+            className="bg-secondary/50 border border-border rounded-2xl p-6 mb-6"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}
+          >
+            <h3 className="font-display font-bold text-white text-lg mb-3">{t.carDetail.description}</h3>
+            <p className="text-silver/70 leading-relaxed whitespace-pre-line">{car.description}</p>
+          </motion.div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Specs + Equipment */}

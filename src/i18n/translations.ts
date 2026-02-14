@@ -174,6 +174,8 @@ export const translations = {
       accidentNo: "No",
       accidentDetails: "Accident details",
       description: "Additional description",
+      generateDescription: "Generate with AI",
+      generatingDescription: "Generating...",
       conditionScale: { poor: "Poor", fair: "Fair", good: "Good", excellent: "Excellent" },
       photos: {
         title: "Car Photos",
@@ -447,6 +449,8 @@ export const translations = {
       startTrade: "Start Trade",
       addToShortlist: "Add to Shortlist",
       back: "Back to Results",
+      photos: "Photos",
+      description: "Description",
     },
     intent: {
       title: "What brings you here?",
@@ -572,6 +576,8 @@ export const translations = {
       uploadACar: "Upload a car",
       buyOrSell: "Buy or Sell",
       myRecommendations: "My Recommendations",
+      viewAd: "View Ad",
+      valuation: "Valuation",
     },
   },
   de: {
@@ -747,6 +753,8 @@ export const translations = {
       accidentNo: "Nein",
       accidentDetails: "Unfalldetails",
       description: "Zusätzliche Beschreibung",
+      generateDescription: "Mit KI generieren",
+      generatingDescription: "Wird generiert...",
       conditionScale: { poor: "Schlecht", fair: "Akzeptabel", good: "Gut", excellent: "Ausgezeichnet" },
       photos: {
         title: "Fahrzeugfotos",
@@ -1020,6 +1028,8 @@ export const translations = {
       startTrade: "Handel starten",
       addToShortlist: "Merken",
       back: "Zurück zu Ergebnissen",
+      photos: "Fotos",
+      description: "Beschreibung",
     },
     intent: {
       title: "Was führt Sie hierher?",
@@ -1145,6 +1155,8 @@ export const translations = {
       uploadACar: "Auto hochladen",
       buyOrSell: "Kaufen oder Verkaufen",
       myRecommendations: "Meine Empfehlungen",
+      viewAd: "Anzeige ansehen",
+      valuation: "Bewertung",
     },
   },
 } as const;
