@@ -10,7 +10,7 @@ const CtaSection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="py-32 sm:py-40 relative overflow-hidden">
+    <section className="py-16 sm:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-secondary via-charcoal to-charcoal" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,hsl(155_100%_42%/0.06),transparent)]" />
 

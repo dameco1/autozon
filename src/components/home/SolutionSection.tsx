@@ -18,10 +18,10 @@ const SolutionSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-28 sm:py-36 bg-charcoal relative">
+    <section className="py-14 sm:py-18 bg-charcoal relative">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_100%,hsl(155_100%_42%/0.04),transparent)]" />
       <div className="max-w-6xl mx-auto px-4 relative z-10">
-        <motion.div className="mb-20" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
+        <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <span className="text-xs font-semibold tracking-widest uppercase text-primary/80 mb-4 block">{t.solution.badge}</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">{t.solution.title}</h2>
         </motion.div>
