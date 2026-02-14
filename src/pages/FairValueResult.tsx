@@ -128,9 +128,22 @@ const FairValueResult: React.FC = () => {
 
   const displayFairValue = blendedValue ?? car.fair_value_price;
 
+  // Car-specific depreciation curve based on brand tier, age, fuel type
+  const iconicBrands = ["Porsche", "Tesla"];
+  const premiumBrands = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
+  const isIconic = iconicBrands.includes(car.make);
+  const isPremium = premiumBrands.includes(car.make);
+  // Monthly depreciation rate varies by brand tier and fuel type
+  const baseMonthlyDep = isIconic ? 0.003 : isPremium ? 0.005 : 0.008;
+  const fuelAdjust: Record<string, number> = { Electric: 0.85, Hybrid: 0.92, "Plug-in Hybrid": 0.90, Petrol: 1.0, Diesel: 1.1 };
+  const monthlyDep = baseMonthlyDep * (fuelAdjust[car.fuel_type] ?? 1.0);
+  // Older cars depreciate slower (flattening curve)
+  const carAge = 2026 - car.year;
+  const ageFlatFactor = carAge > 5 ? 0.6 : carAge > 3 ? 0.8 : 1.0;
+
   const depreciationData = Array.from({ length: 13 }, (_, i) => ({
     month: `M${i}`,
-    value: Math.round(displayFairValue * Math.pow(0.993, i)),
+    value: Math.round(displayFairValue * Math.pow(1 - monthlyDep * ageFlatFactor, i)),
   }));
 
   const scoreBadge = (score: number) => {
