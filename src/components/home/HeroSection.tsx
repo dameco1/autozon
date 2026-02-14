@@ -28,7 +28,7 @@ const HeroSection: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsl(155_100%_42%/0.08),transparent)]" />
 
       {/* Subtle car images grid in background */}
-      <div className="absolute inset-0 grid grid-cols-3 gap-2 p-4 opacity-[0.04]">
+      <div className="absolute inset-0 grid grid-cols-3 gap-2 p-4 opacity-[0.12]">
         {bgImages.map((car, i) => (
           <img
             key={i}
@@ -40,7 +40,7 @@ const HeroSection: React.FC = () => {
         ))}
       </div>
       {/* Dark overlay to keep text readable */}
-      <div className="absolute inset-0 bg-charcoal/70" />
+      <div className="absolute inset-0 bg-charcoal/60" />
 
       {/* Grid pattern overlay */}
       <div
