@@ -15,10 +15,10 @@ const ProblemSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-28 sm:py-36 bg-secondary relative overflow-hidden">
+    <section className="py-14 sm:py-18 bg-secondary relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,hsl(0_84%_60%/0.04),transparent)]" />
       <div className="max-w-6xl mx-auto px-4 relative z-10">
-        <motion.div className="mb-20" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
+        <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <span className="text-xs font-semibold tracking-widest uppercase text-destructive/80 mb-4 block">{t.problem.badge}</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-[0.95]">
             {t.problem.title}

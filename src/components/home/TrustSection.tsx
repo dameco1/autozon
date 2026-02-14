@@ -16,9 +16,9 @@ const TrustSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="why-autozon" className="py-28 sm:py-36 bg-charcoal">
+    <section id="why-autozon" className="py-14 sm:py-18 bg-charcoal">
       <div className="max-w-6xl mx-auto px-4">
-        <motion.div className="mb-20" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
+        <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <span className="text-xs font-semibold tracking-widest uppercase text-primary/80 mb-4 block">{t.trust.badge}</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">{t.trust.title}</h2>
         </motion.div>
