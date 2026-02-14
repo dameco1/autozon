@@ -57,8 +57,8 @@ const Index: React.FC = () => {
           />
         ))}
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center justify-items-center">
-          <div className="text-center lg:text-left">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left lg:justify-self-start">
             <motion.h1
               className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-[0.95] tracking-tight mb-8"
               initial="hidden" animate="visible" variants={fadeUp} custom={1}
@@ -107,7 +107,7 @@ const Index: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:block"
+            className="hidden lg:flex lg:justify-center"
           >
             <HeroProcessCircle />
           </motion.div>
