@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import {
   Car, TrendingUp, Users, DollarSign, Plus, Eye, Edit,
   ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle, Trash2, Pencil, Lock, CreditCard,
-  Bookmark, Handshake,
+  Bookmark, Handshake, BadgeCheck, Loader2,
 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
@@ -60,6 +60,7 @@ const Dashboard: React.FC = () => {
   const [matches, setMatches] = useState<MatchData[]>([]);
   const [loading, setLoading] = useState(true);
   const [carStats, setCarStats] = useState<Record<string, { views: number; shortlists: number; negotiations: number }>>({});
+  const [placingCarId, setPlacingCarId] = useState<string | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -168,6 +169,25 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
 
+        {/* Placement Confirmation Banner */}
+        {cars.some(c => c.placement_paid) && (
+          <motion.div
+            className="mb-6 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-4"
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          >
+            <div className="flex items-center gap-3">
+              <BadgeCheck className="h-5 w-5 text-emerald-400 shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm font-display font-bold text-emerald-400">Placement Active</p>
+                <p className="text-xs text-silver/50 mt-0.5">
+                  {cars.filter(c => c.placement_paid).map(c => `${c.year} ${c.make} ${c.model}`).join(", ")}
+                  {" — "}Your {cars.filter(c => c.placement_paid).length === 1 ? "listing is" : "listings are"} live and visible to matched buyers.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* My Cars */}
           <motion.div className="lg:col-span-2" initial="hidden" animate="visible" variants={fadeUp} custom={5}>
@@ -249,14 +269,25 @@ const Dashboard: React.FC = () => {
                             variant="ghost"
                             size="sm"
                             className="h-8 text-amber-400 hover:text-amber-300 text-xs font-semibold gap-1"
+                            disabled={placingCarId === car.id}
                             onClick={async () => {
-                              // TODO: Integrate with Stripe
-                              toast.info("Payment integration coming soon. Placement activated.");
-                              await supabase.from("cars").update({ placement_paid: true } as any).eq("id", car.id);
-                              setCars((prev) => prev.map((c) => c.id === car.id ? { ...c, placement_paid: true } : c));
+                              setPlacingCarId(car.id);
+                              try {
+                                const { data, error } = await supabase.functions.invoke("create-placement-checkout", {
+                                  body: { carId: car.id },
+                                });
+                                if (error) throw error;
+                                if (data?.url) window.location.href = data.url;
+                              } catch (err) {
+                                console.error(err);
+                                toast.error("Failed to start checkout.");
+                              } finally {
+                                setPlacingCarId(null);
+                              }
                             }}
                           >
-                            <CreditCard className="h-3.5 w-3.5" /> Place Ad
+                            {placingCarId === car.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CreditCard className="h-3.5 w-3.5" />}
+                            {placingCarId === car.id ? "..." : "Place Ad"}
                           </Button>
                         )}
                         <AlertDialog>
