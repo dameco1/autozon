@@ -62,6 +62,7 @@ const Dashboard: React.FC = () => {
   const [carStats, setCarStats] = useState<Record<string, { views: number; shortlists: number; negotiations: number }>>({});
   const [placingCarId, setPlacingCarId] = useState<string | null>(null);
   const [activeOffers, setActiveOffers] = useState<{ id: string; car_id: string; amount: number; status: string; current_round: number; created_at: string }[]>([]);
+  const [recentShortlists, setRecentShortlists] = useState<{ id: string; car_id: string; user_id: string; created_at: string }[]>([]);
 
   useEffect(() => {
     const init = async () => {
@@ -84,10 +85,11 @@ const Dashboard: React.FC = () => {
         // Fetch engagement stats for all cars
         const carIds = carsResult.data.map((c: any) => c.id);
         if (carIds.length > 0) {
-          const [viewsRes, shortlistsRes, offersRes] = await Promise.all([
+          const [viewsRes, shortlistsRes, offersRes, recentShortlistsRes] = await Promise.all([
             supabase.from("car_views").select("car_id").in("car_id", carIds),
             supabase.from("car_shortlists").select("car_id").in("car_id", carIds),
             supabase.from("offers").select("car_id").in("car_id", carIds),
+            supabase.from("car_shortlists").select("id, car_id, user_id, created_at").in("car_id", carIds).order("created_at", { ascending: false }).limit(10),
           ]);
 
           const statsMap: Record<string, { views: number; shortlists: number; negotiations: number }> = {};
@@ -98,6 +100,7 @@ const Dashboard: React.FC = () => {
           (offersRes.data || []).forEach((r: any) => { if (statsMap[r.car_id]) statsMap[r.car_id].negotiations++; });
 
           setCarStats(statsMap);
+          if (recentShortlistsRes.data) setRecentShortlists(recentShortlistsRes.data as any);
         }
       }
       if (matchesResult.data) setMatches(matchesResult.data);
@@ -111,7 +114,7 @@ const Dashboard: React.FC = () => {
   const avgCondition = cars.length > 0
     ? Math.round(cars.reduce((sum, c) => sum + (c.condition_score || 0), 0) / cars.length)
     : 0;
-  const activeMatches = matches.filter((m) => m.status === "pending").length + activeOffers.length;
+  const activeMatches = recentShortlists.length + activeOffers.length;
 
   const stats = [
     { label: t.dashboard.listedCars, value: cars.length, icon: Car, color: "text-primary" },
@@ -376,7 +379,7 @@ const Dashboard: React.FC = () => {
               </motion.div>
             )}
 
-            {/* Recent Matches & Negotiations */}
+            {/* Recent Matches (Shortlists — users interested in your cars) */}
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6}>
               <Card className="bg-secondary/50 border-border">
                 <div className="px-6 py-4 border-b border-border">
@@ -384,75 +387,33 @@ const Dashboard: React.FC = () => {
                     <Users className="h-5 w-5 text-amber-400" /> {t.dashboard.recentMatches}
                   </h2>
                 </div>
-                {activeOffers.length === 0 && matches.length === 0 ? (
+                {recentShortlists.length === 0 ? (
                   <p className="p-6 text-sm text-silver/50 text-center">{t.dashboard.noMatchesYet}</p>
                 ) : (
                   <div className="divide-y divide-border">
-                    {/* Show negotiations as matches */}
-                    {activeOffers.slice(0, 5).map((offer) => {
-                      const offerCar = cars.find((c) => c.id === offer.car_id);
+                    {recentShortlists.slice(0, 5).map((sl) => {
+                      const slCar = cars.find((c) => c.id === sl.car_id);
                       return (
                         <div
-                          key={offer.id}
+                          key={sl.id}
                           className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-charcoal/20 transition-colors"
-                          onClick={() => navigate(`/negotiate/${offer.id}`)}
+                          onClick={() => slCar && navigate(`/buyer-matches/${slCar.id}`)}
                         >
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className={`w-2 h-2 rounded-full ${
-                                offer.status === "accepted" ? "bg-emerald-400" :
-                                offer.status === "countered" ? "bg-amber-400" :
-                                offer.status === "rejected" ? "bg-destructive" :
-                                "bg-primary"
-                              }`} />
+                              <Bookmark className="h-3.5 w-3.5 text-amber-400" />
                               <span className="text-sm text-white font-semibold">
-                                {offerCar ? `${offerCar.year} ${offerCar.make} ${offerCar.model}` : "Car"}
+                                {slCar ? `${slCar.year} ${slCar.make} ${slCar.model}` : "Car"}
                               </span>
                             </div>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <span className="text-xs text-silver/40">€{offer.amount.toLocaleString()}</span>
-                              <span className="text-[10px] text-silver/30">
-                                Round {offer.current_round}/3
-                              </span>
-                            </div>
+                            <p className="text-[10px] text-silver/40 mt-0.5 ml-5">
+                              Interested buyer · {new Date(sl.created_at).toLocaleDateString()}
+                            </p>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${
-                              offer.status === "accepted" ? "bg-emerald-500/10 text-emerald-400" :
-                              offer.status === "rejected" ? "bg-destructive/10 text-destructive" :
-                              offer.status === "countered" ? "bg-amber-500/10 text-amber-400" :
-                              "bg-primary/10 text-primary"
-                            }`}>
-                              {offer.status}
-                            </span>
-                            <ArrowRight className="h-4 w-4 text-silver/30" />
-                          </div>
+                          <ArrowRight className="h-4 w-4 text-silver/30" />
                         </div>
                       );
                     })}
-                    {/* Also show legacy matches if any */}
-                    {matches.slice(0, Math.max(0, 5 - activeOffers.length)).map((match) => (
-                      <div key={match.id} className="px-6 py-3 flex items-center justify-between">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className={`w-2 h-2 rounded-full ${
-                              match.match_score >= 85 ? "bg-emerald-400" : match.match_score >= 70 ? "bg-amber-400" : "bg-silver/30"
-                            }`} />
-                            <span className="text-sm text-white font-semibold">{match.match_score}% {t.dashboard.match}</span>
-                          </div>
-                          <p className="text-[10px] text-silver/40 mt-0.5">
-                            {new Date(match.created_at).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${
-                          match.status === "pending" ? "bg-amber-500/10 text-amber-400" :
-                          match.status === "accepted" ? "bg-emerald-500/10 text-emerald-400" :
-                          "bg-silver/10 text-silver/50"
-                        }`}>
-                          {match.status}
-                        </span>
-                      </div>
-                    ))}
                   </div>
                 )}
               </Card>
