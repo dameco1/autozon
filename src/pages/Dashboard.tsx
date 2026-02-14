@@ -376,7 +376,7 @@ const Dashboard: React.FC = () => {
               </motion.div>
             )}
 
-            {/* Recent Matches */}
+            {/* Recent Matches & Negotiations */}
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6}>
               <Card className="bg-secondary/50 border-border">
                 <div className="px-6 py-4 border-b border-border">
@@ -384,11 +384,54 @@ const Dashboard: React.FC = () => {
                     <Users className="h-5 w-5 text-amber-400" /> {t.dashboard.recentMatches}
                   </h2>
                 </div>
-                {matches.length === 0 ? (
+                {activeOffers.length === 0 && matches.length === 0 ? (
                   <p className="p-6 text-sm text-silver/50 text-center">{t.dashboard.noMatchesYet}</p>
                 ) : (
                   <div className="divide-y divide-border">
-                    {matches.slice(0, 5).map((match) => (
+                    {/* Show negotiations as matches */}
+                    {activeOffers.slice(0, 5).map((offer) => {
+                      const offerCar = cars.find((c) => c.id === offer.car_id);
+                      return (
+                        <div
+                          key={offer.id}
+                          className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-charcoal/20 transition-colors"
+                          onClick={() => navigate(`/negotiate/${offer.id}`)}
+                        >
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className={`w-2 h-2 rounded-full ${
+                                offer.status === "accepted" ? "bg-emerald-400" :
+                                offer.status === "countered" ? "bg-amber-400" :
+                                offer.status === "rejected" ? "bg-destructive" :
+                                "bg-primary"
+                              }`} />
+                              <span className="text-sm text-white font-semibold">
+                                {offerCar ? `${offerCar.year} ${offerCar.make} ${offerCar.model}` : "Car"}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <span className="text-xs text-silver/40">€{offer.amount.toLocaleString()}</span>
+                              <span className="text-[10px] text-silver/30">
+                                Round {offer.current_round}/3
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${
+                              offer.status === "accepted" ? "bg-emerald-500/10 text-emerald-400" :
+                              offer.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                              offer.status === "countered" ? "bg-amber-500/10 text-amber-400" :
+                              "bg-primary/10 text-primary"
+                            }`}>
+                              {offer.status}
+                            </span>
+                            <ArrowRight className="h-4 w-4 text-silver/30" />
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {/* Also show legacy matches if any */}
+                    {matches.slice(0, Math.max(0, 5 - activeOffers.length)).map((match) => (
                       <div key={match.id} className="px-6 py-3 flex items-center justify-between">
                         <div>
                           <div className="flex items-center gap-2">
