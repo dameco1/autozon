@@ -26,6 +26,10 @@ export const translations = {
       buyerHook: "Tired of overpriced, unchecked cars?",
       buyerBody: "Every car on Autozon is verified, fairly valued, and matched to you. It's your turn to experience fairness.",
       buyerCta: "Find My Next Car",
+      sellingTitle: "Selling a Car",
+      sellingDesc: "Welcome to the first platform that dynamically scores your car's value and maximizes your sale price. We analyze condition, demand, and market data in real time — then match you with verified buyers ready to pay what it's truly worth.",
+      buyingTitle: "Buying a Car",
+      buyingDesc: "Set up your profile, tell us what you're looking for, and we'll do the rest. Autozon finds the right car, helps you buy it at a fair price, and delivers it straight to your door — inspected, verified, and hassle-free.",
     },
     problem: {
       badge: "The Problem",
@@ -493,6 +497,10 @@ export const translations = {
       buyerHook: "Genug von überteuerten, ungeprüften Autos?",
       buyerBody: "Jedes Auto bei Autozon ist geprüft, fair bewertet und auf Sie abgestimmt. Fairness, die Sie verdienen.",
       buyerCta: "Auto finden",
+      sellingTitle: "Auto verkaufen",
+      sellingDesc: "Willkommen auf der ersten Plattform, die den Wert Ihres Autos dynamisch bewertet und Ihren Verkaufspreis maximiert. Wir analysieren Zustand, Nachfrage und Marktdaten in Echtzeit — und matchen Sie mit verifizierten Käufern, die bereit sind, den echten Wert zu zahlen.",
+      buyingTitle: "Auto kaufen",
+      buyingDesc: "Erstellen Sie Ihr Profil, sagen Sie uns, was Sie suchen, und wir erledigen den Rest. Autozon findet das richtige Auto, hilft Ihnen beim Kauf zum fairen Preis und liefert es direkt vor Ihre Tür — geprüft, verifiziert und ohne Aufwand.",
     },
     problem: {
       badge: "Das Problem",
