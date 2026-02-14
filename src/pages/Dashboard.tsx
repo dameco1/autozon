@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   Car, TrendingUp, Users, DollarSign, Plus, Eye, Edit,
-  ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle, Trash2, Pencil,
+  ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle, Trash2, Pencil, Lock, CreditCard,
 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
@@ -32,6 +32,7 @@ type CarListing = {
   condition_score: number | null;
   demand_score: number | null;
   created_at: string;
+  placement_paid: boolean;
 };
 
 type MatchData = {
@@ -68,7 +69,7 @@ const Dashboard: React.FC = () => {
       setUser(session.user);
 
       const [carsResult, matchesResult] = await Promise.all([
-        supabase.from("cars").select("id, make, model, year, price, fair_value_price, status, image_url, condition_score, demand_score, created_at").eq("owner_id", session.user.id).order("created_at", { ascending: false }),
+        supabase.from("cars").select("id, make, model, year, price, fair_value_price, status, image_url, condition_score, demand_score, created_at, placement_paid").eq("owner_id", session.user.id).order("created_at", { ascending: false }),
         supabase.from("matches").select("id, car_id, match_score, status, created_at").eq("user_id", session.user.id).order("created_at", { ascending: false }),
       ]);
 
@@ -186,13 +187,15 @@ const Dashboard: React.FC = () => {
                           <span className="text-xs text-primary font-semibold">
                             €{(car.fair_value_price || car.price).toLocaleString()}
                           </span>
-                          <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${
-                            car.status === "available"
-                              ? "bg-emerald-500/10 text-emerald-400"
-                              : "bg-silver/10 text-silver/50"
-                          }`}>
-                            {car.status}
-                          </span>
+                          {car.placement_paid ? (
+                            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-400">
+                              Ad Live
+                            </span>
+                          ) : (
+                            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-400 flex items-center gap-1">
+                              <Lock className="h-2.5 w-2.5" /> Not Placed
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="flex gap-1 shrink-0">
@@ -202,9 +205,25 @@ const Dashboard: React.FC = () => {
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
-                          <Users className="h-4 w-4" />
-                        </Button>
+                        {car.placement_paid ? (
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
+                            <Users className="h-4 w-4" />
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 text-amber-400 hover:text-amber-300 text-xs font-semibold gap-1"
+                            onClick={async () => {
+                              // TODO: Integrate with Stripe
+                              toast.info("Payment integration coming soon. Placement activated.");
+                              await supabase.from("cars").update({ placement_paid: true } as any).eq("id", car.id);
+                              setCars((prev) => prev.map((c) => c.id === car.id ? { ...c, placement_paid: true } : c));
+                            }}
+                          >
+                            <CreditCard className="h-3.5 w-3.5" /> Place Ad
+                          </Button>
+                        )}
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive/60 hover:text-destructive">
