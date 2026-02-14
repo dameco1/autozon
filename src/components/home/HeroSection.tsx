@@ -38,13 +38,12 @@ const HeroSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left — Copy */}
           <div>
-            <motion.div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-8"
+            <motion.span
+              className="text-xs font-medium text-primary tracking-wide uppercase mb-8 block"
               initial="hidden" animate="visible" variants={fadeUp} custom={0}
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-medium text-primary tracking-wide uppercase">The fair car market</span>
-            </motion.div>
+              The fair car market
+            </motion.span>
 
             <motion.h1
               className="text-5xl sm:text-6xl lg:text-7xl font-display font-black text-white leading-[0.92] tracking-tight mb-6"
