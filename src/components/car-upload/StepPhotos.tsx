@@ -40,10 +40,14 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
 
   const uploadFile = async (file: File): Promise<string | null> => {
     if (!userId) return null;
+    const ext = file.name.split(".").pop() || "jpg";
     const compressed = await compressFile(file);
-    const ext = compressed.name.split(".").pop() || "jpg";
     const path = `${userId}/${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from("car-images").upload(path, compressed, { upsert: false });
+    const uploadBlob = new File([compressed], `photo.${ext}`, { type: compressed.type || file.type });
+    const { error } = await supabase.storage.from("car-images").upload(path, uploadBlob, {
+      upsert: false,
+      contentType: uploadBlob.type || "image/jpeg",
+    });
     if (error) { toast.error(error.message); return null; }
     const { data: urlData } = supabase.storage.from("car-images").getPublicUrl(path);
     return urlData.publicUrl;
