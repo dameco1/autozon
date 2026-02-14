@@ -3,7 +3,7 @@ import {
   Users, RefreshCw, Tag, Globe, BarChart3, Swords, Database,
   Rocket, Heart, ChevronRight, Zap, Search, Handshake, FileText,
   CreditCard, Truck, Crown, PieChart, Target, ArrowRight, Check,
-  XCircle, Star, Layers, Map, User
+  XCircle, Star, Layers, Map, User, Monitor, MessageSquare, CheckCircle
 } from "lucide-react";
 
 import damirPhoto from "@/assets/pitch/damir-profile.jpg";
@@ -233,7 +233,116 @@ export const SlideHowItWorksBuyer = () => (
   </div>
 );
 
-// Slide 6: Why Now
+// Slide: Live Product Demo
+export const SlideProductDemo = () => (
+  <div className="flex flex-col justify-center h-full px-40">
+    <div className="flex items-center gap-4 mb-10">
+      <Monitor className={green} size={48} />
+      <h2 className={heading}>Live Product</h2>
+    </div>
+    <div className="grid grid-cols-2 gap-10">
+      {/* Fair Value Result Mock */}
+      <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+        <div className="bg-white/5 px-6 py-3 border-b border-white/10 flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-destructive/60" />
+            <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
+            <div className="w-3 h-3 rounded-full bg-green/60" />
+          </div>
+          <span className="text-[14px] text-silver/40 ml-3">autozon.app/fair-value</span>
+        </div>
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <span className="text-[14px] text-green bg-green/10 px-3 py-1 rounded-full">Your Fair-Value Score</span>
+            <h3 className="text-[28px] text-white font-display font-bold mt-3">2022 Mercedes-Benz C-Class</h3>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="bg-white/5 rounded-xl p-4 text-center">
+              <p className="text-[14px] text-silver/60">Condition Score</p>
+              <p className="text-[36px] font-display font-black text-green">90<span className="text-[16px] text-silver/40">/100</span></p>
+            </div>
+            <div className="bg-white/5 rounded-xl p-4 text-center">
+              <p className="text-[14px] text-silver/60">Demand Score</p>
+              <p className="text-[36px] font-display font-black text-green">85<span className="text-[16px] text-silver/40">/100</span></p>
+            </div>
+          </div>
+          <div className="bg-white/5 rounded-xl p-4">
+            <div className="flex justify-between text-[16px] mb-2">
+              <span className="text-silver/60">Your Asking Price</span>
+              <span className="text-white font-bold">€38,900</span>
+            </div>
+            <div className="flex justify-between text-[16px] mb-2">
+              <span className="text-green">Value Boosters</span>
+              <span className="text-green font-bold">9 factors</span>
+            </div>
+            <div className="h-px bg-white/10 my-3" />
+            <div className="flex justify-between text-[20px]">
+              <span className="text-green font-semibold">Fair-Value Result</span>
+              <span className="text-green font-display font-black text-[28px]">€35,788</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Negotiation Mock */}
+      <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+        <div className="bg-white/5 px-6 py-3 border-b border-white/10 flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-destructive/60" />
+            <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
+            <div className="w-3 h-3 rounded-full bg-green/60" />
+          </div>
+          <span className="text-[14px] text-silver/40 ml-3">autozon.app/negotiate</span>
+        </div>
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <span className="text-[14px] text-green bg-green/10 px-3 py-1 rounded-full">Negotiate</span>
+            <h3 className="text-[28px] text-white font-display font-bold mt-3">2023 BMW 3 Series</h3>
+          </div>
+          <div className="bg-white/5 rounded-xl p-4 mb-4">
+            <div className="flex justify-between text-[16px] mb-1">
+              <span className="text-silver/60">Autozon Fair Value</span>
+              <span className="text-green font-bold">€39,100</span>
+            </div>
+            <div className="flex justify-between text-[16px]">
+              <span className="text-silver/60">Asking Price</span>
+              <span className="text-white font-bold">€42,500</span>
+            </div>
+            <div className="w-full h-2 bg-white/10 rounded-full mt-3">
+              <div className="h-2 bg-green rounded-full" style={{ width: "92%" }} />
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div className="bg-white/5 rounded-xl p-4 flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <ArrowRight className="text-green" size={18} />
+                <div>
+                  <p className="text-[16px] text-white font-semibold">Buyer offered</p>
+                  <p className="text-[13px] text-silver/40 italic">"Love this 3 Series! Happy to close quickly."</p>
+                </div>
+              </div>
+              <span className="text-[24px] text-white font-display font-bold">€38,000</span>
+            </div>
+            <div className="bg-white/5 rounded-xl p-4 flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <MessageSquare className="text-amber-400" size={18} />
+                <p className="text-[16px] text-white font-semibold">Seller countered</p>
+              </div>
+              <span className="text-[24px] text-white font-display font-bold">€37,500</span>
+            </div>
+            <div className="flex items-center gap-2 text-silver/40 text-[14px] justify-center pt-2">
+              <CheckCircle size={16} className="text-green" />
+              <span>Round 2/3 · Waiting for buyer response</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p className="text-center text-[20px] text-silver/40 mt-8 italic">Live screenshots from the working Autozon platform</p>
+  </div>
+);
+
+
 export const SlideWhyNow = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-12">
@@ -608,7 +717,7 @@ export const SlideClosing = () => (
 
 export const allSlides = [
   SlideCover, SlideTitle, SlideProblem, SlideInsight, SlideSolution,
-  SlideHowItWorksSeller, SlideHowItWorksBuyer,
+  SlideHowItWorksSeller, SlideHowItWorksBuyer, SlideProductDemo,
   SlideWhyNow, SlideBusinessModel, SlideRevenueStreams, SlideFlywheel,
   SlidePricing, SlideMarketSize, SlideFinancials, SlideCompetition,
   SlideMoatRoadmap, SlideAsk, SlideFounder, SlideClosing,
