@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Zap, Target, Truck, Bell, ChevronRight, CheckCircle2, TrendingUp, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import HeroCarShowcase from "@/components/home/HeroCarShowcase";
+import HeroProcessCircle from "@/components/home/HeroProcessCircle";
 import CarTicker from "@/components/home/CarTicker";
 import CookieConsent from "@/components/CookieConsent";
 import SEO from "@/components/SEO";
@@ -111,7 +111,7 @@ const Index: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="hidden lg:block"
           >
-            <HeroCarShowcase />
+            <HeroProcessCircle />
           </motion.div>
         </div>
       </section>
