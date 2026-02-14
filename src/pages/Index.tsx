@@ -57,24 +57,32 @@ const Index: React.FC = () => {
           />
         ))}
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="text-center lg:text-left lg:justify-self-start">
-            <motion.h1
-              className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-[0.95] tracking-tight mb-8"
-              initial="hidden" animate="visible" variants={fadeUp} custom={1}
-            >
-              {t.hero.title}{" "}<span className="text-gradient">{t.hero.titleAccent}</span>
-            </motion.h1>
+        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
+          <motion.h1
+            className="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-[0.95] tracking-tight mb-6"
+            initial="hidden" animate="visible" variants={fadeUp} custom={1}
+          >
+            {t.hero.title}{" "}<span className="text-gradient">{t.hero.titleAccent}</span>
+          </motion.h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-              <motion.div
-                className="bg-secondary/60 border border-border rounded-2xl p-6 hover:border-primary/40 transition-all"
-                initial="hidden" animate="visible" variants={fadeUp} custom={2}
-              >
-                
-                <TrendingUp className="h-8 w-8 text-primary mb-3" />
-                <h3 className="text-lg font-display font-bold text-white mb-2">{t.hero.sellerHook}</h3>
-                <p className="text-silver/60 text-sm leading-relaxed mb-4">{t.hero.sellerBody}</p>
+          <motion.p
+            className="text-silver/50 text-lg max-w-2xl mx-auto mb-14"
+            initial="hidden" animate="visible" variants={fadeUp} custom={1.5}
+          >
+            {t.hero.subtitle}
+          </motion.p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 text-left max-w-4xl mx-auto">
+            {/* Selling */}
+            <motion.div
+              initial="hidden" animate="visible" variants={fadeUp} custom={2}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-1 h-8 rounded-full bg-primary" />
+                <h3 className="text-xl font-display font-bold text-white">{t.hero.sellingTitle}</h3>
+              </div>
+              <p className="text-silver/60 text-sm leading-relaxed mb-5 pl-4">{t.hero.sellingDesc}</p>
+              <div className="pl-4">
                 <Button
                   size="sm"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-lg"
@@ -83,16 +91,19 @@ const Index: React.FC = () => {
                   {t.hero.sellerCta}
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
-              </motion.div>
+              </div>
+            </motion.div>
 
-              <motion.div
-                className="bg-secondary/60 border border-border rounded-2xl p-6 hover:border-primary/40 transition-all"
-                initial="hidden" animate="visible" variants={fadeUp} custom={3}
-              >
-                
-                <ShieldCheck className="h-8 w-8 text-primary mb-3" />
-                <h3 className="text-lg font-display font-bold text-white mb-2">{t.hero.buyerHook}</h3>
-                <p className="text-silver/60 text-sm leading-relaxed mb-4">{t.hero.buyerBody}</p>
+            {/* Buying */}
+            <motion.div
+              initial="hidden" animate="visible" variants={fadeUp} custom={3}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-1 h-8 rounded-full bg-primary" />
+                <h3 className="text-xl font-display font-bold text-white">{t.hero.buyingTitle}</h3>
+              </div>
+              <p className="text-silver/60 text-sm leading-relaxed mb-5 pl-4">{t.hero.buyingDesc}</p>
+              <div className="pl-4">
                 <Button
                   size="sm"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-lg"
@@ -101,36 +112,9 @@ const Index: React.FC = () => {
                   {t.hero.buyerCta}
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:flex flex-col gap-6"
-          >
-            <div className="bg-secondary/40 border border-border rounded-2xl p-8 hover:border-primary/30 transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center">
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                </div>
-                <h3 className="text-xl font-display font-bold text-white">{t.hero.sellingTitle}</h3>
-              </div>
-              <p className="text-silver/70 text-sm leading-relaxed">{t.hero.sellingDesc}</p>
-            </div>
-
-            <div className="bg-secondary/40 border border-border rounded-2xl p-8 hover:border-primary/30 transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center">
-                  <Car className="h-5 w-5 text-primary" />
-                </div>
-                <h3 className="text-xl font-display font-bold text-white">{t.hero.buyingTitle}</h3>
-              </div>
-              <p className="text-silver/70 text-sm leading-relaxed">{t.hero.buyingDesc}</p>
-            </div>
-          </motion.div>
         </div>
       </section>
 
