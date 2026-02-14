@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { carImages } from "./carImages";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -18,11 +19,28 @@ const HeroSection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
+  const bgImages = carImages.slice(0, 6);
+
   return (
     <section className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-charcoal" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsl(155_100%_42%/0.08),transparent)]" />
+
+      {/* Subtle car images grid in background */}
+      <div className="absolute inset-0 grid grid-cols-3 gap-2 p-4 opacity-[0.04]">
+        {bgImages.map((car, i) => (
+          <img
+            key={i}
+            src={car.url}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover rounded-lg"
+          />
+        ))}
+      </div>
+      {/* Dark overlay to keep text readable */}
+      <div className="absolute inset-0 bg-charcoal/70" />
 
       {/* Grid pattern overlay */}
       <div
@@ -96,23 +114,6 @@ const HeroSection: React.FC = () => {
               </Button>
             </div>
           </div>
-        </motion.div>
-
-        {/* Stats row */}
-        <motion.div
-          className="flex justify-center gap-12 mt-16 pt-8 border-t border-border/50"
-          initial="hidden" animate="visible" variants={fadeUp} custom={3}
-        >
-          {[
-            { value: "2min", label: "to fair value" },
-            { value: "0€", label: "listing fee" },
-            { value: "100%", label: "transparent" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="text-2xl font-display font-black text-primary">{stat.value}</div>
-              <div className="text-xs text-silver/40 mt-0.5">{stat.label}</div>
-            </div>
-          ))}
         </motion.div>
       </div>
     </section>
