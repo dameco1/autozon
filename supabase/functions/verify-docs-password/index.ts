@@ -5,6 +5,11 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Whitelisted emails with view-only access (no password required)
+const VIEWER_EMAILS: string[] = [
+  "nenadbrankovic@hotmail.com",
+];
+
 // In-memory rate limiter: max 5 attempts per IP per 15-minute window
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 15 * 60 * 1000;
@@ -53,7 +58,29 @@ serve(async (req) => {
       );
     }
 
-    const { password } = await req.json();
+    const body = await req.json();
+    const { password, email } = body;
+
+    // Check email-based access
+    if (email && typeof email === "string") {
+      const normalizedEmail = email.trim().toLowerCase();
+      const isViewer = VIEWER_EMAILS.includes(normalizedEmail);
+
+      if (isViewer) {
+        attempts.delete(ip);
+        return new Response(JSON.stringify({ valid: true, accessType: "viewer", remaining: MAX_ATTEMPTS }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      return new Response(JSON.stringify({ valid: false, remaining, error: "Email not authorized" }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Password-based access
     const correct = Deno.env.get("DOCS_PASSWORD");
 
     if (!correct) {
@@ -65,12 +92,11 @@ serve(async (req) => {
 
     const valid = password === correct;
 
-    // Reset counter on successful auth
     if (valid) {
       attempts.delete(ip);
     }
 
-    return new Response(JSON.stringify({ valid, remaining: valid ? MAX_ATTEMPTS : remaining }), {
+    return new Response(JSON.stringify({ valid, accessType: valid ? "full" : undefined, remaining: valid ? MAX_ATTEMPTS : remaining }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
