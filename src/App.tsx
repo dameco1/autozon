@@ -28,6 +28,7 @@ import InvestorPitch from "./pages/InvestorPitch";
 import Negotiation from "./pages/Negotiation";
 import AcquisitionOptions from "./pages/AcquisitionOptions";
 import BrandBook from "./pages/BrandBook";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +63,7 @@ const App = () => (
               <Route path="/negotiate/:offerId" element={<Negotiation />} />
               <Route path="/acquire/:offerId" element={<AcquisitionOptions />} />
               <Route path="/brand" element={<BrandBook />} />
+              <Route path="/admin" element={<AdminDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
