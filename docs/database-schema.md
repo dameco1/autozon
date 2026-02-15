@@ -62,7 +62,7 @@
 |---|---|---|
 | `profiles` | 1 per user | Extended user info (name, phone, city) |
 | `cars` | Growing | Car listings with valuation data |
-| `car_models` | ~500+ | Reference data for makes/models/variants |
+| `car_models` | ~2,700+ | Reference data: 48 European makes, 255+ models, all variants (AI-seeded) |
 | `offers` | Per negotiation | Multi-round offer/counter-offer tracking |
 | `matches` | Auto-generated | Car-to-buyer match scores |
 | `buyers` | Seed + real | Buyer profiles (some seeded for demo) |
@@ -78,8 +78,9 @@
 ## Security (Row-Level Security)
 
 All tables have RLS enabled. Key policies:
-- **cars**: Owners can CRUD their own; all authenticated users can SELECT
-- **profiles**: Users can only read/write their own profile
-- **offers**: Buyer and seller of the offer can read/update
-- **notifications**: Users can only see their own notifications
+- **cars**: Owners can CRUD their own; all authenticated users can SELECT available cars; admins full access
+- **profiles**: Users can only read/write their own profile; admins can view/update all
+- **offers**: Buyer and seller of the offer can read/update; admins full access
+- **notifications**: Users can only see their own notifications; admins can view all
 - **chat_messages**: Users can only access their own chat history
+- **car_models**: All authenticated users can read; no public write access (seeded via edge function with service role)

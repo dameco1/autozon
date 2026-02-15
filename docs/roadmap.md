@@ -23,6 +23,7 @@
 - [x] Stripe-powered premium placement
 - [x] Dashboard with listing management
 - [x] Email authentication with verification
+- [x] Mandatory TOTP 2FA (authenticator app) for all users
 - [x] Bilingual support (EN/DE)
 - [x] SEO optimization (meta, JSON-LD, sitemap)
 - [x] GDPR compliance (cookie consent, privacy policy, impressum)
@@ -30,8 +31,10 @@
 - [x] Brand book (`/brand`)
 
 ## V1 (In Progress)
-- [ ] AI Concierge chat (streaming, context-aware)
-- [ ] Market comparison with AI insights
+- [x] AI Concierge chat (streaming, context-aware)
+- [x] Market comparison with AI insights
+- [x] AI-powered car model database (2,700+ variants, 48 makes)
+- [x] Admin Command Center with KPI dashboard
 - [ ] Dealer network integration
 - [ ] Enhanced buyer onboarding questionnaire
 - [ ] Car comparison tool (side-by-side)
