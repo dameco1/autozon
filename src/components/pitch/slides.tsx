@@ -8,6 +8,7 @@ import {
 
 import damirPhoto from "@/assets/pitch/damir-profile.jpg";
 import eminaPhoto from "@/assets/pitch/emina-profile.jpg";
+import nenadPhoto from "@/assets/pitch/nenad-profile.jpg";
 import carBmw5Black from "@/assets/pitch/car-bmw-5-black.jpg";
 import carBmw5Blue from "@/assets/pitch/car-bmw-5-blue.jpg";
 import carBmwX2 from "@/assets/pitch/car-bmw-x2.jpg";
@@ -740,12 +741,19 @@ export const SlideFounder = () => (
       </div>
 
       {/* Nenad */}
-      <div>
-        <h3 className="text-[28px] text-white font-bold">Nenad Brankovic</h3>
-        <p className={`text-[18px] ${green} font-semibold mt-0.5`}>CFO</p>
-        <p className="text-[17px] text-silver leading-relaxed mt-2">
-          London Business School. Group CFO at MidEuropa Partners companies (€500M revenue). Key role in €1B+ exit to KKR. Led €350M debt refinancing and €475M bond issuance. Board member across FMCG and TMT.
-        </p>
+      <div className="flex items-start gap-6">
+        <img
+          src={nenadPhoto}
+          alt="Nenad Brankovic"
+          className="w-[100px] h-[100px] rounded-xl object-cover border-2 border-green/30 shrink-0"
+        />
+        <div>
+          <h3 className="text-[28px] text-white font-bold">Nenad Brankovic</h3>
+          <p className={`text-[18px] ${green} font-semibold mt-0.5`}>CFO</p>
+          <p className="text-[17px] text-silver leading-relaxed mt-2">
+            London Business School. Group CFO at MidEuropa Partners companies (€500M revenue). Key role in €1B+ exit to KKR. Led €350M debt refinancing and €475M bond issuance. Board member across FMCG and TMT.
+          </p>
+        </div>
       </div>
     </div>
 
