@@ -22,16 +22,19 @@ const AdminOverview: React.FC = () => {
   const { data: stats } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: async () => {
-      const [profiles, cars, offers, paidCars, suspendedProfiles] = await Promise.all([
+      const [profiles, cars, offers, paidCars, completedOffers, suspendedProfiles] = await Promise.all([
         supabase.from("profiles").select("created_at", { count: "exact" }),
         supabase.from("cars").select("id", { count: "exact" }),
         supabase.from("offers").select("id", { count: "exact" }).eq("status", "pending"),
         supabase.from("cars").select("id, price", { count: "exact" }).eq("placement_paid", true),
+        supabase.from("offers").select("agreed_price").eq("status", "accepted").not("agreed_price", "is", null),
         supabase.from("profiles").select("id", { count: "exact" }).eq("suspended", true),
       ]);
 
-      // Calculate revenue from paid placements
-      const placementRevenue = paidCars.data?.reduce((sum, car) => sum + (Number(car.price) * 0.025), 0) ?? 0;
+      // Revenue from 2.5% success fee on completed deals
+      const successFeeRevenue = completedOffers.data?.reduce((sum, o) => sum + (Number(o.agreed_price) * 0.025), 0) ?? 0;
+      // Revenue from ad placement fees (€49 per placement)
+      const placementFeeRevenue = (paidCars.count ?? 0) * 49;
 
       // signups per day last 7 days
       const sevenDaysAgo = new Date();
@@ -63,7 +66,9 @@ const AdminOverview: React.FC = () => {
         activeNegotiations: offers.count ?? 0,
         placements: paidCars.count ?? 0,
         suspendedUsers: suspendedProfiles.count ?? 0,
-        placementRevenue,
+        successFeeRevenue,
+        placementFeeRevenue,
+        completedDeals: completedOffers.data?.length ?? 0,
         recent7d: recentProfiles?.length ?? 0,
         chartData,
       };
@@ -78,10 +83,16 @@ const AdminOverview: React.FC = () => {
         <StatCard title="Active Negotiations" value={stats?.activeNegotiations ?? "—"} icon={Handshake} />
         <StatCard title="Paid Placements" value={stats?.placements ?? "—"} icon={CreditCard} sub="Sellers who paid for placement" />
         <StatCard
-          title="Est. Revenue (2.5% fee)"
-          value={`€${(stats?.placementRevenue ?? 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
+          title="Revenue: 2.5% Fee"
+          value={`€${(stats?.successFeeRevenue ?? 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
           icon={DollarSign}
-          sub={`From ${stats?.placements ?? 0} paid placements`}
+          sub={`From ${stats?.completedDeals ?? 0} completed deals`}
+        />
+        <StatCard
+          title="Revenue: Placements"
+          value={`€${(stats?.placementFeeRevenue ?? 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
+          icon={CreditCard}
+          sub={`€49 × ${stats?.placements ?? 0} placements`}
         />
         <StatCard title="New Signups (7d)" value={stats?.recent7d ?? "—"} icon={TrendingUp} />
       </div>
