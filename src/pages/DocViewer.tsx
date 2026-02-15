@@ -181,7 +181,7 @@ const PasswordGate: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
 const DocViewer: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(() => sessionStorage.getItem("docs_auth") === "true");
   const [markdown, setMarkdown] = useState("");
   const [html, setHtml] = useState("");
   const [loading, setLoading] = useState(true);
@@ -214,7 +214,7 @@ const DocViewer: React.FC = () => {
     return (
       <>
         <SEO title={`${title} — Autozon Data Room`} description="Secure investor data room document" />
-        <PasswordGate onAuth={() => setAuthenticated(true)} />
+        <PasswordGate onAuth={() => { sessionStorage.setItem("docs_auth", "true"); setAuthenticated(true); }} />
       </>
     );
   }

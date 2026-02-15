@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -155,13 +156,15 @@ const Documentation: React.FC = () => {
   const totalDocs = sections.reduce((sum, s) => sum + s.docs.length, 0);
   const readyDocs = sections.reduce((sum, s) => sum + s.docs.filter(d => d.status === "ready").length, 0);
 
+  const navigate = useNavigate();
+
   const handleDocClick = (doc: DocItem) => {
     if (doc.status === "planned") return;
     if (doc.link) {
-      window.open(doc.link, "_blank");
+      navigate(doc.link);
     } else if (doc.file) {
       const slug = doc.file.replace(/\.md$/, "");
-      window.open(`/docs/view/${slug}`, "_blank");
+      navigate(`/docs/view/${slug}`);
     }
   };
 
@@ -264,9 +267,9 @@ const Documentation: React.FC = () => {
             <h2 className="text-lg font-semibold text-foreground">Quick Access</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-            <a href="/pitch" target="_blank" className="text-primary hover:underline">📊 Investor Pitch Deck</a>
-            <a href="/brand" target="_blank" className="text-primary hover:underline">🎨 Brand Book</a>
-            <a href="/admin" target="_blank" className="text-primary hover:underline">🛡️ Admin Command Center</a>
+            <button onClick={() => navigate("/pitch")} className="text-primary hover:underline text-left">📊 Investor Pitch Deck</button>
+            <button onClick={() => navigate("/brand")} className="text-primary hover:underline text-left">🎨 Brand Book</button>
+            <button onClick={() => navigate("/admin")} className="text-primary hover:underline text-left">🛡️ Admin Command Center</button>
           </div>
         </div>
 
