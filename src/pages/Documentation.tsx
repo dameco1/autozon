@@ -85,7 +85,7 @@ const sections: Section[] = [
     icon: Shield,
     docs: [
       { title: "Admin Command Center", desc: "RBAC security, admin dashboard, platform monitoring", icon: Shield, file: "admin.md", status: "ready" },
-      { title: "Security Architecture", desc: "MFA, RLS policies, JWT auth, rate limiting", icon: Lock, status: "planned" },
+      { title: "Security Architecture", desc: "MFA, RLS policies, JWT auth, rate limiting", icon: Lock, file: "security-architecture.md", status: "ready" },
       { title: "Brand Book", desc: "Visual identity, logo usage, color system, typography", icon: Palette, link: "/brand", status: "ready" },
     ],
   },
