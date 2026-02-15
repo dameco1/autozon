@@ -60,7 +60,7 @@ const sections: Section[] = [
     icon: BarChart3,
     docs: [
       { title: "Revenue Model", desc: "2.5% success fee + €49 placement fees, unit economics", icon: BarChart3, file: "revenue-model.md", status: "ready" },
-      { title: "Financial Projections", desc: "3-year P&L, cash flow, and growth scenarios", icon: BarChart3, status: "planned" },
+      { title: "Financial Projections", desc: "3-year P&L, cash flow, and growth scenarios", icon: BarChart3, file: "financial-projections.md", status: "ready" },
       { title: "KPI Dashboard", desc: "Key metrics: GMV, take rate, CAC, LTV, conversion rates", icon: BarChart3, status: "planned" },
       { title: "Use of Funds", desc: "Allocation plan for current funding round", icon: Landmark, status: "planned" },
       { title: "Cap Table", desc: "Current ownership structure and equity distribution", icon: Users, status: "planned" },
