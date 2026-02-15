@@ -565,6 +565,8 @@ export type Database = {
           id: string
           language: string | null
           phone: string | null
+          suspended: boolean
+          suspension_type: string | null
           updated_at: string
           user_id: string
         }
@@ -577,6 +579,8 @@ export type Database = {
           id?: string
           language?: string | null
           phone?: string | null
+          suspended?: boolean
+          suspension_type?: string | null
           updated_at?: string
           user_id: string
         }
@@ -589,6 +593,8 @@ export type Database = {
           id?: string
           language?: string | null
           phone?: string | null
+          suspended?: boolean
+          suspension_type?: string | null
           updated_at?: string
           user_id?: string
         }
