@@ -33,9 +33,9 @@ const sections: Section[] = [
     title: "1.0 — Company & Team",
     icon: Building2,
     docs: [
-      { title: "Company Overview", desc: "Mission, vision, market opportunity, and value proposition", icon: Globe, status: "planned" },
+      { title: "Company Overview", desc: "Mission, vision, market opportunity, and value proposition", icon: Globe, file: "company-overview.md", status: "ready" },
       { title: "Founder Profile", desc: "Damir Buljubasic — background, experience, and vision", icon: Users, status: "planned" },
-      { title: "Corporate Structure", desc: "BowTie Sales Corp Limited — incorporation, jurisdiction (Cyprus)", icon: Landmark, status: "planned" },
+      { title: "Corporate Structure", desc: "New Vienna GmbH — Austrian incorporation for market launch", icon: Landmark, status: "planned" },
       { title: "Team & Advisors", desc: "Key hires, advisory board, org chart", icon: Users, status: "planned" },
       { title: "Investor Pitch Deck", desc: "21-slide in-app pitch deck with live product demos", icon: Presentation, link: "/pitch", status: "ready" },
     ],
