@@ -464,7 +464,7 @@ export const SlideRevenueStreams = () => (
     <div className="grid grid-cols-3 gap-6">
       {[
         { icon: DollarSign, title: "Seller Listing Fee", desc: "€49 Basic / €99 Premium flat fee", primary: true },
-        { icon: Target, title: "Dealer Lead Fees", desc: "Pay-per-lead or subscription access" },
+        { icon: Target, title: "Advertising & Sponsors", desc: "Dealer ads, partner promotions, sponsored listings" },
         { icon: CreditCard, title: "Financing & Insurance", desc: "High-margin referral commissions" },
         { icon: Truck, title: "Logistics Add-ons", desc: "Pickup, delivery, inspection" },
         { icon: Crown, title: "Premium Subscription", desc: "Recurring revenue for power users" },

@@ -44,6 +44,7 @@
 - [ ] Vehicle ownership verification
 - [ ] Automated financing arrangements
 - [ ] Partner bank/leasing integrations
+- [ ] **Advertising Module V1** — Homepage banner ads (dealer/partner sponsors), contextual ads on vehicle detail pages, self-serve ad booking for dealers
 - [ ] **PWA (Progressive Web App)** — installable from browser to home screen (iOS + Android), offline support, ~1.5 hours setup
 
 ## V2 (Planned)
@@ -51,6 +52,7 @@
 - [ ] Insurance comparison and bundling
 - [ ] Logistics and delivery coordination
 - [ ] Escrow payment system
+- [ ] **Advertising Module V2** — Programmatic ad network, partner co-branded content, email/newsletter sponsorships, retargeting ads for dealers, analytics dashboard for advertisers
 - [ ] **Native mobile app (Capacitor)** — iOS App Store + Google Play, full device access (camera, push notifications, sensors), ~5–8 hours setup + app store submissions
 
 ## V3 (Planned)
@@ -124,7 +126,8 @@ Migration planning begins when **any two** of these thresholds are met:
 1. **Listing fees** — €49 Basic / €99 Premium (Stripe checkout)
 2. **Full Service commission** — 2.5% of completed sales, capped at €499 (planned V2)
 3. **Financing referrals** — Commission from partner banks/leasers (planned)
-4. **Data insights** — Market analytics for dealers (planned)
+4. **Advertising & Sponsored Content** — Display ads, sponsored listings, partner promotions (planned V1.5+)
+5. **Data insights** — Market analytics for dealers (planned)
 
 ---
 

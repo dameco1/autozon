@@ -51,7 +51,99 @@ Autozon operates an **asymmetric marketplace model**: buyers use the platform fo
 | Insurance Referrals | Commission on insurance policies sold through platform | V2 |
 | Logistics Add-ons | Fee for arranging transport/delivery between buyer and seller | V2 |
 | Premium Subscriptions | Monthly subscription for dealers and power sellers (bulk tools, analytics) | V2 |
+| **Advertising & Sponsored Content** | Display ads, sponsored listings, partner promotions | V1.5 |
 | Data Insights | Anonymized market data licensing to OEMs, insurers, and analysts | V3 |
+
+---
+
+## Advertising & Sponsored Content Revenue
+
+### Overview
+
+Autozon's high-intent automotive audience is uniquely valuable to advertisers. Every user is actively buying or selling a car — creating natural demand for financing, insurance, accessories, and dealer services. Advertising is a **high-margin, scalable** revenue stream that monetizes existing traffic without adding friction to the core user experience.
+
+### Ad Inventory & Placement
+
+| Placement | Location | Format | Pricing Model | Est. CPM / CPC |
+|---|---|---|---|---|
+| **Homepage Banner** | Landing page hero area & between sections | Display banner (728×90, 300×250) | CPM (cost per 1,000 impressions) | €8–15 CPM |
+| **Vehicle Listing Sidebar** | Car detail page (`/car/:id`) sidebar | Contextual display ad | CPM or CPC | €12–25 CPM / €0.80–1.50 CPC |
+| **Sponsored Listing** | Car selection feed & search results | Promoted dealer listing (native format) | CPC (cost per click) | €1.50–3.00 CPC |
+| **Fair Value Results** | Fair value page (`/fair-value/:id`) | Financing/insurance offer card | CPA (cost per action) | €5–15 CPA |
+| **Post-Sale Interstitial** | After negotiation completion | Full-screen insurance/financing offer | CPA | €10–30 CPA |
+| **Email / Newsletter** | Weekly market insights email | Sponsored section in email | Flat fee per send | €200–500 per campaign |
+| **Dealer Spotlight** | Buyer matches & recommendations | Featured "Trusted Dealer" badge + ad | Monthly subscription | €199–499/month |
+
+### Advertiser Categories
+
+| Category | Example Advertisers | Why They Pay | Ad Placement |
+|---|---|---|---|
+| **Dealers & Used Car Groups** | Local dealers, Carvago, Autohero | Reach in-market buyers directly | Sponsored listings, homepage, buyer matches |
+| **Banks & Financing** | BAWAG, Santander, Raiffeisen | Capture loan-ready buyers at point of purchase | Fair value page, post-sale, car detail sidebar |
+| **Insurance Companies** | Allianz, UNIQA, Generali, wefox | Every car sale triggers an insurance event | Post-sale interstitial, car detail page |
+| **Leasing Companies** | Porsche Bank, Raiffeisen Leasing | Target buyers considering alternatives to purchase | Fair value page, acquisition options |
+| **Accessories & Parts** | A.T.U, Forstinger, Amazon Auto | Cross-sell to engaged car owners | Car detail page, email newsletter |
+| **Automotive Clubs** | ÖAMTC, ARBÖ | Membership acquisition from active car owners | Homepage, post-sale, email |
+| **Workshops & Service** | Local mechanics, Bosch Car Service | Reach owners maintaining or preparing cars for sale | Seller dashboard, pre-listing tips |
+
+### Advertising Phases
+
+**Phase 1 — Direct Sales (V1.5)**
+
+| Component | Details |
+|---|---|
+| **Approach** | Founder-sold sponsorships to 5–10 partners (dealers, banks, insurance) |
+| **Ad types** | Homepage banner, car detail sidebar, email sponsorship |
+| **Tech effort** | Low — static ad placements with impression tracking |
+| **Revenue model** | Flat monthly fee per placement (€200–500/month per advertiser) |
+| **Target** | 3–5 paying advertisers |
+
+**Phase 2 — Self-Serve Ad Platform (V2)**
+
+| Component | Details |
+|---|---|
+| **Approach** | Admin dashboard for advertisers to create, target, and track campaigns |
+| **Ad types** | All placements + sponsored listings + retargeting |
+| **Tech effort** | Medium — ad server, targeting engine, analytics dashboard |
+| **Revenue model** | CPM / CPC / CPA with minimum spend requirements |
+| **Targeting options** | By car make/model, price range, location, buyer/seller intent |
+| **Target** | 20–50 active advertisers |
+
+**Phase 3 — Programmatic & Data-Driven (V3)**
+
+| Component | Details |
+|---|---|
+| **Approach** | Programmatic ad network with real-time bidding |
+| **Ad types** | Dynamic native ads powered by user preference data |
+| **Tech effort** | High — RTB integration, ML-based ad optimization |
+| **Revenue model** | Automated bidding with platform floor prices |
+| **Target** | 100+ advertisers, €50K+/month ad revenue |
+
+### Advertising Revenue Projections
+
+| Year | Advertisers | Avg. Monthly Spend | Monthly Ad Revenue | Annual Ad Revenue |
+|---|---|---|---|---|
+| **Y1** | 3–5 | €300 | €1,200 | **€14,400** |
+| **Y2** | 20–30 | €500 | €12,500 | **€150,000** |
+| **Y3** | 50–100 | €800 | €60,000 | **€720,000** |
+
+### Key Metrics
+
+| Metric | Y1 Target | Y2 Target | Y3 Target |
+|---|---|---|---|
+| **Ad fill rate** | 30% | 60% | 85% |
+| **Avg. CPM** | €10 | €15 | €20 |
+| **Click-through rate (CTR)** | 1.5% | 2.0% | 2.5% |
+| **Ad revenue per user** | €0.50 | €2.00 | €5.00 |
+| **Ad revenue as % of total** | 5% | 10% | 15% |
+
+### Why Autozon Ad Inventory is Premium
+
+1. **100% in-market audience** — Every user is actively buying or selling a car (vs. <5% on generic platforms)
+2. **High-value transactions** — Average car value €15K–30K; financing, insurance decisions happen simultaneously
+3. **Rich intent data** — Budget, preferred makes, fuel type, location, timing — hyper-targeted ad delivery
+4. **Low ad fatigue** — Users visit during a defined purchase journey (not daily browsing), so ads feel relevant, not intrusive
+5. **Regulated-industry premium** — Financial services and insurance pay premium CPMs for compliant, contextual placements
 
 ---
 
