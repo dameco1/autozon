@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen, Loader2, AlertTriangle } from "lucide-react";
+import { Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen, Loader2, AlertTriangle, Rocket } from "lucide-react";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -15,6 +15,7 @@ const docs = [
   { title: "Component Library", desc: "UI components, design system, and i18n", icon: Palette, file: "components.md" },
   { title: "Admin Command Center", desc: "RBAC security, admin dashboard, platform monitoring", icon: Shield, file: "admin.md" },
   { title: "Product Roadmap", desc: "Phase planning, revenue model, geographic expansion", icon: BookOpen, file: "roadmap.md" },
+  { title: "Launch Checklist", desc: "Pre-launch tasks: security, domain, payments, QA, go-live", icon: Rocket, file: "launch-checklist.md" },
 ];
 
 const Documentation: React.FC = () => {
