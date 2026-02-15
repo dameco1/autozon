@@ -6,8 +6,8 @@
 |---|---|---|
 | **MVP** | Core valuation + matching | ✅ Complete |
 | **V1** | Concierge service + dealer network | 🔄 In Progress |
-| **V1.5** | Seller KYC + automated financing | 📋 Planned |
-| **V2** | Full financing, insurance, logistics | 📋 Planned |
+| **V1.5** | Seller KYC + automated financing + PWA | 📋 Planned |
+| **V2** | Full financing, insurance, logistics + native mobile app | 📋 Planned |
 | **V3** | Lifecycle platform + data insights | 📋 Planned |
 
 ---
@@ -44,12 +44,14 @@
 - [ ] Vehicle ownership verification
 - [ ] Automated financing arrangements
 - [ ] Partner bank/leasing integrations
+- [ ] **PWA (Progressive Web App)** — installable from browser to home screen (iOS + Android), offline support, ~1.5 hours setup
 
 ## V2 (Planned)
 - [ ] Full financing flow (application → approval → disbursement)
 - [ ] Insurance comparison and bundling
 - [ ] Logistics and delivery coordination
 - [ ] Escrow payment system
+- [ ] **Native mobile app (Capacitor)** — iOS App Store + Google Play, full device access (camera, push notifications, sensors), ~5–8 hours setup + app store submissions
 
 ## V3 (Planned)
 - [ ] Car lifecycle tracking (service history, value over time)
@@ -119,7 +121,29 @@ Migration planning begins when **any two** of these thresholds are met:
 
 ## Revenue Model
 
-1. **Placement fees** — Premium listing visibility (Stripe checkout)
-2. **Transaction commission** — Percentage of completed sales (planned)
+1. **Listing fees** — €49 Basic / €99 Premium (Stripe checkout)
+2. **Full Service commission** — 2.5% of completed sales, capped at €499 (planned V2)
 3. **Financing referrals** — Commission from partner banks/leasers (planned)
 4. **Data insights** — Market analytics for dealers (planned)
+
+---
+
+## Mobile Strategy
+
+| Phase | Approach | Effort | Reach |
+|---|---|---|---|
+| **V1.5** | PWA (installable web app) | ~1.5 hours | All phones via browser |
+| **V2** | Capacitor (native app) | ~5–8 hours | App Store + Google Play |
+
+### PWA (V1.5) — First Mobile Milestone
+- Install `vite-plugin-pwa`, configure manifest & icons
+- Add mobile meta tags, offline caching, `/install` page
+- No app store submission needed — users install from browser
+- Shared codebase — zero backend changes required
+
+### Native App (V2) — Full Mobile Experience
+- Capacitor wraps the existing React app into native iOS/Android
+- Full device access: camera, push notifications, sensors
+- Requires Xcode (iOS) + Android Studio (Android)
+- Apple Developer ($99/yr) + Google Play ($25 one-time)
+- Each release: `npx cap sync` → rebuild → submit to stores
