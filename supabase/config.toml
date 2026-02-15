@@ -20,3 +20,6 @@ verify_jwt = false
 
 [functions.stripe-webhook]
 verify_jwt = false
+
+[functions.verify-docs-password]
+verify_jwt = false

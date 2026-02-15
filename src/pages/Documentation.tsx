@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen } from "lucide-react";
+import { Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen, Loader2 } from "lucide-react";
 import SEO from "@/components/SEO";
-
-const DOCS_PASSWORD = "autozon2025";
+import { supabase } from "@/integrations/supabase/client";
 
 const docs = [
   { title: "Architecture Overview", desc: "System design, tech stack, infrastructure, and project structure", icon: Server, file: "architecture.md" },
@@ -22,14 +21,25 @@ const Documentation: React.FC = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === DOCS_PASSWORD) {
-      setAuthenticated(true);
-      setError(false);
-    } else {
+    setLoading(true);
+    setError(false);
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("verify-docs-password", {
+        body: { password },
+      });
+      if (fnError || !data?.valid) {
+        setError(true);
+      } else {
+        setAuthenticated(true);
+      }
+    } catch {
       setError(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,7 +65,9 @@ const Documentation: React.FC = () => {
                 className={error ? "border-destructive" : ""}
               />
               {error && <p className="text-sm text-destructive">Incorrect password</p>}
-              <Button type="submit" className="w-full">Access Documentation</Button>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Verifying...</> : "Access Documentation"}
+              </Button>
             </form>
           </CardContent>
         </Card>
