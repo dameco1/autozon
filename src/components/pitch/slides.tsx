@@ -700,62 +700,87 @@ const carImages = [
 ];
 
 export const SlideFounder = () => (
-  <div className="flex flex-col h-full px-40 py-10">
-    {/* Top: Team Bios */}
-    <div className="flex flex-col justify-center flex-1">
-      <div className="flex items-center gap-4 mb-5">
-        <User className={green} size={40} />
-        <h2 className={`font-display text-[40px] font-bold text-white leading-tight`}>The Founding Team</h2>
-      </div>
+  <div className="flex flex-col h-full px-32 py-10">
+    {/* Header */}
+    <div className="flex items-center gap-4 mb-8">
+      <User className={green} size={40} />
+      <h2 className="font-display text-[42px] font-bold text-white leading-tight">The Founding Team</h2>
+    </div>
 
+    {/* Three cards side by side */}
+    <div className="grid grid-cols-3 gap-6 flex-1">
       {/* Emina */}
-      <div className="flex items-start gap-5 mb-4">
-        <img src={eminaPhoto} alt="Emina Mukic-Buljubasic" className="w-[72px] h-[72px] rounded-xl object-cover border-2 border-green/30 shrink-0" />
-        <div>
-          <h3 className="text-[22px] text-white font-bold">Emina Mukic-Buljubasic</h3>
-          <p className={`text-[15px] ${green} font-semibold mt-0.5`}>Co-Founder & CEO</p>
-          <p className="text-[14px] text-silver leading-relaxed mt-1">
-            Mag. International Business (University of Vienna). 15+ years leading financial management, strategic operations, and high-value partnerships. As Managing Director at E2 Partner GmbH, grew telecom business to €2M+ revenue. Trusted by the Soros Foundation, UN agencies, and Swiss Bank for EU-level project management. Brings operational rigor, financial discipline, and cross-border negotiation expertise — the backbone of autozon's business execution.
-          </p>
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
+        <div className="flex items-center gap-4 mb-4">
+          <img src={eminaPhoto} alt="Emina Mukic-Buljubasic" className="w-[64px] h-[64px] rounded-full object-cover border-2 border-green/40 shrink-0" />
+          <div>
+            <h3 className="text-[20px] text-white font-bold leading-tight">Emina Mukic-Buljubasic</h3>
+            <p className={`text-[14px] ${green} font-semibold`}>Co-Founder & CEO</p>
+          </div>
         </div>
+        <div className="space-y-2 flex-1">
+          <p className="text-[13px] text-silver leading-relaxed">Mag. International Business, University of Vienna. 15+ years in financial management, operations & partnerships.</p>
+          <div className="space-y-1.5 mt-3">
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">MD at E2 Partner — grew telecom to €2M+ revenue</span></div>
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">EU project lead for Soros Foundation, UN & Swiss Bank</span></div>
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">Cross-border negotiation & financial discipline</span></div>
+          </div>
+        </div>
+        <p className="text-[11px] text-silver/50 italic mt-3 pt-3 border-t border-white/5">The operational backbone of autozon</p>
       </div>
 
       {/* Damir */}
-      <div className="flex items-start gap-5 mb-4">
-        <img src={damirPhoto} alt="Damir Buljubasic" className="w-[72px] h-[72px] rounded-xl object-cover border-2 border-green/30 shrink-0" />
-        <div>
-          <h3 className="text-[22px] text-white font-bold">Damir Buljubasic</h3>
-          <p className={`text-[15px] ${green} font-semibold mt-0.5`}>Co-Founder & CIO</p>
-          <p className="text-[14px] text-silver leading-relaxed mt-1">
-            25+ years of enterprise leadership across Oracle, ATOS, and high-growth startups. Founded iLMS Director — scaled to 1.3M users and achieved a successful exit via merger with Learning Library Inc. Named Oracle's Best Sales Director CEE (990% YoY). Drove 3,000% digital transformation at Prevent ASA. Serial builder who turns market inefficiencies into scalable tech platforms — the driving force behind autozon's AI-powered innovation.
-          </p>
+      <div className="bg-white/5 border border-green/20 rounded-2xl p-6 flex flex-col ring-1 ring-green/10">
+        <div className="flex items-center gap-4 mb-4">
+          <img src={damirPhoto} alt="Damir Buljubasic" className="w-[64px] h-[64px] rounded-full object-cover border-2 border-green/40 shrink-0" />
+          <div>
+            <h3 className="text-[20px] text-white font-bold leading-tight">Damir Buljubasic</h3>
+            <p className={`text-[14px] ${green} font-semibold`}>Co-Founder & CIO</p>
+          </div>
         </div>
+        <div className="space-y-2 flex-1">
+          <p className="text-[13px] text-silver leading-relaxed">25+ years enterprise leadership at Oracle, ATOS & high-growth startups. Serial founder and digital transformer.</p>
+          <div className="space-y-1.5 mt-3">
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">Founded iLMS Director — 1.3M users, successful exit</span></div>
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">Oracle's Best Sales Director CEE — 990% YoY</span></div>
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">3,000% digital transformation at Prevent ASA</span></div>
+          </div>
+        </div>
+        <p className="text-[11px] text-silver/50 italic mt-3 pt-3 border-t border-white/5">The innovation engine behind autozon</p>
       </div>
 
       {/* Nenad */}
-      <div className="flex items-start gap-5">
-        <img src={nenadPhoto} alt="Nenad Brankovic" className="w-[72px] h-[72px] rounded-xl object-cover border-2 border-green/30 shrink-0" />
-        <div>
-          <h3 className="text-[22px] text-white font-bold">Nenad Brankovic</h3>
-          <p className={`text-[15px] ${green} font-semibold mt-0.5`}>CFO</p>
-          <p className="text-[14px] text-silver leading-relaxed mt-1">
-            London Business School MBA. Served as Group CFO at MidEuropa Partners portfolio companies managing €500M+ combined revenue. Played a key role in the €1B+ exit to KKR — one of CEE's landmark private equity transactions. Led €350M debt refinancing and a €475M bond issuance. Board member across FMCG and TMT sectors. Brings institutional-grade financial leadership and investor credibility to autozon's growth story.
-          </p>
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
+        <div className="flex items-center gap-4 mb-4">
+          <img src={nenadPhoto} alt="Nenad Brankovic" className="w-[64px] h-[64px] rounded-full object-cover border-2 border-green/40 shrink-0" />
+          <div>
+            <h3 className="text-[20px] text-white font-bold leading-tight">Nenad Brankovic</h3>
+            <p className={`text-[14px] ${green} font-semibold`}>CFO</p>
+          </div>
         </div>
+        <div className="space-y-2 flex-1">
+          <p className="text-[13px] text-silver leading-relaxed">London Business School MBA. Group CFO across MidEuropa Partners portfolio companies (€500M+ revenue).</p>
+          <div className="space-y-1.5 mt-3">
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">Key role in €1B+ exit to KKR</span></div>
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">Led €350M refinancing & €475M bond issuance</span></div>
+            <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[12px] text-white/80">Board member across FMCG & TMT sectors</span></div>
+          </div>
+        </div>
+        <p className="text-[11px] text-silver/50 italic mt-3 pt-3 border-t border-white/5">Institutional-grade financial leadership</p>
       </div>
     </div>
 
-    {/* Bottom: Car strip with caption */}
-    <div className="mt-4">
-      <div className="flex gap-3">
+    {/* Bottom: Car strip */}
+    <div className="mt-6">
+      <div className="flex gap-2">
         {carImages.map((src, i) => (
-          <div key={i} className="flex-1 rounded-lg overflow-hidden border border-white/10 h-[90px]">
+          <div key={i} className="flex-1 rounded-lg overflow-hidden border border-white/10 h-[72px]">
             <img src={src} alt={`Car ${i + 1}`} className="w-full h-full object-cover" />
           </div>
         ))}
       </div>
-      <p className="text-[13px] text-silver/60 italic text-center mt-2">
-        A few of Damir's personal cars — each meticulously maintained and cared for. The passion that inspired autozon.
+      <p className="text-[12px] text-silver/40 italic text-center mt-2">
+        Some of Damir's personal collection — each meticulously cared for over the years. The passion that sparked autozon.
       </p>
     </div>
   </div>
