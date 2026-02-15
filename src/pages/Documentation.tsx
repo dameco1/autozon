@@ -111,18 +111,22 @@ const statusConfig = {
 const Documentation: React.FC = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [authMode, setAuthMode] = useState<"password" | "email">("password");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [locked, setLocked] = useState(false);
+  const [accessType, setAccessType] = useState<"full" | "viewer" | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
+      const body = authMode === "email" ? { email } : { password };
       const { data, error: fnError } = await supabase.functions.invoke("verify-docs-password", {
-        body: { password },
+        body,
       });
       if (fnError) {
         setError("Something went wrong. Please try again.");
@@ -132,12 +136,13 @@ const Documentation: React.FC = () => {
         setRemainingAttempts(0);
         setLocked(true);
       } else if (!data?.valid) {
-        setError("Incorrect password");
+        setError(authMode === "email" ? "Email not authorized" : "Incorrect password");
         if (typeof data?.remaining === "number") {
           setRemainingAttempts(data.remaining);
         }
       } else {
         setAuthenticated(true);
+        setAccessType(data?.accessType || "full");
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -173,14 +178,25 @@ const Documentation: React.FC = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => { setPassword(e.target.value); setError(""); }}
-                className={error ? "border-destructive" : ""}
-                disabled={locked}
-              />
+              {authMode === "password" ? (
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => { setPassword(e.target.value); setError(""); }}
+                  className={error ? "border-destructive" : ""}
+                  disabled={locked}
+                />
+              ) : (
+                <Input
+                  type="email"
+                  placeholder="Authorized email address"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                  className={error ? "border-destructive" : ""}
+                  disabled={locked}
+                />
+              )}
               {error && <p className="text-sm text-destructive">{error}</p>}
               {remainingAttempts !== null && remainingAttempts <= 3 && !locked && (
                 <div className={`flex items-center gap-2 text-xs ${remainingAttempts <= 1 ? "text-destructive" : "text-yellow-500"}`}>
@@ -197,6 +213,15 @@ const Documentation: React.FC = () => {
               <Button type="submit" className="w-full" disabled={loading || locked}>
                 {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Verifying...</> : "Access Data Room"}
               </Button>
+              <div className="text-center">
+                <button
+                  type="button"
+                  className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                  onClick={() => { setAuthMode(authMode === "password" ? "email" : "password"); setError(""); }}
+                >
+                  {authMode === "password" ? "Access with authorized email instead" : "Access with password instead"}
+                </button>
+              </div>
             </form>
           </CardContent>
         </Card>
