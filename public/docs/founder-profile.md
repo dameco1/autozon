@@ -70,6 +70,16 @@ His vision: **make the used car market as transparent and fair as it should be**
   - Achieved YoY growth between **140% and 600%, four consecutive years**
   - Managed 30+ private and government organization accounts
 
+### Founder & CEO — iLMS Director (Distance Learning Platform)
+*Canada · 2000–2009*
+
+- **Founded a startup** that built **iLMS Director**, an innovative distance learning platform for professional certification and continuing education
+- Platform was adopted by **1.3 million realtors across the United States** for maintaining professional certifications, alongside users from insurance, finance, and other regulated industries
+- Successfully grew the company from inception to a market-leading position in the North American e-learning space
+- **Merged with Learning Library Inc.**, validating the platform's value and market fit through a successful exit
+- Pioneered early SaaS-model delivery of compliance training at scale — years ahead of the industry curve
+- Recognized with **CSTD Award + Silver Award for External E-Learning Program** and **Merit Awards** from the International Association of Business Communicators and the Government of Canada
+
 ### Additional Executive Roles
 
 - **Senior Sales Director** — FintechOS, Vienna (2019)
@@ -122,6 +132,7 @@ Damir's approach is **pragmatic and partnership-oriented**: he prioritizes trans
 
 | Founder Strength | Platform Impact |
 |---|---|
+| Founded & exited iLMS Director (1.3M users) | Proven ability to build, scale, and exit a tech startup |
 | 25+ years enterprise sales | Deep understanding of transaction dynamics and negotiation psychology |
 | Fintech startup experience (Finyoz, FintechOS) | Knows how to build and scale financial technology platforms |
 | 3,000% digital transformation at Prevent ASA | Proven ability to digitize traditional markets |
