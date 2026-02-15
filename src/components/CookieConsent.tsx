@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, ChevronDown, ChevronUp } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 type CookiePreferences = {
   essential: true;
@@ -29,6 +30,8 @@ export const getCookiePreferences = (): CookiePreferences => {
 };
 
 const CookieConsent: React.FC = () => {
+  const { t } = useLanguage();
+  const c = t.cookies;
   const [visible, setVisible] = useState(false);
   const [showCustomize, setShowCustomize] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>(defaultPreferences);
@@ -59,37 +62,16 @@ const CookieConsent: React.FC = () => {
   };
 
   const cookieCategories = [
-    {
-      key: "essential" as const,
-      label: "Essential Cookies",
-      description: "Required for the website to function. These include session management, authentication, and security cookies. Cannot be disabled.",
-      locked: true,
-    },
-    {
-      key: "functional" as const,
-      label: "Functional Cookies",
-      description: "Enable enhanced functionality such as language preferences, saved car searches, and personalized settings.",
-      locked: false,
-    },
-    {
-      key: "analytics" as const,
-      label: "Analytics Cookies",
-      description: "Help us understand how visitors interact with our website by collecting anonymous usage data including page views, session duration, and navigation paths.",
-      locked: false,
-    },
-    {
-      key: "marketing" as const,
-      label: "Marketing Cookies",
-      description: "Used to track visitors across websites to display relevant advertisements. These cookies may share data with third-party advertising partners.",
-      locked: false,
-    },
+    { key: "essential" as const, label: c.essential, description: c.essentialDesc, locked: true },
+    { key: "functional" as const, label: c.functional, description: c.functionalDesc, locked: false },
+    { key: "analytics" as const, label: c.analytics, description: c.analyticsDesc, locked: false },
+    { key: "marketing" as const, label: c.marketing, description: c.marketingDesc, locked: false },
   ];
 
   return (
     <AnimatePresence>
       {visible && (
         <>
-          {/* Backdrop overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -105,33 +87,30 @@ const CookieConsent: React.FC = () => {
             className="fixed bottom-0 left-0 right-0 z-[60] p-4"
           >
             <div className="max-w-2xl mx-auto bg-secondary border border-border rounded-2xl shadow-2xl overflow-hidden">
-              {/* Header */}
               <div className="p-6 pb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     <Shield className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-base font-display font-bold text-white">Your Privacy Matters</h3>
-                    <p className="text-xs text-silver/50">GDPR Compliant</p>
+                    <h3 className="text-base font-display font-bold text-white">{c.title}</h3>
+                    <p className="text-xs text-silver/50">{c.gdpr}</p>
                   </div>
                 </div>
                 <p className="text-sm text-silver/60 leading-relaxed">
-                  We use cookies and similar technologies to provide our services, enhance your experience, and analyze usage.
-                  As a car marketplace, we process vehicle data and personal information in accordance with the{" "}
-                  <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
-                  You can customize your preferences below or accept/reject non-essential cookies.
+                  {c.description}{" "}
+                  <Link to="/privacy-policy" className="text-primary hover:underline">{c.privacyLink}</Link>.{" "}
+                  {c.customizeText}
                 </p>
               </div>
 
-              {/* Customize panel */}
               <div className="px-6">
                 <button
                   onClick={() => setShowCustomize(!showCustomize)}
                   className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-3"
                 >
                   {showCustomize ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                  Customize Cookie Preferences
+                  {c.customize}
                 </button>
 
                 <AnimatePresence>
@@ -154,7 +133,7 @@ const CookieConsent: React.FC = () => {
                                 <span className="text-sm font-semibold text-white">{category.label}</span>
                                 {category.locked && (
                                   <span className="text-[10px] uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full font-semibold">
-                                    Required
+                                    {c.required}
                                   </span>
                                 )}
                               </div>
@@ -178,36 +157,27 @@ const CookieConsent: React.FC = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Actions */}
               <div className="p-6 pt-3 flex flex-wrap gap-3 border-t border-border">
                 <Button
                   onClick={acceptAll}
                   className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold flex-1 sm:flex-none"
                 >
-                  Accept All
+                  {c.acceptAll}
                 </Button>
                 {showCustomize ? (
-                  <Button
-                    variant="outline"
-                    onClick={saveCustom}
-                    className="font-semibold flex-1 sm:flex-none"
-                  >
-                    Save Preferences
+                  <Button variant="outline" onClick={saveCustom} className="font-semibold flex-1 sm:flex-none">
+                    {c.savePreferences}
                   </Button>
                 ) : (
-                  <Button
-                    variant="outline"
-                    onClick={acceptNecessary}
-                    className="font-semibold flex-1 sm:flex-none"
-                  >
-                    Necessary Only
+                  <Button variant="outline" onClick={acceptNecessary} className="font-semibold flex-1 sm:flex-none">
+                    {c.necessaryOnly}
                   </Button>
                 )}
                 <Link
                   to="/privacy-policy"
                   className="text-xs text-silver/40 hover:text-primary transition-colors self-center ml-auto"
                 >
-                  Privacy Policy
+                  {c.privacyLink}
                 </Link>
               </div>
             </div>
