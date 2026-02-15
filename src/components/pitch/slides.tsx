@@ -45,7 +45,7 @@ export const SlideCover = () => (
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      The platform is <span className="text-white font-bold">free for buyers</span>. Sellers pay a success fee because they receive a higher sale price, faster liquidity, and zero friction. The European used‑car market is <span className={`${green} font-bold`}>€300B+</span>, and no dominant fair‑value car platform exists.
+      The platform is <span className="text-white font-bold">free for buyers</span>. Sellers pay a flat listing fee — <span className={`${green} font-bold`}>€49 Basic</span> or <span className={`${green} font-bold`}>€99 Premium</span>. The European used‑car market is <span className={`${green} font-bold`}>€300B+</span>, and no dominant fair‑value car platform exists.
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
@@ -441,10 +441,10 @@ export const SlideBusinessModel = () => (
       <div className={`${cardBg} border-green/30`}>
         <div className="flex items-center gap-4 mb-6">
           <DollarSign className={green} size={36} />
-          <h3 className="text-[36px] text-white font-bold">Sellers Pay Success Fee</h3>
+          <h3 className="text-[36px] text-white font-bold">Sellers Pay Listing Fee</h3>
         </div>
         <p className="text-[24px] text-silver">
-          Because they receive fair-value appraisal, instant matching, and a frictionless sale.
+          €49 Basic or €99 Premium — simple, transparent, and fair for every car value.
         </p>
       </div>
     </div>
@@ -463,7 +463,7 @@ export const SlideRevenueStreams = () => (
     </div>
     <div className="grid grid-cols-3 gap-6">
       {[
-        { icon: DollarSign, title: "Seller Success Fee", desc: "2.5% capped at €499 or flat fee", primary: true },
+        { icon: DollarSign, title: "Seller Listing Fee", desc: "€49 Basic / €99 Premium flat fee", primary: true },
         { icon: Target, title: "Dealer Lead Fees", desc: "Pay-per-lead or subscription access" },
         { icon: CreditCard, title: "Financing & Insurance", desc: "High-margin referral commissions" },
         { icon: Truck, title: "Logistics Add-ons", desc: "Pickup, delivery, inspection" },
@@ -520,8 +520,8 @@ export const SlidePricing = () => (
     </div>
     <div className="grid grid-cols-3 gap-8">
       {[
-        { tier: "Basic", price: "€99", features: ["Fair-value appraisal", "Market demand score", "Self-service listing"] },
-        { tier: "Premium", price: "€199", features: ["Buyer matching", "Concierge support", "Priority visibility"], highlight: true },
+        { tier: "Basic", price: "€49", features: ["Fair-value appraisal", "Market demand score", "Self-service listing"] },
+        { tier: "Premium", price: "€99", features: ["Buyer matching", "Concierge support", "Priority visibility"], highlight: true },
         { tier: "Full Service", price: "2.5%", sub: "capped at €499", features: ["Everything above", "Pickup & paperwork", "Zero stress — fully managed"] },
       ].map(({ tier, price, sub, features, highlight }) => (
         <div key={tier} className={`${cardBg} ${highlight ? "border-green/40 bg-green/5 scale-105" : ""} flex flex-col`}>
@@ -566,9 +566,9 @@ export const SlideFinancials = () => (
     </div>
     <div className="grid grid-cols-3 gap-8 mb-12">
       {[
-        { year: "Year 1", txns: "2,000", rev: "€1M", focus: "Product-market fit" },
-        { year: "Year 2", txns: "10,000", rev: "€5–6M", focus: "Dealer + finance revenue" },
-        { year: "Year 3", txns: "40,000", rev: "€25M+", focus: "Strong network effects" },
+        { year: "Year 1", txns: "300", rev: "€22K", focus: "Product-market fit" },
+        { year: "Year 2", txns: "3,000", rev: "€317K", focus: "Germany + Full Service" },
+        { year: "Year 3", txns: "15,000", rev: "€1.8M+", focus: "DACH + network effects" },
       ].map(({ year, txns, rev, focus }) => (
         <div key={year} className={cardBg}>
           <h3 className="text-[24px] text-white font-bold">{year}</h3>
