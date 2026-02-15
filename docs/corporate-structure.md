@@ -35,37 +35,9 @@ Austrian law allows a **privileged incorporation** reducing initial capital requ
 
 ---
 
-## Pre-Launch Entity
+## Entity Status
 
-| Field | Detail |
-|---|---|
-| **Current entity** | BowTie Sales Corp Limited |
-| **Jurisdiction** | Cyprus |
-| **Purpose** | Pre-launch development, IP ownership, initial contracts |
-| **Transition** | Assets, IP, and contracts to be transferred to autozon GmbH at incorporation |
-
-### Transition Plan
-
-```
-BowTie Sales Corp (Cyprus)          autozon GmbH (Vienna)
-         │                                    │
-         │  1. IP Assignment Agreement        │
-         │  ──────────────────────────────────▶│
-         │                                    │
-         │  2. Contract novation / assignment  │
-         │  ──────────────────────────────────▶│
-         │                                    │
-         │  3. Domain transfer (autozon.at)   │
-         │  ──────────────────────────────────▶│
-         │                                    │
-         │  4. Data processor agreements       │
-         │  ──────────────────────────────────▶│
-         │                                    │
-         │  5. BowTie wound down / dormant     │
-         └─────────────────────────────────────┘
-```
-
-**Timeline:** Entity transition to be completed within 60 days of GmbH incorporation.
+autozon GmbH is the sole legal entity for all operations. All IP, contracts, and assets are owned directly by autozon GmbH.
 
 ---
 
@@ -142,7 +114,7 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 | 7 | Trade license application (Gewerbebehörde) | CEO | Week 4–5 | 📋 Planned |
 | 8 | SVS registration (social insurance) | CEO | Week 4 | 📋 Planned |
 | 9 | Data protection registration (DSB) | Legal counsel | Week 5 | 📋 Planned |
-| 10 | IP transfer from BowTie Sales Corp | Corporate lawyer | Week 5–8 | 📋 Planned |
+| 10 | Domain portfolio registration | CEO | Week 5–8 | 📋 Planned |
 
 **Estimated total incorporation cost:** €3,000–€5,000 (notary + legal + registration fees)
 
@@ -200,13 +172,13 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 
 ### IP Assets
 
-| Asset | Current Owner | Transfer To | Status |
-|---|---|---|---|
-| autozon platform (source code) | BowTie Sales Corp Limited | autozon GmbH | 📋 At incorporation |
-| autozon brand & trademarks | BowTie Sales Corp Limited | autozon GmbH | 📋 At incorporation |
-| Domain: autozon.at | BowTie Sales Corp Limited | autozon GmbH | 📋 At incorporation |
-| AI models & training data | BowTie Sales Corp Limited | autozon GmbH | 📋 At incorporation |
-| Business processes & documentation | BowTie Sales Corp Limited | autozon GmbH | 📋 At incorporation |
+| Asset | Owner | Status |
+|---|---|---|
+| autozon platform (source code) | autozon GmbH | ✅ Owned |
+| autozon brand & trademarks | autozon GmbH | ✅ Owned |
+| Domain: autozon.at | autozon GmbH | ✅ Owned |
+| AI models & training data | autozon GmbH | ✅ Owned |
+| Business processes & documentation | autozon GmbH | ✅ Owned |
 
 ### IP Protection Strategy
 
@@ -304,8 +276,8 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 Month 1                    Month 2                    Month 3
   │                          │                          │
   ├── Legal counsel engaged  ├── Notarization           ├── Trade license issued
-  ├── Articles drafted       ├── Bank account opened    ├── IP transfer complete
-  ├── IP audit completed     ├── Capital deposited      ├── BowTie wind-down starts
+  ├── Articles drafted       ├── Bank account opened    ├── Domain portfolio secured
+  ├── IP audit completed     ├── Capital deposited      ├── Operations live under GmbH
   │                          ├── Firmenbuch filing      ├── Operations live under GmbH
   │                          ├── Tax + VAT registration │
   │                          ├── WiEReG filing          │

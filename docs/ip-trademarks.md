@@ -12,13 +12,13 @@ Autozon's intellectual property portfolio encompasses the platform's source code
 
 | Asset | Description | Owner | Protection |
 |---|---|---|---|
-| **autozon platform** | Full-stack web application (React, TypeScript, PostgreSQL) | BowTie Sales Corp → autozon GmbH | Copyright (automatic), trade secret |
-| **AI Fair Value Engine** | Proprietary algorithm combining market data, condition scoring, and demand signals | BowTie Sales Corp → autozon GmbH | Trade secret |
-| **AI Damage Detection** | Computer vision pipeline for vehicle damage identification and quantification | BowTie Sales Corp → autozon GmbH | Trade secret |
-| **Smart Matching Algorithm** | Buyer-seller matching engine based on preferences, budget, and vehicle attributes | BowTie Sales Corp → autozon GmbH | Trade secret |
-| **Negotiation Engine** | Structured round-based negotiation system with fair-value anchoring | BowTie Sales Corp → autozon GmbH | Trade secret |
-| **AI Concierge** | Bilingual (EN/DE) conversational AI for user guidance | BowTie Sales Corp → autozon GmbH | Trade secret |
-| **Admin Command Center** | RBAC-secured platform monitoring and management system | BowTie Sales Corp → autozon GmbH | Trade secret |
+| **autozon platform** | Full-stack web application (React, TypeScript, PostgreSQL) | autozon GmbH | Copyright (automatic), trade secret |
+| **AI Fair Value Engine** | Proprietary algorithm combining market data, condition scoring, and demand signals | autozon GmbH | Trade secret |
+| **AI Damage Detection** | Computer vision pipeline for vehicle damage identification and quantification | autozon GmbH | Trade secret |
+| **Smart Matching Algorithm** | Buyer-seller matching engine based on preferences, budget, and vehicle attributes | autozon GmbH | Trade secret |
+| **Negotiation Engine** | Structured round-based negotiation system with fair-value anchoring | autozon GmbH | Trade secret |
+| **AI Concierge** | Bilingual (EN/DE) conversational AI for user guidance | autozon GmbH | Trade secret |
+| **Admin Command Center** | RBAC-secured platform monitoring and management system | autozon GmbH | Trade secret |
 
 ### Data Assets
 
@@ -142,26 +142,15 @@ Autozon's intellectual property portfolio encompasses the platform's source code
 | Parameter | Value |
 |---|---|
 | **License type** | Proprietary (all rights reserved) |
-| **Copyright holder** | BowTie Sales Corp Limited → autozon GmbH |
+| **Copyright holder** | autozon GmbH |
 | **Source code** | Private repository, not open-source |
 | **Distribution** | SaaS only (no downloadable software) |
 
 ---
 
-## IP Transfer Plan
+## IP Ownership
 
-### BowTie Sales Corp → autozon GmbH
-
-| Step | Action | Document | Timeline |
-|---|---|---|---|
-| 1 | **IP audit** | Inventory all IP assets held by BowTie | Pre-incorporation |
-| 2 | **IP assignment agreement** | Transfer all software, data, and brand IP | At incorporation |
-| 3 | **Domain transfer** | Transfer autozon.at registration | At incorporation |
-| 4 | **Trademark assignment** | Assign any pending trademark applications | At incorporation |
-| 5 | **License termination** | Terminate any interim licensing arrangements | Post-transfer |
-| 6 | **Confirmation** | Legal opinion confirming clean IP ownership | Post-transfer |
-
-**Key principle:** autozon GmbH must own 100% of all IP free and clear, with no encumbrances, liens, or third-party claims. This is critical for investor confidence and future fundraising.
+All intellectual property is owned directly by autozon GmbH. There are no third-party claims, encumbrances, or licensing arrangements affecting IP ownership.
 
 ### IP Representations for Investors
 

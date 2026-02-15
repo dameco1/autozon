@@ -24,7 +24,7 @@ const TermsAndConditions: React.FC = () => {
         <div className="prose prose-invert prose-sm max-w-none space-y-8 text-silver/80">
           <section>
             <h2 className="text-xl font-display font-bold text-white">1. Scope of Application</h2>
-            <p>These Terms and Conditions ("Terms") govern the use of the Autozon website and platform (the "Service") operated by BowTie Sales Corp Limited ("we", "us", or "our"), registered in the Republic of Cyprus. By accessing or using our Service, you agree to be bound by these Terms and our <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.</p>
+            <p>These Terms and Conditions ("Terms") govern the use of the Autozon website and platform (the "Service") operated by autozon GmbH ("we", "us", or "our"), registered in Vienna, Austria. By accessing or using our Service, you agree to be bound by these Terms and our <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.</p>
           </section>
 
           <section>
@@ -96,7 +96,7 @@ const TermsAndConditions: React.FC = () => {
 
           <section>
             <h2 className="text-xl font-display font-bold text-white">9. Intellectual Property</h2>
-            <p>All content on this website, including text, graphics, logos, algorithms, AI models, and software, is the property of BowTie Sales Corp Limited or its licensors and is protected by copyright and other intellectual property laws. Unauthorized use, reproduction, or distribution is prohibited.</p>
+            <p>All content on this website, including text, graphics, logos, algorithms, AI models, and software, is the property of autozon GmbH or its licensors and is protected by copyright and other intellectual property laws. Unauthorized use, reproduction, or distribution is prohibited.</p>
           </section>
 
           <section>
@@ -131,8 +131,8 @@ const TermsAndConditions: React.FC = () => {
 
           <section>
             <h2 className="text-xl font-display font-bold text-white">14. Governing Law & Dispute Resolution</h2>
-            <p>14.1. These Terms are governed by the laws of the Republic of Cyprus.</p>
-            <p>14.2. Any disputes shall be subject to the exclusive jurisdiction of the courts of Cyprus.</p>
+            <p>14.1. These Terms are governed by the laws of the Republic of Austria.</p>
+            <p>14.2. Any disputes shall be subject to the exclusive jurisdiction of the courts of Vienna, Austria.</p>
             <p>14.3. For EU consumers: The European Commission provides an Online Dispute Resolution platform at <a href="https://ec.europa.eu/consumers/odr/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>.</p>
           </section>
 

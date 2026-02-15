@@ -25,7 +25,7 @@ const PrivacyPolicy: React.FC = () => {
           <section>
             <h2 className="text-xl font-display font-bold text-white">Controller</h2>
             <p>The controller within the meaning of the EU General Data Protection Regulation (GDPR) is:</p>
-            <p>BowTie Sales Corp Limited<br />Registered in the Republic of Cyprus</p>
+            <p>autozon GmbH<br />Vienna, Austria</p>
           </section>
 
           <section>
@@ -47,7 +47,7 @@ const PrivacyPolicy: React.FC = () => {
               <li><strong>Right to withdraw consent</strong> — at any time with effect for the future</li>
             </ul>
             <p>To exercise any of these rights, contact us at <a href="mailto:dpo@autozon.app" className="text-primary hover:underline">dpo@autozon.app</a>. We will respond within 30 days.</p>
-            <p>You may also lodge a complaint with the Office of the Commissioner for Personal Data Protection (Cyprus): <a href="https://www.dataprotection.gov.cy" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">https://www.dataprotection.gov.cy</a></p>
+            <p>You may also lodge a complaint with the Austrian Data Protection Authority (Datenschutzbehörde): <a href="https://www.dsb.gv.at" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">https://www.dsb.gv.at</a></p>
           </section>
 
           <section>
@@ -134,7 +134,7 @@ const PrivacyPolicy: React.FC = () => {
             <p>For paid services and car transactions, we process payment-related data through secure third-party payment processors.</p>
             <p><strong>Legal Basis:</strong> Art. 6(1)(b) GDPR — performance of a contract.</p>
             <p><strong>Recipients:</strong> Payment service providers, banks, and logistics partners as necessary.</p>
-            <p><strong>Storage:</strong> According to Cyprus statutory retention periods (6–10 years).</p>
+            <p><strong>Storage:</strong> According to Austrian statutory retention periods (7 years per BAO).</p>
           </section>
 
           <section>
