@@ -59,6 +59,12 @@ const AppraisalDisclaimer: React.FC<Props> = ({ onAccept }) => (
       </div>
     </div>
 
+    <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-4 mt-2">
+      <p className="text-sm text-foreground font-bold leading-relaxed">
+        ⚠️ We do not allow placement of vehicles that are not driveable — including cars with broken engines, failed transmissions, total damage (write-offs), flood damage, or any condition rendering the vehicle inoperable. Only driveable vehicles in functioning condition may be listed on autozon.
+      </p>
+    </div>
+
     <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 mt-2">
       <p className="text-[11px] text-silver/60 leading-relaxed">
         <span className="text-destructive font-semibold uppercase text-[10px] tracking-wider">Legal disclaimer: </span>
