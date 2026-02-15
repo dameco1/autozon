@@ -14,7 +14,7 @@ Autozon's go-to-market strategy follows a **concentrated launch** approach: domi
 |---|---|
 | **Market size** | ~500K used car transactions/year — manageable for a lean team |
 | **Language** | German — same as primary expansion market (Germany) |
-| **Founder base** | Damir is Vienna-based with deep local networks |
+| **Founder base** | Founding team is Vienna-based with deep local networks |
 | **Regulatory** | Straightforward GmbH incorporation, EU-standard GDPR |
 | **Trust culture** | Austrians value fairness and transparency — aligns with autozon's positioning |
 | **Digital readiness** | High internet penetration (93%), strong mobile adoption |
@@ -40,7 +40,7 @@ Autozon's go-to-market strategy follows a **concentrated launch** approach: domi
 
 | Activity | Details |
 |---|---|
-| **Founder-led sales** | Damir personally onboards first 20–30 sellers from network |
+| **Founder-led sales** | Founding team personally onboards first 20–30 sellers from network |
 | **Referral seeding** | Offer first 50 listings with waived placement fee |
 | **Content creation** | 10 "Fair Value vs. Dealer Offer" comparison posts (LinkedIn, Facebook) |
 | **SEO foundation** | Publish landing pages for top 20 car makes in AT (BMW, VW, Audi, Mercedes, etc.) |

@@ -56,7 +56,7 @@ export const SlideCover = () => (
 
     <div className="absolute bottom-24 left-40 right-40">
       <p className="text-[24px] text-white font-light">
-        <span className="font-semibold">Damir Buljubasic</span>, Founder
+        <span className="font-semibold">Emina Mukic-Buljubasic</span>, CEO &amp; <span className="font-semibold">Damir Buljubasic</span>, CIO — Co-Founders
       </p>
     </div>
 
@@ -691,7 +691,7 @@ export const SlideAsk = () => (
   </div>
 );
 
-// Slide 16: Founder
+// Slide 16: Founding Team
 const carImages = [
   carCitroenDs5, carBmw5Black, carBmw5Blue, carBmwZ4,
   carBmwX6Red, carBmwX2, carPorsche911, carPorschePanamera,
@@ -699,35 +699,44 @@ const carImages = [
 
 export const SlideFounder = () => (
   <div className="flex h-full px-40 py-16 gap-12">
-    {/* Left: Photo + Bio */}
-    <div className="flex flex-col justify-center w-[700px] shrink-0">
+    {/* Left: Team Bios */}
+    <div className="flex flex-col justify-center w-[750px] shrink-0">
       <div className="flex items-center gap-4 mb-8">
         <User className={green} size={48} />
-        <h2 className={heading}>The Founder</h2>
+        <h2 className={`font-display text-[48px] font-bold text-white leading-tight`}>The Founding Team</h2>
       </div>
-      <div className="flex items-start gap-8 mb-8">
+
+      {/* Emina */}
+      <div className="mb-6">
+        <h3 className="text-[28px] text-white font-bold">Emina Mukic-Buljubasic</h3>
+        <p className={`text-[18px] ${green} font-semibold mt-0.5`}>Co-Founder & CEO</p>
+        <p className="text-[17px] text-silver leading-relaxed mt-2">
+          Mag. International Business (Uni Vienna). 15+ years in financial management, operations, and partnerships. Managing Director at E2 Partner GmbH — led €2M+ revenue telecom business. EU project management with Soros Foundation, UN, and Swiss Bank.
+        </p>
+      </div>
+
+      {/* Damir */}
+      <div className="flex items-start gap-6 mb-6">
         <img
           src={damirPhoto}
           alt="Damir Buljubasic"
-          className="w-[200px] h-[200px] rounded-2xl object-cover border-2 border-green/30 shrink-0"
+          className="w-[100px] h-[100px] rounded-xl object-cover border-2 border-green/30 shrink-0"
         />
         <div>
-          <h3 className="text-[36px] text-white font-bold">Damir Buljubasic</h3>
-          <p className={`text-[20px] ${green} font-semibold mt-1`}>Founder & CEO</p>
+          <h3 className="text-[28px] text-white font-bold">Damir Buljubasic</h3>
+          <p className={`text-[18px] ${green} font-semibold mt-0.5`}>Co-Founder & CIO</p>
+          <p className="text-[17px] text-silver leading-relaxed mt-2">
+            25+ years enterprise leadership. Founded iLMS Director (1.3M users, merged with Learning Library Inc.). Oracle's Best Sales Director CEE. 3,000% digital transformation at Prevent ASA.
+          </p>
         </div>
       </div>
-      <div className="space-y-4 text-[20px] text-silver leading-relaxed">
-        <p>
-          At age 18, founded <span className="text-white font-semibold">Dameco Internet Services</span> and developed one of the most unique and widely used Learning Management Systems — sold to <span className="text-white font-semibold">Learning Library Inc.</span> in 2009.
-        </p>
-        <p>
-          Since then, held key roles at <span className="text-white font-semibold">Oracle, ATOS, ASA Prevent Holding</span>, and <span className="text-white font-semibold">Planetsoft</span>.
-        </p>
-        <p>
-          In 2025, a personal realization: despite investing heavily in maintenance and condition preservation, <span className={`${green} font-semibold`}>the system always depreciated the car without sense</span>. That frustration became Autozon.
-        </p>
-        <p className="text-silver/60 italic">
-          An avid car enthusiast who has owned and cared for every vehicle with passion →
+
+      {/* Nenad */}
+      <div>
+        <h3 className="text-[28px] text-white font-bold">Nenad Brankovic</h3>
+        <p className={`text-[18px] ${green} font-semibold mt-0.5`}>CFO</p>
+        <p className="text-[17px] text-silver leading-relaxed mt-2">
+          London Business School. Group CFO at MidEuropa Partners companies (€500M revenue). Key role in €1B+ exit to KKR. Led €350M debt refinancing and €475M bond issuance. Board member across FMCG and TMT.
         </p>
       </div>
     </div>
