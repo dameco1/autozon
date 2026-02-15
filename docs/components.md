@@ -66,11 +66,12 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 ### Admin Command Center (`src/components/admin/`)
 | Component | Purpose |
 |---|---|
-| `AdminOverview` | KPI stat cards (users, cars, negotiations, placements) + 7-day signup sparkline |
+| `AdminOverview` | KPI stat cards (users, cars, negotiations, revenue breakdown by source) + 7-day signup sparkline |
 | `AdminCarsTable` | All cars across all users with search, filter, status change, delete |
 | `AdminUsersTable` | All user profiles with join date, city, country |
 | `AdminNegotiations` | All offers with amount, counter, round, status tracking |
 | `AdminActivityFeed` | Merged feed of notifications, car views, and shortlists |
+| `AdminMatches` | All car-to-buyer matches with scores and status |
 
 ### Auth & Admin Hooks (`src/hooks/`)
 | Hook | Purpose |
@@ -79,12 +80,13 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 | `useIsAdmin` | Lightweight boolean check for conditional UI (e.g. navbar admin link) |
 | `useMfaStatus` | Checks user's MFA enrollment/verification status |
 
-### MFA Components
+### MFA & Auth Components
 | Component | Purpose |
 |---|---|
 | `MfaGuard` | Wrapper that enforces AAL2 (TOTP verified) on all protected routes |
-| `MfaEnroll` (page) | QR code setup for authenticator app enrollment |
+| `MfaEnroll` (page) | QR code setup with MS Authenticator recommendation + manual key fallback |
 | `MfaVerify` (page) | 6-digit TOTP input for session verification |
+| `ResetPassword` (page) | Email-based password reset flow (send link + update password) |
 
 ---
 
