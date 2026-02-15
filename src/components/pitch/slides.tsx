@@ -764,7 +764,72 @@ export const SlideFounder = () => (
   </div>
 );
 
-// Slide 17: Closing
+// Slide 17: Cap Table / Equity
+export const SlideCapTable = () => {
+  const segments = [
+    { label: "Damir Buljubasic\nCo-Founder & CIO", pct: 60, color: "#00C896" },
+    { label: "Emina Mukic-Buljubasic\nCo-Founder & CEO", pct: 10, color: "#00A87A" },
+    { label: "Nenad Brankovic\nCFO", pct: 10, color: "#007A5A" },
+    { label: "First Investor\n€200K for 20%", pct: 20, color: "#FFD166" },
+  ];
+
+  // Build a simple horizontal stacked bar
+  return (
+    <div className="flex flex-col h-full px-40 py-16 justify-center">
+      <div className="flex items-center gap-4 mb-10">
+        <PieChart className={green} size={48} />
+        <h2 className={`font-display text-[48px] font-bold text-white leading-tight`}>Cap Table & Investment</h2>
+      </div>
+
+      {/* Stacked bar */}
+      <div className="flex w-full h-[80px] rounded-2xl overflow-hidden mb-10">
+        {segments.map((s) => (
+          <div
+            key={s.label}
+            style={{ width: `${s.pct}%`, backgroundColor: s.color }}
+            className="flex items-center justify-center"
+          >
+            <span className="text-[24px] font-bold text-charcoal">{s.pct}%</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Legend */}
+      <div className="grid grid-cols-4 gap-6 mb-14">
+        {segments.map((s) => (
+          <div key={s.label} className={cardBg + " flex items-start gap-4"}>
+            <div className="w-5 h-5 rounded-full shrink-0 mt-1" style={{ backgroundColor: s.color }} />
+            <div>
+              <p className="text-[20px] text-white font-bold whitespace-pre-line">{s.label}</p>
+              <p className="text-[28px] font-black text-white mt-1">{s.pct}%</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Investor value proposition */}
+      <div className="grid grid-cols-3 gap-8">
+        <div className={cardBg + " text-center"}>
+          <p className="text-[18px] text-silver mb-2">Investment</p>
+          <p className="font-display text-[40px] font-black text-white">€200K</p>
+          <p className="text-[16px] text-silver mt-1">for 20% equity</p>
+        </div>
+        <div className={cardBg + " text-center"}>
+          <p className="text-[18px] text-silver mb-2">Implied Valuation</p>
+          <p className={`font-display text-[40px] font-black ${green}`}>€1M</p>
+          <p className="text-[16px] text-silver mt-1">pre-money</p>
+        </div>
+        <div className={cardBg + " text-center"}>
+          <p className="text-[18px] text-silver mb-2">Projected Return (Y5)</p>
+          <p className="font-display text-[40px] font-black text-white">20–80x</p>
+          <p className="text-[16px] text-silver mt-1">at €10M–€100M exit</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Slide 18: Closing
 export const SlideClosing = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
     <Heart className={green} size={64} />
@@ -790,5 +855,5 @@ export const allSlides = [
   SlideHowItWorksSeller, SlideHowItWorksBuyer, SlideSavingsExample, SlideProductDemo,
   SlideWhyNow, SlideBusinessModel, SlideRevenueStreams, SlideFlywheel,
   SlidePricing, SlideMarketSize, SlideFinancials, SlideCompetition,
-  SlideMoatRoadmap, SlideAsk, SlideFounder, SlideClosing,
+  SlideMoatRoadmap, SlideAsk, SlideFounder, SlideCapTable, SlideClosing,
 ];
