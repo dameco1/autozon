@@ -101,7 +101,7 @@ public/                  # Static assets (favicon, OG image, sitemap, robots.txt
 ## Authentication Flow
 
 1. User signs up via `/signup` (email + password)
-2. Email verification required before first login
+2. Auto-confirm is currently enabled (no email verification) — will be disabled before marketing launch
 3. **Mandatory TOTP-based 2FA (MFA)** for all users:
    - After first login, users are redirected to `/mfa-enroll` to set up an authenticator app (QR code)
    - Supported apps: Microsoft Authenticator (recommended), Google Authenticator, Authy
