@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 
 import damirPhoto from "@/assets/pitch/damir-profile.jpg";
+import eminaPhoto from "@/assets/pitch/emina-profile.jpg";
 import carBmw5Black from "@/assets/pitch/car-bmw-5-black.jpg";
 import carBmw5Blue from "@/assets/pitch/car-bmw-5-blue.jpg";
 import carBmwX2 from "@/assets/pitch/car-bmw-x2.jpg";
@@ -707,12 +708,19 @@ export const SlideFounder = () => (
       </div>
 
       {/* Emina */}
-      <div className="mb-6">
-        <h3 className="text-[28px] text-white font-bold">Emina Mukic-Buljubasic</h3>
-        <p className={`text-[18px] ${green} font-semibold mt-0.5`}>Co-Founder & CEO</p>
-        <p className="text-[17px] text-silver leading-relaxed mt-2">
-          Mag. International Business (Uni Vienna). 15+ years in financial management, operations, and partnerships. Managing Director at E2 Partner GmbH — led €2M+ revenue telecom business. EU project management with Soros Foundation, UN, and Swiss Bank.
-        </p>
+      <div className="flex items-start gap-6 mb-6">
+        <img
+          src={eminaPhoto}
+          alt="Emina Mukic-Buljubasic"
+          className="w-[100px] h-[100px] rounded-xl object-cover border-2 border-green/30 shrink-0"
+        />
+        <div>
+          <h3 className="text-[28px] text-white font-bold">Emina Mukic-Buljubasic</h3>
+          <p className={`text-[18px] ${green} font-semibold mt-0.5`}>Co-Founder & CEO</p>
+          <p className="text-[17px] text-silver leading-relaxed mt-2">
+            Mag. International Business (Uni Vienna). 15+ years in financial management, operations, and partnerships. Managing Director at E2 Partner GmbH — led €2M+ revenue telecom business. EU project management with Soros Foundation, UN, and Swiss Bank.
+          </p>
+        </div>
       </div>
 
       {/* Damir */}
