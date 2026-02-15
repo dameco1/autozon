@@ -97,7 +97,7 @@ const sections: Section[] = [
       { title: "Launch Checklist", desc: "Pre-launch tasks: security, domain, payments, QA, go-live", icon: Rocket, file: "launch-checklist.md", status: "ready" },
       { title: "Go-to-Market Strategy", desc: "Austria launch plan, channels, positioning, Germany prep", icon: Globe, file: "go-to-market.md", status: "ready" },
       { title: "Competitive Analysis", desc: "Market landscape, positioning, and differentiators", icon: BarChart3, file: "competitive-analysis.md", status: "ready" },
-      { title: "Partnership Pipeline", desc: "Financing partners, insurance, logistics integrations", icon: Building2, status: "planned" },
+      { title: "Partnership Pipeline", desc: "Financing partners, insurance, logistics integrations", icon: Building2, file: "partnership-pipeline.md", status: "ready" },
     ],
   },
 ];
