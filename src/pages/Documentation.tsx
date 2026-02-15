@@ -154,7 +154,8 @@ const Documentation: React.FC = () => {
     if (doc.link) {
       window.open(doc.link, "_blank");
     } else if (doc.file) {
-      window.open(`/docs/${doc.file}`, "_blank");
+      const slug = doc.file.replace(/\.md$/, "");
+      window.open(`/docs/view/${slug}`, "_blank");
     }
   };
 
