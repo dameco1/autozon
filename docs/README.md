@@ -12,6 +12,7 @@
 | [Backend Functions](./backend-functions.md) | Edge functions, AI integrations, and external APIs |
 | [Core Business Logic](./business-logic.md) | Fair value algorithm, matching, negotiation |
 | [Component Library](./components.md) | Key UI components and design system |
+| [Admin Command Center](./admin.md) | RBAC, admin dashboard, platform monitoring |
 | [Roadmap](./roadmap.md) | Product phases and geographic expansion |
 
 ---

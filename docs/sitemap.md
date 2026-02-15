@@ -14,6 +14,13 @@
 | `/impressum` | Impressum | Legal entity information (DACH requirement) |
 | `/pitch` | Investor Pitch | Full-screen pitch deck for investors |
 | `/brand` | Brand Book | Logo, colors, typography, banner assets |
+| `/docs` | Documentation Hub | Password-protected technical docs index |
+
+## Admin Pages (Admin Role Required)
+
+| Route | Page | Purpose |
+|---|---|---|
+| `/admin` | Command Center | Admin dashboard with 5 tabs: Overview, Cars, Users, Negotiations, Activity |
 
 ## Authenticated Pages (Seller Flow)
 

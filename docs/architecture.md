@@ -60,17 +60,23 @@ src/
 │   ├── home/            # Landing page sections (Hero, CTA, HowItWorks, etc.)
 │   ├── car-upload/      # Multi-step car listing wizard (5 steps)
 │   ├── pitch/           # Investor pitch slide components
+│   ├── admin/           # Admin Command Center components
+│   │   ├── AdminOverview.tsx      # KPI cards + signup chart
+│   │   ├── AdminCarsTable.tsx     # All-cars table with actions
+│   │   ├── AdminUsersTable.tsx    # All-users table
+│   │   ├── AdminNegotiations.tsx  # All-offers monitor
+│   │   └── AdminActivityFeed.tsx  # Platform activity stream
 │   ├── ui/              # shadcn/ui primitives (button, card, dialog, etc.)
-│   ├── Navbar.tsx       # Global navigation with auth state
+│   ├── Navbar.tsx       # Global navigation with auth state + admin link
 │   ├── ConciergeChat.tsx # AI-powered chat widget
 │   ├── AppraisalBreakdown.tsx
 │   ├── MarketComparison.tsx
 │   └── SEO.tsx          # Dynamic meta/OG/JSON-LD
-├── hooks/               # Custom hooks (useMobile, useCarModels, useToast)
+├── hooks/               # Custom hooks (useMobile, useCarModels, useToast, useAdminAuth)
 ├── i18n/                # Translations (EN/DE) and LanguageContext
 ├── integrations/        # Auto-generated Supabase client + types
 ├── lib/                 # Utilities (chatStream, generateNegotiationPdf, utils)
-├── pages/               # Route-level page components (20+ pages)
+├── pages/               # Route-level page components (20+ pages incl. AdminDashboard)
 └── main.tsx             # App entry point
 
 supabase/

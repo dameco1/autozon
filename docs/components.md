@@ -55,13 +55,28 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 ### Shared Components
 | Component | Purpose |
 |---|---|
-| `Navbar` | Global nav with auth state, language toggle, notifications |
+| `Navbar` | Global nav with auth state, language toggle, notifications, admin link |
 | `ConciergeChat` | Floating AI chat widget (SSE streaming) |
 | `AppraisalBreakdown` | Visual breakdown of fair value factors |
 | `MarketComparison` | AI-powered market positioning chart |
 | `NotificationBell` | Real-time notification indicator |
 | `SEO` | Dynamic meta tags, OG, JSON-LD |
 | `CookieConsent` | GDPR cookie consent banner |
+
+### Admin Command Center (`src/components/admin/`)
+| Component | Purpose |
+|---|---|
+| `AdminOverview` | KPI stat cards (users, cars, negotiations, placements) + 7-day signup sparkline |
+| `AdminCarsTable` | All cars across all users with search, filter, status change, delete |
+| `AdminUsersTable` | All user profiles with join date, city, country |
+| `AdminNegotiations` | All offers with amount, counter, round, status tracking |
+| `AdminActivityFeed` | Merged feed of notifications, car views, and shortlists |
+
+### Admin Hooks (`src/hooks/`)
+| Hook | Purpose |
+|---|---|
+| `useAdminAuth` | Checks `user_roles` table for admin role; redirects non-admins |
+| `useIsAdmin` | Lightweight boolean check for conditional UI (e.g. navbar admin link) |
 
 ---
 

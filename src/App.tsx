@@ -29,6 +29,7 @@ import Negotiation from "./pages/Negotiation";
 import AcquisitionOptions from "./pages/AcquisitionOptions";
 import BrandBook from "./pages/BrandBook";
 import AdminDashboard from "./pages/AdminDashboard";
+import Documentation from "./pages/Documentation";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,7 @@ const App = () => (
               <Route path="/acquire/:offerId" element={<AcquisitionOptions />} />
               <Route path="/brand" element={<BrandBook />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/docs" element={<Documentation />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
