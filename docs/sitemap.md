@@ -5,8 +5,11 @@
 | Route | Page | Purpose |
 |---|---|---|
 | `/` | Landing Page | Hero, problem/solution, how-it-works, trust signals, CTA |
-| `/login` | Login | Email/password authentication |
+| `/login` | Login | Email/password authentication with "Forgot password?" link |
 | `/signup` | Signup | New user registration |
+| `/reset-password` | Reset Password | Email-based password reset (send link + set new password) |
+| `/mfa-enroll` | MFA Enrollment | QR code setup for authenticator app (MS Authenticator, Google, Authy) |
+| `/mfa-verify` | MFA Verification | 6-digit TOTP code entry on each login |
 | `/intent` | Intent Selection | Choose between "Buy" or "Sell" flow |
 | `/privacy-policy` | Privacy Policy | GDPR-compliant privacy policy |
 | `/terms` | Terms & Conditions | Legal terms of service |

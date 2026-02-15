@@ -104,12 +104,14 @@ public/                  # Static assets (favicon, OG image, sitemap, robots.txt
 2. Email verification required before first login
 3. **Mandatory TOTP-based 2FA (MFA)** for all users:
    - After first login, users are redirected to `/mfa-enroll` to set up an authenticator app (QR code)
+   - Supported apps: Microsoft Authenticator (recommended), Google Authenticator, Authy
    - On subsequent logins, users must verify via `/mfa-verify` (6-digit TOTP code)
    - `MfaGuard` wrapper checks Authenticator Assurance Level (AAL2) on all protected routes
    - Enforced for all roles: buyers, sellers, and admins
-4. Auth state managed via `supabase.auth.onAuthStateChange()`
-5. Protected routes check session; redirect to `/login` if unauthenticated
-6. JWT tokens passed to edge functions via `Authorization: Bearer <token>`
+4. **Password reset**: `/reset-password` — email-based reset flow using `resetPasswordForEmail()` + `updateUser()`
+5. Auth state managed via `supabase.auth.onAuthStateChange()`
+6. Protected routes check session; redirect to `/login` if unauthenticated
+7. JWT tokens passed to edge functions via `Authorization: Bearer <token>`
 
 ## Data Flow: Selling a Car
 
