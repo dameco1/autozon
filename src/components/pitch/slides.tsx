@@ -700,67 +700,67 @@ const carImages = [
 ];
 
 export const SlideFounder = () => (
-  <div className="flex h-full px-40 py-16 gap-12">
+  <div className="flex h-full px-40 py-12 gap-10">
     {/* Left: Team Bios */}
-    <div className="flex flex-col justify-center w-[750px] shrink-0">
-      <div className="flex items-center gap-4 mb-8">
-        <User className={green} size={48} />
-        <h2 className={`font-display text-[48px] font-bold text-white leading-tight`}>The Founding Team</h2>
+    <div className="flex flex-col justify-center flex-1">
+      <div className="flex items-center gap-4 mb-6">
+        <User className={green} size={44} />
+        <h2 className={`font-display text-[42px] font-bold text-white leading-tight`}>The Founding Team</h2>
       </div>
 
       {/* Emina */}
-      <div className="flex items-start gap-6 mb-6">
+      <div className="flex items-start gap-5 mb-5">
         <img
           src={eminaPhoto}
           alt="Emina Mukic-Buljubasic"
-          className="w-[100px] h-[100px] rounded-xl object-cover border-2 border-green/30 shrink-0"
+          className="w-[80px] h-[80px] rounded-xl object-cover border-2 border-green/30 shrink-0"
         />
         <div>
-          <h3 className="text-[28px] text-white font-bold">Emina Mukic-Buljubasic</h3>
-          <p className={`text-[18px] ${green} font-semibold mt-0.5`}>Co-Founder & CEO</p>
-          <p className="text-[17px] text-silver leading-relaxed mt-2">
-            Mag. International Business (Uni Vienna). 15+ years in financial management, operations, and partnerships. Managing Director at E2 Partner GmbH — led €2M+ revenue telecom business. EU project management with Soros Foundation, UN, and Swiss Bank.
+          <h3 className="text-[24px] text-white font-bold">Emina Mukic-Buljubasic</h3>
+          <p className={`text-[16px] ${green} font-semibold mt-0.5`}>Co-Founder & CEO</p>
+          <p className="text-[15px] text-silver leading-relaxed mt-1.5">
+            Mag. International Business (University of Vienna). 15+ years leading financial management, strategic operations, and high-value partnerships. As Managing Director at E2 Partner GmbH, grew telecom business to €2M+ revenue. Trusted by the Soros Foundation, UN agencies, and Swiss Bank for EU-level project management. Brings operational rigor, financial discipline, and cross-border negotiation expertise — the backbone of autozon's business execution.
           </p>
         </div>
       </div>
 
       {/* Damir */}
-      <div className="flex items-start gap-6 mb-6">
+      <div className="flex items-start gap-5 mb-5">
         <img
           src={damirPhoto}
           alt="Damir Buljubasic"
-          className="w-[100px] h-[100px] rounded-xl object-cover border-2 border-green/30 shrink-0"
+          className="w-[80px] h-[80px] rounded-xl object-cover border-2 border-green/30 shrink-0"
         />
         <div>
-          <h3 className="text-[28px] text-white font-bold">Damir Buljubasic</h3>
-          <p className={`text-[18px] ${green} font-semibold mt-0.5`}>Co-Founder & CIO</p>
-          <p className="text-[17px] text-silver leading-relaxed mt-2">
-            25+ years enterprise leadership. Founded iLMS Director (1.3M users, merged with Learning Library Inc.). Oracle's Best Sales Director CEE. 3,000% digital transformation at Prevent ASA.
+          <h3 className="text-[24px] text-white font-bold">Damir Buljubasic</h3>
+          <p className={`text-[16px] ${green} font-semibold mt-0.5`}>Co-Founder & CIO</p>
+          <p className="text-[15px] text-silver leading-relaxed mt-1.5">
+            25+ years of enterprise leadership across Oracle, ATOS, and high-growth startups. Founded iLMS Director — scaled to 1.3M users and achieved a successful exit via merger with Learning Library Inc. Named Oracle's Best Sales Director CEE (990% YoY). Drove 3,000% digital transformation at Prevent ASA. Serial builder who turns market inefficiencies into scalable tech platforms — the driving force behind autozon's AI-powered innovation.
           </p>
         </div>
       </div>
 
       {/* Nenad */}
-      <div className="flex items-start gap-6">
+      <div className="flex items-start gap-5">
         <img
           src={nenadPhoto}
           alt="Nenad Brankovic"
-          className="w-[100px] h-[100px] rounded-xl object-cover border-2 border-green/30 shrink-0"
+          className="w-[80px] h-[80px] rounded-xl object-cover border-2 border-green/30 shrink-0"
         />
         <div>
-          <h3 className="text-[28px] text-white font-bold">Nenad Brankovic</h3>
-          <p className={`text-[18px] ${green} font-semibold mt-0.5`}>CFO</p>
-          <p className="text-[17px] text-silver leading-relaxed mt-2">
-            London Business School. Group CFO at MidEuropa Partners companies (€500M revenue). Key role in €1B+ exit to KKR. Led €350M debt refinancing and €475M bond issuance. Board member across FMCG and TMT.
+          <h3 className="text-[24px] text-white font-bold">Nenad Brankovic</h3>
+          <p className={`text-[16px] ${green} font-semibold mt-0.5`}>CFO</p>
+          <p className="text-[15px] text-silver leading-relaxed mt-1.5">
+            London Business School MBA. Served as Group CFO at MidEuropa Partners portfolio companies managing €500M+ combined revenue. Played a key role in the €1B+ exit to KKR — one of CEE's landmark private equity transactions. Led €350M debt refinancing and a €475M bond issuance. Board member across FMCG and TMT sectors. Brings institutional-grade financial leadership and investor credibility to autozon's growth story.
           </p>
         </div>
       </div>
     </div>
 
-    {/* Right: Car Collage */}
-    <div className="flex-1 grid grid-cols-4 grid-rows-2 gap-3 my-auto">
+    {/* Right: Car Collage — smaller */}
+    <div className="w-[280px] shrink-0 grid grid-cols-2 grid-rows-4 gap-2 my-auto">
       {carImages.map((src, i) => (
-        <div key={i} className="rounded-xl overflow-hidden border border-white/10">
+        <div key={i} className="rounded-lg overflow-hidden border border-white/10">
           <img
             src={src}
             alt={`Car ${i + 1}`}
