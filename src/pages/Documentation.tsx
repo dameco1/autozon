@@ -20,24 +20,29 @@ const docs = [
 const Documentation: React.FC = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(false);
+    setError("");
     try {
       const { data, error: fnError } = await supabase.functions.invoke("verify-docs-password", {
         body: { password },
       });
-      if (fnError || !data?.valid) {
-        setError(true);
+      if (fnError) {
+        setError("Something went wrong. Please try again.");
+      } else if (data?.error && data?.retryAfterSecs) {
+        const mins = Math.ceil(data.retryAfterSecs / 60);
+        setError(`Too many attempts. Try again in ${mins} minute${mins > 1 ? "s" : ""}.`);
+      } else if (!data?.valid) {
+        setError("Incorrect password");
       } else {
         setAuthenticated(true);
       }
     } catch {
-      setError(true);
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -61,10 +66,10 @@ const Documentation: React.FC = () => {
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => { setPassword(e.target.value); setError(false); }}
+                onChange={(e) => { setPassword(e.target.value); setError(""); }}
                 className={error ? "border-destructive" : ""}
               />
-              {error && <p className="text-sm text-destructive">Incorrect password</p>}
+              {error && <p className="text-sm text-destructive">{error}</p>}
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Verifying...</> : "Access Documentation"}
               </Button>
