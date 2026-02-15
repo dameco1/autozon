@@ -16,26 +16,26 @@ This document outlines autozon's current ownership structure, planned equity all
 | **First Investor** (reserved) | Seed Investor | 20,000 | 20% | 20% |
 | **Total** | | **100,000** | **100%** | **100%** |
 
-**Entity:** autozon GmbH (to be incorporated in Vienna, Austria)
+**Entity:** autozon FlexCo (to be incorporated in Vienna, Austria)
 
 **Share class:** Ordinary shares, €1.00 nominal value each
 
 **Authorized share capital:** 100,000 shares (expandable by shareholder resolution)
 
-**Implied valuation:** €1M (€200K for 20%)
+**Implied valuation:** €1.5M (€300K for 20%)
 
 ---
 
 ## Post-First-Investor Cap Table
 
-### Scenario — €200K for 20% at €1M Valuation
+### Scenario — €300K for 20% at €1.5M Valuation
 
 | Shareholder | Shares | Ownership | Investment | Price/Share |
 |---|---|---|---|---|
 | **Damir Buljubasic** (Co-Founder & CIO) | 60,000 | 60% | Sweat equity | — |
 | **Emina Mukic-Buljubasic** (Co-Founder & CEO) | 10,000 | 10% | Sweat equity | — |
 | **Nenad Brankovic** (CFO) | 10,000 | 10% | Sweat equity | — |
-| **First Investor** | 20,000 | 20% | €200,000 | €10.00 |
+| **First Investor** | 20,000 | 20% | €300,000 | €15.00 |
 | **Total** | **100,000** | **100%** | | |
 
 ### Post-ESOP Allocation
@@ -46,7 +46,7 @@ This document outlines autozon's current ownership structure, planned equity all
 | **Emina Mukic-Buljubasic** (Co-Founder & CEO) | 10,000 | 9.5% | |
 | **Nenad Brankovic** (CFO) | 10,000 | 9.5% | |
 | **First Investor** | 20,000 | 19.0% | |
-| **ESOP Pool** (reserved) | 5,000 | 4.8% | Virtual shares (VSOP) |
+| **ESOP Pool** (reserved) | 5,000 | 4.8% | Value participation shares (FlexCo) |
 | **Total** | **105,000** | **100%** | |
 
 ---
@@ -69,7 +69,7 @@ This document outlines autozon's current ownership structure, planned equity all
 | **Carvago** | Seed | €2.5M | 2019 | CEE used car marketplace |
 | **Cardino** | Pre-Seed | €1.8M | 2022 | EV resale platform (Berlin) |
 | **heycar** | Seed | €3M | 2017 | Used car marketplace (VW-backed) |
-| **autozon** | Seed | **€1M** | 2026 | AI-powered fair-value P2P |
+| **autozon** | Seed | **€1.5M** | 2026 | AI-powered fair-value P2P |
 
 ---
 
@@ -82,7 +82,7 @@ This document outlines autozon's current ownership structure, planned equity all
 | **Total pool** | ~5% of fully diluted shares |
 | **Vesting schedule** | 4-year vesting, 1-year cliff |
 | **Exercise price** | Nominal value (€1.00) or fair market value at grant date |
-| **Governed by** | Austrian GmbH share transfer rules + option agreement |
+| **Governed by** | Austrian FlexKapGG + option agreement |
 | **Pool creation** | At incorporation, before further rounds |
 
 ### Planned Allocation
@@ -103,29 +103,29 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Round | Timing | Amount | Pre-Money | Dilution | Team Post-Round |
 |---|---|---|---|---|---|
-| **First Investor** | Y1 Q1 | €200K | €1M (20% reserved) | 20% | 80% (combined team) |
-| **Bridge (optional)** | Y1 Q4 | €150K | €3M | 4.8% | 76.2% (combined team) |
-| **Series A** | Y2 Q3 | €1.5M | €8M | 15.8% | 64.1% (combined team) |
+| **First Investor** | Y1 Q1 | €300K | €1.5M (20% reserved) | 20% | 80% (combined team) |
+| **Bridge (optional)** | Y1 Q4 | €150K | €4M | 3.6% | 77.1% (combined team) |
+| **Series A** | Y2 Q3 | €1.5M | €10M | 13.0% | 67.1% (combined team) |
 
 ### Path Without Bridge
 
 | Round | Timing | Amount | Pre-Money | Dilution | Team Post-Round |
 |---|---|---|---|---|---|
-| **First Investor** | Y1 Q1 | €200K | €1M (20% reserved) | 20% | 80% (combined team) |
-| **Series A** | Y2 Q4 | €2M | €10M | 16.7% | 66.7% (combined team) |
+| **First Investor** | Y1 Q1 | €300K | €1.5M (20% reserved) | 20% | 80% (combined team) |
+| **Series A** | Y2 Q4 | €2M | €12M | 14.3% | 68.6% (combined team) |
 
 ---
 
 ## Investor Returns Projection
 
-### First Investor at €200K (20%)
+### First Investor at €300K (20%)
 
 | Exit Scenario | Company Valuation | Investor Ownership | Investor Value | Multiple |
 |---|---|---|---|---|
-| **Conservative** (Y5) | €10M | 16%* | €1.6M | 8.0x |
-| **Base case** (Y5) | €25M | 16%* | €4.0M | 20.0x |
-| **Optimistic** (Y5) | €50M | 16%* | €8.0M | 40.0x |
-| **Home run** (Y5) | €100M | 16%* | €16.0M | 80.0x |
+| **Conservative** (Y5) | €10M | 16%* | €1.6M | 5.3x |
+| **Base case** (Y5) | €25M | 16%* | €4.0M | 13.3x |
+| **Optimistic** (Y5) | €50M | 16%* | €8.0M | 26.7x |
+| **Home run** (Y5) | €100M | 16%* | €16.0M | 53.3x |
 
 *Post Series A dilution estimated at ~17%
 
@@ -133,9 +133,9 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Scenario | Y3 Exit | Y5 Exit | Y7 Exit |
 |---|---|---|---|
-| **Conservative** | 60% | 52% | 35% |
-| **Base case** | 150% | 90% | 62% |
-| **Optimistic** | 250% | 130% | 85% |
+| **Conservative** | 45% | 38% | 26% |
+| **Base case** | 110% | 70% | 50% |
+| **Optimistic** | 190% | 105% | 70% |
 
 ---
 
@@ -175,7 +175,7 @@ This document outlines autozon's current ownership structure, planned equity all
 | **Lock-up** | All shares locked for 12 months post-investment |
 | **Right of first refusal (ROFR)** | Company and existing shareholders have ROFR on any transfer |
 | **Founder lock-up** | Founder shares locked for 24 months (good leaver provisions apply) |
-| **Transfer approval** | All transfers require board approval per Austrian GmbH law |
+| **Transfer approval** | All transfers require board approval per Austrian FlexKapGG |
 
 ---
 
@@ -183,7 +183,7 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Date | Event | Cap Table Impact |
 |---|---|---|
-| **Y1 Q1** | GmbH incorporation | 100,000 shares issued (60K/10K/10K/20K investor) |
+| **Y1 Q1** | FlexCo incorporation | 100,000 shares issued (60K/10K/10K/20K investor) |
 | **Y1 Q2** | ESOP pool created | 5,000 shares reserved |
 | **Y1 Q3** | First ESOP grant (Growth Manager) | ~1,500 shares allocated |
 | **Y2 Q1** | Second ESOP grant (Lead Developer) | ~1,500 shares allocated |
@@ -195,11 +195,11 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Item | Detail |
 |---|---|
-| **Jurisdiction** | Austria (GmbH — Gesellschaft mit beschränkter Haftung) |
-| **Governing law** | Austrian GmbHG (Limited Liability Companies Act) |
+| **Jurisdiction** | Austria (FlexCo — Flexible Kapitalgesellschaft) |
+| **Governing law** | Austrian FlexKapGG (Flexible Company Act, effective 1 Jan 2024) |
 | **Share register** | Maintained by notary (Firmenbuch) |
-| **Option agreements** | Governed by Austrian contract law + GmbH articles |
-| **Tax treatment (ESOP)** | Taxed at exercise as employment income; capital gains on sale |
+| **Option agreements** | Governed by Austrian contract law + FlexCo articles |
+| **Tax treatment (ESOP)** | Value participation shares: taxed at sale, not at grant (FlexCo advantage) |
 | **Investor agreement** | SHA (Shareholder Agreement) + Investment Agreement |
 | **Legal counsel** | To be appointed — Vienna-based startup law firm |
 
