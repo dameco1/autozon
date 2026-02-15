@@ -76,7 +76,7 @@ const sections: Section[] = [
       { title: "Cookie Policy", desc: "Cookie usage and consent framework", icon: FileText, link: "/cookies", status: "ready" },
       { title: "Impressum", desc: "Legal entity details and contact information", icon: Landmark, link: "/impressum", status: "ready" },
       { title: "GDPR Compliance", desc: "Data processing agreements, DPO, and data flow maps", icon: Shield, file: "gdpr-compliance.md", status: "ready" },
-      { title: "IP & Trademarks", desc: "Intellectual property portfolio and trademark registrations", icon: Scale, status: "planned" },
+      { title: "IP & Trademarks", desc: "Intellectual property portfolio and trademark registrations", icon: Scale, file: "ip-trademarks.md", status: "ready" },
     ],
   },
   {
