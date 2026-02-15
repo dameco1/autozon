@@ -71,23 +71,24 @@ BowTie Sales Corp (Cyprus)          autozon GmbH (Vienna)
 
 ## Ownership Structure
 
-### At Incorporation (Pre-Seed)
+### At Incorporation
 
 | Shareholder | Ownership | Shares | Role |
 |---|---|---|---|
-| Emina Mukic-Buljubasic | 40% | 40,000 | Co-Founder & CEO |
-| Damir Buljubasic | 40% | 40,000 | Co-Founder & CIO |
-| Nenad Brankovic | 20% | 20,000 | CFO |
+| Damir Buljubasic | 60% | 60,000 | Co-Founder & CIO |
+| Emina Mukic-Buljubasic | 10% | 10,000 | Co-Founder & CEO |
+| Nenad Brankovic | 10% | 10,000 | CFO |
+| First Investor (reserved) | 20% | 20,000 | Seed Investor (€200K) |
 
-### Post-Seed Round (Target)
+### Post-ESOP Allocation
 
 | Shareholder | Ownership | Notes |
 |---|---|---|
-| Emina Mukic-Buljubasic (Co-Founder & CEO) | 30–32% | |
-| Damir Buljubasic (Co-Founder & CIO) | 30–32% | |
-| Nenad Brankovic (CFO) | 15–16% | |
-| Seed Investors | 15–20% | Via capital increase (Kapitalerhöhung) |
-| ESOP Pool (reserved) | 3.5–5% | Virtual shares (Phantom Stock / VSOP) |
+| Damir Buljubasic (Co-Founder & CIO) | 57.1% | |
+| Emina Mukic-Buljubasic (Co-Founder & CEO) | 9.5% | |
+| Nenad Brankovic (CFO) | 9.5% | |
+| First Investor | 19.0% | €200K at €1M valuation |
+| ESOP Pool (reserved) | 4.8% | Virtual shares (Phantom Stock / VSOP) |
 
 *See [Cap Table](cap-table.md) for detailed equity scenarios and dilution modeling.*
 
