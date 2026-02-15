@@ -1,0 +1,61 @@
+# Sitemap & Routes
+
+## Public Pages (No Auth Required)
+
+| Route | Page | Purpose |
+|---|---|---|
+| `/` | Landing Page | Hero, problem/solution, how-it-works, trust signals, CTA |
+| `/login` | Login | Email/password authentication |
+| `/signup` | Signup | New user registration |
+| `/intent` | Intent Selection | Choose between "Buy" or "Sell" flow |
+| `/privacy-policy` | Privacy Policy | GDPR-compliant privacy policy |
+| `/terms` | Terms & Conditions | Legal terms of service |
+| `/cookie-policy` | Cookie Policy | Cookie usage disclosure |
+| `/impressum` | Impressum | Legal entity information (DACH requirement) |
+| `/pitch` | Investor Pitch | Full-screen pitch deck for investors |
+| `/brand` | Brand Book | Logo, colors, typography, banner assets |
+
+## Authenticated Pages (Seller Flow)
+
+| Route | Page | Purpose |
+|---|---|---|
+| `/dashboard` | Dashboard | Overview of listings, matches, offers, shortlists |
+| `/car-upload` | Car Upload Wizard | 5-step listing creation with AI features |
+| `/car-upload?edit=<id>` | Edit Listing | Re-enter wizard to update existing car |
+| `/fair-value/:id` | Fair Value Result | Appraisal breakdown, depreciation chart, market comparison |
+| `/buyer-matches/:carId` | Buyer Matches | AI-matched potential buyers for a listing |
+| `/negotiate/:offerId` | Negotiation | Structured counter-offer rounds with PDF export |
+| `/acquire/:offerId` | Acquisition Options | Financing/leasing quotes from partners |
+
+## Authenticated Pages (Buyer Flow)
+
+| Route | Page | Purpose |
+|---|---|---|
+| `/onboarding` | Onboarding | Preference wizard (budget, brands, fuel, body type) |
+| `/buyer-questionnaire` | Buyer Questionnaire | Detailed buying preferences |
+| `/car-selection` | Car Selection | Swipe-style car discovery (Tinder for cars) |
+| `/compare` | Car Comparison | Side-by-side comparison of shortlisted cars |
+| `/car/:id` | Car Detail | Full listing view with photos, specs, fair value |
+| `/recommendations` | Recommendations | AI-suggested next cars based on preferences |
+
+## User Flow Diagrams
+
+### Seller Journey
+```
+Landing → Sign Up → Intent ("Sell") → Car Upload (5 steps) → Fair Value Result
+                                                                    ↓
+                                                              Buyer Matches
+                                                                    ↓
+                                                              Negotiation
+                                                                    ↓
+                                                           Acquisition Options
+```
+
+### Buyer Journey
+```
+Landing → Sign Up → Intent ("Buy") → Onboarding → Car Selection (swipe)
+                                                         ↓
+                                                    Car Detail / Compare
+                                                         ↓
+                                                    Make Offer → Negotiate
+```

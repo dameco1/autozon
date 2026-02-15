@@ -1,0 +1,74 @@
+# Component Library & Design System
+
+## Design System
+
+### Colors (HSL-based tokens in `index.css`)
+
+| Token | Usage |
+|---|---|
+| `--background` (charcoal) | Main app background `#19191F` |
+| `--primary` (electric green) | CTAs, accents `#00D97E` |
+| `--secondary` | Cards, panels |
+| `--silver` | Body text |
+| `--muted` | Subtle backgrounds, borders |
+| `--destructive` | Error states, delete actions |
+
+### Typography
+- **Display font**: Montserrat (headings, logo, brand)
+- **Body font**: System stack via Tailwind defaults
+- **Logo**: "auto**zon**" — white with green "zon" suffix
+
+### Component Primitives (shadcn/ui)
+All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
+- `Button`, `Card`, `Dialog`, `Sheet`, `Tabs`, `Accordion`
+- `Select`, `Input`, `Textarea`, `Slider`, `Checkbox`, `Switch`
+- `Toast` (sonner), `Tooltip`, `Popover`, `DropdownMenu`
+- `Table`, `Badge`, `Progress`, `Skeleton`
+
+---
+
+## Key Custom Components
+
+### Landing Page (`src/components/home/`)
+| Component | Purpose |
+|---|---|
+| `HeroSection` | Animated hero with seller/buyer split CTA |
+| `CarTicker` | Scrolling car image carousel |
+| `ProblemSection` | Pain points of traditional car trading |
+| `SolutionSection` | How Autozon solves each pain point |
+| `HowItWorksSection` | 3-step process explanation |
+| `TrustSection` | Social proof and trust signals |
+| `CtaSection` | Final conversion call-to-action |
+| `FooterSection` | Links, legal, language toggle |
+
+### Car Upload Wizard (`src/components/car-upload/`)
+| Component | Purpose |
+|---|---|
+| `StepBasicInfo` | Make/model selection with DB-backed autocomplete |
+| `StepPhotos` | 7 mandatory photo slots with compression |
+| `StepEquipment` | Categorized equipment checklist |
+| `StepCondition` | Interior/exterior sliders + accident history |
+| `StepDamageReview` | AI damage detection results |
+| `AppraisalDisclaimer` | Legal disclaimer before appraisal |
+| `calculateFairValue` | Pure function — fair value algorithm |
+
+### Shared Components
+| Component | Purpose |
+|---|---|
+| `Navbar` | Global nav with auth state, language toggle, notifications |
+| `ConciergeChat` | Floating AI chat widget (SSE streaming) |
+| `AppraisalBreakdown` | Visual breakdown of fair value factors |
+| `MarketComparison` | AI-powered market positioning chart |
+| `NotificationBell` | Real-time notification indicator |
+| `SEO` | Dynamic meta tags, OG, JSON-LD |
+| `CookieConsent` | GDPR cookie consent banner |
+
+---
+
+## Internationalization (i18n)
+
+- **Languages**: English (EN), German (DE)
+- **Implementation**: React Context (`LanguageContext.tsx`)
+- **Translation file**: `src/i18n/translations.ts` (~1200 lines)
+- **Toggle**: Globe icon in Navbar
+- **Coverage**: All user-facing strings, including form labels, error messages, and legal pages
