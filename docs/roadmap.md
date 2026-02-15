@@ -56,6 +56,55 @@
 - [ ] Predictive analytics for optimal sell timing
 - [ ] Fleet management tools for dealers
 - [ ] Data insights marketplace
+- [ ] **AWS migration** — full infrastructure migration from Lovable Cloud
+
+---
+
+## Infrastructure Evolution
+
+| Stage | Users | Platform | Rationale |
+|---|---|---|---|
+| **MVP** (current) | 0–5K | Lovable Cloud | Speed of iteration, low cost, simplicity |
+| **Growth** | 5K–100K | Hybrid (Lovable Cloud + AWS services) | Add S3 for image storage, SageMaker for AI, CloudFront CDN |
+| **Scale** | 100K+ | Full AWS | Enterprise-grade reliability, global infrastructure, autoscaling, compliance certs |
+
+### Migration Trigger Criteria
+
+Migration planning begins when **any two** of these thresholds are met:
+
+| Trigger | Threshold |
+|---|---|
+| Monthly active users | > 5,000 |
+| Monthly image uploads | > 50,000 |
+| AI inference calls / month | > 100,000 |
+| GMV per month | > €1M |
+| Investor / compliance requirement | SOC2 or ISO 27001 requested |
+
+### Planned AWS Architecture (Post-Migration)
+
+| Component | Current (Lovable Cloud) | Target (AWS) |
+|---|---|---|
+| **Database** | Supabase PostgreSQL | Amazon RDS (PostgreSQL) or Aurora |
+| **Authentication** | Supabase Auth | Amazon Cognito + custom JWT |
+| **Edge Functions** | Supabase Edge Functions (Deno) | AWS Lambda (Node.js/Python) |
+| **File Storage** | Supabase Storage | Amazon S3 + CloudFront CDN |
+| **AI Inference** | OpenAI / Google API calls | Amazon SageMaker + Bedrock (custom models) |
+| **Search** | PostgreSQL full-text | Amazon OpenSearch |
+| **Monitoring** | Basic (Sentry) | CloudWatch + X-Ray + GuardDuty |
+| **CI/CD** | Lovable deployments | AWS CodePipeline + CodeDeploy |
+| **Hosting** | Lovable preview/publish | AWS Amplify or S3 + CloudFront |
+
+### Migration Timeline (Estimated)
+
+| Phase | Timeline | Scope | Est. Cost |
+|---|---|---|---|
+| **Planning & architecture** | Y2 Q2 | AWS account setup, VPC design, IAM policies | €5,000 |
+| **Data layer migration** | Y2 Q3 | PostgreSQL → RDS/Aurora, storage → S3 | €15,000 |
+| **Auth migration** | Y2 Q3 | Supabase Auth → Cognito (zero-downtime) | €8,000 |
+| **Functions migration** | Y2 Q3–Q4 | Edge functions → Lambda, API Gateway | €12,000 |
+| **AI workload migration** | Y2 Q4 | External APIs → SageMaker endpoints | €10,000 |
+| **Testing & cutover** | Y2 Q4 | Load testing, canary deployment, DNS switch | €5,000 |
+| **Total** | ~6 months | Full migration | **€55,000** |
 
 ---
 

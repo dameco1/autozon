@@ -72,6 +72,36 @@ This document details the allocation plan for autozon's current funding round. T
 | **Backup & disaster recovery** | €1,200 | Y1 | Automated DB backups, recovery procedures |
 | **Monitoring & alerting setup** | €800 | Y1 Q2 | Uptime monitoring, alerting |
 | **Development tools & licenses** | €1,200 | Y1 | IDE, design tools, testing |
+| **AWS migration planning** | €2,000 | Y1 Q4 | Architecture design, VPC planning, IAM setup |
+
+#### AWS Migration Budget (Series A / Y2)
+
+The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds are reached (~5K users, ~€1M GMV/month). Migration costs are not included in the seed round but are budgeted for Series A:
+
+| Migration Phase | Est. Cost | Timeline |
+|---|---|---|
+| Architecture planning & AWS account setup | €5,000 | Y2 Q2 |
+| Data layer (PostgreSQL → RDS/Aurora, storage → S3) | €15,000 | Y2 Q3 |
+| Auth migration (Supabase Auth → Cognito) | €8,000 | Y2 Q3 |
+| Functions migration (Edge → Lambda) | €12,000 | Y2 Q3–Q4 |
+| AI workload migration (APIs → SageMaker) | €10,000 | Y2 Q4 |
+| Testing, load testing & cutover | €5,000 | Y2 Q4 |
+| **Total migration cost** | **€55,000** | ~6 months |
+
+#### Post-Migration AWS Running Costs (Estimated)
+
+| Service | Monthly Cost | Notes |
+|---|---|---|
+| Amazon RDS (PostgreSQL) | €150–€300 | db.t3.medium → db.r5.large as traffic grows |
+| Amazon S3 + CloudFront | €50–€200 | Image storage + global CDN |
+| AWS Lambda | €30–€100 | Edge function replacement |
+| Amazon Cognito | €50–€150 | Auth service (first 50K MAU free) |
+| Amazon SageMaker | €200–€500 | AI inference endpoints |
+| CloudWatch + monitoring | €30–€80 | Logging, metrics, alerting |
+| WAF + Shield | €30–€50 | DDoS protection, rate limiting |
+| **Total (post-migration)** | **€540–€1,380/mo** | Scales with usage |
+
+*Note: AWS costs are higher than Lovable Cloud but provide enterprise-grade SLAs, global infrastructure, autoscaling, and compliance certifications (SOC2, ISO 27001) that investors expect at growth stage.*
 
 #### Technology Budget Summary
 
@@ -79,10 +109,12 @@ This document details the allocation plan for autozon's current funding round. T
 |---|---|
 | Monthly running costs (18 months) | €6,300 |
 | AI scaling reserve | €8,000 |
-| Infrastructure investment | €13,100 |
+| Infrastructure investment | €15,100 |
 | Development tools | €1,200 |
-| Scaling buffer (Y1 Q4+) | €13,400 |
+| Scaling buffer (Y1 Q4+) | €11,400 |
 | **Total Technology** | **€42,000** |
+
+*AWS migration costs (~€55K) are budgeted separately under Series A funding, not seed round.*
 
 ---
 
