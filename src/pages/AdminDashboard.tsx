@@ -7,6 +7,7 @@ import AdminCarsTable from "@/components/admin/AdminCarsTable";
 import AdminUsersTable from "@/components/admin/AdminUsersTable";
 import AdminNegotiations from "@/components/admin/AdminNegotiations";
 import AdminActivityFeed from "@/components/admin/AdminActivityFeed";
+import AdminMatches from "@/components/admin/AdminMatches";
 
 const AdminDashboard: React.FC = () => {
   const { loading } = useAdminAuth();
@@ -36,6 +37,7 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="cars">Cars</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="negotiations">Negotiations</TabsTrigger>
+            <TabsTrigger value="matches">Matches</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
           </TabsList>
 
@@ -43,6 +45,7 @@ const AdminDashboard: React.FC = () => {
           <TabsContent value="cars"><AdminCarsTable /></TabsContent>
           <TabsContent value="users"><AdminUsersTable /></TabsContent>
           <TabsContent value="negotiations"><AdminNegotiations /></TabsContent>
+          <TabsContent value="matches"><AdminMatches /></TabsContent>
           <TabsContent value="activity"><AdminActivityFeed /></TabsContent>
         </Tabs>
       </div>

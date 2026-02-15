@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Car, Handshake, CreditCard, TrendingUp } from "lucide-react";
+import { Users, Car, Handshake, CreditCard, TrendingUp, DollarSign } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const StatCard = ({ title, value, icon: Icon, sub }: { title: string; value: string | number; icon: React.ElementType; sub?: string }) => (
@@ -22,12 +22,16 @@ const AdminOverview: React.FC = () => {
   const { data: stats } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: async () => {
-      const [profiles, cars, offers, placements] = await Promise.all([
+      const [profiles, cars, offers, paidCars, suspendedProfiles] = await Promise.all([
         supabase.from("profiles").select("created_at", { count: "exact" }),
         supabase.from("cars").select("id", { count: "exact" }),
         supabase.from("offers").select("id", { count: "exact" }).eq("status", "pending"),
-        supabase.from("cars").select("id", { count: "exact" }).eq("placement_paid", true),
+        supabase.from("cars").select("id, price", { count: "exact" }).eq("placement_paid", true),
+        supabase.from("profiles").select("id", { count: "exact" }).eq("suspended", true),
       ]);
+
+      // Calculate revenue from paid placements
+      const placementRevenue = paidCars.data?.reduce((sum, car) => sum + (Number(car.price) * 0.025), 0) ?? 0;
 
       // signups per day last 7 days
       const sevenDaysAgo = new Date();
@@ -57,7 +61,9 @@ const AdminOverview: React.FC = () => {
         users: profiles.count ?? 0,
         cars: cars.count ?? 0,
         activeNegotiations: offers.count ?? 0,
-        placements: placements.count ?? 0,
+        placements: paidCars.count ?? 0,
+        suspendedUsers: suspendedProfiles.count ?? 0,
+        placementRevenue,
         recent7d: recentProfiles?.length ?? 0,
         chartData,
       };
@@ -66,17 +72,24 @@ const AdminOverview: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Users" value={stats?.users ?? "—"} icon={Users} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <StatCard title="Total Users" value={stats?.users ?? "—"} icon={Users} sub={`${stats?.suspendedUsers ?? 0} suspended`} />
         <StatCard title="Total Cars" value={stats?.cars ?? "—"} icon={Car} />
         <StatCard title="Active Negotiations" value={stats?.activeNegotiations ?? "—"} icon={Handshake} />
-        <StatCard title="Paid Placements" value={stats?.placements ?? "—"} icon={CreditCard} />
+        <StatCard title="Paid Placements" value={stats?.placements ?? "—"} icon={CreditCard} sub="Sellers who paid for placement" />
+        <StatCard
+          title="Est. Revenue (2.5% fee)"
+          value={`€${(stats?.placementRevenue ?? 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
+          icon={DollarSign}
+          sub={`From ${stats?.placements ?? 0} paid placements`}
+        />
+        <StatCard title="New Signups (7d)" value={stats?.recent7d ?? "—"} icon={TrendingUp} />
       </div>
 
       <Card className="bg-card border-border">
         <CardHeader className="flex flex-row items-center gap-2">
           <TrendingUp className="h-4 w-4 text-primary" />
-          <CardTitle className="text-sm font-medium">New Signups (Last 7 Days): {stats?.recent7d ?? 0}</CardTitle>
+          <CardTitle className="text-sm font-medium">Signup Trend (Last 7 Days)</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-48">
