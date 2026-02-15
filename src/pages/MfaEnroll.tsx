@@ -119,9 +119,10 @@ const MfaEnroll: React.FC = () => {
           <p className="text-silver/60 mt-2">{t.mfa.setupSubtitle}</p>
         </div>
 
-        <div className="bg-secondary/50 border border-border rounded-2xl p-8 space-y-6">
+          <div className="bg-secondary/50 border border-border rounded-2xl p-8 space-y-6">
           <div className="space-y-3">
             <p className="text-sm text-silver/80">{t.mfa.step1}</p>
+            <p className="text-xs text-primary/80">{t.mfa.step1hint}</p>
             <div className="flex justify-center bg-white rounded-xl p-4">
               <img src={qrCode} alt="QR Code" className="w-48 h-48" />
             </div>
