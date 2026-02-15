@@ -109,7 +109,7 @@ const statusConfig = {
 };
 
 const Documentation: React.FC = () => {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(() => sessionStorage.getItem("docs_auth") === "true");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [authMode, setAuthMode] = useState<"password" | "email">("password");
@@ -141,6 +141,7 @@ const Documentation: React.FC = () => {
           setRemainingAttempts(data.remaining);
         }
       } else {
+        sessionStorage.setItem("docs_auth", "true");
         setAuthenticated(true);
         setAccessType(data?.accessType || "full");
       }
