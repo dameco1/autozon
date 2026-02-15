@@ -67,13 +67,14 @@ All projections are based on:
 | **Total Revenue** | **€294,100** | **€593,200** | **€1,007,000** |
 | | | | |
 | Infrastructure & AI | (€12,000) | (€18,000) | (€24,000) |
+| **AWS Migration** | **(€40,000)** | **(€55,000)** | **(€65,000)** |
 | Stripe Processing Fees | (€8,500) | (€17,000) | (€28,000) |
 | Marketing & CAC | (€60,000) | (€120,000) | (€200,000) |
 | Team (2–3 hires) | (€90,000) | (€120,000) | (€150,000) |
 | Office & Operations | (€12,000) | (€18,000) | (€24,000) |
 | Legal & Compliance | (€10,000) | (€10,000) | (€15,000) |
 | Founder Salary | (€48,000) | (€60,000) | (€72,000) |
-| **Total Costs** | **(€240,500)** | **(€363,000)** | **(€513,000)** |
+| **Total Costs** | **(€280,500)** | **(€418,000)** | **(€578,000)** |
 | | | | |
 | **Net Profit / (Loss)** | **€53,600** | **€230,200** | **€494,000** |
 | **Net Margin** | 18% | 39% | 49% |
@@ -95,13 +96,14 @@ All projections are based on:
 | **Total Revenue** | **€1,445,200** | **€2,831,000** | **€4,865,000** |
 | | | | |
 | Infrastructure & AI | (€36,000) | (€60,000) | (€96,000) |
+| **AWS Running Costs** | **(€12,000)** | **(€18,000)** | **(€24,000)** |
 | Stripe Processing Fees | (€42,000) | (€82,000) | (€140,000) |
 | Marketing & CAC | (€200,000) | (€400,000) | (€650,000) |
 | Team (8–15 hires) | (€400,000) | (€600,000) | (€900,000) |
 | Office & Operations | (€36,000) | (€60,000) | (€96,000) |
 | Legal & Compliance | (€25,000) | (€40,000) | (€60,000) |
 | Founder Salary | (€72,000) | (€84,000) | (€96,000) |
-| **Total Costs** | **(€811,000)** | **(€1,326,000)** | **(€2,038,000)** |
+| **Total Costs** | **(€823,000)** | **(€1,344,000)** | **(€2,062,000)** |
 | | | | |
 | **Net Profit / (Loss)** | **€634,200** | **€1,505,000** | **€2,827,000** |
 | **Net Margin** | 44% | 53% | 58% |
@@ -232,7 +234,22 @@ All projections are based on:
 | Competitor entry (AutoScout24, Cazoo pivot) | Market share pressure | First-mover in fair-value P2P, deepen AI moat |
 | ASP decline (economic downturn) | Lower per-txn revenue | Volume offsets: more transactions at lower prices |
 | Delayed financing partner integration | Missing V2 revenue | Prioritize direct P2P value; referrals are additive, not core |
+| AWS migration delays or overruns | Extended Lovable Cloud dependency | Lovable Cloud is stable for 0–5K users; migration is enhancement, not emergency |
+| Higher-than-projected AWS costs | Margin pressure at scale | Reserved instances, Savings Plans, right-sizing; AWS costs offset by improved reliability and investor confidence |
 
 ---
 
-*Document status: V1 — For investor data room. Projections are forward-looking estimates based on market research and comparable platform benchmarks. Actual results may vary.*
+## Infrastructure Cost Evolution
+
+| Stage | Platform | Monthly Infra Cost | Annual | Notes |
+|---|---|---|---|---|
+| **MVP (Y1)** | Lovable Cloud | €350 | €4,200 | Database, auth, functions, storage |
+| **Migration (Y2 Q2–Q4)** | Hybrid | €800 | €9,600 | Dual-running during migration + migration project costs |
+| **Post-Migration (Y2 Q4+)** | AWS | €800–€1,400 | €9,600–€16,800 | RDS, S3, Lambda, Cognito, SageMaker |
+| **Scale (Y3)** | AWS (optimized) | €1,500–€3,000 | €18,000–€36,000 | Autoscaling, reserved instances, multi-region |
+
+*Infrastructure costs increase with AWS but remain < 2% of revenue at scale, well within SaaS benchmarks. The investment provides enterprise-grade SLAs, compliance certifications, and global scalability that are prerequisites for Series A and beyond.*
+
+---
+
+*Document status: V1.1 — Updated with AWS migration cost projections. Projections are forward-looking estimates based on market research and comparable platform benchmarks. Actual results may vary.*

@@ -319,6 +319,54 @@ const corsHeaders = {
 
 ---
 
+## Infrastructure Migration Security (Planned)
+
+### Current → AWS Migration Path
+
+Autozon is architected on Lovable Cloud for the MVP and early growth stages (0–5K users). A planned migration to AWS is scheduled when the platform reaches growth-stage thresholds (~5K–100K users), driven by requirements for enterprise-grade security certifications, GPU-based AI inference, and global infrastructure.
+
+### Security Improvements Post-Migration
+
+| Domain | Current (Lovable Cloud) | Post-Migration (AWS) |
+|---|---|---|
+| **Network isolation** | Shared infrastructure | Dedicated VPC with private subnets |
+| **WAF / DDoS** | Basic (platform-level) | AWS WAF + Shield Advanced |
+| **Secrets management** | Lovable Cloud secrets (encrypted) | AWS Secrets Manager + KMS rotation |
+| **Compliance certs** | GDPR (self-assessed) | SOC2 Type II + ISO 27001 (AWS inherited) |
+| **Intrusion detection** | Manual monitoring | Amazon GuardDuty (automated threat detection) |
+| **Audit logging** | Edge function logs | AWS CloudTrail (immutable audit trail) |
+| **Database encryption** | AES-256 at rest | AWS KMS with customer-managed keys (CMK) |
+| **Container security** | N/A | Amazon ECR image scanning + Fargate isolation |
+| **Backup & DR** | Platform-managed | Cross-region RDS replicas, S3 versioning, automated snapshots |
+| **Rate limiting** | In-code (edge functions) | AWS API Gateway throttling + WAF rate rules |
+| **Penetration testing** | External audit (annual) | Continuous via AWS Inspector + external annual audit |
+
+### Migration Security Checklist
+
+| Control | Phase |
+|---|---|
+| VPC with private/public subnet architecture | Migration planning |
+| IAM roles with least-privilege policies | Migration planning |
+| KMS encryption for all data stores | Data layer migration |
+| Security groups + NACLs configured | Data layer migration |
+| CloudTrail enabled for all regions | Day 1 post-migration |
+| GuardDuty activated | Day 1 post-migration |
+| WAF rules deployed | Functions migration |
+| SOC2 Type II audit initiated | Post-migration (Y3 Q1) |
+| Zero-downtime auth migration with token bridge | Auth migration |
+
+### Migration Security Risks & Mitigations
+
+| Risk | Mitigation |
+|---|---|
+| Data exposure during migration | Encrypted transfer channels, migration during low-traffic windows |
+| Auth token invalidation | Token bridge: dual-validation period supporting both old and new auth |
+| DNS hijacking during cutover | DNSSEC enabled, short TTL pre-migration, monitoring |
+| Misconfigured security groups | Infrastructure-as-code (Terraform), peer-reviewed before apply |
+| Credential leakage | No hardcoded credentials; AWS Secrets Manager from day 1 |
+
+---
+
 ## Security Checklist
 
 | Control | Status |
@@ -336,7 +384,9 @@ const corsHeaders = {
 | CORS headers configured | ✅ |
 | Auto-confirm email disabled | ✅ |
 | Security definer for role checks | ✅ |
+| AWS migration security plan | 📋 Planned |
+| SOC2 / ISO 27001 certification | 📋 Planned (post-migration) |
 
 ---
 
-*Document status: V1 — For investor data room. Reflects current production security posture.*
+*Document status: V1.1 — Updated with AWS migration security plan. Reflects current production security posture + planned infrastructure evolution.*
