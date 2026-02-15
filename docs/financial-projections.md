@@ -23,6 +23,7 @@ All projections are based on:
 | Full Service Fee (2.5%, capped €499) | — | Launch | Scale |
 | Dealer Lead Fees | — | Launch | Scale |
 | Financing/Insurance Referrals | — | Pilot | Scale |
+| **Advertising & Sponsored Content** | Pilot | Scale | Major |
 | Premium Subscriptions | — | — | Launch |
 | Data Licensing | — | — | Pilot |
 
@@ -37,7 +38,8 @@ All projections are based on:
 | **Listings** | 150 | 300 | 500 |
 | **Basic (50%)** | 75 × €49 = €3,675 | 150 × €49 = €7,350 | 200 × €49 = €9,800 |
 | **Premium (50%)** | 75 × €99 = €7,425 | 150 × €99 = €14,850 | 300 × €99 = €29,700 |
-| **Total Revenue** | **€11,100** | **€22,200** | **€39,500** |
+| **Advertising (pilot)** | €3,600 | €7,200 | €14,400 |
+| **Total Revenue** | **€14,700** | **€29,400** | **€53,900** |
 | | | | |
 | Infrastructure & AI | (€3,600) | (€4,800) | (€6,000) |
 | Stripe Processing Fees | (€500) | (€900) | (€1,500) |
@@ -61,7 +63,8 @@ All projections are based on:
 | **Full Service Revenue** | €15,000 | €40,000 | €80,000 |
 | **Dealer Lead Fees** | €10,000 | €25,000 | €50,000 |
 | **Financing Referrals** | €5,000 | €15,000 | €30,000 |
-| **Total Revenue** | **€148,500** | **€317,000** | **€580,000** |
+| **Advertising & Sponsored Content** | €75,000 | €150,000 | €250,000 |
+| **Total Revenue** | **€223,500** | **€467,000** | **€830,000** |
 | | | | |
 | Infrastructure & AI | (€12,000) | (€18,000) | (€24,000) |
 | **AWS Migration** | **(€40,000)** | **(€55,000)** | **(€65,000)** |
@@ -87,8 +90,9 @@ All projections are based on:
 | **Dealer Lead Fees** | €60,000 | €150,000 | €300,000 |
 | **Financing Referrals** | €40,000 | €100,000 | €200,000 |
 | **Insurance Referrals** | €15,000 | €50,000 | €100,000 |
+| **Advertising & Sponsored Content** | €360,000 | €720,000 | €1,200,000 |
 | **Premium Subscriptions** | €0 | €25,000 | €60,000 |
-| **Total Revenue** | **€827,000** | **€1,785,000** | **€3,160,000** |
+| **Total Revenue** | **€1,187,000** | **€2,505,000** | **€4,360,000** |
 | | | | |
 | Infrastructure & AI | (€36,000) | (€60,000) | (€96,000) |
 | **AWS Running Costs** | **(€12,000)** | **(€18,000)** | **(€24,000)** |
@@ -111,7 +115,7 @@ All projections are based on:
 | Metric | Y1 | Y2 | Y3 | **Cumulative** |
 |---|---|---|---|---|
 | Listings | 300 | 3,000 | 15,000 | 18,300 |
-| Revenue | €22,200 | €317,000 | €1,785,000 | **€2,124,200** |
+| Revenue | €29,400 | €467,000 | €2,505,000 | **€3,001,400** |
 | Net Profit | (€1,500) | (€66,200) | €538,300 | **€470,600** |
 
 ---

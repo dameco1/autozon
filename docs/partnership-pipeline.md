@@ -230,6 +230,63 @@ Austrian automobile clubs (ÖAMTC: 2.1M members, ARBÖ: 400K members) are truste
 
 ---
 
+## 6. Advertising & Sponsored Content Partners
+
+### Strategic Rationale
+
+Autozon's user base is 100% in-market for automotive-related services — financing, insurance, accessories, maintenance. This makes every page view exceptionally valuable to advertisers compared to generic display networks. Advertising creates a **high-margin, scalable revenue stream** that grows proportionally with traffic.
+
+### Advertising Partner Categories
+
+| Partner Type | Examples | Ad Format | Revenue Model |
+|---|---|---|---|
+| **Dealers & Used Car Groups** | Local dealers, Carvago, Autohero | Sponsored listings, homepage banners | CPC €1.50–3.00, monthly spotlight €199–499 |
+| **Banks & Financing** | BAWAG, Santander, Raiffeisen, easybank | Fair value page cards, post-sale offers | CPA €5–15 per application |
+| **Insurance Companies** | Allianz, UNIQA, Generali, wefox | Post-sale interstitial, car detail sidebar | CPA €10–30 per policy |
+| **Leasing Companies** | Porsche Bank, Raiffeisen Leasing | Acquisition options page, sidebar | CPA €8–20 per lead |
+| **Accessories & Parts** | A.T.U, Forstinger, Amazon Auto | Car detail page, email newsletter | CPM €8–15 |
+| **Automotive Clubs** | ÖAMTC, ARBÖ, ADAC (DE) | Homepage, post-sale, email | Flat fee per campaign |
+| **Workshops & Service** | Bosch Car Service, local mechanics | Seller dashboard, pre-listing tips | CPC €0.80–1.50 |
+
+### Ad Inventory & Placements
+
+| Placement | Page | Format | Pricing |
+|---|---|---|---|
+| Homepage hero banner | Landing page | 728×90 / 300×250 display | €8–15 CPM |
+| Vehicle listing sidebar | Car detail page | Contextual display / native | €12–25 CPM |
+| Sponsored listing | Car selection feed | Promoted native listing | €1.50–3.00 CPC |
+| Fair value results card | Fair value page | Financing/insurance offer | €5–15 CPA |
+| Post-sale interstitial | After negotiation | Full-screen offer | €10–30 CPA |
+| Email sponsorship | Weekly insights email | Sponsored section | €200–500 flat per send |
+| Dealer spotlight badge | Buyer matches | Featured dealer badge | €199–499/month |
+
+### Integration Approach
+
+**Phase 1 — Direct Sales (V1.5)**
+- Founder-sold sponsorships to 5–10 partners
+- Static ad placements with impression tracking
+- Flat monthly fee per placement (€200–500/month)
+
+**Phase 2 — Self-Serve Platform (V2)**
+- Admin dashboard for advertisers: create, target, track campaigns
+- Targeting by make/model, price range, location, buyer/seller intent
+- CPM / CPC / CPA pricing with minimum spend
+
+**Phase 3 — Programmatic (V3)**
+- Real-time bidding integration
+- ML-powered ad optimization
+- Automated floor pricing, 100+ advertisers
+
+### Advertising Revenue Projections
+
+| Year | Active Advertisers | Avg. Monthly Spend | Monthly Revenue | Annual Revenue |
+|---|---|---|---|---|
+| Y1 | 3–5 | €300 | €1,200 | **€14,400** |
+| Y2 | 20–30 | €500 | €12,500 | **€150,000** |
+| Y3 | 50–100 | €800 | €60,000 | **€720,000** |
+
+---
+
 ## Partnership Revenue Summary
 
 | Category | Y1 Revenue | Y2 Revenue | Y3 Revenue |
@@ -237,10 +294,11 @@ Austrian automobile clubs (ÖAMTC: 2.1M members, ARBÖ: 400K members) are truste
 | **Financing** | €4,500 | €67,200 | €432,000 |
 | **Insurance** | €2,400 | €39,600 | €195,000 |
 | **Logistics & Services** | €1,200 | €18,000 | €96,000 |
+| **Advertising & Sponsored Content** | €14,400 | €150,000 | €720,000 |
 | **Automotive Clubs** | €0 | €12,000 | €48,000 |
 | **Data Partners** | €0 | €0 | €24,000 |
-| **Total Partnership Revenue** | **€8,100** | **€136,800** | **€795,000** |
-| **% of Total Revenue** | 5% | 12% | 18% |
+| **Total Partnership Revenue** | **€22,500** | **€287,000** | **€1,515,000** |
+| **% of Total Revenue** | 8% | 15% | 22% |
 
 ---
 
