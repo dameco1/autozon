@@ -36,7 +36,7 @@ Pre-launch checklist for autozon — to be completed before marketing campaigns 
 ## 📝 Legal & Compliance
 
 - [ ] **Review Privacy Policy** (`/privacy`) — ensure GDPR compliance for production use
-- [ ] **Review Terms & Conditions** (`/terms`) — confirm legal jurisdiction (Cyprus / BowTie Sales Corp Limited)
+- [ ] **Review Terms & Conditions** (`/terms`) — confirm legal jurisdiction (Austria / autozon GmbH)
 - [ ] **Review Cookie Policy** (`/cookies`) — verify consent flow works
 - [ ] **Review Impressum** (`/impressum`) — confirm all company details are current
 - [ ] **Cookie consent banner** tested and functional
@@ -69,4 +69,4 @@ Pre-launch checklist for autozon — to be completed before marketing campaigns 
 ---
 
 *Target markets: Austria → Germany → DACH → CEE*
-*Legal entity: BowTie Sales Corp Limited (Cyprus)*
+*Legal entity: autozon GmbH (Vienna, Austria)*

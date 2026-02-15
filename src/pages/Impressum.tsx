@@ -23,7 +23,7 @@ const Impressum: React.FC = () => {
         <div className="prose prose-invert prose-sm max-w-none space-y-6 text-silver/80">
           <section>
             <h2 className="text-xl font-display font-bold text-white">Company Information</h2>
-            <p>BowTie Sales Corp Limited<br />Registered in the Republic of Cyprus</p>
+            <p>autozon GmbH<br />Vienna, Austria</p>
           </section>
 
           <section>
@@ -36,7 +36,7 @@ const Impressum: React.FC = () => {
 
           <section>
             <h2 className="text-xl font-display font-bold text-white">Responsible for Website Content</h2>
-            <p>Damir Buljubasic</p>
+            <p>Emina Mukic-Buljubasic, Geschäftsführerin</p>
           </section>
 
           <section>

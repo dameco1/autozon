@@ -130,13 +130,12 @@ Private-to-private sales (excluding dealer-to-dealer and fleet):
 
 | Detail | Value |
 |---|---|
-| **Planned Entity** | New GmbH to be incorporated in **Vienna, Austria** |
+| **Entity** | autozon GmbH |
 | **Legal Form** | Gesellschaft mit beschränkter Haftung (GmbH) |
 | **Jurisdiction** | Austria |
+| **Registered Office** | Vienna, Austria |
 | **Regulatory** | Standard Austrian trade license (Gewerbeberechtigung) for online marketplace |
 | **Data Protection** | GDPR-compliant, Austrian DPA (Datenschutzbehörde) |
-
-*Current operations under BowTie Sales Corp Limited (Cyprus) during pre-launch phase. New Austrian entity will be established for market launch.*
 
 ---
 
