@@ -75,13 +75,17 @@ BowTie Sales Corp (Cyprus)          autozon GmbH (Vienna)
 
 | Shareholder | Ownership | Shares | Role |
 |---|---|---|---|
-| Damir Buljubasic | 100% | 100 | Founder, sole shareholder |
+| Emina Mukic-Buljubasic | 40% | 40,000 | Co-Founder & CEO |
+| Damir Buljubasic | 40% | 40,000 | Co-Founder & CIO |
+| Nenad Brankovic | 20% | 20,000 | CFO |
 
 ### Post-Seed Round (Target)
 
 | Shareholder | Ownership | Notes |
 |---|---|---|
-| Damir Buljubasic (Founder) | 75–80% | Majority control retained |
+| Emina Mukic-Buljubasic (Co-Founder & CEO) | 30–32% | |
+| Damir Buljubasic (Co-Founder & CIO) | 30–32% | |
+| Nenad Brankovic (CFO) | 15–16% | |
 | Seed Investors | 15–20% | Via capital increase (Kapitalerhöhung) |
 | ESOP Pool (reserved) | 3.5–5% | Virtual shares (Phantom Stock / VSOP) |
 
@@ -95,7 +99,8 @@ BowTie Sales Corp (Cyprus)          autozon GmbH (Vienna)
 
 | Role | Name | Responsibility |
 |---|---|---|
-| **Geschäftsführer (Managing Director)** | Damir Buljubasic | Full operational and legal authority |
+| **Geschäftsführerin (Managing Director)** | Emina Mukic-Buljubasic | Corporate strategy, operations, legal authority |
+| **Prokurist (Authorized Officer)** | Damir Buljubasic | Technology, innovation, business development |
 
 Under Austrian GmbH law, the Geschäftsführer has sole authority unless restricted by the articles of association (Gesellschaftsvertrag) or shareholder resolutions.
 
@@ -129,12 +134,12 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 |---|---|---|---|---|
 | 1 | Draft articles of association (Gesellschaftsvertrag) | Corporate lawyer | Week 1–2 | 📋 Planned |
 | 2 | Notarization (Notariatsakt) | Notar (Vienna) | Week 2 | 📋 Planned |
-| 3 | Open bank account & deposit share capital | Founder | Week 2–3 | 📋 Planned |
+| 3 | Open bank account & deposit share capital | Founders | Week 2–3 | 📋 Planned |
 | 4 | Commercial register filing (Firmenbuch) | Corporate lawyer | Week 3 | 📋 Planned |
 | 5 | Tax registration (Finanzamt) | Tax advisor | Week 3–4 | 📋 Planned |
 | 6 | VAT registration (UID) | Tax advisor | Week 4 | 📋 Planned |
-| 7 | Trade license application (Gewerbebehörde) | Founder | Week 4–5 | 📋 Planned |
-| 8 | SVS registration (social insurance) | Founder | Week 4 | 📋 Planned |
+| 7 | Trade license application (Gewerbebehörde) | CEO | Week 4–5 | 📋 Planned |
+| 8 | SVS registration (social insurance) | CEO | Week 4 | 📋 Planned |
 | 9 | Data protection registration (DSB) | Legal counsel | Week 5 | 📋 Planned |
 | 10 | IP transfer from BowTie Sales Corp | Corporate lawyer | Week 5–8 | 📋 Planned |
 
@@ -176,7 +181,7 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 | Firmenbuch updates | As needed | Corporate lawyer |
 | WiEReG updates | As needed | Corporate lawyer |
 | GDPR compliance review | Quarterly | DPO / legal counsel |
-| Annual trade license renewal | Annual | Founder |
+| Annual trade license renewal | Annual | CEO |
 
 ### Tax Overview
 
@@ -260,7 +265,7 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 | Control | Implementation |
 |---|---|
 | Dual signature for amounts > €10,000 | Gesellschaftsvertrag provision |
-| Monthly cash flow reporting | Founder + tax advisor review |
+| Monthly cash flow reporting | CEO + CFO review |
 | Quarterly board updates | Investor reporting package |
 | Annual audit | Voluntary until legally required (> €10M revenue or > 50 employees) |
 
@@ -272,7 +277,7 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 
 | Policy | Coverage | Priority |
 |---|---|---|
-| **Directors & Officers (D&O)** | Personal liability of Geschäftsführer | High — at incorporation |
+| **Directors & Officers (D&O)** | Personal liability of Geschäftsführer and officers | High — at incorporation |
 | **Professional liability (Berufshaftpflicht)** | Platform errors, incorrect valuations | High — at incorporation |
 | **Cyber insurance** | Data breaches, ransomware, business interruption | High — at launch |
 | **General liability (Betriebshaftpflicht)** | Third-party claims | Medium — at incorporation |

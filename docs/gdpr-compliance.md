@@ -398,7 +398,9 @@ Breach Detected
 | Role | Name / Entity | Contact |
 |---|---|---|
 | **Data Controller** | autozon GmbH | privacy@autozon.at |
-| **Founder / CEO** | Damir Buljubasic | damir@autozon.at |
+| **CEO** | Emina Mukic-Buljubasic | emina@autozon.at |
+| **CIO** | Damir Buljubasic | damir@autozon.at |
+| **CFO** | Nenad Brankovic | nenad@autozon.at |
 | **Legal Counsel** | TBD (Vienna startup law firm) | — |
 | **DPO** | TBD (voluntary appointment Y2) | dpo@autozon.at |
 | **Supervisory Authority** | Österreichische Datenschutzbehörde | dsb@dsb.gv.at |

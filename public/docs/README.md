@@ -37,4 +37,6 @@ npm run dev        # http://localhost:5173
 
 | Role | Name |
 |---|---|
-| Founder | Damir (see `/pitch` for investor deck) |
+| Co-Founder & CEO | Emina Mukic-Buljubasic |
+| Co-Founder & CIO | Damir Buljubasic |
+| CFO | Nenad Brankovic |

@@ -1,6 +1,6 @@
 # Founder Profile — Damir Buljubasic
 
-## Founder & CEO
+## Co-Founder & CIO (Chief Innovation Officer)
 
 **Location:** Vienna, Austria
 **Nationality:** Canadian citizen, based in Austria
@@ -14,11 +14,13 @@ Damir Buljubasic is a seasoned executive with **25+ years of experience** in ent
 
 His career spans C-level roles at technology companies ranging from global enterprises (Oracle, ATOS) to high-growth startups (Finyoz, FintechOS), giving him a rare combination of corporate discipline and entrepreneurial agility — exactly what's needed to build and scale autozon.
 
+As Co-Founder and CIO, Damir drives autozon's product innovation, technology strategy, and platform architecture — leveraging his deep technical literacy and startup-building experience to deliver the AI-powered fair-value engine at the heart of the platform.
+
 ---
 
 ## Why autozon
 
-Damir's motivation for founding autozon is rooted in a personal frustration shared by millions of car owners: the systematic undervaluation of vehicles by dealerships through "engineered depreciation." Having experienced this firsthand and recognizing the massive information asymmetry in the used car market, he set out to build a technology platform that restores fairness to private car transactions.
+Damir's motivation for co-founding autozon is rooted in a personal frustration shared by millions of car owners: the systematic undervaluation of vehicles by dealerships through "engineered depreciation." Having experienced this firsthand and recognizing the massive information asymmetry in the used car market, he set out to build a technology platform that restores fairness to private car transactions.
 
 His vision: **make the used car market as transparent and fair as it should be** — powered by AI, anchored in data, and designed to protect sellers while creating value for buyers.
 

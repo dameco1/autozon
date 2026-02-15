@@ -140,15 +140,15 @@ Private-to-private sales (excluding dealer-to-dealer and fleet):
 
 ---
 
-## Founder
+## Founding Team
 
-**Damir Buljubasic** — Founder & CEO
+| Name | Role | Key Strength |
+|---|---|---|
+| **Emina Mukic-Buljubasic** | Co-Founder & CEO | 15+ years financial management & operations; University of Vienna MBA |
+| **Damir Buljubasic** | Co-Founder & CIO | 25+ years enterprise sales (Oracle, ATOS); founded & exited iLMS Director (1.3M users) |
+| **Nenad Brankovic** | CFO | 25+ years PE/M&A; Group CFO at MidEuropa Partners companies; €1B+ exit to KKR |
 
-- Background in enterprise sales and business development
-- Deep understanding of the European automotive aftermarket
-- Vision: democratize access to fair car pricing through technology
-
-*Full founder profile and advisory board details to be added.*
+*See [Team & Advisors](team-advisors.md) and [Founder Profile](founder-profile.md) for detailed backgrounds.*
 
 ---
 
@@ -169,4 +169,4 @@ Austria (Launch) → Germany → Switzerland → DACH → Poland, Czech Republic
 
 ---
 
-*Document status: V1 — For investor data room. Contact founder for additional details.*
+*Document status: V1 — For investor data room. Contact founding team for additional details.*

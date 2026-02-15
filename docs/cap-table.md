@@ -10,7 +10,9 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Shareholder | Role | Shares | Ownership | Voting Rights |
 |---|---|---|---|---|
-| **Damir Buljubasic** | Founder & CEO | 100,000 | 100% | 100% |
+| **Emina Mukic-Buljubasic** | Co-Founder & CEO | 40,000 | 40% | 40% |
+| **Damir Buljubasic** | Co-Founder & CIO | 40,000 | 40% | 40% |
+| **Nenad Brankovic** | CFO | 20,000 | 20% | 20% |
 | **Total** | | **100,000** | **100%** | **100%** |
 
 **Entity:** autozon GmbH (to be incorporated in Vienna, Austria)
@@ -27,7 +29,9 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Shareholder | Shares | Ownership | Investment | Price/Share |
 |---|---|---|---|---|
-| **Damir Buljubasic** (Founder) | 100,000 | 85.1% | Sweat equity | — |
+| **Emina Mukic-Buljubasic** (Co-Founder & CEO) | 40,000 | 34.0% | Sweat equity | — |
+| **Damir Buljubasic** (Co-Founder & CIO) | 40,000 | 34.0% | Sweat equity | — |
+| **Nenad Brankovic** (CFO) | 20,000 | 17.0% | Sweat equity | — |
 | **Seed Investor(s)** | 13,333 | 11.4% | €200,000 | €15.00 |
 | **ESOP Pool** (reserved) | 4,167 | 3.5% | Reserved | — |
 | **Total** | **117,500** | **100%** | | |
@@ -36,7 +40,9 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Shareholder | Shares | Ownership | Investment | Price/Share |
 |---|---|---|---|---|
-| **Damir Buljubasic** (Founder) | 100,000 | 83.3% | Sweat equity | — |
+| **Emina Mukic-Buljubasic** (Co-Founder & CEO) | 40,000 | 33.3% | Sweat equity | — |
+| **Damir Buljubasic** (Co-Founder & CIO) | 40,000 | 33.3% | Sweat equity | — |
+| **Nenad Brankovic** (CFO) | 20,000 | 16.7% | Sweat equity | — |
 | **Seed Investor(s)** | 15,000 | 12.5% | €300,000 | €20.00 |
 | **ESOP Pool** (reserved) | 5,000 | 4.2% | Reserved | — |
 | **Total** | **120,000** | **100%** | | |
@@ -50,7 +56,7 @@ This document outlines autozon's current ownership structure, planned equity all
 | **Product stage** | Fully functional MVP — AI valuation, damage detection, negotiation, payments |
 | **Technology moat** | Proprietary AI fair-value engine, 10+ integrated edge functions |
 | **Market** | €7.5B TAM in Austria alone, €150B in DACH |
-| **Founder** | 25+ years executive leadership (Oracle, ATOS, fintech), built teams of 200+ |
+| **Founding team** | Female CEO with financial management expertise; CIO with 25+ years (Oracle, ATOS) and startup exit; CFO with €1B+ PE exit experience |
 | **Traction** | Platform built and operational, investor data room complete |
 | **Comparable** | Early-stage marketplaces in EU typically valued at €1–3M pre-money at seed |
 
@@ -93,25 +99,25 @@ This document outlines autozon's current ownership structure, planned equity all
 
 ### Path to Series A
 
-| Round | Timing | Amount | Pre-Money | Dilution | Founder Post-Round |
+| Round | Timing | Amount | Pre-Money | Dilution | Founders Post-Round |
 |---|---|---|---|---|---|
-| **Seed** | Y1 Q1 | €200K | €1.5M | 11.8% | 85.1% |
-| **Bridge (optional)** | Y1 Q4 | €150K | €3M | 4.8% | 81.0% |
-| **Series A** | Y2 Q3 | €1.5M | €8M | 15.8% | 68.2% |
+| **Seed** | Y1 Q1 | €200K | €1.5M | 11.8% | 85.1% (combined) |
+| **Bridge (optional)** | Y1 Q4 | €150K | €3M | 4.8% | 81.0% (combined) |
+| **Series A** | Y2 Q3 | €1.5M | €8M | 15.8% | 68.2% (combined) |
 
 ### Path Without Bridge
 
-| Round | Timing | Amount | Pre-Money | Dilution | Founder Post-Round |
+| Round | Timing | Amount | Pre-Money | Dilution | Founders Post-Round |
 |---|---|---|---|---|---|
-| **Seed** | Y1 Q1 | €200K | €1.5M | 11.8% | 85.1% |
-| **Series A** | Y2 Q4 | €2M | €10M | 16.7% | 70.9% |
+| **Seed** | Y1 Q1 | €200K | €1.5M | 11.8% | 85.1% (combined) |
+| **Series A** | Y2 Q4 | €2M | €10M | 16.7% | 70.9% (combined) |
 
 ### Conservative Scenario (Bootstrapped to Series A)
 
-| Round | Timing | Amount | Pre-Money | Dilution | Founder Post-Round |
+| Round | Timing | Amount | Pre-Money | Dilution | Founders Post-Round |
 |---|---|---|---|---|---|
-| **No seed** | — | €0 | — | 0% | 100% |
-| **Series A** | Y3 Q1 | €1.5M | €6M | 20% | 80.0% |
+| **No seed** | — | €0 | — | 0% | 100% (combined) |
+| **Series A** | Y3 Q1 | €1.5M | €6M | 20% | 80.0% (combined) |
 
 ---
 
@@ -149,9 +155,9 @@ This document outlines autozon's current ownership structure, planned equity all
 | **Pro-rata rights** | Right to participate in future rounds to maintain ownership % |
 | **Anti-dilution** | Weighted average broad-based anti-dilution protection |
 | **Drag-along** | Standard drag-along above 75% shareholder approval |
-| **Tag-along** | Co-sale rights if founder sells > 10% of shares |
+| **Tag-along** | Co-sale rights if founders sell > 10% of shares |
 | **Liquidation preference** | 1x non-participating preferred |
-| **Vesting (founder)** | Founder shares: 25% vested at close, remainder over 36 months |
+| **Vesting (founders)** | Founder shares: 25% vested at close, remainder over 36 months |
 
 ### Decision Rights
 
@@ -182,7 +188,7 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Date | Event | Cap Table Impact |
 |---|---|---|
-| **Y1 Q1** | GmbH incorporation | 100,000 shares issued to founder |
+| **Y1 Q1** | GmbH incorporation | 100,000 shares issued to founders (40K/40K/20K) |
 | **Y1 Q1–Q2** | Seed round closes | 13,333 new shares issued |
 | **Y1 Q2** | ESOP pool created | 4,167 shares reserved |
 | **Y1 Q3** | First ESOP grant (Growth Manager) | ~1,500 shares allocated |
