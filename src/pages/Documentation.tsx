@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen, Loader2 } from "lucide-react";
+import { Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen, Loader2, AlertTriangle } from "lucide-react";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -22,6 +22,8 @@ const Documentation: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
+  const [locked, setLocked] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,8 +38,13 @@ const Documentation: React.FC = () => {
       } else if (data?.error && data?.retryAfterSecs) {
         const mins = Math.ceil(data.retryAfterSecs / 60);
         setError(`Too many attempts. Try again in ${mins} minute${mins > 1 ? "s" : ""}.`);
+        setRemainingAttempts(0);
+        setLocked(true);
       } else if (!data?.valid) {
         setError("Incorrect password");
+        if (typeof data?.remaining === "number") {
+          setRemainingAttempts(data.remaining);
+        }
       } else {
         setAuthenticated(true);
       }
@@ -68,9 +75,22 @@ const Documentation: React.FC = () => {
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(""); }}
                 className={error ? "border-destructive" : ""}
+                disabled={locked}
               />
               {error && <p className="text-sm text-destructive">{error}</p>}
-              <Button type="submit" className="w-full" disabled={loading}>
+              {remainingAttempts !== null && remainingAttempts <= 3 && !locked && (
+                <div className={`flex items-center gap-2 text-xs ${remainingAttempts <= 1 ? "text-destructive" : "text-yellow-500"}`}>
+                  <AlertTriangle className="h-3.5 w-3.5" />
+                  <span>{remainingAttempts} attempt{remainingAttempts !== 1 ? "s" : ""} remaining before lockout</span>
+                </div>
+              )}
+              {locked && (
+                <div className="flex items-center gap-2 text-xs text-destructive bg-destructive/10 rounded-md px-3 py-2">
+                  <Lock className="h-3.5 w-3.5" />
+                  <span>Account temporarily locked. Wait 15 minutes.</span>
+                </div>
+              )}
+              <Button type="submit" className="w-full" disabled={loading || locked}>
                 {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Verifying...</> : "Access Documentation"}
               </Button>
             </form>

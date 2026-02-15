@@ -16,22 +16,22 @@ function getClientIp(req: Request): string {
     || "unknown";
 }
 
-function isRateLimited(ip: string): { limited: boolean; retryAfterSecs: number } {
+function checkRate(ip: string): { limited: boolean; retryAfterSecs: number; remaining: number } {
   const now = Date.now();
   const record = attempts.get(ip);
 
   if (!record || now > record.resetAt) {
     attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return { limited: false, retryAfterSecs: 0 };
+    return { limited: false, retryAfterSecs: 0, remaining: MAX_ATTEMPTS - 1 };
   }
 
   record.count++;
   if (record.count > MAX_ATTEMPTS) {
     const retryAfterSecs = Math.ceil((record.resetAt - now) / 1000);
-    return { limited: true, retryAfterSecs };
+    return { limited: true, retryAfterSecs, remaining: 0 };
   }
 
-  return { limited: false, retryAfterSecs: 0 };
+  return { limited: false, retryAfterSecs: 0, remaining: MAX_ATTEMPTS - record.count };
 }
 
 serve(async (req) => {
@@ -41,11 +41,11 @@ serve(async (req) => {
 
   try {
     const ip = getClientIp(req);
-    const { limited, retryAfterSecs } = isRateLimited(ip);
+    const { limited, retryAfterSecs, remaining } = checkRate(ip);
 
     if (limited) {
       return new Response(
-        JSON.stringify({ error: "Too many attempts. Try again later.", retryAfterSecs }),
+        JSON.stringify({ error: "Too many attempts. Try again later.", retryAfterSecs, remaining: 0 }),
         {
           status: 429,
           headers: { ...corsHeaders, "Content-Type": "application/json", "Retry-After": String(retryAfterSecs) },
@@ -70,7 +70,7 @@ serve(async (req) => {
       attempts.delete(ip);
     }
 
-    return new Response(JSON.stringify({ valid }), {
+    return new Response(JSON.stringify({ valid, remaining: valid ? MAX_ATTEMPTS : remaining }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
