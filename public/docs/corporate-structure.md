@@ -10,34 +10,40 @@ Autozon will operate as an **Austrian GmbH** (Gesellschaft mit beschränkter Haf
 
 | Field | Detail |
 |---|---|
-| **Company name** | autozon GmbH |
-| **Legal form** | Gesellschaft mit beschränkter Haftung (GmbH) |
+| **Company name** | autozon FlexCo |
+| **Legal form** | Flexible Kapitalgesellschaft (FlexKapG / FlexCo) |
+| **Governing law** | Flexible Company Act (FlexKapGG), effective 1 January 2024 |
 | **Jurisdiction** | Republic of Austria |
 | **Registered office** | Vienna, Austria |
 | **Commercial register** | Firmenbuch (Handelsgericht Wien) |
-| **Minimum share capital** | €35,000 (€17,500 paid-in at incorporation) |
+| **Minimum share capital** | €10,000 (€5,000 paid-in at incorporation) |
+| **Minimum corporate tax** | €125/quarter (€500/year) |
 | **Fiscal year** | Calendar year (1 Jan – 31 Dec) |
 | **VAT registration** | Austrian UID number (Umsatzsteuer-Identifikationsnummer) |
 | **Trade license** | Gewerbeberechtigung for online marketplace / IT services |
 
-### Privileged Incorporation Option (Gründungsprivilegierung)
+### Why FlexCo instead of traditional GmbH?
 
-Austrian law allows a **privileged incorporation** reducing initial capital requirements:
+Since January 2024, Austria offers the **FlexCo (FlexKapG)** as a modern alternative to the GmbH, specifically designed for startups and growth companies:
 
-| Parameter | Standard | Privileged |
+| Feature | Traditional GmbH | FlexCo (FlexKapG) |
 |---|---|---|
-| Minimum share capital | €35,000 | €10,000 |
-| Minimum paid-in | €17,500 | €5,000 |
-| Privilege duration | — | 10 years |
-| Requirements | — | All shareholders are natural persons |
+| Minimum share capital | €35,000 (€10,000 privileged) | €10,000 |
+| Minimum paid-in at start | €17,500 (€5,000 privileged) | €5,000 |
+| Privilege time limit | 10 years (then convert) | No limit — permanent |
+| Value participation shares | Not available | Up to 24.99% of capital |
+| Employee equity (ESOP) | Complex, tax-inefficient | Built-in, tax-advantaged |
+| Notarial deed for share transfers | Required | Not required for value shares |
+| Conversion | — | Seamless to/from GmbH, tax-neutral |
+| Minimum corporate tax | €500/quarter | €125/quarter |
 
-**Recommendation:** Use privileged incorporation to preserve cash for product development; convert to standard capital at Series A.
+**Recommendation:** Incorporate as FlexCo to benefit from lower capital requirements, built-in employee equity instruments, and startup-friendly governance. Convert to GmbH or AG only if required at later stages.
 
 ---
 
 ## Entity Status
 
-> ⚠️ **autozon GmbH is not yet incorporated.** The company is currently in the pre-registration planning phase. All references to "autozon GmbH" in this document describe the **planned** legal entity. Incorporation will be initiated upon securing seed funding.
+> ⚠️ **autozon FlexCo is not yet incorporated.** The company is currently in the pre-registration planning phase. All references to "autozon FlexCo" in this document describe the **planned** legal entity. Incorporation will be initiated upon securing seed funding.
 
 ### Pre-Launch Phase (Current)
 
@@ -45,18 +51,18 @@ The platform is currently operated as a **pre-incorporation project** by the fou
 
 | Aspect | Current Status | Post-Incorporation |
 |---|---|---|
-| Legal entity | Not yet registered | autozon GmbH (Austrian GmbH) |
-| IP ownership | Held by founders personally | Transferred to autozon GmbH |
+| Legal entity | Not yet registered | autozon FlexCo (Austrian FlexKapG) |
+| IP ownership | Held by founders personally | Transferred to autozon FlexCo |
 | Contracts | Personal liability of founders | Corporate liability |
-| Revenue collection | Not active | Via autozon GmbH |
+| Revenue collection | Not active | Via autozon FlexCo |
 | Tax obligations | Individual founders | Corporate (KöSt, USt) |
 
-### Incorporation Costs (Gründungsprivilegierte GmbH)
+### Incorporation Costs (FlexCo / FlexKapG)
 
 | Item | Cost Range | Notes |
 |---|---|---|
-| Share capital (privileged, paid-in) | €5,000 | Minimum paid-in at start (total capital: €10,000) |
-| Notary fees (Notariatsakt) | €500–€900 | Required for GmbH formation |
+| Share capital (paid-in) | €5,000 | Minimum paid-in at start (total capital: €10,000) |
+| Notary fees (Notariatsakt) | €500–€900 | Required for FlexCo formation |
 | Court registration (Firmenbuch) | ~€150 | Commercial register filing |
 | Lawyer (optional) | €0–€500 | Articles of association review |
 | Tax advisor setup | €300–€800 | Tax & VAT registration |
@@ -71,16 +77,16 @@ The platform is currently operated as a **pre-incorporation project** by the fou
 | Chamber of Commerce fee | ~€150/year | Wirtschaftskammer membership |
 | **Total yearly cost** | **€1,500–€2,700** | Ongoing corporate maintenance |
 
-### Estimated Timeline to Operational GmbH
+### Estimated Timeline to Operational FlexCo
 
 | Phase | Duration | Key Milestones |
 |---|---|---|
 | Preparation | Weeks 1–2 | Legal counsel engaged, articles drafted, IP audit |
 | Formation | Weeks 2–4 | Notarization, bank account, capital deposit, Firmenbuch filing |
 | Registration | Weeks 4–6 | Tax/VAT registration, trade license, WiEReG, SVS |
-| Operational | Weeks 6–8 | All registrations complete, GmbH fully operational |
+| Operational | Weeks 6–8 | All registrations complete, FlexCo fully operational |
 
-**Target:** GmbH fully operational within **60–90 days** of initiating incorporation (contingent on seed funding close).
+**Target:** FlexCo fully operational within **60–90 days** of initiating incorporation (contingent on seed funding close).
 
 ---
 
@@ -103,7 +109,7 @@ The platform is currently operated as a **pre-incorporation project** by the fou
 | Emina Mukic-Buljubasic (Co-Founder & CEO) | 9.5% | |
 | Nenad Brankovic (CFO) | 9.5% | |
 | First Investor | 19.0% | €200K at €1M valuation |
-| ESOP Pool (reserved) | 4.8% | Virtual shares (Phantom Stock / VSOP) |
+| ESOP Pool (reserved) | 4.8% | **Value participation shares** (FlexCo Wertbeteiligungsanteile) — no notarial deed required, tax-advantaged for employees |
 
 *See [Cap Table](cap-table.md) for detailed equity scenarios and dilution modeling.*
 
@@ -118,7 +124,7 @@ The platform is currently operated as a **pre-incorporation project** by the fou
 | **Geschäftsführerin (Managing Director)** | Emina Mukic-Buljubasic | Corporate strategy, operations, legal authority |
 | **Prokurist (Authorized Officer)** | Damir Buljubasic | Technology, innovation, business development |
 
-Under Austrian GmbH law, the Geschäftsführer has sole authority unless restricted by the articles of association (Gesellschaftsvertrag) or shareholder resolutions.
+Under Austrian FlexKapGG, the Geschäftsführer has sole authority unless restricted by the articles of association (Gesellschaftsvertrag) or shareholder resolutions. Governance rules are substantively the same as GmbH.
 
 ### Shareholder Meeting (Generalversammlung)
 
@@ -166,7 +172,7 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 | Document | Purpose |
 |---|---|
 | Gesellschaftsvertrag (Articles of Association) | Core corporate document defining rights, shares, governance |
-| Notariatsakt (Notarial deed) | Legally required for GmbH formation |
+| Notariatsakt (Notarial deed) | Legally required for FlexCo formation |
 | Musterzeichnung (Specimen signature) | Geschäftsführer signature registration |
 | Bank confirmation (Bankbestätigung) | Proof of share capital deposit |
 | Firmenbuch application | Commercial register entry |
@@ -205,7 +211,7 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 |---|---|---|
 | **Corporate tax (KöSt)** | 23% (from 2024) | On taxable profit |
 | **VAT (USt)** | 20% standard | On services; input VAT deductible |
-| **Minimum corporate tax** | €500/quarter (privileged: €125/quarter) | Payable regardless of profit |
+| **Minimum corporate tax** | €125/quarter (€500/year) | FlexCo rate; payable regardless of profit |
 | **Capital gains (KESt)** | 27.5% | On distributions to shareholders |
 | **Employer contributions** | ~30% of gross salary | Social insurance, payroll tax, etc. |
 
@@ -217,13 +223,13 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 
 | Asset | Current Owner | Post-Incorporation Owner | Status |
 |---|---|---|---|
-| autozon platform (source code) | Founding team | autozon GmbH | 📋 Transfer at incorporation |
-| autozon brand & trademarks | Founding team | autozon GmbH | 📋 Transfer at incorporation |
-| Domain: autozon.at | Founding team | autozon GmbH | 📋 Transfer at incorporation |
-| AI models & training data | Founding team | autozon GmbH | 📋 Transfer at incorporation |
-| Business processes & documentation | Founding team | autozon GmbH | 📋 Transfer at incorporation |
+| autozon platform (source code) | Founding team | autozon FlexCo | 📋 Transfer at incorporation |
+| autozon brand & trademarks | Founding team | autozon FlexCo | 📋 Transfer at incorporation |
+| Domain: autozon.at | Founding team | autozon FlexCo | 📋 Transfer at incorporation |
+| AI models & training data | Founding team | autozon FlexCo | 📋 Transfer at incorporation |
+| Business processes & documentation | Founding team | autozon FlexCo | 📋 Transfer at incorporation |
 
-> **IP Assignment:** All founders will execute IP assignment agreements transferring all project-related intellectual property to autozon GmbH at incorporation. This is a standard requirement and will be included in the Gesellschaftsvertrag.
+> **IP Assignment:** All founders will execute IP assignment agreements transferring all project-related intellectual property to autozon FlexCo at incorporation. This is a standard requirement and will be included in the Gesellschaftsvertrag.
 
 ### IP Protection Strategy
 
@@ -322,14 +328,14 @@ Month 1                    Month 2                    Month 3
   │                          │                          │
   ├── Legal counsel engaged  ├── Notarization           ├── Trade license issued
   ├── Articles drafted       ├── Bank account opened    ├── Domain portfolio secured
-  ├── IP audit completed     ├── Capital deposited      ├── Operations live under GmbH
-  │                          ├── Firmenbuch filing      ├── Operations live under GmbH
+  ├── IP audit completed     ├── Capital deposited      ├── Operations live under FlexCo
+  │                          ├── Firmenbuch filing      ├── Operations live under FlexCo
   │                          ├── Tax + VAT registration │
   │                          ├── WiEReG filing          │
   └──────────────────────────┴──────────────────────────┘
 ```
 
-**Target:** GmbH fully operational within 90 days of initiating incorporation.
+**Target:** FlexCo fully operational within 90 days of initiating incorporation.
 
 ---
 
