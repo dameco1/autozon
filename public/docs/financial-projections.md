@@ -8,6 +8,8 @@ All projections are based on:
 - **Premium uptake**: 50% in Y1, rising to 60% by Y3
 - **Blended average revenue per listing**: €74 (Y1), €79 (Y2), €84 (Y3)
 - **Full Service (V2+)**: 2.5% of sale price, capped at €499 — additive revenue from Y2
+- **Incorporation costs**: €1,000–€2,000 + €5,000 share capital (Gründungsprivilegierte GmbH)
+- **Annual corporate costs**: €1,500–€2,700/year (accounting + Chamber of Commerce)
 - **Currency**: EUR
 
 ---
@@ -40,12 +42,13 @@ All projections are based on:
 | Infrastructure & AI | (€3,600) | (€4,800) | (€6,000) |
 | Stripe Processing Fees | (€500) | (€900) | (€1,500) |
 | Marketing & CAC | (€4,500) | (€9,000) | (€15,000) |
-| Legal & Incorporation | (€5,000) | (€5,000) | (€5,000) |
+| Legal & Incorporation | (€7,000) | (€7,000) | (€7,000) |
+| Annual corporate costs | (€2,000) | (€2,000) | (€2,000) |
 | Founder Salary | (€0) | (€0) | (€0) |
-| **Total Costs** | **(€13,600)** | **(€19,700)** | **(€27,500)** |
+| **Total Costs** | **(€17,600)** | **(€23,700)** | **(€31,500)** |
 | | | | |
-| **Net Profit / (Loss)** | **(€2,500)** | **€2,500** | **€12,000** |
-| **Net Margin** | –23% | 11% | 30% |
+| **Net Profit / (Loss)** | **(€6,500)** | **(€1,500)** | **€8,000** |
+| **Net Margin** | –59% | –7% | 20% |
 
 *Note: Founder takes no salary in Y1 — bootstrapped.*
 
@@ -66,12 +69,13 @@ All projections are based on:
 | Marketing & CAC | (€45,000) | (€90,000) | (€150,000) |
 | Team (2–3 hires) | (€90,000) | (€120,000) | (€150,000) |
 | Office & Operations | (€12,000) | (€18,000) | (€24,000) |
+| Annual corporate costs | (€2,700) | (€2,700) | (€2,700) |
 | Legal & Compliance | (€10,000) | (€10,000) | (€15,000) |
 | Founder Salary | (€48,000) | (€60,000) | (€72,000) |
-| **Total Costs** | **(€261,500)** | **(€380,500)** | **(€517,000)** |
+| **Total Costs** | **(€264,200)** | **(€383,200)** | **(€519,700)** |
 | | | | |
-| **Net Profit / (Loss)** | **(€113,000)** | **(€63,500)** | **€63,000** |
-| **Net Margin** | –76% | –20% | 11% |
+| **Net Profit / (Loss)** | **(€115,700)** | **(€66,200)** | **€60,300** |
+| **Net Margin** | –78% | –21% | 10% |
 
 ### Year 3 — DACH + CEE Entry
 
@@ -93,10 +97,11 @@ All projections are based on:
 | Team (8–15 hires) | (€400,000) | (€600,000) | (€900,000) |
 | Office & Operations | (€36,000) | (€60,000) | (€96,000) |
 | Legal & Compliance | (€25,000) | (€40,000) | (€60,000) |
+| Annual corporate costs | (€2,700) | (€2,700) | (€2,700) |
 | Founder Salary | (€72,000) | (€84,000) | (€96,000) |
-| **Total Costs** | **(€765,000)** | **(€1,244,000)** | **(€1,914,000)** |
+| **Total Costs** | **(€767,700)** | **(€1,246,700)** | **(€1,916,700)** |
 | | | | |
-| **Net Profit / (Loss)** | **€62,000** | **€541,000** | **€1,246,000** |
+| **Net Profit / (Loss)** | **€59,300** | **€538,300** | **€1,243,300** |
 | **Net Margin** | 7% | 30% | 39% |
 
 ---
@@ -107,7 +112,7 @@ All projections are based on:
 |---|---|---|---|---|
 | Listings | 300 | 3,000 | 15,000 | 18,300 |
 | Revenue | €22,200 | €317,000 | €1,785,000 | **€2,124,200** |
-| Net Profit | €2,500 | (€63,500) | €541,000 | **€480,000** |
+| Net Profit | (€1,500) | (€66,200) | €538,300 | **€470,600** |
 
 ---
 

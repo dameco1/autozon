@@ -51,19 +51,25 @@ The platform is currently operated as a **pre-incorporation project** by the fou
 | Revenue collection | Not active | Via autozon GmbH |
 | Tax obligations | Individual founders | Corporate (KöSt, USt) |
 
-### Estimated Pre-Launch Costs
+### Incorporation Costs (Gründungsprivilegierte GmbH)
 
 | Item | Cost Range | Notes |
 |---|---|---|
-| Corporate lawyer (Gesellschaftsvertrag) | €1,500–€2,500 | Articles of association drafting |
-| Notarization (Notariatsakt) | €500–€1,000 | Required for GmbH formation |
-| Commercial register (Firmenbuch) | €300–€500 | Filing fees |
-| Trade license (Gewerbeberechtigung) | €200–€400 | Application fees |
-| Tax advisor (initial setup) | €500–€1,000 | Tax & VAT registration |
-| Share capital (privileged) | €5,000 | Minimum paid-in (Gründungsprivilegierung) |
-| D&O insurance (first year) | €800–€1,500 | Directors & Officers liability |
-| Domain portfolio | €100–€300 | autozon.de, autozon.ch |
-| **Total pre-launch budget** | **€8,900–€12,200** | Excluding share capital: €3,900–€7,200 |
+| Share capital (privileged, paid-in) | €5,000 | Minimum paid-in at start (total capital: €10,000) |
+| Notary fees (Notariatsakt) | €500–€900 | Required for GmbH formation |
+| Court registration (Firmenbuch) | ~€150 | Commercial register filing |
+| Lawyer (optional) | €0–€500 | Articles of association review |
+| Tax advisor setup | €300–€800 | Tax & VAT registration |
+| Chamber of Commerce fee | ~€150 | Annual fee (Wirtschaftskammer) |
+| **Total initial cost** | **€1,000–€2,000 + €5,000 capital** | One-time formation costs |
+
+### Ongoing Annual Costs
+
+| Item | Cost Range | Notes |
+|---|---|---|
+| Annual accounting (Steuerberater) | €1,200–€2,500 | Bookkeeping, Jahresabschluss, tax returns |
+| Chamber of Commerce fee | ~€150/year | Wirtschaftskammer membership |
+| **Total yearly cost** | **€1,500–€2,700** | Ongoing corporate maintenance |
 
 ### Estimated Timeline to Operational GmbH
 
@@ -153,7 +159,7 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 | 9 | Data protection registration (DSB) | Legal counsel | Week 5 | 📋 Planned |
 | 10 | Domain portfolio registration | CEO | Week 5–8 | 📋 Planned |
 
-**Estimated total incorporation cost:** €3,000–€5,000 (notary + legal + registration fees)
+**Estimated total incorporation cost:** €1,000–€2,000 + €5,000 share capital (paid-in). Ongoing: €1,500–€2,700/year.
 
 ### Required Documents
 
