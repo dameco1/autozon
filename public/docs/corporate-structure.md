@@ -37,7 +37,44 @@ Austrian law allows a **privileged incorporation** reducing initial capital requ
 
 ## Entity Status
 
-autozon GmbH is the sole legal entity for all operations. All IP, contracts, and assets are owned directly by autozon GmbH.
+> ⚠️ **autozon GmbH is not yet incorporated.** The company is currently in the pre-registration planning phase. All references to "autozon GmbH" in this document describe the **planned** legal entity. Incorporation will be initiated upon securing seed funding.
+
+### Pre-Launch Phase (Current)
+
+The platform is currently operated as a **pre-incorporation project** by the founding team. Key considerations:
+
+| Aspect | Current Status | Post-Incorporation |
+|---|---|---|
+| Legal entity | Not yet registered | autozon GmbH (Austrian GmbH) |
+| IP ownership | Held by founders personally | Transferred to autozon GmbH |
+| Contracts | Personal liability of founders | Corporate liability |
+| Revenue collection | Not active | Via autozon GmbH |
+| Tax obligations | Individual founders | Corporate (KöSt, USt) |
+
+### Estimated Pre-Launch Costs
+
+| Item | Cost Range | Notes |
+|---|---|---|
+| Corporate lawyer (Gesellschaftsvertrag) | €1,500–€2,500 | Articles of association drafting |
+| Notarization (Notariatsakt) | €500–€1,000 | Required for GmbH formation |
+| Commercial register (Firmenbuch) | €300–€500 | Filing fees |
+| Trade license (Gewerbeberechtigung) | €200–€400 | Application fees |
+| Tax advisor (initial setup) | €500–€1,000 | Tax & VAT registration |
+| Share capital (privileged) | €5,000 | Minimum paid-in (Gründungsprivilegierung) |
+| D&O insurance (first year) | €800–€1,500 | Directors & Officers liability |
+| Domain portfolio | €100–€300 | autozon.de, autozon.ch |
+| **Total pre-launch budget** | **€8,900–€12,200** | Excluding share capital: €3,900–€7,200 |
+
+### Estimated Timeline to Operational GmbH
+
+| Phase | Duration | Key Milestones |
+|---|---|---|
+| Preparation | Weeks 1–2 | Legal counsel engaged, articles drafted, IP audit |
+| Formation | Weeks 2–4 | Notarization, bank account, capital deposit, Firmenbuch filing |
+| Registration | Weeks 4–6 | Tax/VAT registration, trade license, WiEReG, SVS |
+| Operational | Weeks 6–8 | All registrations complete, GmbH fully operational |
+
+**Target:** GmbH fully operational within **60–90 days** of initiating incorporation (contingent on seed funding close).
 
 ---
 
@@ -172,13 +209,15 @@ The Beirat is advisory (not a Aufsichtsrat) and has no statutory authority. Form
 
 ### IP Assets
 
-| Asset | Owner | Status |
-|---|---|---|
-| autozon platform (source code) | autozon GmbH | ✅ Owned |
-| autozon brand & trademarks | autozon GmbH | ✅ Owned |
-| Domain: autozon.at | autozon GmbH | ✅ Owned |
-| AI models & training data | autozon GmbH | ✅ Owned |
-| Business processes & documentation | autozon GmbH | ✅ Owned |
+| Asset | Current Owner | Post-Incorporation Owner | Status |
+|---|---|---|---|
+| autozon platform (source code) | Founding team | autozon GmbH | 📋 Transfer at incorporation |
+| autozon brand & trademarks | Founding team | autozon GmbH | 📋 Transfer at incorporation |
+| Domain: autozon.at | Founding team | autozon GmbH | 📋 Transfer at incorporation |
+| AI models & training data | Founding team | autozon GmbH | 📋 Transfer at incorporation |
+| Business processes & documentation | Founding team | autozon GmbH | 📋 Transfer at incorporation |
+
+> **IP Assignment:** All founders will execute IP assignment agreements transferring all project-related intellectual property to autozon GmbH at incorporation. This is a standard requirement and will be included in the Gesellschaftsvertrag.
 
 ### IP Protection Strategy
 
