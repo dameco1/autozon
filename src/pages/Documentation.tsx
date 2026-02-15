@@ -257,6 +257,19 @@ const Documentation: React.FC = () => {
           </div>
         </div>
 
+        {/* Quick Links */}
+        <div className="mb-10 p-6 rounded-lg border border-border bg-muted/30">
+          <div className="flex items-center gap-2 mb-3">
+            <FileText className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-semibold text-foreground">Quick Access</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+            <a href="/pitch" target="_blank" className="text-primary hover:underline">📊 Investor Pitch Deck</a>
+            <a href="/brand" target="_blank" className="text-primary hover:underline">🎨 Brand Book</a>
+            <a href="/admin" target="_blank" className="text-primary hover:underline">🛡️ Admin Command Center</a>
+          </div>
+        </div>
+
         {/* Sections */}
         <div className="space-y-10">
           {sections.map((section) => (
@@ -310,19 +323,6 @@ const Documentation: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Quick Links */}
-        <div className="mt-12 p-6 rounded-lg border border-border bg-muted/30">
-          <div className="flex items-center gap-2 mb-3">
-            <FileText className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Quick Access</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-            <a href="/pitch" target="_blank" className="text-primary hover:underline">📊 Investor Pitch Deck</a>
-            <a href="/brand" target="_blank" className="text-primary hover:underline">🎨 Brand Book</a>
-            <a href="/admin" target="_blank" className="text-primary hover:underline">🛡️ Admin Command Center</a>
-          </div>
         </div>
       </div>
     </div>
