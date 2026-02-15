@@ -72,9 +72,9 @@ const sections: Section[] = [
     title: "4.0 — Legal & Compliance",
     icon: Scale,
     docs: [
-      { title: "Privacy Policy", desc: "GDPR-compliant privacy policy for vehicle data", icon: Shield, link: "/privacy", status: "ready" },
+      { title: "Privacy Policy", desc: "GDPR-compliant privacy policy for vehicle data", icon: Shield, link: "/privacy-policy", status: "ready" },
       { title: "Terms & Conditions", desc: "Platform terms of service", icon: FileText, link: "/terms", status: "ready" },
-      { title: "Cookie Policy", desc: "Cookie usage and consent framework", icon: FileText, link: "/cookies", status: "ready" },
+      { title: "Cookie Policy", desc: "Cookie usage and consent framework", icon: FileText, link: "/cookie-policy", status: "ready" },
       { title: "Impressum", desc: "Legal entity details and contact information", icon: Landmark, link: "/impressum", status: "ready" },
       { title: "GDPR Compliance", desc: "Data processing agreements, DPO, and data flow maps", icon: Shield, file: "gdpr-compliance.md", status: "ready" },
       { title: "IP & Trademarks", desc: "Intellectual property portfolio and trademark registrations", icon: Scale, file: "ip-trademarks.md", status: "ready" },
