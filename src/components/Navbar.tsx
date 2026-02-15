@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, Shield } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
+import { useIsAdmin } from "@/hooks/useAdminAuth";
 import type { User } from "@supabase/supabase-js";
 
 const Navbar: React.FC = () => {
@@ -12,6 +13,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const isAdmin = useIsAdmin();
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -54,6 +56,11 @@ const Navbar: React.FC = () => {
             {user ? (
               <>
                 <NotificationBell />
+                {isAdmin && (
+                  <Button variant="ghost" className="text-silver/80" onClick={() => navigate("/admin")}>
+                    <Shield className="h-4 w-4 mr-1" />Admin
+                  </Button>
+                )}
                 <Button variant="ghost" className="text-silver/80" onClick={() => navigate("/dashboard")}>
                   {t.nav.dashboard}
                 </Button>
@@ -92,6 +99,11 @@ const Navbar: React.FC = () => {
           </button>
           {user ? (
             <>
+              {isAdmin && (
+                <Button variant="ghost" className="w-full justify-start text-silver/80" onClick={() => { navigate("/admin"); setMenuOpen(false); }}>
+                  <Shield className="h-4 w-4 mr-1" />Admin
+                </Button>
+              )}
               <Button variant="ghost" className="w-full justify-start text-silver/80" onClick={() => { navigate("/dashboard"); setMenuOpen(false); }}>
                 {t.nav.dashboard}
               </Button>
