@@ -25,7 +25,7 @@ const PrivacyPolicy: React.FC = () => {
           <section>
             <h2 className="text-xl font-display font-bold text-white">Controller</h2>
             <p>The controller within the meaning of the EU General Data Protection Regulation (GDPR) is:</p>
-            <p>autozon GmbH<br />Vienna, Austria</p>
+            <p>autozon GmbH (in Gründung)<br />Vienna, Austria</p>
           </section>
 
           <section>

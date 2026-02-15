@@ -23,7 +23,8 @@ const Impressum: React.FC = () => {
         <div className="prose prose-invert prose-sm max-w-none space-y-6 text-silver/80">
           <section>
             <h2 className="text-xl font-display font-bold text-white">Company Information</h2>
-            <p>autozon GmbH<br />Vienna, Austria</p>
+            <p>autozon GmbH (in Gründung)<br />Vienna, Austria</p>
+            <p className="text-xs text-silver/50 mt-1">Note: autozon GmbH is not yet registered. Incorporation is planned upon securing seed funding.</p>
           </section>
 
           <section>

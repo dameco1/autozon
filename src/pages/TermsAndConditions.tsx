@@ -24,7 +24,7 @@ const TermsAndConditions: React.FC = () => {
         <div className="prose prose-invert prose-sm max-w-none space-y-8 text-silver/80">
           <section>
             <h2 className="text-xl font-display font-bold text-white">1. Scope of Application</h2>
-            <p>These Terms and Conditions ("Terms") govern the use of the Autozon website and platform (the "Service") operated by autozon GmbH ("we", "us", or "our"), registered in Vienna, Austria. By accessing or using our Service, you agree to be bound by these Terms and our <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.</p>
+            <p>These Terms and Conditions ("Terms") govern the use of the Autozon website and platform (the "Service") operated by autozon GmbH (in Gründung) ("we", "us", or "our"), planned for registration in Vienna, Austria. By accessing or using our Service, you agree to be bound by these Terms and our <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.</p>
           </section>
 
           <section>
