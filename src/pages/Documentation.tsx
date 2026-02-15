@@ -35,7 +35,7 @@ const sections: Section[] = [
     docs: [
       { title: "Company Overview", desc: "Mission, vision, market opportunity, and value proposition", icon: Globe, file: "company-overview.md", status: "ready" },
       { title: "Founder Profile", desc: "Damir Buljubasic — 25+ years executive leadership, Oracle, ATOS, fintech", icon: Users, file: "founder-profile.md", status: "ready" },
-      { title: "Corporate Structure", desc: "New Vienna GmbH — Austrian incorporation for market launch", icon: Landmark, status: "planned" },
+      { title: "Corporate Structure", desc: "New Vienna GmbH — Austrian incorporation for market launch", icon: Landmark, file: "corporate-structure.md", status: "ready" },
       { title: "Team & Advisors", desc: "Key hires, advisory board, org chart", icon: Users, status: "planned" },
       { title: "Investor Pitch Deck", desc: "21-slide in-app pitch deck with live product demos", icon: Presentation, link: "/pitch", status: "ready" },
     ],
