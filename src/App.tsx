@@ -34,6 +34,7 @@ import BrandBook from "./pages/BrandBook";
 import AdminDashboard from "./pages/AdminDashboard";
 import Documentation from "./pages/Documentation";
 import ResetPassword from "./pages/ResetPassword";
+import DocViewer from "./pages/DocViewer";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
               <Route path="/pitch" element={<InvestorPitch />} />
               <Route path="/brand" element={<BrandBook />} />
               <Route path="/docs" element={<Documentation />} />
+              <Route path="/docs/view/:slug" element={<DocViewer />} />
               <Route path="/reset-password" element={<ResetPassword />} />
 
               {/* MFA-protected routes */}
