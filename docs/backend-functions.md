@@ -54,9 +54,28 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Output**: Boolean placement status
 
 ### 8. `seed-car-models`
-- **Purpose**: Populates the `car_models` reference table
-- **Usage**: One-time database seeding
-- **Data**: European car makes/models with variants, body types, fuel types, power
+- **Purpose**: Populates the `car_models` reference table with static data
+- **Usage**: One-time database seeding (legacy, superseded by AI seeder)
+
+### 9. `seed-car-models-ai`
+- **Purpose**: AI-powered comprehensive car model seeder
+- **Model**: Lovable AI (Gemini 2.5 Flash)
+- **Auth**: Not required
+- **Input**: `{ make: "BMW", models: "X5, X6, X7", delete_first?: true }`
+- **Flow**: Sends targeted prompt per model group → parses JSON → cleans/validates → upserts to `car_models`
+- **Strategy**: Large makes (BMW, Audi, Mercedes, VW) are split into model groups to avoid token/timeout limits
+- **Output**: `{ success: true, make, total: 39 }`
+- **Result**: 2,700+ variants across 48 European makes (up from ~700)
+
+### 10. `verify-docs-password`
+- **Purpose**: Password-protects the documentation hub
+- **Auth**: Not required
+- **Input**: Password string
+- **Output**: Boolean success
+
+### 11. `admin-actions`
+- **Purpose**: Admin-only operations (user suspension, car status changes)
+- **Auth**: Requires admin role
 
 ## AI Integration Pattern
 
@@ -65,4 +84,4 @@ All AI functions follow the same pattern:
 Client → Edge Function → Lovable AI API → Structured Response → Client
 ```
 
-The Lovable AI gateway (`https://api.lovable.dev/v1/chat/completions`) provides access to Gemini models without requiring external API keys. Authentication uses the `LOVABLE_API_KEY` environment secret.
+The Lovable AI gateway (`https://ai.gateway.lovable.dev/v1/chat/completions`) provides access to Gemini models without requiring external API keys. Authentication uses the `LOVABLE_API_KEY` environment secret.

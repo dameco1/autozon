@@ -72,11 +72,12 @@ src/
 │   ├── AppraisalBreakdown.tsx
 │   ├── MarketComparison.tsx
 │   └── SEO.tsx          # Dynamic meta/OG/JSON-LD
-├── hooks/               # Custom hooks (useMobile, useCarModels, useToast, useAdminAuth)
+│   ├── MfaGuard.tsx     # Enforces TOTP 2FA on all protected routes
+├── hooks/               # Custom hooks (useMobile, useCarModels, useMfaStatus, useToast, useAdminAuth)
 ├── i18n/                # Translations (EN/DE) and LanguageContext
 ├── integrations/        # Auto-generated Supabase client + types
 ├── lib/                 # Utilities (chatStream, generateNegotiationPdf, utils)
-├── pages/               # Route-level page components (20+ pages incl. AdminDashboard)
+├── pages/               # Route-level page components (20+ pages incl. AdminDashboard, MfaEnroll, MfaVerify)
 └── main.tsx             # App entry point
 
 supabase/
@@ -89,7 +90,8 @@ supabase/
 │   ├── create-placement-checkout/ # Stripe checkout session
 │   ├── stripe-webhook/         # Stripe payment confirmation
 │   ├── verify-placement/       # Payment verification
-│   └── seed-car-models/        # Database seeder
+│   ├── seed-car-models/        # Static database seeder
+│   └── seed-car-models-ai/     # AI-powered model seeder (Gemini)
 └── migrations/          # SQL migration files (auto-managed)
 
 docs/                    # This documentation folder
@@ -100,9 +102,14 @@ public/                  # Static assets (favicon, OG image, sitemap, robots.txt
 
 1. User signs up via `/signup` (email + password)
 2. Email verification required before first login
-3. Auth state managed via `supabase.auth.onAuthStateChange()`
-4. Protected routes check session; redirect to `/login` if unauthenticated
-5. JWT tokens passed to edge functions via `Authorization: Bearer <token>`
+3. **Mandatory TOTP-based 2FA (MFA)** for all users:
+   - After first login, users are redirected to `/mfa-enroll` to set up an authenticator app (QR code)
+   - On subsequent logins, users must verify via `/mfa-verify` (6-digit TOTP code)
+   - `MfaGuard` wrapper checks Authenticator Assurance Level (AAL2) on all protected routes
+   - Enforced for all roles: buyers, sellers, and admins
+4. Auth state managed via `supabase.auth.onAuthStateChange()`
+5. Protected routes check session; redirect to `/login` if unauthenticated
+6. JWT tokens passed to edge functions via `Authorization: Bearer <token>`
 
 ## Data Flow: Selling a Car
 

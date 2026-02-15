@@ -72,11 +72,19 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 | `AdminNegotiations` | All offers with amount, counter, round, status tracking |
 | `AdminActivityFeed` | Merged feed of notifications, car views, and shortlists |
 
-### Admin Hooks (`src/hooks/`)
+### Auth & Admin Hooks (`src/hooks/`)
 | Hook | Purpose |
 |---|---|
 | `useAdminAuth` | Checks `user_roles` table for admin role; redirects non-admins |
 | `useIsAdmin` | Lightweight boolean check for conditional UI (e.g. navbar admin link) |
+| `useMfaStatus` | Checks user's MFA enrollment/verification status |
+
+### MFA Components
+| Component | Purpose |
+|---|---|
+| `MfaGuard` | Wrapper that enforces AAL2 (TOTP verified) on all protected routes |
+| `MfaEnroll` (page) | QR code setup for authenticator app enrollment |
+| `MfaVerify` (page) | 6-digit TOTP input for session verification |
 
 ---
 
@@ -84,6 +92,6 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 
 - **Languages**: English (EN), German (DE)
 - **Implementation**: React Context (`LanguageContext.tsx`)
-- **Translation file**: `src/i18n/translations.ts` (~1200 lines)
+- **Translation file**: `src/i18n/translations.ts` (~1400 lines, includes MFA strings)
 - **Toggle**: Globe icon in Navbar
 - **Coverage**: All user-facing strings, including form labels, error messages, and legal pages
