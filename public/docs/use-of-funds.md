@@ -16,20 +16,20 @@ This document details the allocation plan for autozon's current funding round. T
 
 ---
 
-## Seed Round Allocation (€200K Base Case)
+## Seed Round Allocation (€300K Base Case)
 
 ### Summary
 
 | Category | Allocation | % of Total | Purpose |
 |---|---|---|---|
-| **Technology & Hosting** | €42,000 | 21% | Infrastructure, AI, cloud services |
-| **Marketing & Growth** | €48,000 | 24% | Paid acquisition, content, PR |
-| **Team & Talent** | €60,000 | 30% | First hire + contractor support |
-| **Legal & Compliance** | €15,000 | 7.5% | GmbH setup, GDPR, contracts |
-| **Partnerships & BD** | €12,000 | 6% | Partner onboarding, events |
-| **Operations & Admin** | €8,000 | 4% | Office, tools, accounting |
-| **Reserve / Contingency** | €15,000 | 7.5% | Unexpected costs, opportunity fund |
-| **Total** | **€200,000** | **100%** | |
+| **Technology & Hosting** | €60,000 | 20% | Infrastructure, AI, cloud services |
+| **Marketing & Growth** | €72,000 | 24% | Paid acquisition, content, PR |
+| **Team & Talent** | €90,000 | 30% | First hire + contractor support |
+| **Legal & Compliance** | €22,000 | 7.3% | FlexCo setup, GDPR, contracts |
+| **Partnerships & BD** | €18,000 | 6% | Partner onboarding, events |
+| **Operations & Admin** | €13,000 | 4.3% | Office, tools, accounting |
+| **Reserve / Contingency** | €25,000 | 8.3% | Unexpected costs, opportunity fund |
+| **Total** | **€300,000** | **100%** | |
 
 ---
 
@@ -205,15 +205,15 @@ The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds
 
 ## Monthly Burn Rate Projection
 
-| Period | Monthly Burn | Cumulative Spend | Remaining (of €200K) |
+| Period | Monthly Burn | Cumulative Spend | Remaining (of €300K) |
 |---|---|---|---|
-| Month 1–3 | €4,500 | €13,500 | €186,500 |
-| Month 4–6 | €6,800 | €34,000 | €166,000 |
-| Month 7–9 | €10,200 | €64,600 | €135,400 |
-| Month 10–12 | €12,500 | €102,100 | €97,900 |
-| Month 13–15 | €11,000 | €135,100 | €64,900 |
-| Month 16–18 | €10,800 | €167,500 | €32,500 |
-| Month 19–21 | Revenue-funded | — | Reserve |
+| Month 1–3 | €5,500 | €16,500 | €283,500 |
+| Month 4–6 | €8,500 | €42,000 | €258,000 |
+| Month 7–9 | €12,000 | €78,000 | €222,000 |
+| Month 10–12 | €14,000 | €120,000 | €180,000 |
+| Month 13–15 | €13,000 | €159,000 | €141,000 |
+| Month 16–18 | €12,500 | €196,500 | €103,500 |
+| Month 19–24 | Revenue-funded | — | Reserve |
 
 **Break-even target:** Month 14–16 (base case)
 
@@ -246,7 +246,7 @@ The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds
 
 ## Scenario Comparison
 
-| Metric | Bootstrapped (€0) | Seed (€200K) | Pre-Series A (€750K) |
+| Metric | Bootstrapped (€0) | Seed (€300K) | Pre-Series A (€750K) |
 |---|---|---|---|
 | **Team size (Y1)** | 1 (founder) | 2–3 | 5–7 |
 | **Time to 100 monthly sales** | 18 months | 10 months | 6 months |

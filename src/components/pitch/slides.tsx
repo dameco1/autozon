@@ -778,7 +778,7 @@ export const SlideCapTable = () => {
     { label: "Damir Buljubasic\nCo-Founder & CIO", pct: 60, color: "#00C896" },
     { label: "Emina Mukic-Buljubasic\nCo-Founder & CEO", pct: 10, color: "#00A87A" },
     { label: "Nenad Brankovic\nCFO", pct: 10, color: "#007A5A" },
-    { label: "First Investor\n€200K for 20%", pct: 20, color: "#FFD166" },
+    { label: "First Investor\n€300K for 20%", pct: 20, color: "#FFD166" },
   ];
 
   // Build a simple horizontal stacked bar

@@ -133,7 +133,7 @@ All projections are based on:
 | **Y3 Q3** | €500,000 | (€330,000) | €170,000 | €309,500 |
 | **Y3 Q4** | €565,000 | (€354,000) | €211,000 | €520,500 |
 
-*With seed funding of €200K, cash flow remains positive throughout. Without external funding, Y2 expansion requires careful cost management.*
+*With seed funding of €300K, cash flow remains positive throughout with extended runway. Without external funding, Y2 expansion requires careful cost management.*
 
 ---
 

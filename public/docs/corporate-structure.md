@@ -99,7 +99,7 @@ The platform is currently operated as a **pre-incorporation project** by the fou
 | Damir Buljubasic | 60% | 60,000 | Co-Founder & CIO |
 | Emina Mukic-Buljubasic | 10% | 10,000 | Co-Founder & CEO |
 | Nenad Brankovic | 10% | 10,000 | CFO |
-| First Investor (reserved) | 20% | 20,000 | Seed Investor (€200K) |
+| First Investor (reserved) | 20% | 20,000 | Seed Investor (€300K) |
 
 ### Post-ESOP Allocation
 
@@ -108,7 +108,7 @@ The platform is currently operated as a **pre-incorporation project** by the fou
 | Damir Buljubasic (Co-Founder & CIO) | 57.1% | |
 | Emina Mukic-Buljubasic (Co-Founder & CEO) | 9.5% | |
 | Nenad Brankovic (CFO) | 9.5% | |
-| First Investor | 19.0% | €200K at €1M valuation |
+| First Investor | 19.0% | €300K at €1.5M valuation |
 | ESOP Pool (reserved) | 4.8% | **Value participation shares** (FlexCo Wertbeteiligungsanteile) — no notarial deed required, tax-advantaged for employees |
 
 *See [Cap Table](cap-table.md) for detailed equity scenarios and dilution modeling.*
