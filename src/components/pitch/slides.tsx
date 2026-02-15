@@ -819,7 +819,7 @@ export const SlideCapTable = () => {
       <div className="grid grid-cols-3 gap-8">
         <div className={cardBg + " text-center"}>
           <p className="text-[18px] text-silver mb-2">Investment</p>
-          <p className="font-display text-[40px] font-black text-white">€200K</p>
+          <p className="font-display text-[40px] font-black text-white">€300K</p>
           <p className="text-[16px] text-silver mt-1">for 20% equity</p>
         </div>
         <div className={cardBg + " text-center"}>
