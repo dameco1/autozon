@@ -829,7 +829,59 @@ export const SlideCapTable = () => {
   );
 };
 
-// Slide 18: Closing
+// Slide: Investor Data Room
+const dataRoomModules = [
+  { icon: Monitor, label: "Company Overview" },
+  { icon: Users, label: "Team & Advisors" },
+  { icon: User, label: "Founder Profile" },
+  { icon: PieChart, label: "Cap Table" },
+  { icon: DollarSign, label: "Revenue Model" },
+  { icon: BarChart3, label: "Financial Projections" },
+  { icon: Target, label: "Use of Funds" },
+  { icon: Map, label: "Go-to-Market Strategy" },
+  { icon: Swords, label: "Competitive Analysis" },
+  { icon: Rocket, label: "Product Roadmap" },
+  { icon: BarChart3, label: "KPI Dashboard" },
+  { icon: Globe, label: "Partnership Pipeline" },
+  { icon: Layers, label: "Corporate Structure" },
+  { icon: Shield, label: "Security Architecture" },
+  { icon: FileText, label: "GDPR Compliance" },
+  { icon: Star, label: "IP & Trademarks" },
+  { icon: Database, label: "Technical Architecture" },
+  { icon: CheckCircle, label: "Launch Checklist" },
+];
+
+export const SlideDataRoom = () => (
+  <div className="flex flex-col h-full px-40 justify-center">
+    <div className="flex items-center gap-4 mb-4">
+      <Shield className={green} size={48} />
+      <h2 className={`font-display text-[48px] font-bold text-white leading-tight`}>Investor Data Room</h2>
+    </div>
+
+    <p className="text-[24px] text-silver leading-relaxed mb-8 max-w-[1200px]">
+      A <span className="text-white font-semibold">comprehensive, password-protected data room</span> is ready for your due diligence — accessible online at{" "}
+      <span className={`${green} font-bold`}>autozon.lovable.app/docs</span>. Every document is available for download in Word and Excel formats.
+    </p>
+
+    <div className="grid grid-cols-3 gap-4 mb-8">
+      {dataRoomModules.map(({ icon: Icon, label }) => (
+        <div key={label} className="bg-white/5 border border-white/10 rounded-xl px-5 py-4 flex items-center gap-4">
+          <Icon className={green} size={22} />
+          <span className="text-[20px] text-white/90">{label}</span>
+        </div>
+      ))}
+    </div>
+
+    <div className="bg-green/10 border border-green/20 rounded-2xl px-8 py-5 text-center">
+      <p className="text-[22px] text-white leading-relaxed">
+        <span className={`${green} font-bold`}>18 modules</span> covering strategy, financials, legal, technology, and operations —{" "}
+        <span className="text-white font-semibold">ready for investor review today</span>
+      </p>
+    </div>
+  </div>
+);
+
+// Slide: Closing
 export const SlideClosing = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
     <Heart className={green} size={64} />
@@ -855,5 +907,5 @@ export const allSlides = [
   SlideHowItWorksSeller, SlideHowItWorksBuyer, SlideSavingsExample, SlideProductDemo,
   SlideWhyNow, SlideBusinessModel, SlideRevenueStreams, SlideFlywheel,
   SlidePricing, SlideMarketSize, SlideFinancials, SlideCompetition,
-  SlideMoatRoadmap, SlideAsk, SlideFounder, SlideCapTable, SlideClosing,
+  SlideMoatRoadmap, SlideAsk, SlideFounder, SlideCapTable, SlideDataRoom, SlideClosing,
 ];
