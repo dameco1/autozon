@@ -716,11 +716,11 @@ export const SlideFounder = () => (
           <h3 className="text-[22px] text-white font-bold leading-tight">Emina Mukic-Buljubasic</h3>
           <p className={`text-[16px] ${green} font-semibold`}>Co-Founder & CEO</p>
         </div>
-        <p className="text-[18px] text-silver leading-relaxed mb-3">Mag. International Business from the University of Vienna. Over 15 years in financial management, strategic operations, and international partnerships.</p>
+        <p className="text-[20px] text-silver leading-relaxed mb-3">Mag. International Business from the University of Vienna. Over 15 years in financial management, strategic operations, and international partnerships.</p>
         <div className="space-y-2">
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Scaled telecom operations to €2M+ annual revenue</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">EU-level project management for UN & Soros Foundation</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Cross-border negotiations & regulatory compliance</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Scaled telecom operations to €2M+ annual revenue</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">EU-level project management for UN & Soros Foundation</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Cross-border negotiations & regulatory compliance</span></div>
         </div>
       </div>
 
@@ -731,11 +731,11 @@ export const SlideFounder = () => (
           <h3 className="text-[22px] text-white font-bold leading-tight">Damir Buljubasic</h3>
           <p className={`text-[16px] ${green} font-semibold`}>Co-Founder & CIO</p>
         </div>
-        <p className="text-[18px] text-silver leading-relaxed mb-3">25+ years enterprise leadership at Oracle, ATOS, and high-growth startups. Serial founder who has built, scaled, and exited tech companies.</p>
+        <p className="text-[20px] text-silver leading-relaxed mb-3">25+ years enterprise leadership at Oracle, ATOS, and high-growth startups. Serial founder who has built, scaled, and exited tech companies.</p>
         <div className="space-y-2">
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Founded iLMS Director — 1.3M users, successful exit</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Oracle's Best Sales Director — 990% YoY growth</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">3,000% digital transformation at Prevent ASA</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Founded iLMS Director — 1.3M users, successful exit</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Oracle's Best Sales Director — 990% YoY growth</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">3,000% digital transformation at Prevent ASA</span></div>
         </div>
       </div>
 
@@ -746,11 +746,11 @@ export const SlideFounder = () => (
           <h3 className="text-[22px] text-white font-bold leading-tight">Nenad Brankovic</h3>
           <p className={`text-[16px] ${green} font-semibold`}>CFO</p>
         </div>
-        <p className="text-[18px] text-silver leading-relaxed mb-3">London Business School MBA. Group CFO across MidEuropa Partners portfolio companies with €500M+ combined revenue.</p>
+        <p className="text-[20px] text-silver leading-relaxed mb-3">London Business School MBA. Group CFO across MidEuropa Partners portfolio companies with €500M+ combined revenue.</p>
         <div className="space-y-2">
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Key role in landmark €1B+ exit to KKR</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Led €350M refinancing & €475M bond issuance</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Board member across FMCG & TMT sectors</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Key role in landmark €1B+ exit to KKR</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Led €350M refinancing & €475M bond issuance</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Board member across FMCG & TMT sectors</span></div>
         </div>
       </div>
     </div>
