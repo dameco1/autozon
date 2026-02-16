@@ -761,19 +761,11 @@ export const SlideFounder = () => (
       </div>
     </div>
 
-    {/* Bottom: Damir's cars */}
-    <div className="mt-6">
-      <p className="text-[14px] text-silver/70 text-center mb-1">A lifelong passion for cars — caring for every detail, demanding transparency in every transaction.</p>
-      <h3 className="text-[20px] text-white font-bold text-center mb-3">
-        <span className={green}>Damir's Personal Collection</span> — the passion that inspired autozon
-      </h3>
-      <div className="flex gap-2">
-        {carImages.map((src, i) => (
-          <div key={i} className="flex-1 rounded-lg overflow-hidden border border-white/10 h-[80px]">
-            <img src={src} alt={`Car ${i + 1}`} className="w-full h-full object-cover" />
-          </div>
-        ))}
-      </div>
+    {/* Team summary */}
+    <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl px-8 py-4 text-center">
+      <p className="text-[15px] text-silver leading-relaxed">
+        <span className="text-white font-semibold">Combined:</span> 50+ years executive leadership · Successful startup exit (1.3M users) · €1B+ PE transaction · Oracle, KKR, ATOS pedigree · <span className={green}>Built to scale autozon from Day 1</span>
+      </p>
     </div>
   </div>
 );
