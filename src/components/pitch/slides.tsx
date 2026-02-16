@@ -566,9 +566,9 @@ export const SlideFinancials = () => (
     </div>
     <div className="grid grid-cols-3 gap-8 mb-12">
       {[
-        { year: "Year 1", txns: "300", rev: "€29K", focus: "Product-market fit" },
-        { year: "Year 2", txns: "3,000", rev: "€467K", focus: "Germany + Full Service" },
-        { year: "Year 3", txns: "15,000", rev: "€2.5M+", focus: "DACH + network effects" },
+        { year: "Year 1", txns: "3,000", rev: "€467K", focus: "Austria + Germany launch" },
+        { year: "Year 2", txns: "15,000", rev: "€2.5M", focus: "DACH + CEE expansion" },
+        { year: "Year 3", txns: "75,000", rev: "€12M+", focus: "Full Europe rollout" },
       ].map(({ year, txns, rev, focus }) => (
         <div key={year} className={cardBg}>
           <h3 className="text-[24px] text-white font-bold">{year}</h3>
