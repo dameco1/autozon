@@ -702,68 +702,62 @@ const carImages = [
 export const SlideFounder = () => (
   <div className="flex flex-col h-full px-28 justify-center">
     {/* Header */}
-    <div className="flex items-center gap-4 mb-5">
-      <User className={green} size={36} />
-      <h2 className="font-display text-[38px] font-bold text-white leading-tight">The Founding Team</h2>
+    <div className="flex items-center gap-4 mb-6">
+      <User className={green} size={44} />
+      <h2 className="font-display text-[48px] font-bold text-white leading-tight">The Founding Team</h2>
     </div>
 
     {/* Three cards side by side */}
     <div className="grid grid-cols-3 gap-5">
       {/* Emina */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
         <div className="flex flex-col items-center text-center mb-3">
           <img src={eminaPhoto} alt="Emina Mukic-Buljubasic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-green/40 mb-2" />
-          <h3 className="text-[18px] text-white font-bold leading-tight">Emina Mukic-Buljubasic</h3>
-          <p className={`text-[13px] ${green} font-semibold`}>Co-Founder & CEO</p>
+          <h3 className="text-[22px] text-white font-bold leading-tight">Emina Mukic-Buljubasic</h3>
+          <p className={`text-[16px] ${green} font-semibold`}>Co-Founder & CEO</p>
         </div>
-        <p className="text-[14px] text-silver leading-relaxed mb-2">Mag. International Business from the University of Vienna. Over 15 years of hands-on experience in financial management, strategic operations, and building high-value international partnerships across Europe and beyond.</p>
-        <div className="space-y-1.5">
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Managing Director at E2 Partner GmbH — scaled telecom operations to €2M+ annual revenue</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">EU-level project management for Soros Foundation, United Nations agencies & Swiss Bank</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Expert in cross-border negotiations, regulatory compliance & multi-stakeholder coordination</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Financial discipline & operational rigor that forms the backbone of autozon's execution</span></div>
+        <p className="text-[18px] text-silver leading-relaxed mb-3">Mag. International Business from the University of Vienna. Over 15 years in financial management, strategic operations, and international partnerships.</p>
+        <div className="space-y-2">
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Scaled telecom operations to €2M+ annual revenue</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">EU-level project management for UN & Soros Foundation</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Cross-border negotiations & regulatory compliance</span></div>
         </div>
-        <p className="text-[12px] text-silver/50 italic mt-auto pt-2 border-t border-white/5">The operational backbone of autozon</p>
       </div>
 
       {/* Damir */}
-      <div className="bg-white/5 border border-green/20 rounded-2xl p-5 flex flex-col ring-1 ring-green/10">
+      <div className="bg-white/5 border border-green/20 rounded-2xl p-6 flex flex-col ring-1 ring-green/10">
         <div className="flex flex-col items-center text-center mb-3">
           <img src={damirPhoto} alt="Damir Buljubasic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-green/40 mb-2" />
-          <h3 className="text-[18px] text-white font-bold leading-tight">Damir Buljubasic</h3>
-          <p className={`text-[13px] ${green} font-semibold`}>Co-Founder & CIO</p>
+          <h3 className="text-[22px] text-white font-bold leading-tight">Damir Buljubasic</h3>
+          <p className={`text-[16px] ${green} font-semibold`}>Co-Founder & CIO</p>
         </div>
-        <p className="text-[14px] text-silver leading-relaxed mb-2">25+ years of enterprise leadership spanning Oracle, ATOS, and multiple high-growth startups. A serial founder who has built, scaled, and exited technology companies across North America and Europe.</p>
-        <div className="space-y-1.5">
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Founded iLMS Director — scaled to 1.3M users, merged with Learning Library Inc. (successful exit)</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Named Oracle's Best Sales Director CEE — achieved 990% YoY over five consecutive years</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Drove 3,000% digital transformation at Prevent ASA as Chief Digital Officer</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Turns market inefficiencies into scalable platforms — the driving force behind autozon's AI engine</span></div>
+        <p className="text-[18px] text-silver leading-relaxed mb-3">25+ years enterprise leadership at Oracle, ATOS, and high-growth startups. Serial founder who has built, scaled, and exited tech companies.</p>
+        <div className="space-y-2">
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Founded iLMS Director — 1.3M users, successful exit</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Oracle's Best Sales Director — 990% YoY growth</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">3,000% digital transformation at Prevent ASA</span></div>
         </div>
-        <p className="text-[12px] text-silver/50 italic mt-auto pt-2 border-t border-white/5">The innovation engine behind autozon</p>
       </div>
 
       {/* Nenad */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
         <div className="flex flex-col items-center text-center mb-3">
           <img src={nenadPhoto} alt="Nenad Brankovic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-green/40 mb-2" />
-          <h3 className="text-[18px] text-white font-bold leading-tight">Nenad Brankovic</h3>
-          <p className={`text-[13px] ${green} font-semibold`}>CFO</p>
+          <h3 className="text-[22px] text-white font-bold leading-tight">Nenad Brankovic</h3>
+          <p className={`text-[16px] ${green} font-semibold`}>CFO</p>
         </div>
-        <p className="text-[14px] text-silver leading-relaxed mb-2">London Business School MBA. Served as Group CFO across MidEuropa Partners portfolio companies with €500M+ combined revenue. One of CEE's most experienced private equity finance executives.</p>
-        <div className="space-y-1.5">
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Played a key role in the landmark €1B+ exit to KKR — one of CEE's largest PE transactions</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Led €350M debt refinancing and structured a €475M bond issuance</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Board member across FMCG, TMT sectors — deep investor relations expertise</span></div>
-          <div className="flex items-start gap-2"><Check size={14} className={`${green} shrink-0 mt-0.5`} /><span className="text-[13px] text-white/80">Brings institutional-grade credibility and governance to autozon's growth story</span></div>
+        <p className="text-[18px] text-silver leading-relaxed mb-3">London Business School MBA. Group CFO across MidEuropa Partners portfolio companies with €500M+ combined revenue.</p>
+        <div className="space-y-2">
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Key role in landmark €1B+ exit to KKR</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Led €350M refinancing & €475M bond issuance</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[16px] text-white/80">Board member across FMCG & TMT sectors</span></div>
         </div>
-        <p className="text-[12px] text-silver/50 italic mt-auto pt-2 border-t border-white/5">Institutional-grade financial leadership</p>
       </div>
     </div>
 
     {/* Team summary */}
-    <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl px-8 py-4 text-center">
-      <p className="text-[15px] text-silver leading-relaxed">
+    <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-center">
+      <p className="text-[20px] text-silver leading-relaxed">
         <span className="text-white font-semibold">Combined:</span> 50+ years executive leadership · Successful startup exit (1.3M users) · €1B+ PE transaction · Oracle, KKR, ATOS pedigree · <span className={green}>Built to scale autozon from Day 1</span>
       </p>
     </div>
