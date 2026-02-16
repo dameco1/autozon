@@ -894,7 +894,7 @@ export const SlideClosing = () => (
     <p className="text-[28px] text-silver mt-4">With fairness, intelligence, and trust.</p>
     <div className="w-32 h-1 bg-green mt-16 rounded-full" />
     <p className="text-[24px] text-silver/60 mt-8 italic max-w-[1000px]">
-      "Autozon is not a marketplace. It's a value-preservation engine for the €300B used-car market."
+      "Autozon is a value-preservation engine for the €300B used-car market."
     </p>
     <p className="font-display text-[36px] font-black text-white mt-16">
       auto<span className={green}>zon</span>
