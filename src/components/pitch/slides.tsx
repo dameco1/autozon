@@ -860,7 +860,7 @@ export const SlideDataRoom = () => (
 
     <p className="text-[24px] text-silver leading-relaxed mb-8 max-w-[1200px]">
       A <span className="text-white font-semibold">comprehensive, password-protected data room</span> is ready for your due diligence — accessible online at{" "}
-      <span className={`${green} font-bold`}>autozon.lovable.app/docs</span>. Every document is available for download in Word and Excel formats.
+      <span className={`${green} font-bold`}>www.autozon.at/docs</span>. Every document is available for download in Word and Excel formats.
     </p>
 
     <div className="grid grid-cols-3 gap-4 mb-8">
