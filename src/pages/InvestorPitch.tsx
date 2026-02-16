@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Maximize, Minimize, ArrowLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize, Minimize, ArrowLeft, Download, Loader2 } from "lucide-react";
 import SlideLayout from "@/components/pitch/SlideLayout";
 import { allSlides } from "@/components/pitch/slides";
 
 const InvestorPitch = () => {
   const [current, setCurrent] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState("");
   const navigate = useNavigate();
   const total = allSlides.length;
 
@@ -19,6 +21,22 @@ const InvestorPitch = () => {
       document.documentElement.requestFullscreen().catch(() => {});
     } else {
       document.exitFullscreen().catch(() => {});
+    }
+  }, []);
+
+  const handleExportPdf = useCallback(async () => {
+    setExporting(true);
+    setExportProgress("Preparing...");
+    try {
+      const { exportPitchPdf } = await import("@/lib/exportPitchPdf");
+      await exportPitchPdf(allSlides, (cur, tot) => {
+        setExportProgress(`Rendering slide ${cur} of ${tot}...`);
+      });
+    } catch (err) {
+      console.error("PDF export failed:", err);
+    } finally {
+      setExporting(false);
+      setExportProgress("");
     }
   }, []);
 
@@ -58,6 +76,15 @@ const InvestorPitch = () => {
         </motion.div>
       </AnimatePresence>
 
+      {/* Export overlay */}
+      {exporting && (
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-[100] flex flex-col items-center justify-center gap-4">
+          <Loader2 size={48} className="text-green animate-spin" />
+          <p className="text-white text-xl font-display">{exportProgress}</p>
+          <p className="text-silver text-sm">This may take a moment…</p>
+        </div>
+      )}
+
       {/* Controls overlay */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-black/40 backdrop-blur-sm rounded-full px-6 py-3 z-50">
         <button onClick={prev} disabled={current === 0} className="text-white/60 hover:text-white disabled:opacity-30 transition-colors">
@@ -80,13 +107,23 @@ const InvestorPitch = () => {
         Back
       </button>
 
-      {/* Top-right: fullscreen */}
-      <button
-        onClick={toggleFullscreen}
-        className="absolute top-4 right-4 z-50 text-white/40 hover:text-white transition-colors"
-      >
-        {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
-      </button>
+      {/* Top-right: controls */}
+      <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
+        <button
+          onClick={handleExportPdf}
+          disabled={exporting}
+          className="text-white/40 hover:text-white transition-colors flex items-center gap-2 text-sm disabled:opacity-30"
+        >
+          <Download size={20} />
+          <span className="hidden sm:inline">PDF</span>
+        </button>
+        <button
+          onClick={toggleFullscreen}
+          className="text-white/40 hover:text-white transition-colors"
+        >
+          {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+        </button>
+      </div>
     </div>
   );
 };
