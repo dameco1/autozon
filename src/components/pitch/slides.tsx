@@ -566,33 +566,33 @@ export const SlideFinancials = () => (
     </div>
     <div className="grid grid-cols-3 gap-8 mb-12">
       {[
-        { year: "Year 1", txns: "300", rev: "€22K", focus: "Product-market fit" },
-        { year: "Year 2", txns: "3,000", rev: "€317K", focus: "Germany + Full Service" },
-        { year: "Year 3", txns: "15,000", rev: "€1.8M+", focus: "DACH + network effects" },
+        { year: "Year 1", txns: "300", rev: "€29K", focus: "Product-market fit" },
+        { year: "Year 2", txns: "3,000", rev: "€467K", focus: "Germany + Full Service" },
+        { year: "Year 3", txns: "15,000", rev: "€2.5M+", focus: "DACH + network effects" },
       ].map(({ year, txns, rev, focus }) => (
         <div key={year} className={cardBg}>
           <h3 className="text-[24px] text-white font-bold">{year}</h3>
           <p className={`font-display text-[48px] font-black ${green} mt-3`}>{rev}</p>
-          <p className="text-[22px] text-silver mt-2">{txns} transactions</p>
+          <p className="text-[22px] text-silver mt-2">{txns} listings</p>
           <p className="text-[20px] text-silver/60 mt-1">{focus}</p>
         </div>
       ))}
     </div>
     <div className="grid grid-cols-3 gap-8">
       <div className={cardBg}>
-        <p className="text-[20px] text-silver">Avg fee</p>
-        <p className={`text-[36px] font-bold ${green}`}>€500</p>
+        <p className="text-[20px] text-silver">Avg listing fee</p>
+        <p className={`text-[36px] font-bold ${green}`}>€74–€84</p>
       </div>
       <div className={cardBg}>
         <p className="text-[20px] text-silver">Gross margin</p>
-        <p className={`text-[36px] font-bold ${green}`}>~70%</p>
+        <p className={`text-[36px] font-bold ${green}`}>~87%</p>
       </div>
       <div className={cardBg}>
         <p className="text-[20px] text-silver">LTV / CAC</p>
-        <p className={`text-[36px] font-bold ${green}`}>&gt; 5x</p>
+        <p className={`text-[36px] font-bold ${green}`}>2.5x → 3.7x</p>
       </div>
     </div>
-    <p className={sourceText}>Based on internal projections; avg fee derived from 2.5% on €20K avg transaction price</p>
+    <p className={sourceText}>Base case projections; flat-fee model (€49 Basic / €99 Premium) + advertising & service revenue</p>
   </div>
 );
 
