@@ -7,6 +7,7 @@ import { ImagePlus, X, Loader2, Camera, CheckCircle2, Info } from "lucide-react"
 import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
 import { PHOTO_SLOTS, MAX_EXTRA_PHOTOS, type PhotoMap } from "./photoSlots";
+import { SLOT_PLACEHOLDERS } from "./SlotPlaceholders";
 
 const SLOT_TOOLTIPS: Record<string, string> = {
   front: "Straight-on front view showing grille, headlights & bumper",
@@ -174,14 +175,15 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                     type="button"
                     onClick={() => { setActiveSlot(slot.id); slotInputRef.current?.click(); }}
                     disabled={isUploading}
-                    className="w-full h-full flex flex-col items-center justify-center gap-1.5 cursor-pointer hover:border-primary/50 transition-colors"
+                    className="w-full h-full flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-primary/50 transition-colors relative"
                   >
+                    {(() => { const Placeholder = SLOT_PLACEHOLDERS[slot.id]; return Placeholder ? <Placeholder className="absolute inset-0 w-full h-full p-3 text-silver/15" /> : null; })()}
                     {isUploading ? (
-                      <Loader2 className="h-6 w-6 text-primary animate-spin" />
+                      <Loader2 className="h-6 w-6 text-primary animate-spin relative z-10" />
                     ) : (
                       <>
-                        <Camera className="h-6 w-6 text-silver/30" />
-                        <span className="text-[10px] text-silver/30">{(t.carUpload.photos as any).tapToUpload}</span>
+                        <Camera className="h-5 w-5 text-silver/40 relative z-10" />
+                        <span className="text-[10px] text-silver/40 relative z-10">{(t.carUpload.photos as any).tapToUpload}</span>
                       </>
                     )}
                   </button>
