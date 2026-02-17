@@ -627,6 +627,107 @@ export type Database = {
         }
         Relationships: []
       }
+      transactions: {
+        Row: {
+          agreed_price: number
+          buyer_id: string
+          car_id: string
+          completion_method: string | null
+          contract_generated_at: string | null
+          contract_signed_buyer: boolean
+          contract_signed_seller: boolean
+          contract_type: string | null
+          created_at: string
+          current_step: number
+          financing_partner_id: string | null
+          id: string
+          insurance_confirmed: boolean
+          insurance_partner_id: string | null
+          insurance_tier: string | null
+          offer_id: string
+          payment_confirmed: boolean
+          payment_method: string | null
+          seller_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          agreed_price: number
+          buyer_id: string
+          car_id: string
+          completion_method?: string | null
+          contract_generated_at?: string | null
+          contract_signed_buyer?: boolean
+          contract_signed_seller?: boolean
+          contract_type?: string | null
+          created_at?: string
+          current_step?: number
+          financing_partner_id?: string | null
+          id?: string
+          insurance_confirmed?: boolean
+          insurance_partner_id?: string | null
+          insurance_tier?: string | null
+          offer_id: string
+          payment_confirmed?: boolean
+          payment_method?: string | null
+          seller_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          agreed_price?: number
+          buyer_id?: string
+          car_id?: string
+          completion_method?: string | null
+          contract_generated_at?: string | null
+          contract_signed_buyer?: boolean
+          contract_signed_seller?: boolean
+          contract_type?: string | null
+          created_at?: string
+          current_step?: number
+          financing_partner_id?: string | null
+          id?: string
+          insurance_confirmed?: boolean
+          insurance_partner_id?: string | null
+          insurance_tier?: string | null
+          offer_id?: string
+          payment_confirmed?: boolean
+          payment_method?: string | null
+          seller_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_financing_partner_id_fkey"
+            columns: ["financing_partner_id"]
+            isOneToOne: false
+            referencedRelation: "financing_partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_insurance_partner_id_fkey"
+            columns: ["insurance_partner_id"]
+            isOneToOne: false
+            referencedRelation: "financing_partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_preferences: {
         Row: {
           commute_distance: string | null
