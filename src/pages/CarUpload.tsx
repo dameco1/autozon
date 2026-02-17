@@ -19,6 +19,7 @@ import AppraisalDisclaimer from "@/components/car-upload/AppraisalDisclaimer";
 import StepInspection from "@/components/car-upload/StepInspection";
 import type { DamageReport } from "@/components/car-upload/damageTypes";
 import type { InspectionChecklist } from "@/components/car-upload/inspectionChecklist";
+import { INSPECTION_CATEGORIES } from "@/components/car-upload/inspectionChecklist";
 
 const CarUpload: React.FC = () => {
   const { t, language } = useLanguage();
@@ -300,11 +301,22 @@ const CarUpload: React.FC = () => {
         return null;
       }
       case 3:
-        if (analyzingDamage) return "Please wait for damage analysis to finish";
+        if (analyzingDamage) return language === "de" ? "Bitte warten Sie, bis die Schadensanalyse abgeschlossen ist" : "Please wait for damage analysis to finish";
         return null;
-      case 4:
-        return null; // equipment is optional
+      case 4: {
+        const allItems = INSPECTION_CATEGORIES.flatMap((c) => c.items);
+        const answered = allItems.filter((i) => formData.inspectionChecklist[i.id] != null).length;
+        if (answered < allItems.length) {
+          const missing = allItems.length - answered;
+          return language === "de"
+            ? `Bitte beantworten Sie alle Inspektionsfragen (${missing} offen)`
+            : `Please answer all inspection questions (${missing} remaining)`;
+        }
+        return null;
+      }
       case 5:
+        return null; // equipment is optional
+      case 6:
         return null; // condition has defaults
       default:
         return null;
