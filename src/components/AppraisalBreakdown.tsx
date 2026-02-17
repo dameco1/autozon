@@ -17,6 +17,7 @@ interface DetectedDamageEntry {
   severity: "low" | "medium" | "high";
   confidence: number;
   description: string;
+  estimated_repair_cost_eur?: number;
 }
 
 interface CarData {
@@ -97,8 +98,18 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     formulaTooltip: `Age: ${carAge}y · Rate: ${(depRate * 100).toFixed(0)}%/y (${isIconic ? "iconic" : isPremium ? "premium" : "standard"}) · Factor: (1-${depRate})^(${carAge}×0.75) = ${depreciationFactor.toFixed(3)}`,
   });
 
-  // 2. MILEAGE
-  const avgAnnualKm = 15000;
+  // 2. MILEAGE — segment-specific expected km/year
+  const avgAnnualKm = (() => {
+    const sportsMakes = ["Porsche", "Ferrari", "Lamborghini", "Maserati", "Alfa Romeo"];
+    if (sportsMakes.includes(car.make) || car.body_type === "Coupe" || car.body_type === "Convertible") return 8000;
+    switch (car.body_type) {
+      case "Hatchback": return 12000;
+      case "SUV": case "Wagon": return 18000;
+      case "Van": return 25000;
+      case "Pickup": return 20000;
+      default: return 15000;
+    }
+  })();
   const expectedKm = carAge * avgAnnualKm;
   const mileageRatio = car.mileage / Math.max(expectedKm, 1);
   const mileageFactor = mileageRatio <= 1
@@ -193,26 +204,33 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     formulaTooltip: `Score: ${condInt}/100 · Factor: 0.85 + (${condInt}/100)×0.17 = ${condIntFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
   });
 
-  // 5. ACCIDENT / DAMAGE HISTORY (actionable)
-  const accidentPenalty = car.accident_history ? 0.82 : 1;
-  const accEuro = Math.round(basePrice * depreciationFactor * (accidentPenalty - 1));
+  // 5. ACCIDENT / DAMAGE HISTORY — now uses itemized damage costs when available
+  const totalDamageCost = damages.reduce((sum, d) => sum + (d.estimated_repair_cost_eur ?? 0), 0);
+  const hasDamageCosts = totalDamageCost > 0;
+  const accidentPenalty = hasDamageCosts ? 1 : (car.accident_history ? 0.82 : 1);
+  const accEuro = hasDamageCosts ? -totalDamageCost : Math.round(basePrice * depreciationFactor * (accidentPenalty - 1));
+  const accPct = hasDamageCosts ? -(totalDamageCost / Math.max(basePrice, 1)) * 100 : (accidentPenalty - 1) * 100;
   factors.push({
     id: "damage",
     label: a.damage.label,
-    explanation: car.accident_history
-      ? (car.accident_details && car.accident_details.length > 20
-          ? a.damage.explainYesDetailed
-          : a.damage.explainYes)
-      : a.damage.explainNo,
+    explanation: hasDamageCosts
+      ? `${damages.length} confirmed damage(s) with estimated repair cost of €${totalDamageCost.toLocaleString()}. This is deducted directly from the fair value.`
+      : car.accident_history
+        ? (car.accident_details && car.accident_details.length > 20
+            ? a.damage.explainYesDetailed
+            : a.damage.explainYes)
+        : a.damage.explainNo,
     euroImpact: accEuro,
-    percentImpact: (accidentPenalty - 1) * 100,
-    barValue: car.accident_history ? 20 : 95,
-    type: car.accident_history ? "reducer" : "booster",
+    percentImpact: accPct,
+    barValue: hasDamageCosts ? Math.max(5, 100 - Math.round(totalDamageCost / 50)) : (car.accident_history ? 20 : 95),
+    type: (hasDamageCosts || car.accident_history) ? "reducer" : "booster",
     icon: <AlertTriangle className="h-5 w-5" />,
-    actionable: car.accident_history === true,
+    actionable: car.accident_history === true || hasDamageCosts,
     actionLabel: a.damage.action,
     actionStep: 3,
-    formulaTooltip: `Accident: ${car.accident_history ? "yes → ×0.82 penalty" : "none → ×1.0 (no penalty)"}`,
+    formulaTooltip: hasDamageCosts
+      ? `${damages.length} damages · Total repair cost: €${totalDamageCost.toLocaleString()} (deducted from value)`
+      : `Accident: ${car.accident_history ? "yes → ×0.82 penalty" : "none → ×1.0 (no penalty)"}`,
   });
 
   // 6. EQUIPMENT VALUE (actionable — add more features)
@@ -545,7 +563,6 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
       {(() => {
         const damages = car.detected_damages ?? [];
         const ad = a.aiDamages;
-        const severityPenalty: Record<string, number> = { high: 15, medium: 8, low: 3 };
         const severityColors: Record<string, string> = {
           high: "text-destructive bg-destructive/10 border-destructive/20",
           medium: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
@@ -556,7 +573,7 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           medium: ad.severityMedium,
           low: ad.severityLow,
         };
-        const totalPenalty = damages.reduce((sum, d) => sum + (severityPenalty[d.severity] ?? 3), 0);
+        const totalRepairCost = damages.reduce((sum, d) => sum + (d.estimated_repair_cost_eur ?? 0), 0);
 
         return (
           <motion.div
@@ -600,8 +617,17 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
                       <p className="text-silver/50 text-xs">{d.description}</p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <div className="text-destructive text-sm font-bold">-{severityPenalty[d.severity] ?? 3}</div>
-                      <div className="text-destructive/60 text-[10px]">{ad.penalty}</div>
+                      {d.estimated_repair_cost_eur ? (
+                        <>
+                          <div className="text-destructive text-sm font-bold">-€{d.estimated_repair_cost_eur.toLocaleString()}</div>
+                          <div className="text-destructive/60 text-[10px]">repair cost</div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="text-destructive text-sm font-bold">-{d.severity === "high" ? 15 : d.severity === "medium" ? 8 : 3}</div>
+                          <div className="text-destructive/60 text-[10px]">{ad.penalty}</div>
+                        </>
+                      )}
                     </div>
                   </motion.div>
                 ))}
@@ -609,7 +635,11 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
                 {/* Total impact */}
                 <div className="flex items-center justify-between bg-destructive/5 border border-destructive/20 rounded-xl p-4 mt-2">
                   <span className="text-sm text-white font-medium">{ad.totalImpact}</span>
-                  <span className="text-destructive font-bold">-{totalPenalty} pts</span>
+                  {totalRepairCost > 0 ? (
+                    <span className="text-destructive font-bold">-€{totalRepairCost.toLocaleString()}</span>
+                  ) : (
+                    <span className="text-destructive font-bold">-{damages.reduce((sum, d) => sum + (d.severity === "high" ? 15 : d.severity === "medium" ? 8 : 3), 0)} pts</span>
+                  )}
                 </div>
               </div>
             )}
