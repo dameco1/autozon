@@ -371,6 +371,44 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     formulaTooltip: `Service book: ${serviceBook ? "yes → ×1.03 bonus" : "no → ×1.0 (no impact)"}`,
   });
 
+  // 12. SECOND WHEEL SET
+  const secondWheels = (car as any).second_wheel_set ?? false;
+  if (secondWheels) {
+    const wheelValue = 800;
+    factors.push({
+      id: "secondWheels",
+      label: "Second Wheel Set",
+      explanation: "A second set of wheels with winter or summer tires is included — this saves the buyer €600–1,200 and adds direct value.",
+      euroImpact: wheelValue,
+      percentImpact: Math.round((wheelValue / Math.max(car.fair_value_price ?? 1, 1)) * 10000) / 100,
+      barValue: 85,
+      type: "booster",
+      icon: <Shield className="h-5 w-5" />,
+      actionable: false,
+      formulaTooltip: `Second wheel/tire set included → +€${wheelValue} flat bonus`,
+    });
+  }
+
+  // 13. ROOF RACK & BOX
+  const roofRack = (car as any).has_roof_rack ?? false;
+  const roofBox = (car as any).has_roof_box ?? false;
+  const rackValue = (roofRack ? 250 : 0) + (roofBox ? 350 : 0);
+  if (rackValue > 0) {
+    const parts = [roofRack && "roof rack", roofBox && "roof box"].filter(Boolean).join(" + ");
+    factors.push({
+      id: "roofAccessories",
+      label: "Roof Accessories",
+      explanation: `Included ${parts} — practical accessories that add convenience value for buyers.`,
+      euroImpact: rackValue,
+      percentImpact: Math.round((rackValue / Math.max(car.fair_value_price ?? 1, 1)) * 10000) / 100,
+      barValue: 75,
+      type: "booster",
+      icon: <Eye className="h-5 w-5" />,
+      actionable: false,
+      formulaTooltip: `${roofRack ? "Roof rack +€250" : ""}${roofRack && roofBox ? " + " : ""}${roofBox ? "Roof box +€350" : ""} = +€${rackValue}`,
+    });
+  }
+
   return factors;
 }
 

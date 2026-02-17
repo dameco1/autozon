@@ -27,6 +27,9 @@ export interface CarFormData {
   serviceBookUpdated: boolean;
   originalDocsAvailable: boolean;
   maintenanceReceipts: boolean;
+  secondWheelSet: boolean;
+  hasRoofRack: boolean;
+  hasRoofBox: boolean;
 }
 
 export const defaultCarFormData: CarFormData = {
@@ -56,4 +59,7 @@ export const defaultCarFormData: CarFormData = {
   serviceBookUpdated: false,
   originalDocsAvailable: false,
   maintenanceReceipts: false,
+  secondWheelSet: false,
+  hasRoofRack: false,
+  hasRoofBox: false,
 };

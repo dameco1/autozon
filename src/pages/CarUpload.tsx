@@ -95,6 +95,9 @@ const CarUpload: React.FC = () => {
         serviceBookUpdated: (data as any).service_book_updated ?? false,
         originalDocsAvailable: (data as any).original_docs_available ?? false,
         maintenanceReceipts: (data as any).maintenance_receipts ?? false,
+        secondWheelSet: (data as any).second_wheel_set ?? false,
+        hasRoofRack: (data as any).has_roof_rack ?? false,
+        hasRoofBox: (data as any).has_roof_box ?? false,
       });
     });
   }, [editId]);
@@ -226,6 +229,9 @@ const CarUpload: React.FC = () => {
       service_book_updated: formData.serviceBookUpdated,
       original_docs_available: formData.originalDocsAvailable,
       maintenance_receipts: formData.maintenanceReceipts,
+      second_wheel_set: formData.secondWheelSet,
+      has_roof_rack: formData.hasRoofRack,
+      has_roof_box: formData.hasRoofBox,
       accident_history: formData.accidentHistory || confirmedDamages.some((d) => d.severity === "high"),
       accident_details: formData.accidentDetails,
       description: formData.description,

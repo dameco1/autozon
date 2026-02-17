@@ -289,6 +289,8 @@ export type Database = {
           fair_value_price: number | null
           features: string[] | null
           fuel_type: string
+          has_roof_box: boolean | null
+          has_roof_rack: boolean | null
           id: string
           image_url: string | null
           is_seed: boolean
@@ -303,6 +305,7 @@ export type Database = {
           placement_paid: boolean
           power_hp: number | null
           price: number
+          second_wheel_set: boolean | null
           service_book_updated: boolean | null
           smoker_car: boolean | null
           status: string
@@ -327,6 +330,8 @@ export type Database = {
           fair_value_price?: number | null
           features?: string[] | null
           fuel_type?: string
+          has_roof_box?: boolean | null
+          has_roof_rack?: boolean | null
           id?: string
           image_url?: string | null
           is_seed?: boolean
@@ -341,6 +346,7 @@ export type Database = {
           placement_paid?: boolean
           power_hp?: number | null
           price?: number
+          second_wheel_set?: boolean | null
           service_book_updated?: boolean | null
           smoker_car?: boolean | null
           status?: string
@@ -365,6 +371,8 @@ export type Database = {
           fair_value_price?: number | null
           features?: string[] | null
           fuel_type?: string
+          has_roof_box?: boolean | null
+          has_roof_rack?: boolean | null
           id?: string
           image_url?: string | null
           is_seed?: boolean
@@ -379,6 +387,7 @@ export type Database = {
           placement_paid?: boolean
           power_hp?: number | null
           price?: number
+          second_wheel_set?: boolean | null
           service_book_updated?: boolean | null
           smoker_car?: boolean | null
           status?: string

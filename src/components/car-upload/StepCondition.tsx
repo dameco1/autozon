@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Loader2, Cigarette, BookOpen, FileCheck, Receipt } from "lucide-react";
+import { Sparkles, Loader2, Cigarette, BookOpen, FileCheck, Receipt, CircleDot, Luggage, Package } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { CarFormData } from "./types";
@@ -168,6 +168,44 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
             </div>
           </div>
           <Switch checked={data.maintenanceReceipts} onCheckedChange={(v) => onChange({ maintenanceReceipts: v })} />
+        </div>
+      </div>
+
+      {/* Accessories */}
+      <div className="border-t border-border pt-6 space-y-4">
+        <Label className="text-silver/80 text-sm block mb-2">Included Accessories</Label>
+
+        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+          <div className="flex items-center gap-3">
+            <CircleDot className="h-4 w-4 text-silver/50" />
+            <div>
+              <p className="text-sm text-white font-medium">Second set of wheels / tires?</p>
+              <p className="text-[11px] text-silver/40">Winter or summer set — adds measurable value</p>
+            </div>
+          </div>
+          <Switch checked={data.secondWheelSet} onCheckedChange={(v) => onChange({ secondWheelSet: v })} />
+        </div>
+
+        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+          <div className="flex items-center gap-3">
+            <Luggage className="h-4 w-4 text-silver/50" />
+            <div>
+              <p className="text-sm text-white font-medium">Roof rack included?</p>
+              <p className="text-[11px] text-silver/40">OEM or aftermarket roof rail system</p>
+            </div>
+          </div>
+          <Switch checked={data.hasRoofRack} onCheckedChange={(v) => onChange({ hasRoofRack: v })} />
+        </div>
+
+        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+          <div className="flex items-center gap-3">
+            <Package className="h-4 w-4 text-silver/50" />
+            <div>
+              <p className="text-sm text-white font-medium">Roof box included?</p>
+              <p className="text-[11px] text-silver/40">Cargo box for extra storage</p>
+            </div>
+          </div>
+          <Switch checked={data.hasRoofBox} onCheckedChange={(v) => onChange({ hasRoofBox: v })} />
         </div>
       </div>
       <div>
