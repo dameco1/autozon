@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Car, TrendingDown, Users, ArrowRight, Plus, BarChart3, Shield, Zap } from "lucide-react";
+import { Car, TrendingDown, Users, ArrowRight, Plus, BarChart3, Shield, Zap, LayoutDashboard, Megaphone } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
@@ -274,14 +274,22 @@ const FairValueResult: React.FC = () => {
 
         {/* CTAs */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
           <Button
             size="lg"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-8 py-6 rounded-xl"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl"
+            onClick={() => navigate(`/buyer-matches/${car.id}`)}
+          >
+            <Megaphone className="mr-2 h-5 w-5" /> Ad Placement
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="border-primary/30 text-primary hover:bg-primary/10 font-semibold py-6 rounded-xl"
             onClick={() => navigate(`/buyer-matches/${car.id}`)}
           >
             <Users className="mr-2 h-5 w-5" /> {t.fairValue.seebuyers}
@@ -289,18 +297,18 @@ const FairValueResult: React.FC = () => {
           <Button
             size="lg"
             variant="outline"
-            className="border-silver/20 text-silver hover:bg-silver/5 font-semibold px-8 py-6 rounded-xl"
-            onClick={() => navigate("/recommendations")}
+            className="border-silver/20 text-silver hover:bg-silver/5 font-semibold py-6 rounded-xl"
+            onClick={() => navigate("/car-upload")}
           >
-            <Zap className="mr-2 h-5 w-5" /> {t.fairValue.findNext}
+            <Plus className="mr-2 h-5 w-5" /> {t.fairValue.uploadAnother}
           </Button>
           <Button
             size="lg"
             variant="ghost"
-            className="text-silver/60 font-semibold px-8 py-6 rounded-xl"
-            onClick={() => navigate("/car-upload")}
+            className="text-silver/60 font-semibold py-6 rounded-xl"
+            onClick={() => navigate("/dashboard")}
           >
-            <Plus className="mr-2 h-5 w-5" /> {t.fairValue.uploadAnother}
+            <LayoutDashboard className="mr-2 h-5 w-5" /> Dashboard
           </Button>
         </motion.div>
       </div>
