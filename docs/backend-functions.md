@@ -13,12 +13,12 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Persistence**: Messages saved to `chat_messages` table
 
 ### 2. `detect-damage`
-- **Purpose**: AI-powered vehicle damage detection from photos
-- **Model**: Lovable AI (Gemini vision)
+- **Purpose**: AI-powered vehicle damage detection from photos with brand-specific repair cost estimation
+- **Model**: Lovable AI (Gemini 2.5 Flash vision)
 - **Auth**: Required (JWT)
-- **Input**: Base64-encoded car photos
-- **Output**: Structured damage report (location, severity, type, repair cost estimate)
-- **Used in**: Car Upload Step 5 (Damage Review)
+- **Input**: `{ photoUrls: string[], make: string, model: string }`
+- **Output**: Structured damage report — each damage includes `type`, `location`, `severity`, `confidence`, `description`, `estimated_repair_cost_eur` (brand-specific)
+- **Used in**: Car Upload Step 4 (Damage Review)
 
 ### 3. `generate-description`
 - **Purpose**: AI-generated car listing descriptions
@@ -58,16 +58,24 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Usage**: One-time database seeding (legacy, superseded by AI seeder)
 
 ### 9. `seed-car-models-ai`
-- **Purpose**: AI-powered comprehensive car model seeder
+- **Purpose**: AI-powered comprehensive car model seeder with MSRP data
 - **Model**: Lovable AI (Gemini 2.5 Flash)
-- **Auth**: Not required
+- **Auth**: Required (admin role)
 - **Input**: `{ make: "BMW", models: "X5, X6, X7", delete_first?: true }`
-- **Flow**: Sends targeted prompt per model group → parses JSON → cleans/validates → upserts to `car_models`
+- **Flow**: Sends targeted prompt per model group → parses JSON → cleans/validates → upserts to `car_models` (including `msrp_eur`)
 - **Strategy**: Large makes (BMW, Audi, Mercedes, VW) are split into model groups to avoid token/timeout limits
 - **Output**: `{ success: true, make, total: 39 }`
-- **Result**: 2,700+ variants across 48 European makes (up from ~700)
+- **Result**: 2,700+ variants across 48 European makes with original MSRP data
 
-### 10. `verify-docs-password`
+### 10. `vin-decode`
+- **Purpose**: AI-powered VIN decoder for auto-filling car details
+- **Model**: Lovable AI (Gemini 2.5 Flash)
+- **Auth**: Required (JWT)
+- **Input**: `{ vin: "WBAPH5C55BA..." }`
+- **Output**: `{ make, model, year, body_type, fuel_type, transmission, power_hp, suggested_equipment[], confidence, notes }`
+- **Used in**: Car Upload Step 1 (Basic Info) — "Decode VIN" button
+
+### 11. `verify-docs-password`
 - **Purpose**: Password-protects the documentation hub
 - **Auth**: Not required
 - **Input**: Password string

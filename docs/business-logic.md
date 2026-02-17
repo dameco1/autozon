@@ -20,13 +20,23 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
    - Volume brands: 15%/year
    - Formula: `max(0.25, (1 - rate) ^ (age × 0.75))`
 
-3. **Mileage Factor** — Compares actual vs expected (15K km/year):
+3. **Mileage Factor** — Compares actual vs segment-specific expected km/year:
+   - Sports cars (Porsche, Z4, 911): 8,000 km/year
+   - Hatchbacks: 12,000 km/year
+   - Sedans: 15,000 km/year
+   - SUVs/Wagons: 18,000 km/year
+   - Vans: 25,000 km/year
    - Below average: up to +5% bonus
    - Above average: penalty up to -45%
 
 4. **Condition Factor** — Based on exterior/interior sliders (0-100):
    - Range: 0.85 to 1.02
-   - Accident penalty: -18%
+
+5. **Damage Cost Deduction** — Replaces flat accident penalty with itemized costs:
+   - AI damage detection provides `estimated_repair_cost_eur` per damage (brand-specific)
+   - Confirmed damages are summed and deducted as a EUR amount from attribute value
+   - Fallback: if no AI scan, brand-tier flat estimate (iconic 20%, premium 15%, volume 10%)
+   - Example: scratch on Dacia = ~€300 deduction, same on Porsche = ~€1,500
 
 5. **Equipment Value Index** — Weighted by category:
    - Safety features: 2.5 pts each
@@ -42,10 +52,11 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
    - Electric: +5%, Diesel: -3%
 
 8. **Transparency Bonus** — Rewards complete listings (up to +4%):
-   - VIN provided, description quality, photo count, damage scan
+   - VIN provided, description quality, photo count, damage scan completed
 
-9. **Final Blend**: `85% attribute-based value + 15% asking price`
-   - Asking price acts as a soft market signal, not a dominant input
+9. **Final Calculation**: `100% attribute-based` (no asking price influence)
+   - Fair value = attribute value − itemized damage costs (min €500)
+   - Market blending on FairValueResult page: 40% formula + 60% AI market (if available)
 
 ### Outputs
 - `fairValue` — Estimated market-fair price (EUR)

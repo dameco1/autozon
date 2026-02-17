@@ -11,7 +11,7 @@
 │ full_name    │     │ make, model  │     │ variant, year    │
 │ phone, city  │     │ year, price  │     │ body_type, fuel  │
 │ country      │     │ fair_value   │     │ power_hp         │
-│ language     │     │ mileage      │     └──────────────────┘
+│ language     │     │ mileage      │     │ msrp_eur         │
 │ avatar_url   │     │ status       │
 └──────────────┘     │ body_type    │     ┌──────────────────┐
                      │ fuel_type    │     │     buyers       │
@@ -62,7 +62,7 @@
 |---|---|---|
 | `profiles` | 1 per user | Extended user info (name, phone, city) |
 | `cars` | Growing | Car listings with valuation data |
-| `car_models` | ~2,700+ | Reference data: 48 European makes, 255+ models, all variants (AI-seeded) |
+| `car_models` | ~2,700+ | Reference data: 48 European makes, 255+ models, all variants with MSRP (AI-seeded) |
 | `offers` | Per negotiation | Multi-round offer/counter-offer tracking |
 | `matches` | Auto-generated | Car-to-buyer match scores |
 | `buyers` | Seed + real | Buyer profiles (some seeded for demo) |
