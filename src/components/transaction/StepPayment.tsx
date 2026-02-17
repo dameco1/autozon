@@ -1,0 +1,227 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { CreditCard, Banknote, FileText, Building2, Star, CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { toast } from "sonner";
+
+interface Partner {
+  id: string;
+  name: string;
+  type: string;
+  base_rate: number;
+  description: string | null;
+}
+
+interface Props {
+  agreedPrice: number;
+  partners: Partner[];
+  onContinue: (method: string, partnerId?: string) => void;
+}
+
+const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue }) => {
+  const { t } = useLanguage();
+  const [tab, setTab] = useState<"cash" | "credit" | "leasing">("cash");
+  const [downPayment, setDownPayment] = useState(5000);
+  const [loanTerm, setLoanTerm] = useState(48);
+  const [leaseDown, setLeaseDown] = useState(3000);
+  const [leaseTerm, setLeaseTerm] = useState(36);
+
+  const banks = partners.filter((p) => p.type === "bank");
+  const leasingCos = partners.filter((p) => p.type === "leasing");
+
+  const calcMonthly = (rate: number) => {
+    const principal = agreedPrice - downPayment;
+    const r = rate / 100 / 12;
+    if (r === 0) return principal / loanTerm;
+    return (principal * r * Math.pow(1 + r, loanTerm)) / (Math.pow(1 + r, loanTerm) - 1);
+  };
+
+  const calcLeaseMonthly = (rate: number) => {
+    const residualPct = Math.max(0.3, 1 - leaseTerm * 0.015);
+    const residual = agreedPrice * residualPct;
+    const depCost = (agreedPrice - leaseDown - residual) / leaseTerm;
+    const financeCost = ((agreedPrice - leaseDown + residual) * (rate / 100)) / 24;
+    return { monthly: depCost + financeCost, residual: Math.round(residual) };
+  };
+
+  const tabs = [
+    { id: "cash" as const, label: t.transaction.cashPayment, icon: <Banknote className="h-4 w-4" /> },
+    { id: "credit" as const, label: t.acquisition.creditTab, icon: <CreditCard className="h-4 w-4" /> },
+    { id: "leasing" as const, label: t.acquisition.leasingTab, icon: <FileText className="h-4 w-4" /> },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Tab selector */}
+      <div className="grid grid-cols-3 bg-secondary/50 border border-border rounded-xl p-1 gap-1">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+              tab === t.id
+                ? "bg-primary text-primary-foreground"
+                : "text-silver/50 hover:text-silver"
+            }`}
+          >
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* CASH */}
+      {tab === "cash" && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+          <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 text-center">
+            <Banknote className="h-10 w-10 text-primary mx-auto mb-3" />
+            <h3 className="font-display font-bold text-white text-xl mb-1">{t.transaction.cashTitle}</h3>
+            <p className="text-3xl font-display font-black text-primary mb-2">€{agreedPrice.toLocaleString()}</p>
+            <p className="text-silver/50 text-sm mb-4">{t.transaction.cashDesc}</p>
+            <div className="bg-secondary/50 rounded-xl p-4 text-left text-sm space-y-2">
+              <p className="text-silver/60">• {t.transaction.cashStep1}</p>
+              <p className="text-silver/60">• {t.transaction.cashStep2}</p>
+              <p className="text-silver/60">• {t.transaction.cashStep3}</p>
+            </div>
+          </div>
+          <Button
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
+            onClick={() => onContinue("cash")}
+          >
+            <CheckCircle2 className="mr-2 h-5 w-5" /> {t.transaction.confirmCash}
+          </Button>
+        </motion.div>
+      )}
+
+      {/* CREDIT */}
+      {tab === "credit" && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+          <div className="bg-secondary/50 border border-border rounded-2xl p-5">
+            <h3 className="font-display font-bold text-white mb-4">{t.acquisition.yourParams}</h3>
+            <div className="space-y-5">
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-silver/60">{t.acquisition.downPayment}</span>
+                  <span className="text-white font-semibold">€{downPayment.toLocaleString()}</span>
+                </div>
+                <Slider value={[downPayment]} onValueChange={([v]) => setDownPayment(v)} min={0} max={Math.round(agreedPrice * 0.5)} step={500} />
+              </div>
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-silver/60">{t.acquisition.loanTerm}</span>
+                  <span className="text-white font-semibold">{loanTerm} {t.acquisition.months}</span>
+                </div>
+                <Slider value={[loanTerm]} onValueChange={([v]) => setLoanTerm(v)} min={12} max={84} step={6} />
+              </div>
+            </div>
+          </div>
+
+          {banks.map((bank, i) => {
+            const monthly = calcMonthly(bank.base_rate);
+            const totalCost = monthly * loanTerm + downPayment;
+            return (
+              <motion.div
+                key={bank.id}
+                className={`bg-secondary/50 border rounded-2xl p-5 ${i === 0 ? "border-primary/40" : "border-border"}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                {i === 0 && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-2">
+                    <Star className="h-3 w-3" /> {t.acquisition.recommended}
+                  </span>
+                )}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Building2 className="h-5 w-5 text-primary" />
+                    <div>
+                      <h4 className="font-display font-bold text-white">{bank.name}</h4>
+                      <p className="text-xs text-silver/40">{bank.description}</p>
+                    </div>
+                  </div>
+                  <span className="text-lg font-display font-bold text-primary">{bank.base_rate}%</span>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-sm mb-3">
+                  <div><p className="text-silver/50">{t.acquisition.monthly}</p><p className="text-white font-semibold">€{Math.round(monthly).toLocaleString()}/mo</p></div>
+                  <div><p className="text-silver/50">{t.acquisition.totalCost}</p><p className="text-white font-semibold">€{Math.round(totalCost).toLocaleString()}</p></div>
+                </div>
+                <Button
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+                  onClick={() => onContinue("credit", bank.id)}
+                >
+                  {t.transaction.selectFinancing}
+                </Button>
+              </motion.div>
+            );
+          })}
+          {banks.length === 0 && (
+            <p className="text-silver/40 text-sm text-center py-6">{t.transaction.noPartnersYet}</p>
+          )}
+          <p className="text-xs text-silver/30 text-center">{t.acquisition.ratesDisclaimer}</p>
+        </motion.div>
+      )}
+
+      {/* LEASING */}
+      {tab === "leasing" && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+          <div className="bg-secondary/50 border border-border rounded-2xl p-5">
+            <h3 className="font-display font-bold text-white mb-4">{t.acquisition.leaseParams}</h3>
+            <div className="space-y-5">
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-silver/60">{t.acquisition.contractLength}</span>
+                  <span className="text-white font-semibold">{leaseTerm} {t.acquisition.months}</span>
+                </div>
+                <Slider value={[leaseTerm]} onValueChange={([v]) => setLeaseTerm(v)} min={12} max={60} step={6} />
+              </div>
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-silver/60">{t.acquisition.downPayment}</span>
+                  <span className="text-white font-semibold">€{leaseDown.toLocaleString()}</span>
+                </div>
+                <Slider value={[leaseDown]} onValueChange={([v]) => setLeaseDown(v)} min={0} max={Math.round(agreedPrice * 0.3)} step={500} />
+              </div>
+            </div>
+          </div>
+
+          {leasingCos.map((co, i) => {
+            const { monthly, residual } = calcLeaseMonthly(co.base_rate);
+            return (
+              <motion.div
+                key={co.id}
+                className={`bg-secondary/50 border rounded-2xl p-5 ${i === 0 ? "border-primary/40" : "border-border"}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <h4 className="font-display font-bold text-white">{co.name}</h4>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-sm mb-3">
+                  <div><p className="text-silver/50">{t.acquisition.monthly}</p><p className="text-white font-semibold">€{Math.round(monthly).toLocaleString()}/mo</p></div>
+                  <div><p className="text-silver/50">{t.acquisition.residualValue}</p><p className="text-white font-semibold">€{residual.toLocaleString()}</p></div>
+                </div>
+                <Button
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+                  onClick={() => onContinue("leasing", co.id)}
+                >
+                  {t.transaction.selectFinancing}
+                </Button>
+              </motion.div>
+            );
+          })}
+          {leasingCos.length === 0 && (
+            <p className="text-silver/40 text-sm text-center py-6">{t.transaction.noPartnersYet}</p>
+          )}
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
+export default StepPayment;

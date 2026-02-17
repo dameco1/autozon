@@ -1,0 +1,131 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Shield, CheckCircle2, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/i18n/LanguageContext";
+
+interface Partner {
+  id: string;
+  name: string;
+  type: string;
+  base_rate: number;
+  description: string | null;
+}
+
+interface Props {
+  agreedPrice: number;
+  partners: Partner[];
+  onContinue: (tier: string, partnerId?: string) => void;
+  onSkip: () => void;
+}
+
+const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onSkip }) => {
+  const { t } = useLanguage();
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const insurers = partners.filter((p) => p.type === "insurance");
+
+  const tiers = [
+    { id: "liability", label: t.acquisition.liability, baseMonthly: 38, desc: t.transaction.liabilityDesc },
+    { id: "partial", label: t.acquisition.partialCover, baseMonthly: 67, recommended: true, desc: t.transaction.partialDesc },
+    { id: "comprehensive", label: t.acquisition.comprehensive, baseMonthly: 112, desc: t.transaction.comprehensiveDesc },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <p className="text-silver/60 text-sm text-center">{t.transaction.insuranceSubtitle}</p>
+
+      {/* Tier selection */}
+      <div className="space-y-3">
+        {tiers.map((tier) => (
+          <motion.button
+            key={tier.id}
+            onClick={() => setSelectedTier(tier.id)}
+            className={`w-full text-left p-5 rounded-xl border transition-all ${
+              selectedTier === tier.id
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-silver/30 bg-secondary/50"
+            }`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-3">
+                {selectedTier === tier.id ? (
+                  <CheckCircle2 className="h-5 w-5 text-primary" />
+                ) : (
+                  <div className="w-5 h-5 rounded-full border-2 border-silver/20" />
+                )}
+                <div>
+                  <span className="text-sm font-bold text-white">{tier.label}</span>
+                  {tier.recommended && (
+                    <span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                      <Star className="h-2.5 w-2.5 inline mr-0.5" />{t.acquisition.recommended}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <span className="text-sm text-silver/60">{t.acquisition.from} €{tier.baseMonthly}/mo</span>
+            </div>
+            <p className="text-xs text-silver/40 ml-8">{tier.desc}</p>
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Provider quotes */}
+      {selectedTier && insurers.length > 0 && (
+        <div className="space-y-3">
+          {insurers.map((ins, i) => {
+            const tierData = tiers.find((t) => t.id === selectedTier)!;
+            const monthly = tierData.baseMonthly + i * 5 + Math.round(agreedPrice * 0.0001);
+            const deductible = [500, 300, 150][i] ?? 500;
+            return (
+              <motion.div
+                key={ins.id}
+                className={`bg-secondary/50 border rounded-xl p-5 ${i === 0 ? "border-primary/40" : "border-border"}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-primary" />
+                    <h4 className="font-display font-bold text-white">{ins.name}</h4>
+                  </div>
+                  <span className="text-lg font-display font-bold text-primary">€{monthly}/mo</span>
+                </div>
+                <p className="text-sm text-silver/50 mb-3">{t.acquisition.deductible}: €{deductible}</p>
+                <Button
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+                  onClick={() => onContinue(selectedTier, ins.id)}
+                >
+                  <Shield className="mr-2 h-4 w-4" /> {t.transaction.selectInsurance}
+                </Button>
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
+
+      {selectedTier && insurers.length === 0 && (
+        <div className="text-center py-4">
+          <p className="text-silver/40 text-sm mb-3">{t.transaction.noInsurersYet}</p>
+          <Button
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold"
+            onClick={() => onContinue(selectedTier)}
+          >
+            {t.transaction.continueWithTier}
+          </Button>
+        </div>
+      )}
+
+      {/* Skip option */}
+      <div className="text-center">
+        <button onClick={onSkip} className="text-silver/40 hover:text-silver text-sm underline underline-offset-4">
+          {t.transaction.skipInsurance}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default StepInsurance;

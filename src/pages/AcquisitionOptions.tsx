@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,17 +6,22 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
-import {
-  CreditCard, FileText, Shield, CheckCircle2, Star,
-  ArrowLeft, Building2, Banknote, Package,
-} from "lucide-react";
+import { Package, ArrowLeft, FileText, CreditCard, Shield, CheckCircle2 } from "lucide-react";
+import { generateNegotiationPdf } from "@/lib/generateNegotiationPdf";
+import TransactionStepIndicator from "@/components/transaction/TransactionStepIndicator";
+import StepMethod from "@/components/transaction/StepMethod";
+import StepContract from "@/components/transaction/StepContract";
+import StepPayment from "@/components/transaction/StepPayment";
+import StepInsurance from "@/components/transaction/StepInsurance";
+import StepComplete from "@/components/transaction/StepComplete";
+import StepManualComplete from "@/components/transaction/StepManualComplete";
 
 interface OfferInfo {
   id: string;
   car_id: string;
+  buyer_id: string;
+  seller_id: string;
   agreed_price: number;
   status: string;
 }
@@ -27,6 +32,7 @@ interface CarInfo {
   year: number;
   price: number;
   fair_value_price: number | null;
+  vin: string | null;
 }
 
 interface Partner {
@@ -45,18 +51,19 @@ const AcquisitionOptions: React.FC = () => {
   const [car, setCar] = useState<CarInfo | null>(null);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sellerName, setSellerName] = useState("Seller");
+  const [buyerName, setBuyerName] = useState("Buyer");
+  const [sellerCountry, setSellerCountry] = useState("Germany");
 
-  // Credit params
-  const [downPayment, setDownPayment] = useState(5000);
-  const [loanTerm, setLoanTerm] = useState(48);
-
-  // Leasing params
-  const [leaseDown, setLeaseDown] = useState(3000);
-  const [leaseTerm, setLeaseTerm] = useState(36);
-  const [annualKm, setAnnualKm] = useState(15000);
-
-  // Insurance params
-  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  // Transaction wizard state
+  const [step, setStep] = useState(1);
+  const [completionMethod, setCompletionMethod] = useState<string | null>(null);
+  const [contractType, setContractType] = useState<string | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
+  const [financingPartnerId, setFinancingPartnerId] = useState<string | null>(null);
+  const [insuranceTier, setInsuranceTier] = useState<string | null>(null);
+  const [insurancePartnerId, setInsurancePartnerId] = useState<string | null>(null);
+  const [transactionId, setTransactionId] = useState<string | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -65,7 +72,7 @@ const AcquisitionOptions: React.FC = () => {
       if (!offerId) return;
 
       const [offerRes, partnersRes] = await Promise.all([
-        supabase.from("offers").select("id, car_id, agreed_price, status").eq("id", offerId).single(),
+        supabase.from("offers").select("id, car_id, agreed_price, status, buyer_id, seller_id").eq("id", offerId).single(),
         supabase.from("financing_partners").select("*"),
       ]);
 
@@ -81,15 +88,59 @@ const AcquisitionOptions: React.FC = () => {
 
       const { data: carData } = await supabase
         .from("cars")
-        .select("make, model, year, price, fair_value_price")
+        .select("make, model, year, price, fair_value_price, vin")
         .eq("id", o.car_id)
         .single();
 
       if (carData) setCar(carData as CarInfo);
+
+      // Fetch names and seller country
+      const [profileRes, buyerRes] = await Promise.all([
+        supabase.from("profiles").select("full_name, country").eq("user_id", o.seller_id).maybeSingle(),
+        supabase.from("profiles").select("full_name").eq("user_id", o.buyer_id).maybeSingle(),
+      ]);
+      if (profileRes.data?.full_name) setSellerName(profileRes.data.full_name);
+      if (profileRes.data?.country) setSellerCountry(profileRes.data.country);
+      if (buyerRes.data?.full_name) setBuyerName(buyerRes.data.full_name);
+
+      // Check for existing transaction
+      const { data: txData } = await supabase
+        .from("transactions")
+        .select("*")
+        .eq("offer_id", offerId)
+        .maybeSingle();
+
+      if (txData) {
+        const tx = txData as any;
+        setTransactionId(tx.id);
+        setCompletionMethod(tx.completion_method);
+        setContractType(tx.contract_type);
+        setPaymentMethod(tx.payment_method);
+        setInsuranceTier(tx.insurance_tier);
+        setStep(tx.current_step || 1);
+      }
+
       setLoading(false);
     };
     init();
   }, [offerId, navigate]);
+
+  const saveTransaction = useCallback(async (updates: Record<string, any>) => {
+    if (!offer) return;
+    if (transactionId) {
+      await supabase.from("transactions").update(updates as any).eq("id", transactionId);
+    } else {
+      const { data } = await supabase.from("transactions").insert({
+        offer_id: offer.id,
+        car_id: offer.car_id,
+        buyer_id: offer.buyer_id,
+        seller_id: offer.seller_id,
+        agreed_price: offer.agreed_price,
+        ...updates,
+      } as any).select("id").single();
+      if (data) setTransactionId((data as any).id);
+    }
+  }, [offer, transactionId]);
 
   if (loading) {
     return (
@@ -109,51 +160,108 @@ const AcquisitionOptions: React.FC = () => {
   }
 
   const agreedPrice = offer.agreed_price;
-  const banks = partners.filter((p) => p.type === "bank");
-  const leasingCos = partners.filter((p) => p.type === "leasing");
-  const insurers = partners.filter((p) => p.type === "insurance");
 
-  // Credit calculator
-  const calcMonthly = (rate: number) => {
-    const principal = agreedPrice - downPayment;
-    const r = rate / 100 / 12;
-    if (r === 0) return principal / loanTerm;
-    return (principal * r * Math.pow(1 + r, loanTerm)) / (Math.pow(1 + r, loanTerm) - 1);
-  };
-
-  // Lease calculator
-  const calcLeaseMonthly = (rate: number) => {
-    const residualPct = Math.max(0.3, 1 - leaseTerm * 0.015);
-    const residual = agreedPrice * residualPct;
-    const depCost = (agreedPrice - leaseDown - residual) / leaseTerm;
-    const financeCost = ((agreedPrice - leaseDown + residual) * (rate / 100)) / 24;
-    return { monthly: depCost + financeCost, residual: Math.round(residual), residualPct: Math.round(residualPct * 100) };
-  };
-
-  // Insurance tiers
-  const insuranceTiers = [
-    { id: "liability", label: t.acquisition.liability, baseMonthly: 38 },
-    { id: "partial", label: t.acquisition.partialCover, baseMonthly: 67, recommended: true },
-    { id: "comprehensive", label: t.acquisition.comprehensive, baseMonthly: 112 },
+  const wizardSteps = [
+    { label: t.transaction.stepMethod, icon: <Package className="h-4 w-4" /> },
+    { label: t.transaction.stepContract, icon: <FileText className="h-4 w-4" /> },
+    { label: t.transaction.stepPayment, icon: <CreditCard className="h-4 w-4" /> },
+    { label: t.transaction.stepInsurance, icon: <Shield className="h-4 w-4" /> },
+    { label: t.transaction.stepComplete, icon: <CheckCircle2 className="h-4 w-4" /> },
   ];
+
+  const handleMethodSelect = async (method: "digital" | "manual") => {
+    setCompletionMethod(method);
+    if (method === "manual") {
+      await saveTransaction({ completion_method: "manual", status: "completed", current_step: 5 });
+      setStep(99); // Show manual complete
+    } else {
+      await saveTransaction({ completion_method: "digital", status: "contract_pending", current_step: 2 });
+      setStep(2);
+    }
+  };
+
+  const handleContractDone = async (type: string) => {
+    setContractType(type);
+    await saveTransaction({
+      contract_type: type,
+      contract_generated_at: new Date().toISOString(),
+      contract_signed_buyer: true,
+      status: "payment_pending",
+      current_step: 3,
+    });
+    setStep(3);
+  };
+
+  const handlePaymentDone = async (method: string, partnerId?: string) => {
+    setPaymentMethod(method);
+    setFinancingPartnerId(partnerId || null);
+    await saveTransaction({
+      payment_method: method,
+      financing_partner_id: partnerId || null,
+      payment_confirmed: true,
+      status: "insurance_pending",
+      current_step: 4,
+    });
+    setStep(4);
+  };
+
+  const handleInsuranceDone = async (tier: string, partnerId?: string) => {
+    setInsuranceTier(tier);
+    setInsurancePartnerId(partnerId || null);
+    await saveTransaction({
+      insurance_tier: tier,
+      insurance_partner_id: partnerId || null,
+      insurance_confirmed: true,
+      status: "completed",
+      current_step: 5,
+    });
+    setStep(5);
+  };
+
+  const handleInsuranceSkip = async () => {
+    await saveTransaction({
+      insurance_tier: null,
+      insurance_confirmed: false,
+      status: "completed",
+      current_step: 5,
+    });
+    setStep(5);
+  };
+
+  const handleDownload = () => {
+    generateNegotiationPdf({
+      car: { ...car, price: car.price, fair_value_price: car.fair_value_price },
+      offer: {
+        amount: agreedPrice,
+        agreed_price: agreedPrice,
+        counter_amount: null,
+        current_round: 1,
+        max_rounds: 3,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      } as any,
+      sellerName,
+      buyerName,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-charcoal text-silver">
-      <SEO title={`Acquire — ${car.year} ${car.make} ${car.model}`} description="Choose financing" path={`/acquire/${offerId}`} noIndex />
+      <SEO title={`${t.transaction.title} — ${car.year} ${car.make} ${car.model}`} description="Complete your vehicle transaction" path={`/acquire/${offerId}`} noIndex />
       <Navbar />
 
-      <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
+      <div className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         {/* Header */}
         <motion.div className="text-center mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
-            <Package className="h-4 w-4" /> {t.acquisition.title}
+            <Package className="h-4 w-4" /> {t.transaction.title}
           </span>
           <h1 className="text-3xl sm:text-4xl font-display font-black text-white">
             {car.year} {car.make} {car.model}
           </h1>
         </motion.div>
 
-        {/* Deal Summary */}
+        {/* Deal summary */}
         <motion.div
           className="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-8 grid grid-cols-3 gap-4 text-center"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
@@ -172,252 +280,77 @@ const AcquisitionOptions: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Tabs */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <Tabs defaultValue="credit" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-secondary/50 border border-border rounded-xl p-1 mb-6">
-              <TabsTrigger value="credit" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-semibold gap-2">
-                <CreditCard className="h-4 w-4" /> {t.acquisition.creditTab}
-              </TabsTrigger>
-              <TabsTrigger value="leasing" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-semibold gap-2">
-                <FileText className="h-4 w-4" /> {t.acquisition.leasingTab}
-              </TabsTrigger>
-              <TabsTrigger value="insurance" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-semibold gap-2">
-                <Shield className="h-4 w-4" /> {t.acquisition.insuranceTab}
-              </TabsTrigger>
-            </TabsList>
+        {/* Step indicator (only for digital flow) */}
+        {step !== 99 && step <= 5 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+            <TransactionStepIndicator steps={wizardSteps} currentStep={step} />
+          </motion.div>
+        )}
 
-            {/* CREDIT TAB */}
-            <TabsContent value="credit">
-              <div className="bg-secondary/50 border border-border rounded-2xl p-6 mb-6">
-                <h3 className="font-display font-bold text-white mb-4">{t.acquisition.yourParams}</h3>
-                <div className="space-y-5">
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-silver/60">{t.acquisition.downPayment}</span>
-                      <span className="text-white font-semibold">€{downPayment.toLocaleString()}</span>
-                    </div>
-                    <Slider value={[downPayment]} onValueChange={([v]) => setDownPayment(v)} min={0} max={Math.round(agreedPrice * 0.5)} step={500} />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-silver/60">{t.acquisition.loanTerm}</span>
-                      <span className="text-white font-semibold">{loanTerm} {t.acquisition.months}</span>
-                    </div>
-                    <Slider value={[loanTerm]} onValueChange={([v]) => setLoanTerm(v)} min={12} max={84} step={6} />
-                  </div>
-                </div>
-              </div>
+        {/* Wizard content */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+          {step === 1 && <StepMethod onSelect={handleMethodSelect} />}
 
-              <div className="space-y-4">
-                {banks.map((bank, i) => {
-                  const monthly = calcMonthly(bank.base_rate);
-                  const totalCost = monthly * loanTerm + downPayment;
-                  const totalInterest = totalCost - agreedPrice;
-                  return (
-                    <motion.div
-                      key={bank.id}
-                      className={`bg-secondary/50 border rounded-2xl p-6 ${i === 0 ? "border-primary/40" : "border-border"}`}
-                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.05 }}
-                    >
-                      {i === 0 && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-3">
-                          <Star className="h-3 w-3" /> {t.acquisition.recommended}
-                        </span>
-                      )}
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <Building2 className="h-5 w-5 text-primary" />
-                          <div>
-                            <h4 className="font-display font-bold text-white">{bank.name}</h4>
-                            <p className="text-xs text-silver/40">{bank.description}</p>
-                          </div>
-                        </div>
-                        <span className="text-lg font-display font-bold text-primary">{bank.base_rate}% APR</span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-4 text-sm mb-4">
-                        <div>
-                          <p className="text-silver/50">{t.acquisition.monthly}</p>
-                          <p className="text-white font-semibold">€{Math.round(monthly).toLocaleString()}/mo</p>
-                        </div>
-                        <div>
-                          <p className="text-silver/50">{t.acquisition.totalCost}</p>
-                          <p className="text-white font-semibold">€{Math.round(totalCost).toLocaleString()}</p>
-                        </div>
-                        <div>
-                          <p className="text-silver/50">{t.acquisition.totalInterest}</p>
-                          <p className="text-white font-semibold">€{Math.round(totalInterest).toLocaleString()}</p>
-                        </div>
-                      </div>
-                      <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold" onClick={() => toast.info(t.acquisition.comingSoon)}>
-                        <Banknote className="mr-2 h-4 w-4" /> {t.acquisition.applyNow}
-                      </Button>
-                    </motion.div>
-                  );
-                })}
-              </div>
-              <p className="text-xs text-silver/30 mt-4 text-center">{t.acquisition.ratesDisclaimer}</p>
-            </TabsContent>
+          {step === 2 && (
+            <StepContract
+              car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
+              agreedPrice={agreedPrice}
+              sellerCountry={sellerCountry}
+              buyerName={buyerName}
+              sellerName={sellerName}
+              onContinue={handleContractDone}
+            />
+          )}
 
-            {/* LEASING TAB */}
-            <TabsContent value="leasing">
-              <div className="bg-secondary/50 border border-border rounded-2xl p-6 mb-6">
-                <h3 className="font-display font-bold text-white mb-4">{t.acquisition.leaseParams}</h3>
-                <div className="space-y-5">
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-silver/60">{t.acquisition.contractLength}</span>
-                      <span className="text-white font-semibold">{leaseTerm} {t.acquisition.months}</span>
-                    </div>
-                    <Slider value={[leaseTerm]} onValueChange={([v]) => setLeaseTerm(v)} min={12} max={60} step={6} />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-silver/60">{t.acquisition.annualMileage}</span>
-                      <span className="text-white font-semibold">{annualKm.toLocaleString()} km/yr</span>
-                    </div>
-                    <Slider value={[annualKm]} onValueChange={([v]) => setAnnualKm(v)} min={5000} max={40000} step={1000} />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-silver/60">{t.acquisition.downPayment}</span>
-                      <span className="text-white font-semibold">€{leaseDown.toLocaleString()}</span>
-                    </div>
-                    <Slider value={[leaseDown]} onValueChange={([v]) => setLeaseDown(v)} min={0} max={Math.round(agreedPrice * 0.3)} step={500} />
-                  </div>
-                </div>
-              </div>
+          {step === 3 && (
+            <StepPayment
+              agreedPrice={agreedPrice}
+              partners={partners}
+              onContinue={handlePaymentDone}
+            />
+          )}
 
-              <div className="space-y-4">
-                {leasingCos.map((co, i) => {
-                  const { monthly, residual, residualPct } = calcLeaseMonthly(co.base_rate);
-                  const totalCost = monthly * leaseTerm + leaseDown;
-                  return (
-                    <motion.div
-                      key={co.id}
-                      className={`bg-secondary/50 border rounded-2xl p-6 ${i === 0 ? "border-primary/40" : "border-border"}`}
-                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.05 }}
-                    >
-                      {i === 0 && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-3">
-                          <Star className="h-3 w-3" /> {t.acquisition.bestValue}
-                        </span>
-                      )}
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <FileText className="h-5 w-5 text-primary" />
-                          <div>
-                            <h4 className="font-display font-bold text-white">{co.name}</h4>
-                            <p className="text-xs text-silver/40">{co.description}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-4 text-sm mb-4">
-                        <div>
-                          <p className="text-silver/50">{t.acquisition.monthly}</p>
-                          <p className="text-white font-semibold">€{Math.round(monthly).toLocaleString()}/mo</p>
-                        </div>
-                        <div>
-                          <p className="text-silver/50">{t.acquisition.residualValue}</p>
-                          <p className="text-white font-semibold">€{residual.toLocaleString()} ({residualPct}%)</p>
-                        </div>
-                        <div>
-                          <p className="text-silver/50">{t.acquisition.totalCost}</p>
-                          <p className="text-white font-semibold">€{Math.round(totalCost).toLocaleString()}</p>
-                        </div>
-                      </div>
-                      <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold" onClick={() => toast.info(t.acquisition.comingSoon)}>
-                        {t.acquisition.startLease}
-                      </Button>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </TabsContent>
+          {step === 4 && (
+            <StepInsurance
+              agreedPrice={agreedPrice}
+              partners={partners}
+              onContinue={handleInsuranceDone}
+              onSkip={handleInsuranceSkip}
+            />
+          )}
 
-            {/* INSURANCE TAB */}
-            <TabsContent value="insurance">
-              <div className="bg-secondary/50 border border-border rounded-2xl p-6 mb-6">
-                <h3 className="font-display font-bold text-white mb-4">{t.acquisition.coverageTiers}</h3>
-                <div className="space-y-3">
-                  {insuranceTiers.map((tier) => (
-                    <button
-                      key={tier.id}
-                      onClick={() => setSelectedTier(tier.id)}
-                      className={`w-full text-left p-4 rounded-xl border transition-all ${
-                        selectedTier === tier.id
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-silver/30"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          {selectedTier === tier.id ? (
-                            <CheckCircle2 className="h-5 w-5 text-primary" />
-                          ) : (
-                            <div className="w-5 h-5 rounded-full border-2 border-silver/20" />
-                          )}
-                          <div>
-                            <span className="text-sm font-semibold text-white">{tier.label}</span>
-                            {tier.recommended && (
-                              <span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
-                                {t.acquisition.recommended}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <span className="text-sm text-silver/60">{t.acquisition.from} €{tier.baseMonthly}/mo</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
+          {step === 5 && (
+            <StepComplete
+              car={car}
+              agreedPrice={agreedPrice}
+              completionMethod={completionMethod || "digital"}
+              contractType={contractType}
+              paymentMethod={paymentMethod}
+              insuranceTier={insuranceTier}
+              onDashboard={() => navigate("/dashboard")}
+              onDownload={handleDownload}
+            />
+          )}
 
-              {selectedTier && (
-                <div className="space-y-4">
-                  {insurers.map((ins, i) => {
-                    const tierData = insuranceTiers.find((t) => t.id === selectedTier)!;
-                    const monthly = tierData.baseMonthly + i * 5 + Math.round(agreedPrice * 0.0001);
-                    const deductible = [500, 300, 150][i] ?? 500;
-                    return (
-                      <motion.div
-                        key={ins.id}
-                        className={`bg-secondary/50 border rounded-2xl p-6 ${i === 0 ? "border-primary/40" : "border-border"}`}
-                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <Shield className="h-5 w-5 text-primary" />
-                            <div>
-                              <h4 className="font-display font-bold text-white">{ins.name}</h4>
-                              <p className="text-xs text-silver/40">{ins.description}</p>
-                            </div>
-                          </div>
-                          <span className="text-lg font-display font-bold text-primary">€{monthly}/mo</span>
-                        </div>
-                        <p className="text-sm text-silver/50 mb-4">{t.acquisition.deductible}: €{deductible}</p>
-                        <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold" onClick={() => toast.info(t.acquisition.comingSoon)}>
-                          {t.acquisition.getQuote}
-                        </Button>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              )}
-
-              {!selectedTier && (
-                <p className="text-center text-silver/40 text-sm py-8">{t.acquisition.selectTier}</p>
-              )}
-            </TabsContent>
-          </Tabs>
+          {step === 99 && (
+            <StepManualComplete
+              car={car}
+              agreedPrice={agreedPrice}
+              sellerCountry={sellerCountry}
+              onDashboard={() => navigate("/dashboard")}
+              onDownload={handleDownload}
+            />
+          )}
         </motion.div>
 
         {/* Back */}
-        <div className="mt-8 text-center">
-          <Button variant="ghost" className="text-silver/50" onClick={() => navigate(`/negotiate/${offerId}`)}>
-            <ArrowLeft className="mr-2 h-4 w-4" /> {t.acquisition.backToNegotiation}
-          </Button>
-        </div>
+        {step === 1 && (
+          <div className="mt-8 text-center">
+            <Button variant="ghost" className="text-silver/50" onClick={() => navigate(`/negotiate/${offerId}`)}>
+              <ArrowLeft className="mr-2 h-4 w-4" /> {t.acquisition.backToNegotiation}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
