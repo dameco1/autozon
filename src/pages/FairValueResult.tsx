@@ -135,23 +135,43 @@ const FairValueResult: React.FC = () => {
   const hasAiForecast = aiForecast && Array.isArray(aiForecast) && aiForecast.length === 13;
 
   const depreciationData = hasAiForecast
-    ? aiForecast.map((value, i) => ({ month: `M${i}`, value: Math.round(value) }))
+    ? aiForecast.map((value: number, i: number) => ({
+        month: i === 0 ? "Now" : `M${i}`,
+        value: Math.round(value),
+      }))
     : (() => {
-        // Fallback: formula-based curve
-        const iconicBrands = ["Porsche", "Tesla"];
-        const premiumBrands = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
-        const isIconic = iconicBrands.includes(car.make);
-        const isPremium = premiumBrands.includes(car.make);
-        const baseMonthlyDep = isIconic ? 0.003 : isPremium ? 0.005 : 0.008;
-        const fuelAdjust: Record<string, number> = { Electric: 0.85, Hybrid: 0.92, "Plug-in Hybrid": 0.90, Petrol: 1.0, Diesel: 1.1 };
-        const monthlyDep = baseMonthlyDep * (fuelAdjust[car.fuel_type] ?? 1.0);
+        // Enhanced fallback: brand/segment-specific monthly depreciation
+        const brandRates: Record<string, number> = {
+          Porsche: 0.002, Tesla: 0.004, "Mercedes-Benz": 0.005, BMW: 0.006,
+          Audi: 0.006, Volvo: 0.006, "Land Rover": 0.007, Lexus: 0.004,
+          Toyota: 0.004, Honda: 0.005, Volkswagen: 0.006, Ford: 0.008,
+          Opel: 0.009, Renault: 0.009, Peugeot: 0.009, Fiat: 0.010,
+          Citroen: 0.009, Hyundai: 0.007, Kia: 0.007, Skoda: 0.007,
+          MINI: 0.006, Mazda: 0.006, Subaru: 0.005, Jaguar: 0.008,
+        };
+        const bodyRates: Record<string, number> = {
+          SUV: 0.95, Sedan: 1.0, Hatchback: 1.05, Wagon: 1.0,
+          Coupe: 0.90, Convertible: 0.88, Van: 1.1, Pickup: 0.92,
+        };
+        const fuelRates: Record<string, number> = {
+          Electric: 0.80, Hybrid: 0.88, "Plug-in Hybrid": 0.85,
+          Petrol: 1.0, Diesel: 1.15, LPG: 1.2, CNG: 1.1,
+        };
+        const baseDep = brandRates[car.make] ?? 0.007;
+        const bodyMult = bodyRates[car.body_type] ?? 1.0;
+        const fuelMult = fuelRates[car.fuel_type] ?? 1.0;
         const carAge = 2026 - car.year;
-        const ageFlatFactor = carAge > 5 ? 0.6 : carAge > 3 ? 0.8 : 1.0;
+        const ageMult = carAge > 8 ? 0.4 : carAge > 5 ? 0.6 : carAge > 3 ? 0.8 : 1.0;
+        const monthlyDep = baseDep * bodyMult * fuelMult * ageMult;
         return Array.from({ length: 13 }, (_, i) => ({
-          month: `M${i}`,
-          value: Math.round(displayFairValue * Math.pow(1 - monthlyDep * ageFlatFactor, i)),
+          month: i === 0 ? "Now" : `M${i}`,
+          value: Math.round(displayFairValue * Math.pow(1 - monthlyDep, i)),
         }));
       })();
+
+  const totalDepPercent = depreciationData.length >= 2
+    ? ((depreciationData[0].value - depreciationData[depreciationData.length - 1].value) / depreciationData[0].value * 100).toFixed(1)
+    : "0";
 
   const scoreBadge = (score: number) => {
     if (score >= 85) return { label: "Excellent", color: "text-primary" };
@@ -236,14 +256,22 @@ const FairValueResult: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <h3 className="text-lg font-display font-bold text-white mb-1 flex items-center gap-2">
-            <TrendingDown className="h-5 w-5 text-primary" /> {t.fairValue.depreciationTitle}
-          </h3>
-          <p className="text-silver/40 text-xs mb-6">
-            {hasAiForecast
-              ? `AI-powered forecast based on ${car.make} ${car.model} market trends`
-              : "Formula-based estimate (market data unavailable)"}
-          </p>
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-display font-bold text-white mb-1 flex items-center gap-2">
+                <TrendingDown className="h-5 w-5 text-primary" /> {t.fairValue.depreciationTitle}
+              </h3>
+              <p className="text-silver/40 text-xs">
+                {hasAiForecast
+                  ? `AI-powered forecast for ${car.year} ${car.make} ${car.model} (${car.fuel_type}, ${car.body_type})`
+                  : `Estimated for ${car.make} ${car.model} (${car.fuel_type}, ${car.body_type}) — formula-based`}
+              </p>
+            </div>
+            <div className="text-right shrink-0 ml-4">
+              <span className="text-2xl font-display font-black text-destructive">-{totalDepPercent}%</span>
+              <p className="text-silver/40 text-[10px]">est. 12-month loss</p>
+            </div>
+          </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={depreciationData}>
