@@ -45,10 +45,11 @@ function buildPrompt(make: string, models: string): string {
 
 Include ALL engine variants (petrol, diesel, hybrid, PHEV, electric), performance trims, wagon/estate/touring variants.
 
-Format: [{"make":"${make}","model":"X","variant":"X","year_from":2020,"year_to":null,"power_hp":150,"fuel_type":"Petrol","transmission":"Automatic","body_type":"SUV"}]
+Format: [{"make":"${make}","model":"X","variant":"X","year_from":2020,"year_to":null,"power_hp":150,"fuel_type":"Petrol","transmission":"Automatic","body_type":"SUV","msrp_eur":45000}]
 fuel_type: Petrol|Diesel|Electric|Hybrid|PHEV
 transmission: Manual|Automatic
 body_type: Sedan|Hatchback|SUV|Coupe|Convertible|Wagon|Van|Roadster
+msrp_eur: Original new-car MSRP in EUR for the European market. Use the base price for that specific variant when new. For discontinued models use the last known MSRP. Must be a positive integer.
 
 ONLY JSON array output, no markdown.`;
 }
@@ -70,6 +71,7 @@ function cleanVariants(raw: any[]) {
       fuel_type: validFuelTypes.includes(v.fuel_type) ? v.fuel_type : "Petrol",
       transmission: validTransmissions.includes(v.transmission) ? v.transmission : "Automatic",
       body_type: validBodyTypes.includes(v.body_type) ? v.body_type : "Sedan",
+      msrp_eur: v.msrp_eur && Number(v.msrp_eur) > 0 ? Number(v.msrp_eur) : null,
     }));
 }
 

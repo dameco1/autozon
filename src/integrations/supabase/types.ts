@@ -179,6 +179,7 @@ export type Database = {
           id: string
           make: string
           model: string
+          msrp_eur: number | null
           power_hp: number
           transmission: string
           variant: string
@@ -191,6 +192,7 @@ export type Database = {
           id?: string
           make: string
           model: string
+          msrp_eur?: number | null
           power_hp?: number
           transmission?: string
           variant: string
@@ -203,6 +205,7 @@ export type Database = {
           id?: string
           make?: string
           model?: string
+          msrp_eur?: number | null
           power_hp?: number
           transmission?: string
           variant?: string

@@ -155,7 +155,22 @@ const CarUpload: React.FC = () => {
     if (!userId || !formData.make || !formData.model) return;
     setLoading(true);
 
-    const { fairValue, condScore, demandScore } = calculateFairValue(formData);
+    // Look up model-specific MSRP from car_models table
+    let modelMsrp: number | null = null;
+    if (formData.make && formData.model) {
+      const { data: msrpData } = await supabase
+        .from("car_models")
+        .select("msrp_eur")
+        .eq("make", formData.make)
+        .eq("model", formData.model)
+        .not("msrp_eur", "is", null)
+        .order("msrp_eur", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (msrpData?.msrp_eur) modelMsrp = Number(msrpData.msrp_eur);
+    }
+
+    const { fairValue, condScore, demandScore } = calculateFairValue(formData, modelMsrp);
 
     // Factor in confirmed damages to adjust condition
     const confirmedDamages = damageReport?.damages.filter((d) => d.confirmed === true) ?? [];

@@ -1,0 +1,1 @@
+ALTER TABLE public.car_models ADD COLUMN msrp_eur numeric NULL DEFAULT NULL;

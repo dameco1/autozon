@@ -8,7 +8,7 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
 
 ### How It Works
 
-1. **Reference MSRP Estimation** — Estimates a new-car price based on:
+1. **Reference MSRP Estimation** — Uses model-specific MSRP from `car_models.msrp_eur` when available (populated by AI seeder). Falls back to attribute-based estimation:
    - Brand tier (Porsche €85K → Dacia €18K, 30 brands mapped)
    - Body type multiplier (Convertible 1.25× → Hatchback 0.90×)
    - Power adjustment (linear scale around 150 HP baseline)
