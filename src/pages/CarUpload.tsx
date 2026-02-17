@@ -56,6 +56,18 @@ const CarUpload: React.FC = () => {
     if (!editId) return;
     supabase.from("cars").select("id, make, model, year, vin, mileage, fuel_type, transmission, body_type, color, power_hp, price, equipment, condition_exterior, condition_interior, accident_history, accident_details, description, photos, detected_damages").eq("id", editId).maybeSingle().then(({ data }) => {
       if (!data) return;
+      // Map saved photos back into named slots, remainder goes to extras
+      const savedPhotos: string[] = (data as any).photos ?? [];
+      const restoredSlots: Record<string, string> = {};
+      const remainingPhotos: string[] = [];
+      const slotIds = PHOTO_SLOTS.map((s) => s.id);
+      savedPhotos.forEach((url, i) => {
+        if (i < slotIds.length) {
+          restoredSlots[slotIds[i]] = url;
+        } else {
+          remainingPhotos.push(url);
+        }
+      });
       setFormData({
         make: data.make,
         model: data.model,
@@ -75,8 +87,8 @@ const CarUpload: React.FC = () => {
         accidentHistory: data.accident_history ?? false,
         accidentDetails: data.accident_details ?? "",
         description: data.description ?? "",
-        photos: (data as any).photos ?? [],
-        photoSlots: {},
+        photos: remainingPhotos,
+        photoSlots: restoredSlots,
         damageScanned: false,
         totalDamageCostEur: 0,
       });
