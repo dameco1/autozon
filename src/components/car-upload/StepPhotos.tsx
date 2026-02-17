@@ -2,10 +2,21 @@ import React, { useRef, useState } from "react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Label } from "@/components/ui/label";
-import { ImagePlus, X, Loader2, Camera, CheckCircle2 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ImagePlus, X, Loader2, Camera, CheckCircle2, Info } from "lucide-react";
 import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
 import { PHOTO_SLOTS, MAX_EXTRA_PHOTOS, type PhotoMap } from "./photoSlots";
+
+const SLOT_TOOLTIPS: Record<string, string> = {
+  front: "Straight-on front view showing grille, headlights & bumper",
+  rear: "Straight-on rear view showing taillights & bumper",
+  left: "Full driver-side profile, capture the entire length",
+  right: "Full passenger-side profile, capture the entire length",
+  interior_front: "Front cabin view: steering wheel, dashboard & seats",
+  interior_rear: "Rear seat area showing legroom & condition",
+  dashboard: "Close-up of instrument cluster & infotainment screen",
+};
 
 interface Props {
   photoSlots: PhotoMap;
@@ -127,6 +138,16 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                   <span className="text-destructive text-[10px]">*</span>
                 )}
                 {url && <CheckCircle2 className="h-3 w-3 text-primary" />}
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-3 w-3 text-silver/40 cursor-help shrink-0" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-[200px] text-xs">
+                      {SLOT_TOOLTIPS[slot.id] || "Upload a clear photo"}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </span>
               <div className={`relative group aspect-[4/3] rounded-xl overflow-hidden bg-charcoal/50 ${slot.required ? 'border border-border' : 'border-2 border-dashed border-border/60'}`}>
                 {url ? (
