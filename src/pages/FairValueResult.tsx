@@ -169,8 +169,27 @@ const FairValueResult: React.FC = () => {
         }));
       })();
 
-  const totalDepPercent = depreciationData.length >= 2
-    ? ((depreciationData[0].value - depreciationData[depreciationData.length - 1].value) / depreciationData[0].value * 100).toFixed(1)
+  // Segment average depreciation (body-type average rate, no brand premium)
+  const segmentAvgRates: Record<string, number> = {
+    SUV: 0.006, Sedan: 0.007, Hatchback: 0.008, Wagon: 0.007,
+    Coupe: 0.006, Convertible: 0.005, Van: 0.009, Pickup: 0.006,
+  };
+  const segmentRate = segmentAvgRates[car.body_type] ?? 0.007;
+  const carAgeForSeg = 2026 - car.year;
+  const segAgeMult = carAgeForSeg > 8 ? 0.4 : carAgeForSeg > 5 ? 0.6 : carAgeForSeg > 3 ? 0.8 : 1.0;
+  const segMonthlyDep = segmentRate * segAgeMult;
+  const startValue = depreciationData[0]?.value ?? displayFairValue;
+
+  const chartData = depreciationData.map((d, i) => ({
+    ...d,
+    segment: Math.round(startValue * Math.pow(1 - segMonthlyDep, i)),
+  }));
+
+  const totalDepPercent = chartData.length >= 2
+    ? ((chartData[0].value - chartData[chartData.length - 1].value) / chartData[0].value * 100).toFixed(1)
+    : "0";
+  const segDepPercent = chartData.length >= 2
+    ? ((chartData[0].segment - chartData[chartData.length - 1].segment) / chartData[0].segment * 100).toFixed(1)
     : "0";
 
   const scoreBadge = (score: number) => {
@@ -268,20 +287,40 @@ const FairValueResult: React.FC = () => {
               </p>
             </div>
             <div className="text-right shrink-0 ml-4">
-              <span className="text-2xl font-display font-black text-destructive">-{totalDepPercent}%</span>
-              <p className="text-silver/40 text-[10px]">est. 12-month loss</p>
+              <div className="flex items-center gap-3">
+                <div>
+                  <span className="text-2xl font-display font-black text-destructive">-{totalDepPercent}%</span>
+                  <p className="text-silver/40 text-[10px]">this car</p>
+                </div>
+                <div className="border-l border-border pl-3">
+                  <span className="text-lg font-display font-bold text-silver/50">-{segDepPercent}%</span>
+                  <p className="text-silver/40 text-[10px]">{car.body_type} avg</p>
+                </div>
+              </div>
             </div>
+          </div>
+          <div className="flex gap-4 mb-3 text-[11px]">
+            <span className="flex items-center gap-1.5">
+              <span className="w-3 h-0.5 rounded bg-primary inline-block" /> {car.make} {car.model}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-3 h-0.5 rounded bg-silver/30 inline-block border border-dashed border-silver/30" /> {car.body_type} segment avg
+            </span>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={depreciationData}>
+              <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(240 4% 20%)" />
                 <XAxis dataKey="month" stroke="hsl(0 0% 85% / 0.4)" fontSize={12} />
                 <YAxis stroke="hsl(0 0% 85% / 0.4)" fontSize={12} tickFormatter={(v) => `€${(v / 1000).toFixed(0)}k`} />
                 <Tooltip
                   contentStyle={{ background: "hsl(240 6% 11%)", border: "1px solid hsl(240 4% 20%)", borderRadius: "12px", color: "white" }}
-                  formatter={(value: number) => [`€${value.toLocaleString()}`, "Value"]}
+                  formatter={(value: number, name: string) => [
+                    `€${value.toLocaleString()}`,
+                    name === "value" ? `${car.make} ${car.model}` : `${car.body_type} Avg`,
+                  ]}
                 />
+                <Line type="monotone" dataKey="segment" stroke="hsl(0 0% 60%)" strokeWidth={2} strokeDasharray="6 4" dot={false} />
                 <Line type="monotone" dataKey="value" stroke="hsl(155, 100%, 42%)" strokeWidth={3} dot={false} />
               </LineChart>
             </ResponsiveContainer>
