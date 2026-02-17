@@ -15,7 +15,7 @@
 ## MVP (Complete)
 - [x] Fair value algorithm (multi-factor, brand-tiered)
 - [x] 5-step car upload wizard with photo compression
-- [x] AI damage detection from photos
+- [x] AI damage detection from photos with brand-specific repair cost estimates
 - [x] AI listing description generator
 - [x] Buyer matching engine
 - [x] Swipe-based car discovery for buyers
@@ -35,6 +35,11 @@
 - [x] Market comparison with AI insights
 - [x] AI-powered car model database (2,700+ variants, 48 makes)
 - [x] Admin Command Center with KPI dashboard
+- [x] AI-powered VIN decoder (auto-fills make, model, year, equipment)
+- [x] Model-specific MSRP in car_models (AI-seeded `msrp_eur` column)
+- [x] 100% attribute-based fair value (removed asking price influence)
+- [x] Segment-specific mileage expectations (sports 8K, SUV 18K, van 25K km/yr)
+- [x] Itemized damage cost deductions (brand-specific EUR repair costs replace flat penalty)
 - [ ] Dealer network integration
 - [ ] Enhanced buyer onboarding questionnaire
 - [ ] Car comparison tool (side-by-side)
@@ -46,6 +51,8 @@
 - [ ] Partner bank/leasing integrations
 - [ ] **Advertising Module V1** — Homepage banner ads (dealer/partner sponsors), contextual ads on vehicle detail pages, self-serve ad booking for dealers
 - [ ] **PWA (Progressive Web App)** — installable from browser to home screen (iOS + Android), offline support, ~1.5 hours setup
+- [ ] **VIN Equipment API Integration** — Connect CarsXE or VINdecoder.eu for OEM equipment auto-population from VIN (replaces AI-only decode)
+- [ ] **Equipment Option Pricing** — AI-seeded or API-sourced original option prices per equipment item, enabling residual-value-based equipment scoring
 
 ## V2 (Planned)
 - [ ] Full financing flow (application → approval → disbursement)
@@ -54,6 +61,9 @@
 - [ ] Escrow payment system
 - [ ] **Advertising Module V2** — Programmatic ad network, partner co-branded content, email/newsletter sponsorships, retargeting ads for dealers, analytics dashboard for advertisers
 - [ ] **Native mobile app (Capacitor)** — iOS App Store + Google Play, full device access (camera, push notifications, sensors), ~5–8 hours setup + app store submissions
+- [ ] **Real Market Data API** — Integrate mobile.de / AutoScout24 APIs for actual listing prices and transaction data to power market-blended valuations
+- [ ] **DAT/SilverDAT Integration** — Enterprise-grade repair cost estimation using OEM parts pricing and standardized labor times (insurance-grade accuracy)
+- [ ] **GT Motive / Audatex Integration** — Pan-European cloud-based repair cost estimation for cross-border accuracy
 
 ## V3 (Planned)
 - [ ] Car lifecycle tracking (service history, value over time)

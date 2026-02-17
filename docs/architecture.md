@@ -12,7 +12,7 @@
 | **State** | TanStack Query + React state | Server-state caching and local UI state |
 | **Backend** | Lovable Cloud (Supabase) | PostgreSQL, Auth, Edge Functions, Storage |
 | **Payments** | Stripe | Placement checkout, webhook verification |
-| **AI** | Lovable AI (Gemini) | Damage detection, description generation, concierge chat, market comparison |
+| **AI** | Lovable AI (Gemini) | Damage detection (brand-specific costing), VIN decoding, description generation, concierge chat, market comparison |
 | **i18n** | Custom context (EN/DE) | Bilingual support (English + German) |
 | **SEO** | react-helmet-async | Dynamic meta tags, JSON-LD structured data |
 | **PDF** | jsPDF | Client-side negotiation agreement generation |
@@ -91,7 +91,8 @@ supabase/
 │   ├── stripe-webhook/         # Stripe payment confirmation
 │   ├── verify-placement/       # Payment verification
 │   ├── seed-car-models/        # Static database seeder
-│   └── seed-car-models-ai/     # AI-powered model seeder (Gemini)
+│   ├── seed-car-models-ai/     # AI-powered model seeder with MSRP (Gemini)
+│   └── vin-decode/             # AI-powered VIN decoder (auto-fill make/model/year/equipment)
 └── migrations/          # SQL migration files (auto-managed)
 
 docs/                    # This documentation folder
@@ -118,14 +119,14 @@ public/                  # Static assets (favicon, OG image, sitemap, robots.txt
 ```
 User → /intent (choose "Sell")
      → /car-upload (5-step wizard)
-       Step 1: Basic Info (make, model, year, mileage, price)
-       Step 2: Photos (7 mandatory angles, client-side compression)
+       Step 1: Basic Info (make, model, year, mileage, price) + VIN decode (AI auto-fill)
+       Step 2: Photos (6 mandatory + 1 optional angles, client-side compression)
        Step 3: Equipment selection
-       Step 4: Condition sliders + accident history
-       Step 5: AI damage scan + review
-     → calculateFairValue() runs client-side
+       Step 4: Condition sliders + accident history + AI damage scan (brand-specific repair costs)
+       Step 5: Review + AI description generator
+     → calculateFairValue() runs client-side (100% attribute-based, model-specific MSRP when available)
      → Car saved to `cars` table with fair_value_price
-     → /fair-value/:id (appraisal result + market comparison)
+     → /fair-value/:id (appraisal result + market comparison, 40/60 blend if market data available)
      → /buyer-matches/:carId (matched buyers)
      → /negotiate/:offerId (structured negotiation)
      → /acquire/:offerId (financing/acquisition options)
