@@ -102,14 +102,15 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
   };
 
   const slotLabels = (t.carUpload.photos as any).slots as Record<string, string>;
-  const filledCount = PHOTO_SLOTS.filter((s) => photoSlots[s.id]).length;
+  const requiredSlots = PHOTO_SLOTS.filter((s) => s.required);
+  const filledRequired = requiredSlots.filter((s) => photoSlots[s.id]).length;
 
   return (
     <div className="space-y-6">
       <div>
         <Label className="text-silver/80 text-sm">{t.carUpload.photos.title}</Label>
         <p className="text-silver/40 text-xs mt-1">
-          {t.carUpload.photos.hint} ({filledCount}/{PHOTO_SLOTS.length} {(t.carUpload.photos as any).required?.toLowerCase?.() || "required"})
+          {t.carUpload.photos.hint} ({filledRequired}/{requiredSlots.length} {(t.carUpload.photos as any).required?.toLowerCase?.() || "required"})
         </p>
       </div>
 
@@ -124,6 +125,9 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                 {slotLabels[slot.id] || slot.id}
                 {slot.required && !url && (
                   <span className="text-destructive text-[10px]">*</span>
+                )}
+                {!slot.required && (
+                  <span className="text-[9px] font-normal px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">Optional</span>
                 )}
                 {url && <CheckCircle2 className="h-3 w-3 text-primary" />}
               </span>
