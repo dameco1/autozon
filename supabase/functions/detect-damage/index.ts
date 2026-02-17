@@ -36,13 +36,15 @@ serve(async (req) => {
       );
     }
 
-    const { photoUrls } = await req.json();
+    const { photoUrls, make, model } = await req.json();
     if (!photoUrls || !Array.isArray(photoUrls) || photoUrls.length === 0) {
       return new Response(
         JSON.stringify({ error: "No photo URLs provided" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+    const carMake = make || "unknown";
+    const carModel = model || "unknown";
 
     // Limit number of photos to prevent abuse
     if (photoUrls.length > 20) {
@@ -74,7 +76,9 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: `You are an expert automotive damage assessor. Analyze car photos and detect any visible damage.
+              content: `You are an expert automotive damage assessor and repair cost estimator. Analyze car photos and detect any visible damage.
+
+The car being inspected is a ${carMake} ${carModel}.
 
 For each damage found, provide:
 - type: category of damage (scratch, dent, rust, crack, paint_damage, broken_part, wear, other)
@@ -82,12 +86,14 @@ For each damage found, provide:
 - severity: low, medium, or high
 - confidence: your confidence level from 0.0 to 1.0 (use lower values when unsure)
 - description: brief description of the damage
+- estimated_repair_cost_eur: estimated repair cost in EUR for this specific damage on a ${carMake} ${carModel}. Consider brand-specific labor rates and OEM parts pricing. For example, repainting a door on a Dacia costs ~€300-500 while the same on a Porsche costs ~€1,500-3,000. A dent repair on a standard brand is ~€200-500 vs €800-2,000 on a premium brand.
 
 IMPORTANT RULES:
 - Only report actual damage you can clearly see
 - If something MIGHT be damage but you're not sure (reflections, shadows, dirt), still report it but with LOW confidence (below 0.6)
 - Be thorough — check all visible panels, bumpers, lights, wheels, glass
 - If no damage is found, return an empty array
+- Repair cost estimates MUST reflect the specific brand (${carMake}) — premium/luxury brands have significantly higher repair costs
 - Respond ONLY with the function call, no other text`,
             },
             {
@@ -135,6 +141,7 @@ IMPORTANT RULES:
                           },
                           confidence: { type: "number" },
                           description: { type: "string" },
+                          estimated_repair_cost_eur: { type: "number", description: "Estimated repair cost in EUR for this damage on this specific car brand/model" },
                         },
                         required: [
                           "type",
@@ -142,6 +149,7 @@ IMPORTANT RULES:
                           "severity",
                           "confidence",
                           "description",
+                          "estimated_repair_cost_eur",
                         ],
                         additionalProperties: false,
                       },

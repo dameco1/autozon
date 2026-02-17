@@ -88,9 +88,9 @@ const FairValueResult: React.FC = () => {
       const md = result as MarketData;
       setMarketData(md);
 
-      // Blend: 30% formula-based + 70% market average — market insists on fair value
-      // No cap on asking price: if user overprices, fair value will reflect true market
-      const blended = Math.round(carData.fair_value_price * 0.3 + md.avg_price * 0.7);
+      // Blend: 40% formula-based + 60% market average — market insists on fair value
+      // No asking price influence: fair value is 100% attribute-based, market data provides real price signal
+      const blended = Math.round(carData.fair_value_price * 0.4 + md.avg_price * 0.6);
       setBlendedValue(blended);
 
       // Update the car record with the blended fair value

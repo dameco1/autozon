@@ -78,6 +78,7 @@ const CarUpload: React.FC = () => {
         photos: (data as any).photos ?? [],
         photoSlots: {},
         damageScanned: false,
+        totalDamageCostEur: 0,
       });
     });
   }, [editId]);
@@ -93,7 +94,7 @@ const CarUpload: React.FC = () => {
     setAnalyzingDamage(true);
     try {
       const { data, error } = await supabase.functions.invoke("detect-damage", {
-        body: { photoUrls: allPhotos },
+        body: { photoUrls: allPhotos, make: formData.make, model: formData.model },
       });
       if (error) throw error;
       // Mark high-confidence damages as auto-confirmed, low-confidence as needing review
@@ -103,7 +104,11 @@ const CarUpload: React.FC = () => {
         confirmed: d.confidence >= 0.6 ? true : undefined,
       }));
       setDamageReport(report);
-      updateForm({ damageScanned: true });
+      // Compute total damage cost from confirmed damages
+      const totalCost = report.damages
+        .filter((d) => d.confirmed === true)
+        .reduce((sum, d) => sum + (d.estimated_repair_cost_eur ?? 0), 0);
+      updateForm({ damageScanned: true, totalDamageCostEur: totalCost });
     } catch (err: any) {
       toast.error(err.message || "Damage detection failed");
     } finally {
@@ -111,23 +116,32 @@ const CarUpload: React.FC = () => {
     }
   }, [getAllPhotos]);
 
+  const recalcDamageCost = useCallback((damages: DamageReport["damages"]) => {
+    const totalCost = damages
+      .filter((d) => d.confirmed === true)
+      .reduce((sum, d) => sum + (d.estimated_repair_cost_eur ?? 0), 0);
+    updateForm({ totalDamageCostEur: totalCost });
+  }, [updateForm]);
+
   const confirmDamage = useCallback((index: number) => {
     setDamageReport((prev) => {
       if (!prev) return prev;
       const damages = [...prev.damages];
       damages[index] = { ...damages[index], confirmed: true };
+      recalcDamageCost(damages);
       return { ...prev, damages };
     });
-  }, []);
+  }, [recalcDamageCost]);
 
   const dismissDamage = useCallback((index: number) => {
     setDamageReport((prev) => {
       if (!prev) return prev;
       const damages = [...prev.damages];
       damages[index] = { ...damages[index], confirmed: false };
+      recalcDamageCost(damages);
       return { ...prev, damages };
     });
-  }, []);
+  }, [recalcDamageCost]);
 
   // Auto-trigger damage detection when entering step 3
   useEffect(() => {
@@ -158,6 +172,7 @@ const CarUpload: React.FC = () => {
       severity: d.severity,
       confidence: d.confidence,
       description: d.description,
+      estimated_repair_cost_eur: d.estimated_repair_cost_eur ?? 0,
     }));
 
     const carData = {

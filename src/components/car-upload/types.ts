@@ -22,6 +22,7 @@ export interface CarFormData {
   photos: string[];
   photoSlots: PhotoMap;
   damageScanned: boolean;
+  totalDamageCostEur: number;
 }
 
 export const defaultCarFormData: CarFormData = {
@@ -46,4 +47,5 @@ export const defaultCarFormData: CarFormData = {
   photos: [],
   photoSlots: {},
   damageScanned: false,
+  totalDamageCostEur: 0,
 };

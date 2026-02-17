@@ -12,6 +12,24 @@ const SAFETY_FEATURES = ["Adaptive Cruise Control", "Lane Assist", "Blind Spot M
 const TECH_FEATURES = ["Navigation", "Apple CarPlay", "Android Auto", "Heads-Up Display", "LED Headlights"];
 const COMFORT_FEATURES = ["Heated Seats", "Leather Interior", "Sunroof", "Cruise Control", "Keyless Entry", "Seat Memory", "Heated Steering Wheel"];
 
+/** Segment-specific annual mileage expectations (km/year) */
+function getExpectedAnnualKm(bodyType: string, make: string): number {
+  // Sports cars driven less
+  const sportsMakes = ["Porsche", "Ferrari", "Lamborghini", "Maserati", "Alfa Romeo"];
+  const sportsModels = ["Z4", "911", "Cayman", "Boxster", "TT", "SLC", "SLK"];
+  if (sportsMakes.includes(make) || bodyType === "Coupe" || bodyType === "Convertible") return 8000;
+
+  switch (bodyType) {
+    case "Hatchback": return 12000;
+    case "SUV": return 18000;
+    case "Wagon": return 18000;
+    case "Van": return 25000;
+    case "Pickup": return 20000;
+    case "Sedan": return 15000;
+    default: return 15000;
+  }
+}
+
 /**
  * Estimate a new-car reference MSRP from the car's intrinsic attributes.
  * This is intentionally independent of the user's asking price.
@@ -101,8 +119,8 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   const depRate = isIconic ? 0.07 : isPremium ? 0.10 : 0.15;
   const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75));
 
-  // 2. Mileage Factor
-  const avgAnnualKm = 15000;
+  // 2. Mileage Factor — segment-specific expected km/year
+  const avgAnnualKm = getExpectedAnnualKm(data.bodyType, data.make);
   const expectedKm = carAge * avgAnnualKm;
   const mileageRatio = data.mileage / Math.max(expectedKm, 1);
   const mileageFactor = mileageRatio <= 1
@@ -112,9 +130,20 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   // 3. Condition Factor
   const condAvg = (data.conditionExterior + data.conditionInterior) / 2;
   const conditionFactor = 0.85 + (condAvg / 100) * 0.17;
-  const accidentPenalty = data.accidentHistory ? 0.82 : 1;
 
-  // 4. Equipment Value Index (capped at 10%)
+  // 4. Damage Cost Deduction (replaces flat accident penalty)
+  // Use itemized damage costs from AI detection when available,
+  // fall back to flat penalty for self-reported accidents without scan
+  let damageCostDeduction = 0;
+  if (data.totalDamageCostEur > 0) {
+    damageCostDeduction = data.totalDamageCostEur;
+  } else if (data.accidentHistory) {
+    // Fallback: brand-tier flat estimate when no AI scan was done
+    const flatPenaltyRate = isIconic ? 0.20 : isPremium ? 0.15 : 0.10;
+    damageCostDeduction = referenceMSRP * depreciationFactor * flatPenaltyRate;
+  }
+
+  // 5. Equipment Value Index (capped at 10%)
   let equipWeightedScore = 0;
   data.equipment.forEach((eq) => {
     if (SAFETY_FEATURES.includes(eq)) equipWeightedScore += 2.5;
@@ -124,7 +153,7 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   });
   const equipmentIndex = 1 + Math.min(equipWeightedScore * 0.003, 0.10);
 
-  // 5. Market Position Factor
+  // 6. Market Position Factor
   const highDemandBodies = ["SUV", "Hatchback"];
   const moderateDemandBodies = ["Sedan", "Wagon", "Coupe", "Convertible"];
   const bodyDemand = highDemandBodies.includes(data.bodyType) ? 1.04
@@ -136,13 +165,13 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
 
   const marketPositionFactor = bodyDemand * makeDemand;
 
-  // 6. Regional Demand Multiplier
+  // 7. Regional Demand Multiplier
   const fuelDemand: Record<string, number> = {
     "Electric": 1.05, "Plug-in Hybrid": 1.03, "Hybrid": 1.02, "Petrol": 1.0, "Diesel": 0.97,
   };
   const regionalDemandMultiplier = fuelDemand[data.fuelType] ?? 1.0;
 
-  // 7. Transparency Score (max 4%)
+  // 8. Transparency Score (max 4%)
   let transparencyPoints = 0;
   if (data.vin.length >= 10) transparencyPoints += 3;
   if (data.description.length > 50) transparencyPoints += 2;
@@ -157,26 +186,27 @@ export function calculateFairValue(data: CarFormData): FairValueResult {
   if (data.damageScanned) transparencyPoints += 3;
   const transparencyBonus = 1 + Math.min(transparencyPoints / 15, 1) * 0.04;
 
-  // Compute attribute-based fair value (from reference MSRP, NOT asking price)
+  // Compute 100% attribute-based fair value (NO asking price influence)
   const attributeValue = Math.round(
     referenceMSRP
     * depreciationFactor
     * mileageFactor
     * conditionFactor
-    * accidentPenalty
     * equipmentIndex
     * marketPositionFactor
     * regionalDemandMultiplier
     * transparencyBonus
   );
 
-  // Blend: 85% attribute-based + 15% asking price as a soft market signal
-  // This ensures the user's price has minor influence but cannot dominate
-  const fairValue = Math.round(attributeValue * 0.85 + data.price * 0.15);
+  // Subtract itemized damage costs as a EUR deduction
+  const fairValue = Math.max(500, attributeValue - Math.round(damageCostDeduction));
 
   // Condition Score (0-100)
+  const damagePenaltyFactor = damageCostDeduction > 0
+    ? Math.max(0.5, 1 - damageCostDeduction / attributeValue)
+    : 1;
   const condScore = Math.round(
-    condAvg * accidentPenalty * (mileageFactor > 0.9 ? 1 : 0.9 + mileageFactor * 0.1)
+    condAvg * damagePenaltyFactor * (mileageFactor > 0.9 ? 1 : 0.9 + mileageFactor * 0.1)
   );
 
   // Demand Score (0-100)
