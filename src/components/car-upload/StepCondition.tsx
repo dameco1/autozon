@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Sparkles, Loader2, Cigarette, BookOpen, FileCheck, Receipt } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { CarFormData } from "./types";
@@ -120,6 +121,55 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           />
         </div>
       )}
+
+      {/* Documentation & Condition Questions */}
+      <div className="border-t border-border pt-6 space-y-4">
+        <Label className="text-silver/80 text-sm block mb-2">Vehicle Documentation & History</Label>
+
+        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+          <div className="flex items-center gap-3">
+            <Cigarette className="h-4 w-4 text-silver/50" />
+            <div>
+              <p className="text-sm text-white font-medium">Smoker car?</p>
+              <p className="text-[11px] text-silver/40">Non-smoker vehicles retain more value</p>
+            </div>
+          </div>
+          <Switch checked={data.smokerCar} onCheckedChange={(v) => onChange({ smokerCar: v })} />
+        </div>
+
+        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+          <div className="flex items-center gap-3">
+            <BookOpen className="h-4 w-4 text-silver/50" />
+            <div>
+              <p className="text-sm text-white font-medium">Service book / records up to date?</p>
+              <p className="text-[11px] text-silver/40">Documented maintenance history boosts value</p>
+            </div>
+          </div>
+          <Switch checked={data.serviceBookUpdated} onCheckedChange={(v) => onChange({ serviceBookUpdated: v })} />
+        </div>
+
+        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+          <div className="flex items-center gap-3">
+            <FileCheck className="h-4 w-4 text-silver/50" />
+            <div>
+              <p className="text-sm text-white font-medium">Original documents available?</p>
+              <p className="text-[11px] text-silver/40">Registration, manual, spare key, etc.</p>
+            </div>
+          </div>
+          <Switch checked={data.originalDocsAvailable} onCheckedChange={(v) => onChange({ originalDocsAvailable: v })} />
+        </div>
+
+        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+          <div className="flex items-center gap-3">
+            <Receipt className="h-4 w-4 text-silver/50" />
+            <div>
+              <p className="text-sm text-white font-medium">Maintenance receipts available?</p>
+              <p className="text-[11px] text-silver/40">Invoices from workshops or dealers</p>
+            </div>
+          </div>
+          <Switch checked={data.maintenanceReceipts} onCheckedChange={(v) => onChange({ maintenanceReceipts: v })} />
+        </div>
+      </div>
       <div>
         <div className="flex items-center justify-between mb-1">
           <Label className="text-silver/80 text-sm">{t.carUpload.description}</Label>

@@ -91,6 +91,10 @@ const CarUpload: React.FC = () => {
         photoSlots: restoredSlots,
         damageScanned: false,
         totalDamageCostEur: 0,
+        smokerCar: (data as any).smoker_car ?? false,
+        serviceBookUpdated: (data as any).service_book_updated ?? false,
+        originalDocsAvailable: (data as any).original_docs_available ?? false,
+        maintenanceReceipts: (data as any).maintenance_receipts ?? false,
       });
     });
   }, [editId]);
@@ -218,6 +222,10 @@ const CarUpload: React.FC = () => {
       equipment: formData.equipment,
       condition_exterior: formData.conditionExterior,
       condition_interior: formData.conditionInterior,
+      smoker_car: formData.smokerCar,
+      service_book_updated: formData.serviceBookUpdated,
+      original_docs_available: formData.originalDocsAvailable,
+      maintenance_receipts: formData.maintenanceReceipts,
       accident_history: formData.accidentHistory || confirmedDamages.some((d) => d.severity === "high"),
       accident_details: formData.accidentDetails,
       description: formData.description,

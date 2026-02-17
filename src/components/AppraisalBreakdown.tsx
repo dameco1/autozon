@@ -331,35 +331,44 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     formulaTooltip: `Fuel: ${car.fuel_type} · Demand multiplier: ×${regionalDemandMultiplier.toFixed(2)}`,
   });
 
-  // 10. DATA TRANSPARENCY (actionable — add more info)
-  let transparencyPoints = 0;
-  if ((car.vin ?? "").length >= 10) transparencyPoints += 3;
-  if ((car.description ?? "").length > 50) transparencyPoints += 2;
-  if (equip.length >= 5) transparencyPoints += 1;
-  if (car.color) transparencyPoints += 1;
-  if (car.accident_history && (car.accident_details ?? "").length > 20) transparencyPoints += 2;
-  if (!car.accident_history) transparencyPoints += 1;
-  const transparencyBonus = 1 + Math.min(transparencyPoints / 10, 1) * 0.04;
-  const transEuro = Math.round(basePrice * depreciationFactor * (transparencyBonus - 1));
-  const missingItems: string[] = [];
-  if ((car.vin ?? "").length < 10) missingItems.push("VIN");
-  if ((car.description ?? "").length <= 50) missingItems.push(a.transparency.descItem);
-  if (!car.color) missingItems.push(a.transparency.colorItem);
+  // 10. NON-SMOKER BONUS (score booster if not a smoker car)
+  const isSmoker = (car as any).smoker_car ?? false;
+  const nonSmokerFactor = isSmoker ? 0.97 : 1.02;
+  const smokerEuro = Math.round(basePrice * depreciationFactor * (nonSmokerFactor - 1));
   factors.push({
-    id: "transparency",
-    label: a.transparency.label,
-    explanation: missingItems.length > 0
-      ? a.transparency.explainMissing.replace("{items}", missingItems.join(", "))
-      : a.transparency.explainComplete,
-    euroImpact: transEuro,
-    percentImpact: (transparencyBonus - 1) * 100,
-    barValue: normalize(transparencyBonus, 1, 1.05),
-    type: "booster",
+    id: "smoker",
+    label: "Non-Smoker",
+    explanation: isSmoker
+      ? "Smoker vehicles typically lose 2–3% of value due to odor, staining and buyer reluctance."
+      : "Non-smoker vehicle — buyers pay a premium for a clean, odor-free cabin.",
+    euroImpact: smokerEuro,
+    percentImpact: (nonSmokerFactor - 1) * 100,
+    barValue: isSmoker ? 25 : 90,
+    type: isSmoker ? "reducer" : "booster",
+    icon: <Shield className="h-5 w-5" />,
+    actionable: false,
+    formulaTooltip: `Smoker: ${isSmoker ? "yes → ×0.97 penalty" : "no → ×1.02 bonus"}`,
+  });
+
+  // 11. SERVICE BOOK (score booster if up to date)
+  const serviceBook = (car as any).service_book_updated ?? false;
+  const serviceBookFactor = serviceBook ? 1.03 : 1.0;
+  const serviceEuro = Math.round(basePrice * depreciationFactor * (serviceBookFactor - 1));
+  factors.push({
+    id: "serviceBook",
+    label: "Service History",
+    explanation: serviceBook
+      ? "Complete service book / records verified — this significantly increases buyer confidence and resale value."
+      : "No confirmed service history. A documented service book can add up to 3% to the fair value.",
+    euroImpact: serviceEuro,
+    percentImpact: (serviceBookFactor - 1) * 100,
+    barValue: serviceBook ? 90 : 35,
+    type: serviceBook ? "booster" : "neutral",
     icon: <Eye className="h-5 w-5" />,
-    actionable: missingItems.length > 0,
-    actionLabel: a.transparency.action,
-    actionStep: 1,
-    formulaTooltip: `Points: ${transparencyPoints}/10 · Bonus: min(${transparencyPoints}/10, 1) × 4% = +${((transparencyBonus - 1) * 100).toFixed(1)}%`,
+    actionable: !serviceBook,
+    actionLabel: "Update service history",
+    actionStep: 5,
+    formulaTooltip: `Service book: ${serviceBook ? "yes → ×1.03 bonus" : "no → ×1.0 (no impact)"}`,
   });
 
   return factors;

@@ -23,6 +23,10 @@ export interface CarFormData {
   photoSlots: PhotoMap;
   damageScanned: boolean;
   totalDamageCostEur: number;
+  smokerCar: boolean;
+  serviceBookUpdated: boolean;
+  originalDocsAvailable: boolean;
+  maintenanceReceipts: boolean;
 }
 
 export const defaultCarFormData: CarFormData = {
@@ -48,4 +52,8 @@ export const defaultCarFormData: CarFormData = {
   photoSlots: {},
   damageScanned: false,
   totalDamageCostEur: 0,
+  smokerCar: false,
+  serviceBookUpdated: false,
+  originalDocsAvailable: false,
+  maintenanceReceipts: false,
 };
