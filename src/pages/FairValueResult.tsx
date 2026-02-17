@@ -3,7 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Car, TrendingDown, Users, ArrowRight, Plus, BarChart3, Shield, Zap, LayoutDashboard, Megaphone } from "lucide-react";
+import { Car, TrendingDown, Users, ArrowRight, Plus, BarChart3, Shield, Zap, LayoutDashboard, Megaphone, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
@@ -42,6 +43,7 @@ const FairValueResult: React.FC = () => {
   const navigate = useNavigate();
   const [car, setCar] = useState<CarData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [placementLoading, setPlacementLoading] = useState(false);
 
   // Market comparison state (lifted from MarketComparison)
   const [marketData, setMarketData] = useState<MarketData | null>(null);
@@ -282,9 +284,24 @@ const FairValueResult: React.FC = () => {
           <Button
             size="lg"
             className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl"
-            onClick={() => navigate(`/buyer-matches/${car.id}`)}
+            disabled={placementLoading}
+            onClick={async () => {
+              setPlacementLoading(true);
+              try {
+                const { data, error } = await supabase.functions.invoke("create-placement-checkout", {
+                  body: { carId: car.id },
+                });
+                if (error) throw error;
+                if (data?.url) window.open(data.url, "_blank");
+                else throw new Error("No checkout URL returned");
+              } catch (err: any) {
+                toast.error(err.message || "Failed to start checkout");
+              } finally {
+                setPlacementLoading(false);
+              }
+            }}
           >
-            <Megaphone className="mr-2 h-5 w-5" /> Ad Placement
+            {placementLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Megaphone className="mr-2 h-5 w-5" />} Ad Placement
           </Button>
           <Button
             size="lg"
