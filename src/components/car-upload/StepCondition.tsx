@@ -124,14 +124,14 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
 
       {/* Documentation & Condition Questions */}
       <div className="border-t border-border pt-6 space-y-4">
-        <Label className="text-silver/80 text-sm block mb-2">Vehicle Documentation & History</Label>
+        <Label className="text-silver/80 text-sm block mb-2">{t.carUpload.documentation.title}</Label>
 
         <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
           <div className="flex items-center gap-3">
             <Cigarette className="h-4 w-4 text-silver/50" />
             <div>
-              <p className="text-sm text-white font-medium">Smoker car?</p>
-              <p className="text-[11px] text-silver/40">Non-smoker vehicles retain more value</p>
+              <p className="text-sm text-white font-medium">{t.carUpload.documentation.smokerCar}</p>
+              <p className="text-[11px] text-silver/40">{t.carUpload.documentation.smokerCarHint}</p>
             </div>
           </div>
           <Switch checked={data.smokerCar} onCheckedChange={(v) => onChange({ smokerCar: v })} />
@@ -141,8 +141,8 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           <div className="flex items-center gap-3">
             <BookOpen className="h-4 w-4 text-silver/50" />
             <div>
-              <p className="text-sm text-white font-medium">Service book / records up to date?</p>
-              <p className="text-[11px] text-silver/40">Documented maintenance history boosts value</p>
+              <p className="text-sm text-white font-medium">{t.carUpload.documentation.serviceBook}</p>
+              <p className="text-[11px] text-silver/40">{t.carUpload.documentation.serviceBookHint}</p>
             </div>
           </div>
           <Switch checked={data.serviceBookUpdated} onCheckedChange={(v) => onChange({ serviceBookUpdated: v })} />
@@ -152,8 +152,8 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           <div className="flex items-center gap-3">
             <FileCheck className="h-4 w-4 text-silver/50" />
             <div>
-              <p className="text-sm text-white font-medium">Original documents available?</p>
-              <p className="text-[11px] text-silver/40">Registration, manual, spare key, etc.</p>
+              <p className="text-sm text-white font-medium">{t.carUpload.documentation.originalDocs}</p>
+              <p className="text-[11px] text-silver/40">{t.carUpload.documentation.originalDocsHint}</p>
             </div>
           </div>
           <Switch checked={data.originalDocsAvailable} onCheckedChange={(v) => onChange({ originalDocsAvailable: v })} />
@@ -163,8 +163,8 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           <div className="flex items-center gap-3">
             <Receipt className="h-4 w-4 text-silver/50" />
             <div>
-              <p className="text-sm text-white font-medium">Maintenance receipts available?</p>
-              <p className="text-[11px] text-silver/40">Invoices from workshops or dealers</p>
+              <p className="text-sm text-white font-medium">{t.carUpload.documentation.maintenanceReceipts}</p>
+              <p className="text-[11px] text-silver/40">{t.carUpload.documentation.maintenanceReceiptsHint}</p>
             </div>
           </div>
           <Switch checked={data.maintenanceReceipts} onCheckedChange={(v) => onChange({ maintenanceReceipts: v })} />
@@ -173,14 +173,14 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
 
       {/* Accessories */}
       <div className="border-t border-border pt-6 space-y-4">
-        <Label className="text-silver/80 text-sm block mb-2">Included Accessories</Label>
+        <Label className="text-silver/80 text-sm block mb-2">{t.carUpload.accessories.title}</Label>
 
         <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
           <div className="flex items-center gap-3">
             <CircleDot className="h-4 w-4 text-silver/50" />
             <div>
-              <p className="text-sm text-white font-medium">Second set of wheels / tires?</p>
-              <p className="text-[11px] text-silver/40">Winter or summer set — adds measurable value</p>
+              <p className="text-sm text-white font-medium">{t.carUpload.accessories.secondWheelSet}</p>
+              <p className="text-[11px] text-silver/40">{t.carUpload.accessories.secondWheelSetHint}</p>
             </div>
           </div>
           <Switch checked={data.secondWheelSet} onCheckedChange={(v) => onChange({ secondWheelSet: v })} />
@@ -190,8 +190,8 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           <div className="flex items-center gap-3">
             <Luggage className="h-4 w-4 text-silver/50" />
             <div>
-              <p className="text-sm text-white font-medium">Roof rack included?</p>
-              <p className="text-[11px] text-silver/40">OEM or aftermarket roof rail system</p>
+              <p className="text-sm text-white font-medium">{t.carUpload.accessories.roofRack}</p>
+              <p className="text-[11px] text-silver/40">{t.carUpload.accessories.roofRackHint}</p>
             </div>
           </div>
           <Switch checked={data.hasRoofRack} onCheckedChange={(v) => onChange({ hasRoofRack: v })} />
@@ -201,8 +201,8 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           <div className="flex items-center gap-3">
             <Package className="h-4 w-4 text-silver/50" />
             <div>
-              <p className="text-sm text-white font-medium">Roof box included?</p>
-              <p className="text-[11px] text-silver/40">Cargo box for extra storage</p>
+              <p className="text-sm text-white font-medium">{t.carUpload.accessories.roofBox}</p>
+              <p className="text-[11px] text-silver/40">{t.carUpload.accessories.roofBoxHint}</p>
             </div>
           </div>
           <Switch checked={data.hasRoofBox} onCheckedChange={(v) => onChange({ hasRoofBox: v })} />
