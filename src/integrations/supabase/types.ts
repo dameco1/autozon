@@ -292,15 +292,19 @@ export type Database = {
           id: string
           image_url: string | null
           is_seed: boolean
+          maintenance_receipts: boolean | null
           make: string
           market_blended: boolean
           mileage: number
           model: string
+          original_docs_available: boolean | null
           owner_id: string | null
           photos: string[] | null
           placement_paid: boolean
           power_hp: number | null
           price: number
+          service_book_updated: boolean | null
+          smoker_car: boolean | null
           status: string
           transmission: string
           updated_at: string
@@ -326,15 +330,19 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_seed?: boolean
+          maintenance_receipts?: boolean | null
           make: string
           market_blended?: boolean
           mileage?: number
           model: string
+          original_docs_available?: boolean | null
           owner_id?: string | null
           photos?: string[] | null
           placement_paid?: boolean
           power_hp?: number | null
           price?: number
+          service_book_updated?: boolean | null
+          smoker_car?: boolean | null
           status?: string
           transmission?: string
           updated_at?: string
@@ -360,15 +368,19 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_seed?: boolean
+          maintenance_receipts?: boolean | null
           make?: string
           market_blended?: boolean
           mileage?: number
           model?: string
+          original_docs_available?: boolean | null
           owner_id?: string | null
           photos?: string[] | null
           placement_paid?: boolean
           power_hp?: number | null
           price?: number
+          service_book_updated?: boolean | null
+          smoker_car?: boolean | null
           status?: string
           transmission?: string
           updated_at?: string
