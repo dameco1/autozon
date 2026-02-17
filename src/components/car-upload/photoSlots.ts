@@ -9,7 +9,7 @@ export const PHOTO_SLOTS: PhotoSlot[] = [
   { id: "left", required: true },
   { id: "right", required: true },
   { id: "interior_front", required: true },
-  { id: "interior_rear", required: true },
+  { id: "interior_rear", required: false },
   { id: "dashboard", required: true },
 ];
 
