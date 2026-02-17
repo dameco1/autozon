@@ -18,12 +18,22 @@ export function useCarMakes() {
   return useQuery({
     queryKey: ["car-makes"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
-        .from("car_models")
-        .select("make")
-        .order("make");
-      if (error) throw error;
-      const unique = [...new Set((data as any[]).map((d) => d.make))] as string[];
+      const all: any[] = [];
+      let from = 0;
+      const PAGE = 1000;
+      while (true) {
+        const { data, error } = await (supabase as any)
+          .from("car_models")
+          .select("make")
+          .order("make")
+          .range(from, from + PAGE - 1);
+        if (error) throw error;
+        if (!data || data.length === 0) break;
+        all.push(...data);
+        if (data.length < PAGE) break;
+        from += PAGE;
+      }
+      const unique = [...new Set(all.map((d: any) => d.make))] as string[];
       return unique;
     },
     staleTime: Infinity,
