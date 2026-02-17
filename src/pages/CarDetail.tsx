@@ -8,7 +8,9 @@ import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
+import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight, X, Maximize2, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Bookmark, BookmarkCheck } from "lucide-react";
+import { toast } from "sonner";
+import { INSPECTION_CATEGORIES, type InspectionChecklist } from "@/components/car-upload/inspectionChecklist";
 
 interface CarFull {
   id: string;
@@ -28,16 +30,21 @@ interface CarFull {
   equipment: string[] | null;
   description: string | null;
   photos: string[] | null;
+  inspection_checklist: InspectionChecklist | null;
+  owner_id: string | null;
 }
 
 const CarDetail: React.FC = () => {
    const { id } = useParams<{ id: string }>();
-   const { t } = useLanguage();
+   const { t, language } = useLanguage();
    const navigate = useNavigate();
    const [car, setCar] = useState<CarFull | null>(null);
    const [loading, setLoading] = useState(true);
    const [activePhoto, setActivePhoto] = useState(0);
    const [lightboxOpen, setLightboxOpen] = useState(false);
+   const [userId, setUserId] = useState<string | null>(null);
+   const [shortlisted, setShortlisted] = useState(false);
+   const [shortlistLoading, setShortlistLoading] = useState(false);
 
    const openLightbox = useCallback((index: number) => {
      setActivePhoto(index);
@@ -55,7 +62,21 @@ const CarDetail: React.FC = () => {
      window.addEventListener("keydown", handleKey);
      return () => { window.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
    }, [lightboxOpen, car?.photos?.length]);
-   
+
+   // Get user & check shortlist
+   useEffect(() => {
+     supabase.auth.getSession().then(({ data: { session } }) => {
+       if (session?.user) {
+         setUserId(session.user.id);
+         if (id) {
+           supabase.from("car_shortlists").select("id").eq("user_id", session.user.id).eq("car_id", id).maybeSingle().then(({ data }) => {
+             setShortlisted(!!data);
+           });
+         }
+       }
+     });
+   }, [id]);
+    
    const pageTitle = car ? `${car.year} ${car.make} ${car.model} - Fair Value & Details` : "Car Details";
    const pageDescription = car 
      ? `Detailed appraisal for ${car.year} ${car.make} ${car.model}. Fair value: €${car.fair_value_price?.toLocaleString()}. Condition score: ${car.condition_score}/100.`
@@ -70,17 +91,40 @@ const CarDetail: React.FC = () => {
     if (!id) return;
     supabase
       .from("cars")
-      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos")
+      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos, inspection_checklist, owner_id")
       .eq("id", id)
       .single()
       .then(({ data }) => {
         if (data) {
-          setCar(data as CarFull);
+          setCar(data as unknown as CarFull);
           setDownPayment(Math.round((data as any).price * 0.2));
         }
         setLoading(false);
       });
   }, [id]);
+
+  const handleToggleShortlist = async () => {
+    if (!userId || !id) return;
+    setShortlistLoading(true);
+    if (shortlisted) {
+      await supabase.from("car_shortlists").delete().eq("user_id", userId).eq("car_id", id);
+      setShortlisted(false);
+      toast.success(t.carDetail.removedFromShortlist);
+    } else {
+      const { error } = await supabase.from("car_shortlists").insert({ user_id: userId, car_id: id });
+      if (error) toast.error(error.message);
+      else { setShortlisted(true); toast.success(t.carDetail.addedToShortlist); }
+    }
+    setShortlistLoading(false);
+  };
+
+  const handleStartTrade = () => {
+    if (!userId) { navigate("/login"); return; }
+    // If user is the owner, redirect to fair value
+    if (car?.owner_id === userId) { navigate(`/fair-value/${id}`); return; }
+    // Otherwise navigate to buyer matches or create an offer flow
+    navigate(`/buyer-matches/${id}`);
+  };
 
   if (loading) {
     return <div className="min-h-screen bg-charcoal flex items-center justify-center"><span className="text-silver/60">Loading...</span></div>;
@@ -121,6 +165,10 @@ const CarDetail: React.FC = () => {
     { icon: Palette, label: t.carDetail.color, value: car.color || "—" },
     { icon: Zap, label: t.carDetail.power, value: car.power_hp ? `${car.power_hp} HP` : "—" },
   ];
+
+  const isDE = language === "de";
+  const inspectionChecklist = car.inspection_checklist;
+  const hasInspection = inspectionChecklist && Object.keys(inspectionChecklist).length > 0;
 
   return (
     <div className="min-h-screen bg-charcoal text-silver">
@@ -227,7 +275,7 @@ const CarDetail: React.FC = () => {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left: Specs + Equipment */}
+          {/* Left: Specs + Equipment + Inspection */}
           <div className="lg:col-span-2 space-y-6">
             {/* Specs */}
             <motion.div
@@ -287,6 +335,51 @@ const CarDetail: React.FC = () => {
                 </div>
               </motion.div>
             )}
+
+            {/* Inspection Checklist */}
+            {hasInspection && (
+              <motion.div
+                className="bg-secondary/50 border border-border rounded-2xl p-6"
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+              >
+                <h3 className="font-display font-bold text-white text-lg mb-5 flex items-center gap-2">
+                  <ClipboardCheck className="h-5 w-5 text-primary" /> {t.carDetail.inspectionChecklist}
+                </h3>
+                <div className="space-y-5">
+                  {INSPECTION_CATEGORIES.map((cat) => {
+                    const catItems = cat.items.filter((item) => inspectionChecklist![item.id] != null);
+                    if (catItems.length === 0) return null;
+                    return (
+                      <div key={cat.id}>
+                        <h4 className="text-xs font-bold text-primary uppercase tracking-wide mb-2">
+                          {isDE ? cat.titleDe : cat.titleEn}
+                        </h4>
+                        <div className="space-y-1.5">
+                          {catItems.map((item) => {
+                            const answer = inspectionChecklist![item.id];
+                            return (
+                              <div key={item.id} className="flex items-center justify-between gap-3 py-1.5 px-3 rounded-lg bg-charcoal/30">
+                                <span className="text-sm text-silver/70 flex-1">
+                                  {isDE ? item.labelDe : item.labelEn}
+                                </span>
+                                <span className={`flex items-center gap-1 text-xs font-medium shrink-0 ${
+                                  answer === "yes" ? "text-primary" : answer === "no" ? "text-destructive" : "text-amber-400"
+                                }`}>
+                                  {answer === "yes" && <CheckCircle2 className="h-3.5 w-3.5" />}
+                                  {answer === "no" && <XCircle className="h-3.5 w-3.5" />}
+                                  {answer === "unknown" && <HelpCircle className="h-3.5 w-3.5" />}
+                                  {answer === "yes" ? t.carDetail.inspectionYes : answer === "no" ? t.carDetail.inspectionNo : t.carDetail.inspectionUnknown}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
           </div>
 
           {/* Right: Calculators */}
@@ -342,11 +435,20 @@ const CarDetail: React.FC = () => {
 
             {/* CTAs */}
             <div className="space-y-3">
-              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl">
+              <Button
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl"
+                onClick={handleStartTrade}
+              >
                 {t.carDetail.startTrade}
               </Button>
-              <Button variant="outline" className="w-full border-border text-silver hover:border-primary hover:text-primary py-6 rounded-xl">
-                {t.carDetail.addToShortlist}
+              <Button
+                variant="outline"
+                className={`w-full border-border py-6 rounded-xl ${shortlisted ? "text-primary border-primary" : "text-silver hover:border-primary hover:text-primary"}`}
+                onClick={handleToggleShortlist}
+                disabled={shortlistLoading}
+              >
+                {shortlisted ? <BookmarkCheck className="mr-2 h-4 w-4" /> : <Bookmark className="mr-2 h-4 w-4" />}
+                {shortlisted ? t.carDetail.removeFromShortlist : t.carDetail.addToShortlist}
               </Button>
             </div>
           </div>

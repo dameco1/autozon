@@ -281,7 +281,7 @@ const CarUpload: React.FC = () => {
     t.carUpload.step1,
     t.carUpload.step2,
     t.carUpload.damage.resultTitle,
-    language === "de" ? "Inspektion" : "Inspection",
+    t.carUpload.inspection,
     t.carUpload.step3,
     t.carUpload.step4,
   ];
