@@ -58,4 +58,4 @@ export const EQUIPMENT_LIST = [
   "CCS Fast Charging", "Home Charger (Wallbox)", "Vehicle-to-Load (V2L)",
 ];
 
-export const STEPS = 5;
+export const STEPS = 6;

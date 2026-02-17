@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText, Camera, ShieldAlert, ChevronLeft } from "lucide-react";
+import { Car, ArrowRight, ArrowLeft, Check, Wrench, FileText, Camera, ShieldAlert, ClipboardCheck, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { STEPS } from "@/components/car-upload/constants";
@@ -16,10 +16,12 @@ import StepCondition from "@/components/car-upload/StepCondition";
 import StepPhotos from "@/components/car-upload/StepPhotos";
 import StepDamageReview from "@/components/car-upload/StepDamageReview";
 import AppraisalDisclaimer from "@/components/car-upload/AppraisalDisclaimer";
+import StepInspection from "@/components/car-upload/StepInspection";
 import type { DamageReport } from "@/components/car-upload/damageTypes";
+import type { InspectionChecklist } from "@/components/car-upload/inspectionChecklist";
 
 const CarUpload: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const editId = searchParams.get("edit");
@@ -98,6 +100,7 @@ const CarUpload: React.FC = () => {
         secondWheelSet: (data as any).second_wheel_set ?? false,
         hasRoofRack: (data as any).has_roof_rack ?? false,
         hasRoofBox: (data as any).has_roof_box ?? false,
+        inspectionChecklist: (data as any).inspection_checklist ?? {},
       });
     });
   }, [editId]);
@@ -242,6 +245,7 @@ const CarUpload: React.FC = () => {
       demand_score: demandScore,
       status: "available",
       detected_damages: confirmedDamageData,
+      inspection_checklist: formData.inspectionChecklist,
     } as any;
 
     let resultId: string | null = null;
@@ -271,11 +275,12 @@ const CarUpload: React.FC = () => {
     if (resultId) navigate(`/fair-value/${resultId}`);
   };
 
-  const stepIcons = [FileText, Camera, ShieldAlert, Wrench, Check];
+  const stepIcons = [FileText, Camera, ShieldAlert, ClipboardCheck, Wrench, Check];
   const stepLabels = [
     t.carUpload.step1,
     t.carUpload.step2,
     t.carUpload.damage.resultTitle,
+    language === "de" ? "Inspektion" : "Inspection",
     t.carUpload.step3,
     t.carUpload.step4,
   ];
@@ -344,7 +349,7 @@ const CarUpload: React.FC = () => {
         ) : (
           <>
             <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
-              {[1, 2, 3, 4, 5].map((s) => {
+              {[1, 2, 3, 4, 5, 6].map((s) => {
                 const Icon = stepIcons[s - 1];
                 return (
                   <div key={s} className="flex items-center gap-2">
@@ -391,8 +396,14 @@ const CarUpload: React.FC = () => {
                       hasPhotos={getAllPhotos().length > 0}
                     />
                   )}
-                  {step === 4 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
-                  {step === 5 && <StepCondition data={formData} onChange={updateForm} />}
+                  {step === 4 && (
+                    <StepInspection
+                      checklist={formData.inspectionChecklist}
+                      onChange={(c) => updateForm({ inspectionChecklist: c })}
+                    />
+                  )}
+                  {step === 5 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
+                  {step === 6 && <StepCondition data={formData} onChange={updateForm} />}
                 </motion.div>
               </AnimatePresence>
 

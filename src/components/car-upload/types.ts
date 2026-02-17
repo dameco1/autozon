@@ -1,4 +1,5 @@
 import type { PhotoMap } from "./photoSlots";
+import type { InspectionChecklist } from "./inspectionChecklist";
 
 export interface CarFormData {
   make: string;
@@ -30,6 +31,7 @@ export interface CarFormData {
   secondWheelSet: boolean;
   hasRoofRack: boolean;
   hasRoofBox: boolean;
+  inspectionChecklist: InspectionChecklist;
 }
 
 export const defaultCarFormData: CarFormData = {
@@ -62,4 +64,5 @@ export const defaultCarFormData: CarFormData = {
   secondWheelSet: false,
   hasRoofRack: false,
   hasRoofBox: false,
+  inspectionChecklist: {},
 };
