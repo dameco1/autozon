@@ -126,12 +126,9 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                 {slot.required && !url && (
                   <span className="text-destructive text-[10px]">*</span>
                 )}
-                {!slot.required && (
-                  <span className="text-[9px] font-normal px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">Optional</span>
-                )}
                 {url && <CheckCircle2 className="h-3 w-3 text-primary" />}
               </span>
-              <div className="relative group aspect-[4/3] rounded-xl overflow-hidden border border-border bg-charcoal/50">
+              <div className={`relative group aspect-[4/3] rounded-xl overflow-hidden bg-charcoal/50 ${slot.required ? 'border border-border' : 'border-2 border-dashed border-border/60'}`}>
                 {url ? (
                   <>
                     <img src={url} alt={slotLabels[slot.id]} className="w-full h-full object-cover" />
