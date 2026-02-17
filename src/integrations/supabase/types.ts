@@ -293,6 +293,7 @@ export type Database = {
           has_roof_rack: boolean | null
           id: string
           image_url: string | null
+          inspection_checklist: Json | null
           is_seed: boolean
           maintenance_receipts: boolean | null
           make: string
@@ -334,6 +335,7 @@ export type Database = {
           has_roof_rack?: boolean | null
           id?: string
           image_url?: string | null
+          inspection_checklist?: Json | null
           is_seed?: boolean
           maintenance_receipts?: boolean | null
           make: string
@@ -375,6 +377,7 @@ export type Database = {
           has_roof_rack?: boolean | null
           id?: string
           image_url?: string | null
+          inspection_checklist?: Json | null
           is_seed?: boolean
           maintenance_receipts?: boolean | null
           make?: string
