@@ -1,11 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { COLORS } from "./constants";
 import { useCarMakes, useCarModels, useCarVariants } from "@/hooks/useCarModels";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { ScanSearch, Loader2, CheckCircle2 } from "lucide-react";
 import type { CarFormData } from "./types";
 
 interface Props {
@@ -18,6 +22,8 @@ const YEARS = Array.from({ length: currentYear - 1999 }, (_, i) => currentYear -
 
 const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
   const { t } = useLanguage();
+  const [vinDecoding, setVinDecoding] = useState(false);
+  const [vinDecoded, setVinDecoded] = useState(false);
 
   const { data: makes = [], isLoading: makesLoading } = useCarMakes();
   const { data: models = [], isLoading: modelsLoading } = useCarModels(data.make);
@@ -49,8 +55,92 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
     onChange({ model, variant: "", powerHp: 0, fuelType: "Petrol", transmission: "Manual", bodyType: "Sedan" });
   };
 
+  const handleVinDecode = async () => {
+    if (!data.vin || data.vin.length < 11) {
+      toast.error("Please enter a valid VIN (at least 11 characters)");
+      return;
+    }
+    setVinDecoding(true);
+    setVinDecoded(false);
+    try {
+      const { data: result, error } = await supabase.functions.invoke("vin-decode", {
+        body: { vin: data.vin },
+      });
+      if (error) throw error;
+      if (result?.error) throw new Error(result.error);
+
+      // Auto-fill form fields from decoded VIN
+      const updates: Partial<CarFormData> = {};
+      if (result.make) updates.make = result.make;
+      if (result.model) updates.model = result.model;
+      if (result.year) updates.year = result.year;
+      if (result.body_type) updates.bodyType = result.body_type;
+      if (result.fuel_type) updates.fuelType = result.fuel_type;
+      if (result.transmission) updates.transmission = result.transmission;
+      if (result.power_hp) updates.powerHp = result.power_hp;
+
+      // Merge suggested equipment with existing (don't overwrite user selections)
+      if (result.suggested_equipment?.length > 0) {
+        const merged = [...new Set([...data.equipment, ...result.suggested_equipment])];
+        updates.equipment = merged;
+      }
+
+      onChange(updates);
+      setVinDecoded(true);
+
+      const confidenceMsg = result.confidence === "high"
+        ? "High confidence decode"
+        : result.confidence === "medium"
+          ? "Medium confidence — please verify"
+          : "Low confidence — please review all fields";
+      
+      toast.success(`VIN decoded: ${result.year} ${result.make} ${result.model}`, {
+        description: `${confidenceMsg}${result.notes ? ` · ${result.notes}` : ""}`,
+        duration: 6000,
+      });
+    } catch (err: any) {
+      toast.error(err.message || "VIN decode failed");
+    } finally {
+      setVinDecoding(false);
+    }
+  };
+
   return (
     <div className="space-y-5">
+      {/* VIN Decode Section — prominent placement */}
+      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
+        <Label className="text-silver/80 text-sm flex items-center gap-2 mb-2">
+          <ScanSearch className="h-4 w-4 text-primary" />
+          {t.carUpload.vin} — Auto-fill from VIN
+        </Label>
+        <div className="flex gap-2">
+          <Input
+            value={data.vin}
+            onChange={(e) => { onChange({ vin: e.target.value.toUpperCase() }); setVinDecoded(false); }}
+            className="bg-charcoal border-border text-white font-mono tracking-wider"
+            placeholder="WVWZZZ3CZWE123456"
+            maxLength={17}
+          />
+          <Button
+            type="button"
+            onClick={handleVinDecode}
+            disabled={vinDecoding || !data.vin || data.vin.length < 11}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-4 whitespace-nowrap"
+          >
+            {vinDecoding ? (
+              <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Decoding...</>
+            ) : vinDecoded ? (
+              <><CheckCircle2 className="h-4 w-4 mr-1.5" /> Decoded</>
+            ) : (
+              <><ScanSearch className="h-4 w-4 mr-1.5" /> Decode VIN</>
+            )}
+          </Button>
+        </div>
+        <p className="text-silver/40 text-xs mt-1.5">
+          Enter your 17-character VIN to auto-fill make, model, year, specs, and suggested equipment
+        </p>
+      </div>
+
       {/* Make → Model → Variant cascade */}
       <div className="grid grid-cols-3 gap-4">
         <div>
@@ -98,6 +188,17 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
         </div>
       )}
 
+      {/* VIN-decoded specs (when no variant selected but VIN was decoded) */}
+      {vinDecoded && !selectedVariant && data.powerHp > 0 && (
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="outline" className="text-xs border-primary/30 text-primary">VIN decoded</Badge>
+          <Badge variant="secondary" className="text-xs">{data.powerHp} HP</Badge>
+          <Badge variant="secondary" className="text-xs">{data.fuelType}</Badge>
+          <Badge variant="secondary" className="text-xs">{data.transmission}</Badge>
+          <Badge variant="secondary" className="text-xs">{data.bodyType}</Badge>
+        </div>
+      )}
+
       {/* Year, Mileage, Color */}
       <div className="grid grid-cols-3 gap-4">
         <div>
@@ -124,15 +225,11 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
         </div>
       </div>
 
-      {/* Price + VIN */}
+      {/* Price */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label className="text-silver/80 text-sm">{t.carUpload.price}</Label>
           <Input type="number" value={data.price} onChange={(e) => onChange({ price: Number(e.target.value) })} className="bg-charcoal border-border text-white mt-1" />
-        </div>
-        <div>
-          <Label className="text-silver/80 text-sm">{t.carUpload.vin}</Label>
-          <Input value={data.vin} onChange={(e) => onChange({ vin: e.target.value })} className="bg-charcoal border-border text-white mt-1" placeholder="WVWZZZ3CZWE123456" />
         </div>
       </div>
     </div>
