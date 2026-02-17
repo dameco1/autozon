@@ -106,12 +106,14 @@ function estimateReferenceMSRP(
   return Math.round(base);
 }
 
-export function calculateFairValue(data: CarFormData): FairValueResult {
+export function calculateFairValue(data: CarFormData, modelMsrpEur?: number | null): FairValueResult {
   const currentYear = 2026;
   const carAge = currentYear - data.year;
 
-  // 0. Attribute-based reference MSRP (independent of asking price)
-  const referenceMSRP = estimateReferenceMSRP(data.make, data.bodyType, data.powerHp, data.fuelType);
+  // 0. Use model-specific MSRP from DB when available, otherwise estimate from attributes
+  const referenceMSRP = (modelMsrpEur && modelMsrpEur > 0)
+    ? modelMsrpEur
+    : estimateReferenceMSRP(data.make, data.bodyType, data.powerHp, data.fuelType);
 
   // 1. Non-Linear Depreciation Curve (brand-tiered)
   const isPremium = PREMIUM_BRANDS.includes(data.make);
