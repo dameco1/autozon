@@ -6,14 +6,13 @@ This document outlines autozon's current ownership structure, planned equity all
 
 ---
 
-## Current Ownership (At Incorporation)
+## Pre-Investment Ownership
 
 | Shareholder | Role | Shares | Ownership | Voting Rights |
 |---|---|---|---|---|
-| **Damir Buljubasic** | Co-Founder & CIO | 60,000 | 60% | 60% |
-| **Emina Mukic-Buljubasic** | Co-Founder & CEO | 10,000 | 10% | 10% |
-| **Nenad Brankovic** | CFO | 10,000 | 10% | 10% |
-| **First Investor** (reserved) | Seed Investor | 20,000 | 20% | 20% |
+| **Damir Buljubasic** | Co-Founder & CIO | 75,000 | 75% | 75% |
+| **Emina Mukic-Buljubasic** | Co-Founder & CEO | 12,500 | 12.5% | 12.5% |
+| **Nenad Brankovic** | CFO | 12,500 | 12.5% | 12.5% |
 | **Total** | | **100,000** | **100%** | **100%** |
 
 **Entity:** autozon FlexCo (to be incorporated in Vienna, Austria)
@@ -22,32 +21,32 @@ This document outlines autozon's current ownership structure, planned equity all
 
 **Authorized share capital:** 100,000 shares (expandable by shareholder resolution)
 
-**Implied valuation:** €1.5M (€300K for 20%)
+**Pre-money valuation:** €1M
 
 ---
 
-## Post-First-Investor Cap Table
+## Post-Investment Cap Table
 
-### Scenario — €300K for 20% at €1.5M Valuation
+### Scenario — €300K Investment → Post-Money €1.3M
 
 | Shareholder | Shares | Ownership | Investment | Price/Share |
 |---|---|---|---|---|
-| **Damir Buljubasic** (Co-Founder & CIO) | 60,000 | 60% | Sweat equity | — |
-| **Emina Mukic-Buljubasic** (Co-Founder & CEO) | 10,000 | 10% | Sweat equity | — |
-| **Nenad Brankovic** (CFO) | 10,000 | 10% | Sweat equity | — |
-| **First Investor** | 20,000 | 20% | €300,000 | €15.00 |
-| **Total** | **100,000** | **100%** | | |
+| **Damir Buljubasic** (Co-Founder & CIO) | 75,000 | 57.69% | Sweat equity | — |
+| **Emina Mukic-Buljubasic** (Co-Founder & CEO) | 12,500 | 9.62% | Sweat equity | — |
+| **Nenad Brankovic** (CFO) | 12,500 | 9.62% | Sweat equity | — |
+| **First Investor** | 30,000 | 23.08% | €300,000 | €10.00 |
+| **Total** | **130,000** | **100%** | | |
 
 ### Post-ESOP Allocation
 
 | Shareholder | Shares | Ownership | Notes |
 |---|---|---|---|
-| **Damir Buljubasic** (Co-Founder & CIO) | 60,000 | 57.1% | |
-| **Emina Mukic-Buljubasic** (Co-Founder & CEO) | 10,000 | 9.5% | |
-| **Nenad Brankovic** (CFO) | 10,000 | 9.5% | |
-| **First Investor** | 20,000 | 19.0% | |
-| **ESOP Pool** (reserved) | 5,000 | 4.8% | Value participation shares (FlexCo) |
-| **Total** | **105,000** | **100%** | |
+| **Damir Buljubasic** (Co-Founder & CIO) | 75,000 | 55.56% | |
+| **Emina Mukic-Buljubasic** (Co-Founder & CEO) | 12,500 | 9.26% | |
+| **Nenad Brankovic** (CFO) | 12,500 | 9.26% | |
+| **First Investor** | 30,000 | 22.22% | |
+| **ESOP Pool** (reserved) | 5,000 | 3.70% | Value participation shares (FlexCo) |
+| **Total** | **135,000** | **100%** | |
 
 ---
 
@@ -69,7 +68,7 @@ This document outlines autozon's current ownership structure, planned equity all
 | **Carvago** | Seed | €2.5M | 2019 | CEE used car marketplace |
 | **Cardino** | Pre-Seed | €1.8M | 2022 | EV resale platform (Berlin) |
 | **heycar** | Seed | €3M | 2017 | Used car marketplace (VW-backed) |
-| **autozon** | Seed | **€1.5M** | 2026 | AI-powered fair-value P2P |
+| **autozon** | Seed | **€1M pre / €1.3M post** | 2026 | AI-powered fair-value P2P |
 
 ---
 
@@ -103,29 +102,29 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Round | Timing | Amount | Pre-Money | Dilution | Team Post-Round |
 |---|---|---|---|---|---|
-| **First Investor** | Y1 Q1 | €300K | €1.5M (20% reserved) | 20% | 80% (combined team) |
-| **Bridge (optional)** | Y1 Q4 | €150K | €4M | 3.6% | 77.1% (combined team) |
-| **Series A** | Y2 Q3 | €1.5M | €10M | 13.0% | 67.1% (combined team) |
+| **First Investor** | Y1 Q1 | €300K | €1M (post-money €1.3M) | 23.08% | 76.92% (combined team) |
+| **Bridge (optional)** | Y1 Q4 | €150K | €4M | 3.6% | 74.1% (combined team) |
+| **Series A** | Y2 Q3 | €1.5M | €10M | 13.0% | 64.5% (combined team) |
 
 ### Path Without Bridge
 
 | Round | Timing | Amount | Pre-Money | Dilution | Team Post-Round |
 |---|---|---|---|---|---|
-| **First Investor** | Y1 Q1 | €300K | €1.5M (20% reserved) | 20% | 80% (combined team) |
-| **Series A** | Y2 Q4 | €2M | €12M | 14.3% | 68.6% (combined team) |
+| **First Investor** | Y1 Q1 | €300K | €1M (post-money €1.3M) | 23.08% | 76.92% (combined team) |
+| **Series A** | Y2 Q4 | €2M | €12M | 14.3% | 65.9% (combined team) |
 
 ---
 
 ## Investor Returns Projection
 
-### First Investor at €300K (20%)
+### First Investor at €300K (23.08%)
 
 | Exit Scenario | Company Valuation | Investor Ownership | Investor Value | Multiple |
 |---|---|---|---|---|
-| **Conservative** (Y5) | €10M | 16%* | €1.6M | 5.3x |
-| **Base case** (Y5) | €25M | 16%* | €4.0M | 13.3x |
-| **Optimistic** (Y5) | €50M | 16%* | €8.0M | 26.7x |
-| **Home run** (Y5) | €100M | 16%* | €16.0M | 53.3x |
+| **Conservative** (Y5) | €10M | 19%* | €1.9M | 6.3x |
+| **Base case** (Y5) | €25M | 19%* | €4.75M | 15.8x |
+| **Optimistic** (Y5) | €50M | 19%* | €9.5M | 31.7x |
+| **Home run** (Y5) | €100M | 19%* | €19.0M | 63.3x |
 
 *Post Series A dilution estimated at ~17%
 
@@ -145,7 +144,7 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Right | Detail |
 |---|---|
-| **Board seat** | 1 board seat (20% ownership) |
+| **Board seat** | 1 board seat (23.08% ownership) |
 | **Information rights** | Quarterly financial reports, annual audit, KPI dashboard access |
 | **Pro-rata rights** | Right to participate in future rounds to maintain ownership % |
 | **Anti-dilution** | Weighted average broad-based anti-dilution protection |
@@ -183,7 +182,7 @@ This document outlines autozon's current ownership structure, planned equity all
 
 | Date | Event | Cap Table Impact |
 |---|---|---|
-| **Y1 Q1** | FlexCo incorporation | 100,000 shares issued (60K/10K/10K/20K investor) |
+| **Y1 Q1** | FlexCo incorporation | 100,000 shares issued (75K/12.5K/12.5K founders) + 30K investor |
 | **Y1 Q2** | ESOP pool created | 5,000 shares reserved |
 | **Y1 Q3** | First ESOP grant (Growth Manager) | ~1,500 shares allocated |
 | **Y2 Q1** | Second ESOP grant (Lead Developer) | ~1,500 shares allocated |
