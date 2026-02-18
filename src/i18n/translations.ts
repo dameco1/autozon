@@ -739,6 +739,11 @@ export const translations = {
       myRecommendations: "My Recommendations",
       viewAd: "View Ad",
       valuation: "Valuation",
+      paymentHistory: "Payment History",
+      noPayments: "No placement payments yet.",
+      receipt: "Receipt",
+      invoice: "Invoice",
+      placementFee: "Ad Placement",
     },
     disclaimer: {
       title: "Before You Begin",
@@ -1515,6 +1520,11 @@ export const translations = {
       myRecommendations: "Meine Empfehlungen",
       viewAd: "Anzeige ansehen",
       valuation: "Bewertung",
+      paymentHistory: "Zahlungshistorie",
+      noPayments: "Noch keine Platzierungszahlungen.",
+      receipt: "Beleg",
+      invoice: "Rechnung",
+      placementFee: "Anzeigenplatzierung",
     },
     disclaimer: {
       title: "Bevor Sie beginnen",
