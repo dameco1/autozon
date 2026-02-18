@@ -103,20 +103,23 @@ const CarDetail: React.FC = () => {
       });
   }, [id]);
 
-  const handleToggleShortlist = async () => {
-    if (!userId || !id) return;
-    setShortlistLoading(true);
-    if (shortlisted) {
-      await supabase.from("car_shortlists").delete().eq("user_id", userId).eq("car_id", id);
-      setShortlisted(false);
-      toast.success(t.carDetail.removedFromShortlist);
-    } else {
-      const { error } = await supabase.from("car_shortlists").insert({ user_id: userId, car_id: id });
-      if (error) toast.error(error.message);
-      else { setShortlisted(true); toast.success(t.carDetail.addedToShortlist); }
-    }
-    setShortlistLoading(false);
-  };
+   const isOwner = car?.owner_id === userId;
+
+   const handleToggleShortlist = async () => {
+     if (!userId || !id) return;
+     if (isOwner) { toast.error("You cannot shortlist your own car."); return; }
+     setShortlistLoading(true);
+     if (shortlisted) {
+       await supabase.from("car_shortlists").delete().eq("user_id", userId).eq("car_id", id);
+       setShortlisted(false);
+       toast.success(t.carDetail.removedFromShortlist);
+     } else {
+       const { error } = await supabase.from("car_shortlists").insert({ user_id: userId, car_id: id });
+       if (error) toast.error(error.message);
+       else { setShortlisted(true); toast.success(t.carDetail.addedToShortlist); }
+     }
+     setShortlistLoading(false);
+   };
 
   const handleStartTrade = () => {
     if (!userId) { navigate("/login"); return; }
