@@ -49,7 +49,7 @@ export const SlideCover = () => (
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      We've built a <span className="text-white font-bold">working product</span> — the fair‑value engine, AI damage detection, market comparison, buyer discovery questionnaire, iterative matching, and structured negotiation system are all live. We're now <span className="text-white font-bold">raising capital</span> to scale across DACH and CEE.
+      We've built a <span className="text-white font-bold">complete end‑to‑end platform</span> — AI fair‑value engine, damage detection, market comparison, buyer discovery &amp; matching, structured negotiation, <span className={`${green} font-bold`}>full transaction pipeline</span> (contract generation, payment, insurance), AI concierge, VIN decoding, MFA security, admin dashboard, and bilingual DE/EN support — all live. We're now <span className="text-white font-bold">raising capital</span> to scale across DACH and CEE.
     </p>
 
     <p className={`text-[26px] ${green} font-semibold mt-10`}>
@@ -142,10 +142,10 @@ export const SlideSolution = () => (
     </p>
     <div className="grid grid-cols-2 gap-8">
       {[
-        { icon: Brain, title: "Blended Fair-Value Engine", desc: "30% formula-based appraisal + 70% real market data — no more guessing" },
-        { icon: Users, title: "Smart Buyer Matching", desc: "10-step buyer questionnaire → iterative selection → 2 finalists side-by-side" },
-        { icon: Handshake, title: "Structured Negotiation", desc: "Max 3 rounds of offer/counter — transparent, fair, and fast" },
-        { icon: Car, title: "Full Lifecycle", desc: "Acquisition options (credit, leasing, trade-in), concierge, and next-car recommendations" },
+        { icon: Brain, title: "Blended Fair-Value Engine", desc: "30% formula + 70% real market data — AI damage detection & VIN decoding included" },
+        { icon: Users, title: "Smart Buyer Matching", desc: "10-step questionnaire → iterative selection → 2 finalists side-by-side with editable preferences" },
+        { icon: Handshake, title: "Structured Negotiation", desc: "Max 3 rounds of offer/counter — with AI concierge assistance and PDF deal summary" },
+        { icon: FileText, title: "End-to-End Transactions", desc: "Contract generation, payment (wire/card/leasing), insurance, completion — fully digital or manual" },
       ].map(({ icon: Icon, title, desc }) => (
         <div key={title} className={`${cardBg} flex items-start gap-6`}>
           <Icon className={green} size={36} />
@@ -339,7 +339,7 @@ export const SlideProductDemo = () => (
         </div>
       </div>
 
-      {/* Negotiation Mock */}
+      {/* Transaction Flow Mock */}
       <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
         <div className="bg-white/5 px-6 py-3 border-b border-white/10 flex items-center gap-2">
           <div className="flex gap-1.5">
@@ -347,53 +347,44 @@ export const SlideProductDemo = () => (
             <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
             <div className="w-3 h-3 rounded-full bg-green/60" />
           </div>
-          <span className="text-[14px] text-silver/40 ml-3">autozon.app/negotiate</span>
+          <span className="text-[14px] text-silver/40 ml-3">autozon.app/transaction</span>
         </div>
         <div className="p-8">
           <div className="text-center mb-6">
-            <span className="text-[14px] text-green bg-green/10 px-3 py-1 rounded-full">Negotiate</span>
+            <span className="text-[14px] text-green bg-green/10 px-3 py-1 rounded-full">Transaction</span>
             <h3 className="text-[28px] text-white font-display font-bold mt-3">2023 BMW 3 Series</h3>
+            <p className="text-[14px] text-silver/50 mt-1">Agreed price: €39,500</p>
           </div>
-          <div className="bg-white/5 rounded-xl p-4 mb-4">
-            <div className="flex justify-between text-[16px] mb-1">
-              <span className="text-silver/60">Autozon Fair Value</span>
-              <span className="text-green font-bold">€39,100</span>
-            </div>
-            <div className="flex justify-between text-[16px]">
-              <span className="text-silver/60">Asking Price</span>
-              <span className="text-white font-bold">€42,500</span>
-            </div>
-            <div className="w-full h-2 bg-white/10 rounded-full mt-3">
-              <div className="h-2 bg-green rounded-full" style={{ width: "92%" }} />
-            </div>
-          </div>
-          <div className="space-y-3">
-            <div className="bg-white/5 rounded-xl p-4 flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <ArrowRight className="text-green" size={18} />
-                <div>
-                  <p className="text-[16px] text-white font-semibold">Buyer offered</p>
-                  <p className="text-[13px] text-silver/40 italic">"Love this 3 Series! Happy to close quickly."</p>
+          {/* Step indicator */}
+          <div className="flex items-center justify-between mb-6 px-2">
+            {["Method", "Contract", "Payment", "Insurance", "Complete"].map((step, i) => (
+              <div key={step} className="flex items-center gap-2">
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-bold ${i < 3 ? "bg-green text-charcoal" : i === 3 ? "border-2 border-green text-green" : "border border-white/20 text-silver/40"}`}>
+                  {i < 3 ? "✓" : i + 1}
                 </div>
+                <span className={`text-[13px] ${i <= 3 ? "text-white" : "text-silver/40"}`}>{step}</span>
+                {i < 4 && <div className={`w-6 h-px ${i < 3 ? "bg-green" : "bg-white/10"}`} />}
               </div>
-              <span className="text-[24px] text-white font-display font-bold">€38,000</span>
-            </div>
-            <div className="bg-white/5 rounded-xl p-4 flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <MessageSquare className="text-amber-400" size={18} />
-                <p className="text-[16px] text-white font-semibold">Seller countered</p>
+            ))}
+          </div>
+          {/* Insurance step */}
+          <div className="bg-white/5 rounded-xl p-4 space-y-3">
+            <p className="text-[16px] text-white font-semibold">Choose Insurance</p>
+            {[
+              { tier: "Basic (Haftpflicht)", price: "€38/mo", active: false },
+              { tier: "Kasko + Protection", price: "€67/mo", active: true },
+              { tier: "Premium All-Risk", price: "€94/mo", active: false },
+            ].map(({ tier, price, active }) => (
+              <div key={tier} className={`rounded-lg px-4 py-3 flex justify-between items-center ${active ? "bg-green/10 border border-green/30" : "bg-white/5 border border-white/10"}`}>
+                <span className={`text-[15px] ${active ? "text-green font-semibold" : "text-silver"}`}>{tier}</span>
+                <span className={`text-[15px] ${active ? "text-green font-bold" : "text-silver/60"}`}>{price}</span>
               </div>
-              <span className="text-[24px] text-white font-display font-bold">€37,500</span>
-            </div>
-            <div className="flex items-center gap-2 text-silver/40 text-[14px] justify-center pt-2">
-              <CheckCircle size={16} className="text-green" />
-              <span>Round 2/3 · Waiting for buyer response</span>
-            </div>
+            ))}
           </div>
         </div>
       </div>
     </div>
-    <p className="text-center text-[20px] text-silver/40 mt-8 italic">Live screenshots from the working Autozon platform</p>
+    <p className="text-center text-[20px] text-silver/40 mt-8 italic">Live screenshots from the working Autozon platform — end-to-end from valuation to transaction</p>
   </div>
 );
 
@@ -406,11 +397,11 @@ export const SlideWhyNow = () => (
     </div>
     <div className="space-y-6">
       {[
-        "Trust in dealerships is collapsing",
-        "Consumers demand transparency",
-        "AI enables personalized matching at scale",
-        "No dominant fair-value car platform exists yet",
-        "Cross-border markets are more connected than ever",
+        "Trust in dealerships is collapsing — consumers demand transparency",
+        "EU consumer protection directives pushing for price transparency in used-car markets",
+        "AI enables personalized matching and fair valuation at scale",
+        "No dominant fair-value car platform exists yet — greenfield opportunity",
+        "Cross-border DACH/CEE markets are more connected than ever",
       ].map((text, i) => (
         <div key={i} className="flex items-center gap-6">
           <ChevronRight className={green} size={32} />
@@ -650,11 +641,11 @@ export const SlideMoatRoadmap = () => (
       <div>
         <h3 className={subheading + " mb-6"}>Roadmap</h3>
         {[
-          { phase: "MVP", desc: "Core valuation + matching + negotiation ✅" },
-          { phase: "V1", desc: "Concierge + dealer network" },
-          { phase: "V1.5", desc: "Seller KYC — ownership verification + financing automation" },
-          { phase: "V2", desc: "Financing, insurance, logistics" },
-          { phase: "V3", desc: "Lifecycle platform + data insights" },
+          { phase: "MVP", desc: "Valuation + matching + negotiation ✅" },
+          { phase: "V1", desc: "Transactions, concierge, VIN decode, MFA, i18n, admin ✅" },
+          { phase: "V1.5", desc: "Seller KYC — ownership verification + dealer network" },
+          { phase: "V2", desc: "Logistics, fleet tools, partner API integrations" },
+          { phase: "V3", desc: "Lifecycle platform + data intelligence for OEMs & insurers" },
         ].map(({ phase, desc }) => (
           <div key={phase} className="flex items-center gap-4 mb-4">
             <span className={`text-[24px] ${green} font-bold w-16`}>{phase}</span>
