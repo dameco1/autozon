@@ -86,6 +86,28 @@ Structured multi-round negotiation between buyer and seller:
 - Status states: `pending`, `countered`, `accepted`, `rejected`, `expired`
 - Agreement generates a downloadable PDF (`jsPDF`)
 - Fair value displayed as neutral reference point
+- **Completed negotiations** (accepted/rejected) are filtered from the dashboard's Active Negotiations sidebar
+- **Re-purchase guard**: If a user navigates to an accepted offer for a sold car, they are redirected to the transaction summary
+
+### Self-Dealing Prevention
+
+Users cannot buy or negotiate on their own cars:
+- **Database level**: RLS policies on `offers`, `car_shortlists`, and `transactions` enforce `buyer_id != seller_id`
+- **Frontend level**: CarDetail blocks shortlisting own cars; BuyerMatches blocks self-offers
+
+---
+
+## 4. Car Status Lifecycle
+
+| Status | Meaning |
+|---|---|
+| `available` | Listed and visible to buyers |
+| `sold` | Transaction completed — shown with SOLD badge on dashboard |
+
+When a transaction completes (digital or manual), `cars.status` is set to `sold`. Sold cars:
+- Show red "SOLD" badge on seller dashboard
+- Hide edit/delete/place-ad actions
+- Show "Transaction" link to full summary at `/acquire/:offerId`
 
 ---
 

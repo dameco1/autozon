@@ -80,7 +80,9 @@
 All tables have RLS enabled. Key policies:
 - **cars**: Owners can CRUD their own; all authenticated users can SELECT available cars; admins full access
 - **profiles**: Users can only read/write their own profile; admins can view/update all
-- **offers**: Buyer and seller of the offer can read/update; admins full access
+- **offers**: Buyer and seller of the offer can read/update; buyers cannot create offers on own cars (`buyer_id != seller_id`); admins full access
+- **car_shortlists**: Users can CRUD own; cannot shortlist own cars; car owners can view shortlists on their cars
+- **transactions**: Buyers and sellers can view/update own; buyers cannot create transactions on own cars (`buyer_id != seller_id`); admins full access
 - **notifications**: Users can only see their own notifications; admins can view all
 - **chat_messages**: Users can only access their own chat history
 - **car_models**: All authenticated users can read; no public write access (seeded via edge function with service role)

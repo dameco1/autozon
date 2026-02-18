@@ -29,7 +29,7 @@
 
 | Route | Page | Purpose |
 |---|---|---|
-| `/dashboard` | Dashboard | Overview of listings, matches, offers, shortlists |
+| `/dashboard` | Dashboard | Selling/Buying tabs — listings, matches, offers, shortlists, acquisitions |
 | `/car-upload` | Car Upload Wizard | 5-step listing creation with AI features |
 | `/car-upload?edit=<id>` | Edit Listing | Re-enter wizard to update existing car |
 | `/fair-value/:id` | Fair Value Result | Appraisal breakdown, depreciation chart, market comparison |

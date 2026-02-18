@@ -94,6 +94,22 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 
 - **Languages**: English (EN), German (DE)
 - **Implementation**: React Context (`LanguageContext.tsx`)
-- **Translation file**: `src/i18n/translations.ts` (~1400 lines, includes MFA strings)
+- **Translation file**: `src/i18n/translations.ts` (~1650 lines)
 - **Toggle**: Globe icon in Navbar
-- **Coverage**: All user-facing strings, including form labels, error messages, and legal pages
+- **Coverage**: All user-facing strings, including form labels, error messages, legal pages, dashboard tabs (Selling/Buying), SOLD labels, transaction summaries, and buyer tab content
+
+## Dashboard
+
+The dashboard uses a **Selling / Buying** tab layout:
+
+### Selling Tab
+- My Cars list with status badges: **Ad Live** (green), **Not Placed** (amber), **SOLD** (red)
+- Sold cars show a "Transaction" link instead of edit/delete/place-ad actions
+- Active Negotiations sidebar (only `pending` and `countered` offers)
+- Recent Matches (shortlists from other users)
+- Payment History (Stripe receipts)
+
+### Buying Tab (`DashboardBuyerTab`)
+- Active Acquisitions with step progress (Method → Contract → Payment → Insurance → Complete)
+- My Offers (negotiations where user is buyer)
+- Shortlisted Cars
