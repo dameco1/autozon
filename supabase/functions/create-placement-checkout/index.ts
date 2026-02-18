@@ -51,8 +51,8 @@ serve(async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `${origin}/buyer-matches/${carId}?placement=success`,
-      cancel_url: `${origin}/buyer-matches/${carId}?placement=cancelled`,
+      success_url: `${origin}/dashboard?placement=success&car=${carId}`,
+      cancel_url: `${origin}/dashboard?placement=cancelled`,
       metadata: {
         car_id: carId,
         user_id: user.id,
