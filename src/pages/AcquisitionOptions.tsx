@@ -142,6 +142,11 @@ const AcquisitionOptions: React.FC = () => {
     }
   }, [offer, transactionId]);
 
+  const markCarSold = useCallback(async () => {
+    if (!offer) return;
+    await supabase.from("cars").update({ status: "sold" } as any).eq("id", offer.car_id);
+  }, [offer]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-charcoal flex items-center justify-center">
@@ -173,6 +178,7 @@ const AcquisitionOptions: React.FC = () => {
     setCompletionMethod(method);
     if (method === "manual") {
       await saveTransaction({ completion_method: "manual", status: "completed", current_step: 5 });
+      await markCarSold();
       setStep(99); // Show manual complete
     } else {
       await saveTransaction({ completion_method: "digital", status: "contract_pending", current_step: 2 });
@@ -215,6 +221,7 @@ const AcquisitionOptions: React.FC = () => {
       status: "completed",
       current_step: 5,
     });
+    await markCarSold();
     setStep(5);
   };
 
@@ -225,6 +232,7 @@ const AcquisitionOptions: React.FC = () => {
       status: "completed",
       current_step: 5,
     });
+    await markCarSold();
     setStep(5);
   };
 
