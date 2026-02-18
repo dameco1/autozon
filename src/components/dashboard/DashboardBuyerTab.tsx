@@ -5,10 +5,13 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import {
   Car, ShoppingCart, Bookmark, Handshake, ArrowRight, FileCheck,
   CreditCard, Shield, CheckCircle2, Clock, Search, BarChart3,
+  Settings2, Pencil, Save, X,
 } from "lucide-react";
 
 const fadeUp = {
@@ -19,6 +22,7 @@ const fadeUp = {
   }),
 };
 
+// ... keep existing code (types BuyerOffer, ShortlistedCar, BuyerTransaction, Props)
 type BuyerOffer = {
   id: string;
   car_id: string;
@@ -49,9 +53,26 @@ type BuyerTransaction = {
   created_at: string;
 };
 
+type UserPrefs = {
+  preferred_makes: string[] | null;
+  preferred_body_types: string[] | null;
+  preferred_fuel_types: string[] | null;
+  preferred_transmission: string | null;
+  min_budget: number | null;
+  max_budget: number | null;
+  min_year: number | null;
+  max_year: number | null;
+  max_mileage: number | null;
+  preferred_colors: string[] | null;
+  timing_preference: string | null;
+};
+
 interface Props {
   userId: string;
 }
+
+const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
+const FUEL_TYPES = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
 
 const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
   const navigate = useNavigate();
@@ -62,26 +83,27 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
   const [shortlists, setShortlists] = useState<ShortlistedCar[]>([]);
   const [buyerTxs, setBuyerTxs] = useState<BuyerTransaction[]>([]);
   const [carCache, setCarCache] = useState<Record<string, { make: string; model: string; year: number; price: number; image_url: string | null; fair_value_price: number | null }>>({});
+  const [prefs, setPrefs] = useState<UserPrefs | null>(null);
+  const [editingPrefs, setEditingPrefs] = useState(false);
+  const [editPrefs, setEditPrefs] = useState<UserPrefs | null>(null);
+  const [savingPrefs, setSavingPrefs] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
-      const [offersRes, shortlistsRes, txRes] = await Promise.all([
+      const [offersRes, shortlistsRes, txRes, prefsRes] = await Promise.all([
         supabase.from("offers").select("id, car_id, amount, status, current_round, agreed_price, created_at").eq("buyer_id", userId).order("created_at", { ascending: false }),
         supabase.from("car_shortlists").select("id, car_id, created_at").eq("user_id", userId).order("created_at", { ascending: false }),
         supabase.from("transactions").select("id, car_id, offer_id, agreed_price, status, current_step, payment_confirmed, contract_signed_buyer, insurance_confirmed, created_at").eq("buyer_id", userId).order("created_at", { ascending: false }),
+        supabase.from("user_preferences").select("preferred_makes, preferred_body_types, preferred_fuel_types, preferred_transmission, min_budget, max_budget, min_year, max_year, max_mileage, preferred_colors, timing_preference").eq("user_id", userId).maybeSingle(),
       ]);
 
-      const offers = offersRes.data || [];
-      const sls = shortlistsRes.data || [];
-      const txs = txRes.data || [];
+      setBuyerOffers(offersRes.data || []);
+      setShortlists(shortlistsRes.data || []);
+      setBuyerTxs(txRes.data || []);
+      if (prefsRes.data) setPrefs(prefsRes.data as UserPrefs);
 
-      setBuyerOffers(offers);
-      setShortlists(sls);
-      setBuyerTxs(txs);
-
-      // Fetch car details for all referenced cars
-      const allCarIds = [...new Set([...offers.map(o => o.car_id), ...sls.map(s => s.car_id), ...txs.map(tx => tx.car_id)])];
+      const allCarIds = [...new Set([...(offersRes.data || []).map(o => o.car_id), ...(shortlistsRes.data || []).map(s => s.car_id), ...(txRes.data || []).map(tx => tx.car_id)])];
       if (allCarIds.length > 0) {
         const { data: carsData } = await supabase.from("cars").select("id, make, model, year, price, image_url, fair_value_price").in("id", allCarIds);
         const cache: Record<string, any> = {};
@@ -122,6 +144,43 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
     { icon: CheckCircle2, label: dt.buyerStepComplete || "Complete" },
   ];
 
+  const handleStartEditPrefs = () => {
+    setEditPrefs(prefs ? { ...prefs } : {
+      preferred_makes: [], preferred_body_types: [], preferred_fuel_types: [],
+      preferred_transmission: null, min_budget: 5000, max_budget: 50000,
+      min_year: 2018, max_year: 2026, max_mileage: 100000,
+      preferred_colors: [], timing_preference: "browsing",
+    });
+    setEditingPrefs(true);
+  };
+
+  const handleSavePrefs = async () => {
+    if (!editPrefs) return;
+    setSavingPrefs(true);
+    const { error } = await supabase.from("user_preferences").upsert({
+      user_id: userId,
+      ...editPrefs,
+      onboarding_completed: true,
+    } as any, { onConflict: "user_id" });
+    setSavingPrefs(false);
+    if (error) { toast.error(error.message); return; }
+    setPrefs(editPrefs);
+    setEditingPrefs(false);
+    toast.success("Preferences saved");
+  };
+
+  const togglePrefArray = (field: keyof UserPrefs, value: string) => {
+    if (!editPrefs) return;
+    const arr = (editPrefs[field] as string[] | null) || [];
+    const updated = arr.includes(value) ? arr.filter(v => v !== value) : [...arr, value];
+    setEditPrefs({ ...editPrefs, [field]: updated });
+  };
+
+  const prefChips = (arr: string[] | null, fallback: string) => {
+    if (!arr || arr.length === 0) return <span className="text-silver/30 text-xs">{fallback}</span>;
+    return arr.map(v => <Badge key={v} variant="secondary" className="text-[10px] mr-1 mb-1">{v}</Badge>);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -134,7 +193,6 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
   const activeAcquisitions = buyerTxs.filter(tx => tx.status !== "completed");
   const completedAcquisitions = buyerTxs.filter(tx => tx.status === "completed");
 
-  // Stats
   const stats = [
     { label: dt.buyerShortlisted || "Shortlisted", value: shortlists.length, icon: Bookmark, color: "text-amber-400" },
     { label: dt.buyerActiveOffers || "Active Offers", value: activeBuyerOffers.length, icon: Handshake, color: "text-primary" },
@@ -162,6 +220,151 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
           </motion.div>
         ))}
       </div>
+
+      {/* Search Preferences Card */}
+      <motion.div className="mb-8" initial="hidden" animate="visible" variants={fadeUp} custom={4.5}>
+        <Card className="bg-secondary/50 border-border">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+            <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+              <Settings2 className="h-5 w-5 text-primary" /> {dt.buyerPreferences || "Search Preferences"}
+            </h2>
+            {!editingPrefs ? (
+              <Button variant="ghost" size="sm" className="text-primary text-xs gap-1" onClick={handleStartEditPrefs}>
+                <Pencil className="h-3 w-3" /> {prefs ? (dt.buyerEditPreferences || "Edit") : (dt.buyerSetPreferences || "Set Preferences")}
+              </Button>
+            ) : (
+              <div className="flex gap-1">
+                <Button variant="ghost" size="sm" className="text-silver/50 text-xs" onClick={() => setEditingPrefs(false)}>
+                  <X className="h-3 w-3" />
+                </Button>
+                <Button size="sm" className="bg-primary text-primary-foreground text-xs gap-1" onClick={handleSavePrefs} disabled={savingPrefs}>
+                  <Save className="h-3 w-3" /> {dt.buyerSavePreferences || "Save"}
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {!editingPrefs ? (
+            /* Read-only view */
+            prefs ? (
+              <div className="px-6 py-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefBudget || "Budget"}</p>
+                  <p className="text-sm text-white font-semibold">€{(prefs.min_budget || 0).toLocaleString()} – €{(prefs.max_budget || 0).toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefYearRange || "Year Range"}</p>
+                  <p className="text-sm text-white font-semibold">{prefs.min_year || "—"} – {prefs.max_year || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefMaxMileage || "Max Mileage"}</p>
+                  <p className="text-sm text-white font-semibold">{prefs.max_mileage ? `${prefs.max_mileage.toLocaleString()} km` : "—"}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefBrands || "Brands"}</p>
+                  <div className="flex flex-wrap">{prefChips(prefs.preferred_makes, dt.prefAny || "Any")}</div>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefBodyTypes || "Body Types"}</p>
+                  <div className="flex flex-wrap">{prefChips(prefs.preferred_body_types, dt.prefAny || "Any")}</div>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefFuelTypes || "Fuel Types"}</p>
+                  <div className="flex flex-wrap">{prefChips(prefs.preferred_fuel_types, dt.prefAny || "Any")}</div>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefTransmission || "Transmission"}</p>
+                  <p className="text-sm text-white font-semibold">{prefs.preferred_transmission || (dt.prefAny || "Any")}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefTiming || "Timing"}</p>
+                  <p className="text-sm text-white font-semibold capitalize">{prefs.timing_preference || "—"}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="p-8 text-center">
+                <Settings2 className="h-12 w-12 text-silver/20 mx-auto mb-3" />
+                <p className="text-silver/50 text-sm mb-3">{dt.buyerNoPreferences || "No preferences set yet."}</p>
+                <Button size="sm" className="bg-primary text-primary-foreground" onClick={handleStartEditPrefs}>
+                  {dt.buyerSetPreferences || "Set Preferences"}
+                </Button>
+              </div>
+            )
+          ) : (
+            /* Edit mode */
+            <div className="px-6 py-4 space-y-5">
+              {/* Budget */}
+              <div>
+                <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefBudget || "Budget"}</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-silver/40">€</span>
+                  <Input type="number" className="h-8 w-28 bg-charcoal/50 border-border text-sm" value={editPrefs?.min_budget || 0} onChange={e => setEditPrefs(p => p ? { ...p, min_budget: +e.target.value } : p)} />
+                  <span className="text-xs text-silver/40">–</span>
+                  <span className="text-xs text-silver/40">€</span>
+                  <Input type="number" className="h-8 w-28 bg-charcoal/50 border-border text-sm" value={editPrefs?.max_budget || 0} onChange={e => setEditPrefs(p => p ? { ...p, max_budget: +e.target.value } : p)} />
+                </div>
+              </div>
+              {/* Year & Mileage */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefYearRange || "Year Range"}</p>
+                  <div className="flex items-center gap-2">
+                    <Input type="number" className="h-8 bg-charcoal/50 border-border text-sm" value={editPrefs?.min_year || 2018} onChange={e => setEditPrefs(p => p ? { ...p, min_year: +e.target.value } : p)} />
+                    <span className="text-xs text-silver/40">–</span>
+                    <Input type="number" className="h-8 bg-charcoal/50 border-border text-sm" value={editPrefs?.max_year || 2026} onChange={e => setEditPrefs(p => p ? { ...p, max_year: +e.target.value } : p)} />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefMaxMileage || "Max Mileage"}</p>
+                  <Input type="number" className="h-8 bg-charcoal/50 border-border text-sm" value={editPrefs?.max_mileage || 100000} onChange={e => setEditPrefs(p => p ? { ...p, max_mileage: +e.target.value } : p)} />
+                </div>
+              </div>
+              {/* Body Types */}
+              <div>
+                <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefBodyTypes || "Body Types"}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {BODY_TYPES.map(bt => (
+                    <button key={bt} onClick={() => togglePrefArray("preferred_body_types", bt)}
+                      className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
+                        (editPrefs?.preferred_body_types || []).includes(bt)
+                          ? "bg-primary/10 border-primary/30 text-primary"
+                          : "bg-charcoal/30 border-border text-silver/50 hover:border-silver/30"
+                      }`}>{bt}</button>
+                  ))}
+                </div>
+              </div>
+              {/* Fuel Types */}
+              <div>
+                <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefFuelTypes || "Fuel Types"}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {FUEL_TYPES.map(ft => (
+                    <button key={ft} onClick={() => togglePrefArray("preferred_fuel_types", ft)}
+                      className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
+                        (editPrefs?.preferred_fuel_types || []).includes(ft)
+                          ? "bg-primary/10 border-primary/30 text-primary"
+                          : "bg-charcoal/30 border-border text-silver/50 hover:border-silver/30"
+                      }`}>{ft}</button>
+                  ))}
+                </div>
+              </div>
+              {/* Transmission */}
+              <div>
+                <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefTransmission || "Transmission"}</p>
+                <div className="flex gap-1.5">
+                  {["Manual", "Automatic"].map(tr => (
+                    <button key={tr} onClick={() => setEditPrefs(p => p ? { ...p, preferred_transmission: p.preferred_transmission === tr ? null : tr } : p)}
+                      className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
+                        editPrefs?.preferred_transmission === tr
+                          ? "bg-primary/10 border-primary/30 text-primary"
+                          : "bg-charcoal/30 border-border text-silver/50 hover:border-silver/30"
+                      }`}>{tr}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </Card>
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Active Acquisitions */}
@@ -192,7 +395,6 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                       </div>
                       <Badge variant="outline" className="text-xs">{tx.status}</Badge>
                     </div>
-                    {/* Step progress */}
                     <div className="flex items-center gap-1">
                       {stepLabels.map((step, idx) => {
                         const isCompleted = tx.current_step > idx + 1;
