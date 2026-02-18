@@ -7,12 +7,13 @@ import Navbar from "@/components/Navbar";
 import ConciergeChat from "@/components/ConciergeChat";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   Car, TrendingUp, Users, DollarSign, Plus, Eye, Edit, ExternalLink,
   ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle, Trash2, Pencil, Lock, CreditCard,
-  Bookmark, Handshake, BadgeCheck, Loader2, Receipt, FileText,
+  Bookmark, Handshake, BadgeCheck, Loader2, Receipt, FileText, ShoppingCart,
 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
@@ -20,6 +21,7 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import type { User } from "@supabase/supabase-js";
+import DashboardBuyerTab from "@/components/dashboard/DashboardBuyerTab";
 
 type CarListing = {
   id: string;
@@ -162,6 +164,19 @@ const Dashboard: React.FC = () => {
             <Plus className="h-4 w-4 mr-2" /> {t.dashboard.listACar}
           </Button>
         </motion.div>
+
+        {/* Selling / Buying Tabs */}
+        <Tabs defaultValue="selling" className="space-y-6">
+          <TabsList className="bg-secondary/50 border border-border">
+            <TabsTrigger value="selling" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2">
+              <Car className="h-4 w-4" /> {(t.dashboard as any).tabSelling}
+            </TabsTrigger>
+            <TabsTrigger value="buying" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2">
+              <ShoppingCart className="h-4 w-4" /> {(t.dashboard as any).tabBuying}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="selling">
 
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -524,6 +539,12 @@ const Dashboard: React.FC = () => {
             </motion.div>
           </div>
         </div>
+          </TabsContent>
+
+          <TabsContent value="buying">
+            {user && <DashboardBuyerTab userId={user.id} />}
+          </TabsContent>
+        </Tabs>
       </div>
 
       <ConciergeChat />
