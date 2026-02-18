@@ -66,6 +66,7 @@ const Dashboard: React.FC = () => {
   const [activeOffers, setActiveOffers] = useState<{ id: string; car_id: string; amount: number; status: string; current_round: number; created_at: string }[]>([]);
   const [recentShortlists, setRecentShortlists] = useState<{ id: string; car_id: string; user_id: string; created_at: string }[]>([]);
   const [placementReceipts, setPlacementReceipts] = useState<{ id: string; carId: string | null; amountPaid: number; currency: string; paidAt: string | null; receiptUrl: string | null; invoiceUrl: string | null }[]>([]);
+  const [soldCarTxMap, setSoldCarTxMap] = useState<Record<string, { offer_id: string }>>({});
 
   useEffect(() => {
     const init = async () => {
@@ -108,6 +109,15 @@ const Dashboard: React.FC = () => {
       }
       if (matchesResult.data) setMatches(matchesResult.data);
       if (sellerOffersResult.data) setActiveOffers(sellerOffersResult.data as any);
+
+      // Fetch transactions for sold cars (to link to transaction summary)
+      const soldCarIds = (carsResult.data || []).filter((c: any) => c.status === "sold").map((c: any) => c.id);
+      if (soldCarIds.length > 0) {
+        const { data: txData } = await supabase.from("transactions").select("car_id, offer_id").in("car_id", soldCarIds).eq("status", "completed");
+        const txMap: Record<string, { offer_id: string }> = {};
+        (txData || []).forEach((tx: any) => { txMap[tx.car_id] = { offer_id: tx.offer_id }; });
+        setSoldCarTxMap(txMap);
+      }
 
       // Fetch placement payment receipts
       supabase.functions.invoke("get-placement-receipts").then(({ data }) => {
@@ -254,19 +264,23 @@ const Dashboard: React.FC = () => {
                         <p className="text-sm font-semibold text-white truncate">
                           {car.year} {car.make} {car.model}
                         </p>
-                        <div className="flex items-center gap-3 mt-0.5">
-                          <span className="text-xs text-primary font-semibold">
-                            €{(car.fair_value_price || car.price).toLocaleString()}
-                          </span>
-                          {car.placement_paid ? (
-                            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-400">
-                              {t.dashboard.adLive}
-                            </span>
-                          ) : (
-                            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-400 flex items-center gap-1">
-                              <Lock className="h-2.5 w-2.5" /> {t.dashboard.notPlaced}
-                            </span>
-                          )}
+                         <div className="flex items-center gap-3 mt-0.5">
+                           <span className="text-xs text-primary font-semibold">
+                             €{(car.fair_value_price || car.price).toLocaleString()}
+                           </span>
+                           {car.status === "sold" ? (
+                             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-red-500/10 text-red-400 flex items-center gap-1">
+                               <CheckCircle2 className="h-2.5 w-2.5" /> {(t.dashboard as any).sold || "SOLD"}
+                             </span>
+                           ) : car.placement_paid ? (
+                             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-400">
+                               {t.dashboard.adLive}
+                             </span>
+                           ) : (
+                             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-400 flex items-center gap-1">
+                               <Lock className="h-2.5 w-2.5" /> {t.dashboard.notPlaced}
+                             </span>
+                           )}
                         </div>
                         {/* Engagement Stats */}
                         <div className="flex items-center gap-3 mt-1.5">
@@ -285,69 +299,86 @@ const Dashboard: React.FC = () => {
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" title={t.dashboard.viewAd} onClick={() => navigate(`/car/${car.id}`)}>
                           <ExternalLink className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
-                          <BarChart3 className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        {car.placement_paid ? (
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
-                            <Users className="h-4 w-4" />
-                          </Button>
+                        {car.status === "sold" ? (
+                          <>
+                            {soldCarTxMap[car.id] && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 text-primary hover:text-primary/80 text-xs font-semibold gap-1"
+                                onClick={() => navigate(`/acquire/${soldCarTxMap[car.id].offer_id}`)}
+                              >
+                                <FileText className="h-3.5 w-3.5" /> {(t.dashboard as any).viewTransaction || "Transaction"}
+                              </Button>
+                            )}
+                          </>
                         ) : (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 text-amber-400 hover:text-amber-300 text-xs font-semibold gap-1"
-                            disabled={placingCarId === car.id}
-                            onClick={async () => {
-                              setPlacingCarId(car.id);
-                              try {
-                                const { data, error } = await supabase.functions.invoke("create-placement-checkout", {
-                                  body: { carId: car.id },
-                                });
-                                if (error) throw error;
-                                if (data?.url) window.location.href = data.url;
-                              } catch (err) {
-                                console.error(err);
-                                toast.error("Failed to start checkout.");
-                              } finally {
-                                setPlacingCarId(null);
-                              }
-                            }}
-                          >
-                            {placingCarId === car.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CreditCard className="h-3.5 w-3.5" />}
-                            {placingCarId === car.id ? "..." : t.dashboard.placeAd}
-                          </Button>
-                        )}
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive/60 hover:text-destructive">
-                              <Trash2 className="h-4 w-4" />
+                          <>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
+                              <BarChart3 className="h-4 w-4" />
                             </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent className="bg-secondary border-border">
-                            <AlertDialogHeader>
-                              <AlertDialogTitle className="text-white">{t.dashboard.deleteCar} {car.year} {car.make} {car.model}?</AlertDialogTitle>
-                              <AlertDialogDescription>{t.dashboard.deleteConfirm}</AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel className="border-border text-silver">{t.dashboard.cancel}</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                            {car.placement_paid ? (
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
+                                <Users className="h-4 w-4" />
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 text-amber-400 hover:text-amber-300 text-xs font-semibold gap-1"
+                                disabled={placingCarId === car.id}
                                 onClick={async () => {
-                                  const { error } = await supabase.from("cars").delete().eq("id", car.id);
-                                  if (error) { toast.error(error.message); return; }
-                                  setCars((prev) => prev.filter((c) => c.id !== car.id));
-                                  toast.success("Car deleted successfully");
+                                  setPlacingCarId(car.id);
+                                  try {
+                                    const { data, error } = await supabase.functions.invoke("create-placement-checkout", {
+                                      body: { carId: car.id },
+                                    });
+                                    if (error) throw error;
+                                    if (data?.url) window.location.href = data.url;
+                                  } catch (err) {
+                                    console.error(err);
+                                    toast.error("Failed to start checkout.");
+                                  } finally {
+                                    setPlacingCarId(null);
+                                  }
                                 }}
                               >
-                                {t.dashboard.deleteCar}
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                                {placingCarId === car.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CreditCard className="h-3.5 w-3.5" />}
+                                {placingCarId === car.id ? "..." : t.dashboard.placeAd}
+                              </Button>
+                            )}
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive/60 hover:text-destructive">
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent className="bg-secondary border-border">
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle className="text-white">{t.dashboard.deleteCar} {car.year} {car.make} {car.model}?</AlertDialogTitle>
+                                  <AlertDialogDescription>{t.dashboard.deleteConfirm}</AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel className="border-border text-silver">{t.dashboard.cancel}</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                    onClick={async () => {
+                                      const { error } = await supabase.from("cars").delete().eq("id", car.id);
+                                      if (error) { toast.error(error.message); return; }
+                                      setCars((prev) => prev.filter((c) => c.id !== car.id));
+                                      toast.success("Car deleted successfully");
+                                    }}
+                                  >
+                                    {t.dashboard.deleteCar}
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </>
+                        )}
                       </div>
                     </div>
                   ))}
