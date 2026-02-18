@@ -3,7 +3,7 @@
 ## Assumptions & Methodology
 
 All projections are based on:
-- **Launch market**: Austria (Y1), expanding to Germany (Y2), DACH + CEE entry (Y3)
+- **Launch market**: Austria + Germany (Y1), expanding to DACH + CEE (Y2), full European rollout (Y3)
 - **Listing fees**: €49 (Basic) / €99 (Premium)
 - **Premium uptake**: 50% in Y1, rising to 60% by Y3
 - **Blended average revenue per listing**: €74 (Y1), €79 (Y2), €84 (Y3)
@@ -21,9 +21,9 @@ All projections are based on:
 | Basic Listing Fee (€49) | Primary | Primary | Primary |
 | Premium Listing Fee (€99) | Primary | Primary | Primary |
 | Full Service Fee (2.5%, capped €499) | — | Launch | Scale |
-| Dealer Lead Fees | — | Launch | Scale |
-| Financing/Insurance Referrals | — | Pilot | Scale |
-| **Advertising & Sponsored Content** | Pilot | Scale | Major |
+| Dealer Lead Fees | Launch | Scale | Major |
+| Financing/Insurance Referrals | Pilot | Scale | Major |
+| **Advertising & Sponsored Content** | Launch | Scale | Major |
 | Premium Subscriptions | — | — | Launch |
 | Data Licensing | — | — | Pilot |
 
@@ -31,82 +31,86 @@ All projections are based on:
 
 ## 3-Year P&L Projection
 
-### Year 1 — Austria Launch
-
-| Metric | Conservative | Base Case | Optimistic |
-|---|---|---|---|
-| **Listings** | 150 | 300 | 500 |
-| **Basic (50%)** | 75 × €49 = €3,675 | 150 × €49 = €7,350 | 200 × €49 = €9,800 |
-| **Premium (50%)** | 75 × €99 = €7,425 | 150 × €99 = €14,850 | 300 × €99 = €29,700 |
-| **Advertising (pilot)** | €3,600 | €7,200 | €14,400 |
-| **Total Revenue** | **€14,700** | **€29,400** | **€53,900** |
-| | | | |
-| Infrastructure & AI | (€3,600) | (€4,800) | (€6,000) |
-| Stripe Processing Fees | (€500) | (€900) | (€1,500) |
-| Marketing & CAC | (€4,500) | (€9,000) | (€15,000) |
-| Legal & Incorporation | (€7,000) | (€7,000) | (€7,000) |
-| Annual corporate costs | (€2,000) | (€2,000) | (€2,000) |
-| Founder Salary | (€0) | (€0) | (€0) |
-| **Total Costs** | **(€17,600)** | **(€23,700)** | **(€31,500)** |
-| | | | |
-| **Net Profit / (Loss)** | **(€6,500)** | **(€1,500)** | **€8,000** |
-| **Net Margin** | –59% | –7% | 20% |
-
-*Note: Founder takes no salary in Y1 — bootstrapped.*
-
-### Year 2 — Austria + Germany Expansion
+### Year 1 — Austria + Germany Launch
 
 | Metric | Conservative | Base Case | Optimistic |
 |---|---|---|---|
 | **Listings** | 1,500 | 3,000 | 5,000 |
-| **Listing Fee Revenue** | €118,500 | €237,000 | €420,000 |
-| **Full Service Revenue** | €15,000 | €40,000 | €80,000 |
+| **Basic (50%)** | 750 × €49 = €36,750 | 1,500 × €49 = €73,500 | 2,000 × €49 = €98,000 |
+| **Premium (50%)** | 750 × €99 = €74,250 | 1,500 × €99 = €148,500 | 3,000 × €99 = €297,000 |
 | **Dealer Lead Fees** | €10,000 | €25,000 | €50,000 |
 | **Financing Referrals** | €5,000 | €15,000 | €30,000 |
-| **Advertising & Sponsored Content** | €75,000 | €150,000 | €250,000 |
-| **Total Revenue** | **€223,500** | **€467,000** | **€830,000** |
+| **Advertising & Sponsored Content** | €50,000 | €100,000 | €175,000 |
+| **Total Revenue** | **€175,000** | **€467,000** | **€750,000** |
 | | | | |
 | Infrastructure & AI | (€12,000) | (€18,000) | (€24,000) |
-| **AWS Migration** | **(€40,000)** | **(€55,000)** | **(€65,000)** |
 | Stripe Processing Fees | (€4,500) | (€9,500) | (€17,000) |
-| Marketing & CAC | (€45,000) | (€90,000) | (€150,000) |
-| Team (2–3 hires) | (€90,000) | (€120,000) | (€150,000) |
-| Office & Operations | (€12,000) | (€18,000) | (€24,000) |
-| Annual corporate costs | (€2,700) | (€2,700) | (€2,700) |
-| Legal & Compliance | (€10,000) | (€10,000) | (€15,000) |
-| Founder Salary | (€48,000) | (€60,000) | (€72,000) |
-| **Total Costs** | **(€264,200)** | **(€383,200)** | **(€519,700)** |
+| Marketing & CAC | (€45,000) | (€90,000) | (€120,000) |
+| Team (1–2 hires + contractors) | (€60,000) | (€90,000) | (€120,000) |
+| Legal & Incorporation | (€15,000) | (€22,000) | (€25,000) |
+| Annual corporate costs | (€2,000) | (€2,000) | (€2,000) |
+| Office & Operations | (€8,000) | (€13,000) | (€18,000) |
+| Founder Salary | (€0) | (€0) | (€0) |
+| **Total Costs** | **(€146,500)** | **(€244,500)** | **(€326,000)** |
 | | | | |
-| **Net Profit / (Loss)** | **(€115,700)** | **(€66,200)** | **€60,300** |
-| **Net Margin** | –78% | –21% | 10% |
+| **Net Profit / (Loss)** | **€28,500** | **€222,500** | **€424,000** |
+| **Net Margin** | 16% | 48% | 57% |
 
-### Year 3 — DACH + CEE Entry
+*Note: Founder takes no salary in Y1 — equity-only until sustainable growth.*
+
+### Year 2 — DACH + CEE Expansion
 
 | Metric | Conservative | Base Case | Optimistic |
 |---|---|---|---|
 | **Listings** | 8,000 | 15,000 | 25,000 |
-| **Listing Fee Revenue** | €632,000 | €1,260,000 | €2,100,000 |
-| **Full Service Revenue** | €80,000 | €200,000 | €400,000 |
+| **Listing Fee Revenue** | €632,000 | €1,185,000 | €2,100,000 |
+| **Full Service Revenue** | €40,000 | €100,000 | €200,000 |
 | **Dealer Lead Fees** | €60,000 | €150,000 | €300,000 |
-| **Financing Referrals** | €40,000 | €100,000 | €200,000 |
-| **Insurance Referrals** | €15,000 | €50,000 | €100,000 |
-| **Advertising & Sponsored Content** | €360,000 | €720,000 | €1,200,000 |
-| **Premium Subscriptions** | €0 | €25,000 | €60,000 |
-| **Total Revenue** | **€1,187,000** | **€2,505,000** | **€4,360,000** |
+| **Financing Referrals** | €30,000 | €80,000 | €150,000 |
+| **Advertising & Sponsored Content** | €200,000 | €500,000 | €900,000 |
+| **Total Revenue** | **€962,000** | **€2,500,000** | **€4,150,000** |
 | | | | |
 | Infrastructure & AI | (€36,000) | (€60,000) | (€96,000) |
-| **AWS Running Costs** | **(€12,000)** | **(€18,000)** | **(€24,000)** |
-| Stripe Processing Fees | (€24,000) | (€52,000) | (€92,000) |
-| Marketing & CAC | (€160,000) | (€330,000) | (€550,000) |
-| Team (8–15 hires) | (€400,000) | (€600,000) | (€900,000) |
-| Office & Operations | (€36,000) | (€60,000) | (€96,000) |
-| Legal & Compliance | (€25,000) | (€40,000) | (€60,000) |
+| **AWS Migration** | **(€40,000)** | **(€55,000)** | **(€65,000)** |
+| Stripe Processing Fees | (€18,000) | (€38,000) | (€65,000) |
+| Marketing & CAC | (€120,000) | (€300,000) | (€500,000) |
+| Team (5–8 hires) | (€250,000) | (€400,000) | (€600,000) |
+| Office & Operations | (€24,000) | (€48,000) | (€72,000) |
+| Annual corporate costs | (€2,700) | (€2,700) | (€2,700) |
+| Legal & Compliance | (€20,000) | (€35,000) | (€50,000) |
+| Founder Salary | (€48,000) | (€60,000) | (€72,000) |
+| **Total Costs** | **(€558,700)** | **(€998,700)** | **(€1,522,700)** |
+| | | | |
+| **Net Profit / (Loss)** | **€403,300** | **€1,501,300** | **€2,627,300** |
+| **Net Margin** | 42% | 60% | 63% |
+
+### Year 3 — Full Europe Rollout
+
+| Metric | Conservative | Base Case | Optimistic |
+|---|---|---|---|
+| **Listings** | 40,000 | 75,000 | 120,000 |
+| **Listing Fee Revenue** | €3,360,000 | €6,300,000 | €10,080,000 |
+| **Full Service Revenue** | €200,000 | €500,000 | €1,000,000 |
+| **Dealer Lead Fees** | €200,000 | €500,000 | €1,000,000 |
+| **Financing Referrals** | €150,000 | €400,000 | €800,000 |
+| **Insurance Referrals** | €100,000 | €300,000 | €600,000 |
+| **Advertising & Sponsored Content** | €1,000,000 | €2,500,000 | €4,500,000 |
+| **Premium Subscriptions** | €50,000 | €150,000 | €350,000 |
+| **Total Revenue** | **€5,060,000** | **€12,150,000** | **€20,330,000** |
+| | | | |
+| Infrastructure & AI | (€72,000) | (€120,000) | (€192,000) |
+| **AWS Running Costs** | **(€36,000)** | **(€60,000)** | **(€96,000)** |
+| Stripe Processing Fees | (€80,000) | (€180,000) | (€300,000) |
+| Marketing & CAC | (€500,000) | (€1,200,000) | (€2,000,000) |
+| Team (15–30 hires) | (€900,000) | (€1,800,000) | (€3,000,000) |
+| Office & Operations | (€72,000) | (€150,000) | (€250,000) |
+| Legal & Compliance | (€50,000) | (€100,000) | (€200,000) |
 | Annual corporate costs | (€2,700) | (€2,700) | (€2,700) |
 | Founder Salary | (€72,000) | (€84,000) | (€96,000) |
-| **Total Costs** | **(€767,700)** | **(€1,246,700)** | **(€1,916,700)** |
+| **Total Costs** | **(€1,784,700)** | **(€3,696,700)** | **(€6,136,700)** |
 | | | | |
-| **Net Profit / (Loss)** | **€59,300** | **€538,300** | **€1,243,300** |
-| **Net Margin** | 7% | 30% | 39% |
+| **Net Profit / (Loss)** | **€3,275,300** | **€8,453,300** | **€14,193,300** |
+| **Net Margin** | 65% | 70% | 70% |
 
 ---
 
@@ -114,9 +118,9 @@ All projections are based on:
 
 | Metric | Y1 | Y2 | Y3 | **Cumulative** |
 |---|---|---|---|---|
-| Listings | 300 | 3,000 | 15,000 | 18,300 |
-| Revenue | €29,400 | €467,000 | €2,505,000 | **€3,001,400** |
-| Net Profit | (€1,500) | (€66,200) | €538,300 | **€470,600** |
+| Listings | 3,000 | 15,000 | 75,000 | 93,000 |
+| Revenue | €467,000 | €2,500,000 | €12,150,000 | **€15,117,000** |
+| Net Profit | €222,500 | €1,501,300 | €8,453,300 | **€10,177,100** |
 
 ---
 
@@ -124,20 +128,20 @@ All projections are based on:
 
 | Quarter | Revenue | Costs | Net Cash Flow | Cumulative Cash |
 |---|---|---|---|---|
-| **Y1 Q1** | €2,500 | (€6,500) | (€4,000) | (€4,000) |
-| **Y1 Q2** | €4,500 | (€5,000) | (€500) | (€4,500) |
-| **Y1 Q3** | €6,500 | (€4,500) | €2,000 | (€2,500) |
-| **Y1 Q4** | €8,700 | (€3,700) | €5,000 | €2,500 |
-| **Y2 Q1** | €50,000 | (€65,000) | (€15,000) | (€12,500) |
-| **Y2 Q2** | €70,000 | (€80,000) | (€10,000) | (€22,500) |
-| **Y2 Q3** | €90,000 | (€95,000) | (€5,000) | (€27,500) |
-| **Y2 Q4** | €107,000 | (€100,000) | €7,000 | (€20,500) |
-| **Y3 Q1** | €300,000 | (€260,000) | €40,000 | €19,500 |
-| **Y3 Q2** | €420,000 | (€300,000) | €120,000 | €139,500 |
-| **Y3 Q3** | €500,000 | (€330,000) | €170,000 | €309,500 |
-| **Y3 Q4** | €565,000 | (€354,000) | €211,000 | €520,500 |
+| **Y1 Q1** | €50,000 | (€65,000) | (€15,000) | (€15,000) |
+| **Y1 Q2** | €80,000 | (€60,000) | €20,000 | €5,000 |
+| **Y1 Q3** | €130,000 | (€58,000) | €72,000 | €77,000 |
+| **Y1 Q4** | €207,000 | (€61,500) | €145,500 | €222,500 |
+| **Y2 Q1** | €400,000 | (€200,000) | €200,000 | €422,500 |
+| **Y2 Q2** | €550,000 | (€240,000) | €310,000 | €732,500 |
+| **Y2 Q3** | €700,000 | (€270,000) | €430,000 | €1,162,500 |
+| **Y2 Q4** | €850,000 | (€288,700) | €561,300 | €1,723,800 |
+| **Y3 Q1** | €2,000,000 | (€750,000) | €1,250,000 | €2,973,800 |
+| **Y3 Q2** | €2,800,000 | (€900,000) | €1,900,000 | €4,873,800 |
+| **Y3 Q3** | €3,350,000 | (€1,000,000) | €2,350,000 | €7,223,800 |
+| **Y3 Q4** | €4,000,000 | (€1,046,700) | €2,953,300 | €10,177,100 |
 
-*With seed funding of €300K, cash flow remains positive throughout with extended runway. Without external funding, Y2 expansion requires careful cost management.*
+*With seed funding of €300K, the company is cash-flow positive by Y1 Q2 and self-funding from Y1 Q3 onwards.*
 
 ---
 
@@ -145,30 +149,30 @@ All projections are based on:
 
 | Metric | Y1 | Y2 | Y3 |
 |---|---|---|---|
-| **Monthly Listings** | 25 | 250 | 1,250 |
+| **Monthly Listings** | 250 | 1,250 | 6,250 |
 | **Avg Revenue per Listing** | €74 | €79 | €84 |
 | **Premium Uptake** | 50% | 55% | 60% |
-| **CAC (Seller)** | €30 | €30 | €26 |
+| **CAC (Seller)** | €30 | €26 | €22 |
 | **LTV (Seller)** | €74 | €85 | €95 |
-| **LTV:CAC Ratio** | 2.5x | 2.8x | 3.7x |
+| **LTV:CAC Ratio** | 2.5x | 3.3x | 4.3x |
 | **Gross Margin** | ~86% | ~87% | ~88% |
-| **Team Size** | 1 | 3–4 | 10–16 |
+| **Team Size** | 3–4 | 8–12 | 20–35 |
 
 ---
 
 ## Sensitivity Analysis
 
-### Impact of Premium Uptake Change (Base Case, Y2)
+### Impact of Premium Uptake Change (Base Case, Y1)
 
 | Premium Uptake | Blended ARPL | Revenue Impact |
 |---|---|---|
-| 30% | €64 | –19% revenue |
-| 40% | €69 | –13% revenue |
-| **50% (base)** | **€79** | **Baseline** |
-| 60% | €89 | +13% revenue |
-| 70% | €84 | +19% revenue |
+| 30% | €64 | –14% listing revenue |
+| 40% | €69 | –7% listing revenue |
+| **50% (base)** | **€74** | **Baseline** |
+| 60% | €79 | +7% listing revenue |
+| 70% | €84 | +14% listing revenue |
 
-### Impact of Listing Volume Change (Base Case, Y2)
+### Impact of Listing Volume Change (Base Case, Y1)
 
 | Listings | Revenue Impact |
 |---|---|
@@ -184,27 +188,27 @@ All projections are based on:
 
 ### Scenario A: Bootstrapped (No External Funding)
 
-- Viable in optimistic case — requires careful cost management in Y2
-- Slower Y2 expansion, limited marketing budget
-- Team growth capped at 2–3 in Y2
+- Viable in conservative case — requires lean operations in Y1
+- Slower Germany expansion, limited marketing budget
+- Team growth capped at 1–2 in Y1
 - Lower risk, full founder equity retained
 
-### Scenario B: Seed Round (€150K–300K)
+### Scenario B: Seed Round (€300K)
 
-- Accelerates German market entry by 3–6 months
-- Enables €90K+ marketing spend in Y2
-- Funds 2–3 additional hires (engineering + sales)
-- Targets optimistic case Y2 revenue
-- Expected dilution: 10–20%
+- Accelerates Germany + Austria market penetration immediately
+- Enables full marketing budget (€90K in Y1)
+- Funds 3–4 hires (growth, engineering, customer success)
+- Targets base case Y1 revenue (€467K)
+- Dilution: 23.08% (€300K at €1M pre-money / €1.3M post-money)
 
 ### Scenario C: Pre-Series A (€500K–1M)
 
-- Full DACH launch by end of Y2 (vs. Y3 in base case)
+- Full DACH launch by end of Y1 (vs. Y2 in base case)
 - Dedicated engineering team (5+ hires)
-- Aggressive marketing: €200K+ in Y2
+- Aggressive marketing: €200K+ in Y1
 - Full Service and financing partner integrations accelerated
-- Targets optimistic case Y2 + early Y3 numbers
-- Expected dilution: 15–25%
+- Targets optimistic case Y1 + early Y2 numbers
+- Expected dilution: 20–30%
 
 ---
 
@@ -212,10 +216,10 @@ All projections are based on:
 
 | Scenario | Monthly Break-Even | Listings Needed/mo | Time to Break-Even |
 |---|---|---|---|
-| Bootstrapped (min costs) | €1,100/mo | ~15 listings/mo | Y1 Q3 |
-| With 1 hire | €4,500/mo | ~61 listings/mo | Y2 Q1 |
-| With seed team (3–4) | €12,000/mo | ~162 listings/mo | Y2 Q3 |
-| Full scale (10+) | €40,000/mo | ~540 listings/mo | Y3 Q1 |
+| Bootstrapped (min costs) | €4,000/mo | ~54 listings/mo | Y1 Q2 |
+| With seed team (3–4) | €20,000/mo | ~270 listings/mo | Y1 Q3 |
+| Full scale (10+) | €80,000/mo | ~1,080 listings/mo | Y2 Q1 |
+| European scale (20+) | €300,000/mo | ~4,050 listings/mo | Y3 Q1 |
 
 ---
 
@@ -237,13 +241,13 @@ All projections are based on:
 
 | Stage | Platform | Monthly Infra Cost | Annual | Notes |
 |---|---|---|---|---|
-| **MVP (Y1)** | Lovable Cloud | €350 | €4,200 | Database, auth, functions, storage |
-| **Migration (Y2 Q2–Q4)** | Hybrid | €800 | €9,600 | Dual-running during migration + migration project costs |
-| **Post-Migration (Y2 Q4+)** | AWS | €800–€1,400 | €9,600–€16,800 | RDS, S3, Lambda, Cognito, SageMaker |
-| **Scale (Y3)** | AWS (optimized) | €1,500–€3,000 | €18,000–€36,000 | Autoscaling, reserved instances, multi-region |
+| **Launch (Y1)** | Lovable Cloud | €500–€1,500 | €6,000–€18,000 | Database, auth, functions, storage |
+| **Migration (Y2 Q2–Q4)** | Hybrid | €2,000–€4,000 | €24,000–€48,000 | Dual-running during migration + migration project costs |
+| **Post-Migration (Y2 Q4+)** | AWS | €3,000–€5,000 | €36,000–€60,000 | RDS, S3, Lambda, Cognito, SageMaker |
+| **Scale (Y3)** | AWS (optimized) | €6,000–€10,000 | €72,000–€120,000 | Autoscaling, reserved instances, multi-region |
 
-*Infrastructure costs remain < 3% of revenue at scale, well within SaaS benchmarks.*
+*Infrastructure costs remain < 2% of revenue at scale, well within SaaS benchmarks.*
 
 ---
 
-*Document status: V2 — Updated to flat-fee pricing model (€49 Basic / €99 Premium). Projections are forward-looking estimates based on market research and comparable platform benchmarks. Actual results may vary.*
+*Document status: V3 — Updated to align with pitch deck projections (Y1 3,000 listings/€467K, Y2 15,000/€2.5M, Y3 75,000/€12M+). Projections are forward-looking estimates based on market research and comparable platform benchmarks. Actual results may vary.*
