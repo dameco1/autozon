@@ -651,6 +651,7 @@ export const translations = {
       maxYear: "To year",
       maxMileage: "Max mileage",
       timingOptions: { immediately: "Immediately", "1-3months": "Within 1-3 months", browsing: "Just browsing" },
+      pickForMe: "Pick a car for me — skip brand selection",
     },
     carSelection: {
       title: "Your Matches",
@@ -1432,6 +1433,7 @@ export const translations = {
       maxYear: "Bis Baujahr",
       maxMileage: "Max. Kilometerstand",
       timingOptions: { immediately: "Sofort", "1-3months": "Innerhalb von 1-3 Monaten", browsing: "Nur stöbern" },
+      pickForMe: "Wähle ein Auto für mich — Markenauswahl überspringen",
     },
     carSelection: {
       title: "Ihre Matches",
