@@ -6,7 +6,7 @@ import { useCarMakes } from "@/hooks/useCarModels";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
-import { Car, ArrowRight, ArrowLeft, LayoutDashboard } from "lucide-react";
+import { Car, ArrowRight, ArrowLeft, LayoutDashboard, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
@@ -124,6 +124,15 @@ const BuyerQuestionnaire: React.FC = () => {
         return (
           <div>
             <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q1}</h2>
+            <button
+              onClick={() => { setBrands([]); setStep(2); }}
+              className={`w-full mb-4 flex items-center justify-center gap-2 px-6 py-4 rounded-xl border-2 border-dashed transition-all ${
+                brands.length === 0 ? "border-primary bg-primary/5 text-primary" : "border-border text-silver/50 hover:border-primary/50 hover:text-primary"
+              }`}
+            >
+              <Sparkles className="h-4 w-4" />
+              <span className="font-semibold text-sm">{t.buyerQ.pickForMe}</span>
+            </button>
             {renderMultiSelect(dbMakes || [], brands, setBrands, 3)}
           </div>
         );

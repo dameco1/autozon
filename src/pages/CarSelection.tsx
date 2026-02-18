@@ -72,6 +72,9 @@ const CarSelection: React.FC = () => {
       if (prefs.min_year) query = query.gte("year", prefs.min_year);
       if (prefs.max_year) query = query.lte("year", prefs.max_year);
       if (prefs.max_mileage) query = query.lte("mileage", prefs.max_mileage);
+      if (prefs.preferred_makes && prefs.preferred_makes.length > 0) {
+        query = query.in("make", prefs.preferred_makes);
+      }
       if (prefs.preferred_fuel_types && prefs.preferred_fuel_types.length > 0) {
         query = query.in("fuel_type", prefs.preferred_fuel_types);
       }
@@ -155,6 +158,9 @@ const CarSelection: React.FC = () => {
       if (prefs.min_year) query = query.gte("year", prefs.min_year);
       if (prefs.max_year) query = query.lte("year", prefs.max_year);
       if (prefs.max_mileage) query = query.lte("mileage", prefs.max_mileage);
+      if (prefs.preferred_makes && prefs.preferred_makes.length > 0) {
+        query = query.in("make", prefs.preferred_makes);
+      }
       if (prefs.preferred_fuel_types && prefs.preferred_fuel_types.length > 0) {
         query = query.in("fuel_type", prefs.preferred_fuel_types);
       }
