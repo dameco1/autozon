@@ -307,6 +307,7 @@ const AcquisitionOptions: React.FC = () => {
               agreedPrice={agreedPrice}
               partners={partners}
               onContinue={handlePaymentDone}
+              onBack={() => setStep(2)}
             />
           )}
 
