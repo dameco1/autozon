@@ -35,7 +35,7 @@ This document details the allocation plan for autozon's current funding round. T
 
 ## Detailed Breakdown
 
-### 1. Technology & Hosting — €42,000 (21%)
+### 1. Technology & Hosting — €60,000 (20%)
 
 #### Monthly Running Costs
 
@@ -65,14 +65,14 @@ This document details the allocation plan for autozon's current funding round. T
 
 | Item | Cost | Timeline | Purpose |
 |---|---|---|---|
-| **Lovable Cloud upgrade (Pro)** | €2,400 | Y1 | Higher limits, priority support |
-| **AI model fine-tuning** | €3,000 | Y1 Q3 | Custom damage detection model training |
-| **Load testing & optimization** | €1,500 | Y1 Q4 | Pre-scaling performance validation |
-| **Security audit** | €3,000 | Y1 Q3 | External penetration testing |
-| **Backup & disaster recovery** | €1,200 | Y1 | Automated DB backups, recovery procedures |
-| **Monitoring & alerting setup** | €800 | Y1 Q2 | Uptime monitoring, alerting |
-| **Development tools & licenses** | €1,200 | Y1 | IDE, design tools, testing |
-| **AWS migration planning** | €2,000 | Y1 Q4 | Architecture design, VPC planning, IAM setup |
+| **Lovable Cloud upgrade (Pro)** | €3,500 | Y1 | Higher limits, priority support |
+| **AI model fine-tuning** | €5,000 | Y1 Q3 | Custom damage detection model training |
+| **Load testing & optimization** | €2,500 | Y1 Q4 | Pre-scaling performance validation |
+| **Security audit** | €4,500 | Y1 Q3 | External penetration testing |
+| **Backup & disaster recovery** | €2,000 | Y1 | Automated DB backups, recovery procedures |
+| **Monitoring & alerting setup** | €1,200 | Y1 Q2 | Uptime monitoring, alerting |
+| **Development tools & licenses** | €1,800 | Y1 | IDE, design tools, testing |
+| **AWS migration planning** | €3,000 | Y1 Q4 | Architecture design, VPC planning, IAM setup |
 
 #### AWS Migration Budget (Series A / Y2)
 
@@ -107,99 +107,99 @@ The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds
 
 | Subcategory | Amount |
 |---|---|
-| Monthly running costs (18 months) | €6,300 |
-| AI scaling reserve | €8,000 |
-| Infrastructure investment | €15,100 |
-| Development tools | €1,200 |
-| Scaling buffer (Y1 Q4+) | €11,400 |
-| **Total Technology** | **€42,000** |
+| Monthly running costs (18 months) | €8,500 |
+| AI scaling reserve | €12,000 |
+| Infrastructure investment | €23,500 |
+| Development tools | €1,800 |
+| Scaling buffer (Y1 Q4+) | €14,200 |
+| **Total Technology** | **€60,000** |
 
 *AWS migration costs (~€55K) are budgeted separately under Series A funding, not seed round.*
 
 ---
 
-### 2. Marketing & Growth — €48,000 (24%)
+### 2. Marketing & Growth — €72,000 (24%)
 
 | Item | Q1 | Q2 | Q3 | Q4 | Y1 Total | Notes |
 |---|---|---|---|---|---|---|
-| **Google Ads** | €0 | €1,000 | €2,000 | €3,000 | €6,000 | "Auto verkaufen", "Auto Wert" |
-| **Social Media Ads** | €0 | €500 | €1,500 | €2,000 | €4,000 | Facebook/Instagram carousel |
-| **Content Creation** | €500 | €500 | €800 | €800 | €2,600 | Blog posts, video, graphics |
-| **SEO Tools & Content** | €200 | €200 | €300 | €300 | €1,000 | Ahrefs, keyword research |
-| **PR & Media** | €0 | €500 | €1,000 | €1,000 | €2,500 | Press releases, journalist outreach |
-| **Referral Program Credits** | €0 | €250 | €500 | €750 | €1,500 | €25 per successful referral |
-| **Events & Sponsorships** | €0 | €500 | €500 | €1,000 | €2,000 | Car meetups, startup events |
-| **Branding & Design** | €2,000 | €0 | €500 | €0 | €2,500 | Professional brand assets |
-| **Email Marketing Platform** | €100 | €100 | €100 | €100 | €400 | Newsletter, drip campaigns |
-| **Quarterly subtotal** | €2,800 | €3,550 | €7,200 | €8,950 | **€22,500** | |
+| **Google Ads** | €0 | €1,500 | €3,000 | €4,500 | €9,000 | "Auto verkaufen", "Auto Wert" |
+| **Social Media Ads** | €0 | €750 | €2,250 | €3,000 | €6,000 | Facebook/Instagram carousel |
+| **Content Creation** | €750 | €750 | €1,200 | €1,200 | €3,900 | Blog posts, video, graphics |
+| **SEO Tools & Content** | €300 | €300 | €450 | €450 | €1,500 | Ahrefs, keyword research |
+| **PR & Media** | €0 | €750 | €1,500 | €1,500 | €3,750 | Press releases, journalist outreach |
+| **Referral Program Credits** | €0 | €375 | €750 | €1,125 | €2,250 | €25 per successful referral |
+| **Events & Sponsorships** | €0 | €750 | €750 | €1,500 | €3,000 | Car meetups, startup events |
+| **Branding & Design** | €3,000 | €0 | €750 | €0 | €3,750 | Professional brand assets |
+| **Email Marketing Platform** | €150 | €150 | €150 | €150 | €600 | Newsletter, drip campaigns |
+| **Quarterly subtotal** | €4,200 | €5,325 | €10,800 | €13,425 | **€33,750** | |
 
-**Y2 Marketing Reserve:** €25,500 (Germany soft-launch preparation)
+**Y2 Marketing Reserve:** €38,250 (Germany soft-launch preparation)
 
 ---
 
-### 3. Team & Talent — €60,000 (30%)
+### 3. Team & Talent — €90,000 (30%)
 
 | Role | Type | Monthly Cost | Duration | Total | Timeline |
 |---|---|---|---|---|---|
-| **Growth / Marketing Manager** | Part-time hire | €2,500 | 12 months | €30,000 | Y1 Q3 start |
-| **Frontend Developer (contract)** | Freelance | €3,000 | 6 months | €18,000 | Y1 Q2–Q4 (burst) |
-| **Customer Success (part-time)** | Contract | €1,000 | 8 months | €8,000 | Y1 Q3 start |
-| **Legal / Compliance Advisor** | Retainer | €500 | 8 months | €4,000 | Y1 Q2 start |
-| **Total** | | | | **€60,000** | |
+| **Growth / Marketing Manager** | Part-time hire | €3,750 | 12 months | €45,000 | Y1 Q3 start |
+| **Frontend Developer (contract)** | Freelance | €4,500 | 6 months | €27,000 | Y1 Q2–Q4 (burst) |
+| **Customer Success (part-time)** | Contract | €1,500 | 8 months | €12,000 | Y1 Q3 start |
+| **Legal / Compliance Advisor** | Retainer | €750 | 8 months | €6,000 | Y1 Q2 start |
+| **Total** | | | | **€90,000** | |
 
 **Founder compensation:** €0 in Y1 (equity-only until break-even)
 
 ---
 
-### 4. Legal & Compliance — €15,000 (7.5%)
+### 4. Legal & Compliance — €22,000 (7.3%)
 
 | Item | Cost | Timeline | Notes |
 |---|---|---|---|
-| **GmbH incorporation (Vienna)** | €3,000 | Y1 Q1 | Notary, registration, tax advisor |
-| **GDPR compliance package** | €3,000 | Y1 Q1–Q2 | DPA templates, privacy impact assessment |
-| **Terms & conditions (legal review)** | €2,000 | Y1 Q1 | Platform ToS, seller/buyer agreements |
-| **Trademark registration (AT + EU)** | €2,500 | Y1 Q2 | "autozon" wordmark + logo |
-| **Insurance (D&O + liability)** | €1,500 | Y1 Q1 | Directors & officers, professional liability |
-| **Ongoing legal retainer** | €3,000 | Y1 | Ad-hoc legal questions, contract reviews |
-| **Total** | **€15,000** | | |
+| **GmbH incorporation (Vienna)** | €4,000 | Y1 Q1 | Notary, registration, tax advisor |
+| **GDPR compliance package** | €4,500 | Y1 Q1–Q2 | DPA templates, privacy impact assessment |
+| **Terms & conditions (legal review)** | €3,000 | Y1 Q1 | Platform ToS, seller/buyer agreements |
+| **Trademark registration (AT + EU)** | €3,500 | Y1 Q2 | "autozon" wordmark + logo |
+| **Insurance (D&O + liability)** | €2,500 | Y1 Q1 | Directors & officers, professional liability |
+| **Ongoing legal retainer** | €4,500 | Y1 | Ad-hoc legal questions, contract reviews |
+| **Total** | **€22,000** | | |
 
 ---
 
-### 5. Partnerships & Business Development — €12,000 (6%)
+### 5. Partnerships & Business Development — €18,000 (6%)
 
 | Item | Cost | Timeline | Notes |
 |---|---|---|---|
-| **ÖAMTC partnership development** | €3,000 | Y1 Q3–Q4 | Meetings, co-branded materials, pilot setup |
-| **Financing partner integration** | €2,000 | Y1 Q3–Q4 | Technical integration, testing, legal |
-| **Insurance partner onboarding** | €1,500 | Y1 Q4 | Contract negotiation, referral setup |
-| **Workshop / mechanic network** | €1,500 | Y1 Q3 | Referral agreements, marketing materials |
-| **Industry events & networking** | €2,000 | Y1 | Vienna startup scene, automotive conferences |
-| **Travel & meetings** | €2,000 | Y1 | Partner visits, investor meetings |
-| **Total** | **€12,000** | | |
+| **ÖAMTC partnership development** | €4,500 | Y1 Q3–Q4 | Meetings, co-branded materials, pilot setup |
+| **Financing partner integration** | €3,000 | Y1 Q3–Q4 | Technical integration, testing, legal |
+| **Insurance partner onboarding** | €2,500 | Y1 Q4 | Contract negotiation, referral setup |
+| **Workshop / mechanic network** | €2,000 | Y1 Q3 | Referral agreements, marketing materials |
+| **Industry events & networking** | €3,000 | Y1 | Vienna startup scene, automotive conferences |
+| **Travel & meetings** | €3,000 | Y1 | Partner visits, investor meetings |
+| **Total** | **€18,000** | | |
 
 ---
 
-### 6. Operations & Admin — €8,000 (4%)
+### 6. Operations & Admin — €13,000 (4.3%)
 
 | Item | Monthly | Annual | Notes |
 |---|---|---|---|
-| **Co-working space** | €250 | €3,000 | Vienna (e.g., WeXelerate, Impact Hub) |
-| **Accounting & tax** | €200 | €2,400 | Monthly bookkeeping, annual filing |
-| **Business tools** | €100 | €1,200 | Slack, Notion, Google Workspace |
-| **Bank fees** | €30 | €360 | Business account |
-| **Miscellaneous** | €85 | €1,040 | Office supplies, subscriptions |
-| **Total** | **~€665** | **€8,000** | |
+| **Co-working space** | €400 | €4,800 | Vienna (e.g., WeXelerate, Impact Hub) |
+| **Accounting & tax** | €300 | €3,600 | Monthly bookkeeping, annual filing |
+| **Business tools** | €150 | €1,800 | Slack, Notion, Google Workspace |
+| **Bank fees** | €40 | €480 | Business account |
+| **Miscellaneous** | €193 | €2,320 | Office supplies, subscriptions |
+| **Total** | **~€1,083** | **€13,000** | |
 
 ---
 
-### 7. Reserve / Contingency — €15,000 (7.5%)
+### 7. Reserve / Contingency — €25,000 (8.3%)
 
 | Purpose | Allocation | Trigger |
 |---|---|---|
-| **Unexpected technical costs** | €5,000 | Infrastructure scaling, security incidents |
-| **Market opportunity fund** | €5,000 | Time-sensitive partnership or acquisition opportunity |
-| **Legal contingency** | €3,000 | Regulatory changes, IP disputes |
-| **General buffer** | €2,000 | Unforeseen operational costs |
+| **Unexpected technical costs** | €8,000 | Infrastructure scaling, security incidents |
+| **Market opportunity fund** | €8,000 | Time-sensitive partnership or acquisition opportunity |
+| **Legal contingency** | €5,000 | Regulatory changes, IP disputes |
+| **General buffer** | €4,000 | Unforeseen operational costs |
 
 ---
 
