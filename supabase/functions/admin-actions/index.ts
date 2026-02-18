@@ -82,6 +82,45 @@ serve(async (req) => {
       });
     }
 
+    if (action === "resend_invoice") {
+      const { transaction_id, target_user_id } = params;
+      if (!transaction_id || !target_user_id) throw new Error("transaction_id and target_user_id required");
+
+      // Get transaction details
+      const { data: tx, error: txErr } = await supabaseAdmin
+        .from("transactions")
+        .select("*")
+        .eq("id", transaction_id)
+        .single();
+      if (txErr || !tx) throw new Error("Transaction not found");
+
+      // Get buyer email
+      const { data: buyerAuth } = await supabaseAdmin.auth.admin.getUserById(target_user_id);
+      if (!buyerAuth?.user?.email) throw new Error("Buyer not found");
+
+      // Get car info
+      const { data: car } = await supabaseAdmin
+        .from("cars")
+        .select("make, model, year")
+        .eq("id", tx.car_id)
+        .single();
+
+      const carLabel = car ? `${car.year} ${car.make} ${car.model}` : "Vehicle";
+
+      // Send a notification to the buyer with transaction details
+      await supabaseAdmin.from("notifications").insert({
+        user_id: target_user_id,
+        title: "Transaction Invoice",
+        message: `Invoice for ${carLabel} — Agreed price: €${Number(tx.agreed_price).toLocaleString()}. Status: ${tx.status}. Payment: ${tx.payment_confirmed ? "Confirmed" : "Pending"}.`,
+        type: "invoice",
+        link: `/acquire/${tx.offer_id}`,
+      });
+
+      return new Response(JSON.stringify({ success: true, message: `Invoice notification sent to ${buyerAuth.user.email}` }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     throw new Error(`Unknown action: ${action}`);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
