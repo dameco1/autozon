@@ -78,6 +78,16 @@ const Negotiation: React.FC = () => {
 
     if (!offerData) { setLoading(false); return; }
     const o = offerData as unknown as OfferRow;
+
+    // If car is already sold, redirect to transaction summary instead of allowing re-purchase
+    if (o.status === "accepted") {
+      const { data: carCheck } = await supabase.from("cars").select("status").eq("id", o.car_id).single();
+      if (carCheck && (carCheck as any).status === "sold") {
+        navigate(`/acquire/${o.id}`, { replace: true });
+        return;
+      }
+    }
+
     setOffer(o);
 
     const { data: carData } = await supabase
