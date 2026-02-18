@@ -65,6 +65,26 @@ Next steps checklist:
 3. Schedule vehicle handover and inspection
 4. Register at Zulassungsstelle
 
+## Car Status After Completion
+
+When a transaction is completed (digital or manual), the car's status is automatically updated to `sold`. This triggers:
+- Dashboard shows a red **SOLD** badge instead of "Ad Live"
+- Edit/delete actions are hidden for sold cars
+- A **"Transaction"** button links to the full transaction summary (`/acquire/:offerId`)
+- Completed negotiations are filtered out of the "Active Negotiations" sidebar
+
+## Self-Dealing Prevention
+
+The system prevents users from buying their own cars at every level:
+- **RLS policies**: `offers` INSERT requires `buyer_id != seller_id` and car not owned by buyer
+- **RLS policies**: `car_shortlists` INSERT blocks shortlisting own cars
+- **RLS policies**: `transactions` INSERT requires `buyer_id != seller_id`
+- **Frontend guards**: CarDetail page blocks shortlisting own cars; BuyerMatches blocks self-offers
+
+## Re-Purchase Guard
+
+If a user navigates to `/negotiate/:offerId` for an accepted offer whose car is already sold, they are automatically redirected to the transaction summary at `/acquire/:offerId`.
+
 ## Database
 
 `transactions` table tracks the full journey:

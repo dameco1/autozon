@@ -105,15 +105,26 @@ API Request → Edge/Client → Supabase PostgREST → RLS Policy Check → Data
 | Table | SELECT | INSERT | UPDATE | DELETE |
 |---|---|---|---|---|
 | **profiles** | Own profile (users), All (admins) | Auto-created via trigger | Own profile only | Not allowed |
-| **cars** | Public (all) | Authenticated users (own) | Owner only | Owner only |
-| **offers** | Buyer or seller only | Authenticated (as buyer) | Buyer or seller only | Not allowed |
+| **cars** | Public (available status) + Owner (any status) | Authenticated users (own) | Owner only | Owner only |
+| **offers** | Buyer or seller only | Authenticated (as buyer, `buyer_id != seller_id`, not own car) | Buyer or seller only | Not allowed |
+| **transactions** | Buyer or seller only | Authenticated (as buyer, `buyer_id != seller_id`) | Buyer or seller only | Not allowed |
+| **car_shortlists** | Own + car owner can view | Own only (not own car) | Not allowed | Own only |
 | **notifications** | Own notifications only | System/trigger only | Own (mark read) | Own only |
-| **user_roles** | Admins only | Admins only | Admins only | Admins only |
-| **car_views** | Car owner (analytics) | Any authenticated | Not allowed | Not allowed |
-| **matches** | Own matches only | System only | Own (status update) | Not allowed |
+| **user_roles** | Own role only | Admins only | Admins only | Admins only |
+| **car_views** | Car owner (analytics) + admins | Any authenticated (available cars only) | Not allowed | Not allowed |
+| **matches** | Own matches only + admins | Own + admins | Own + admins | Own + admins |
 | **buyer_selections** | Own selections only | Own only | Own only | Own only |
-| **chat_messages** | Own messages only | Own only | Not allowed | Not allowed |
-| **acquisition_quotes** | Own quotes only | Own only | Own only | Not allowed |
+| **chat_messages** | Own messages only | Own only | Not allowed | Own only |
+| **acquisition_quotes** | Own quotes only | Own only | Own only | Own only |
+
+### Self-Dealing Prevention
+
+RLS policies enforce that no user can interact with their own car as a buyer:
+- `offers` INSERT: `buyer_id != seller_id` AND car not owned by buyer
+- `car_shortlists` INSERT: car not owned by the user
+- `transactions` INSERT: `buyer_id != seller_id`
+
+These are enforced at the database level, making them impossible to bypass from the frontend.
 
 ### Recursive Policy Prevention
 
