@@ -34,24 +34,24 @@ Autozon operates an **asymmetric marketplace model**: buyers use the platform fo
 
 ## Revenue Streams (Current & Planned)
 
-### Active (V1 — MVP)
+### Active (V1)
 
 | Stream | Model | Status |
 |---|---|---|
 | Basic Listing Fee | €49 flat fee | ✅ Live |
 | Premium Listing Fee | €99 flat fee | ✅ Live |
+| Dealer Lead Fees | Per-lead fee for dealer partners | ✅ Live |
+| Financing Referrals | Commission on funded deals | ✅ Live |
+| **Advertising & Sponsored Content** | Display ads, sponsored listings, partner promotions | ✅ Live |
 
 ### Planned (V1.5 – V3)
 
 | Stream | Model | Target Phase |
 |---|---|---|
 | Full Service Fee | 2.5% of sale price (capped €499) | V2 |
-| Dealer Lead Fees | Per-lead fee for dealer partners receiving buyer/seller referrals | V1.5 |
-| Financing Referrals | Commission from financing partner (bank/leasing) on funded deals | V2 |
 | Insurance Referrals | Commission on insurance policies sold through platform | V2 |
 | Logistics Add-ons | Fee for arranging transport/delivery between buyer and seller | V2 |
 | Premium Subscriptions | Monthly subscription for dealers and power sellers (bulk tools, analytics) | V2 |
-| **Advertising & Sponsored Content** | Display ads, sponsored listings, partner promotions | V1.5 |
 | Data Insights | Anonymized market data licensing to OEMs, insurers, and analysts | V3 |
 
 ---
@@ -123,9 +123,9 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 
 | Year | Advertisers | Avg. Monthly Spend | Monthly Ad Revenue | Annual Ad Revenue |
 |---|---|---|---|---|
-| **Y1** | 3–5 | €300 | €1,200 | **€14,400** |
-| **Y2** | 20–30 | €500 | €12,500 | **€150,000** |
-| **Y3** | 50–100 | €800 | €60,000 | **€720,000** |
+| **Y1** | 10–15 | €600 | €8,300 | **€100,000** |
+| **Y2** | 40–60 | €1,000 | €42,000 | **€500,000** |
+| **Y3** | 100–200 | €1,500 | €208,000 | **€2,500,000** |
 
 ### Key Metrics
 
@@ -187,8 +187,8 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 
 | Metric | Definition | Y1 Target |
 |---|---|---|
-| **GMV** | Gross Merchandise Value (total value of cars sold) | €1.5M |
-| **Listings** | Total cars listed on platform | 300+ |
+| **GMV** | Gross Merchandise Value (total value of cars sold) | €22.5M |
+| **Listings** | Total cars listed on platform | 3,000+ |
 | **Seller Conversion** | Listed cars → sold cars | 40%+ |
 | **Premium Uptake** | % of sellers choosing Premium (€99) | 50%+ |
 
@@ -220,31 +220,34 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 
 | Metric | Value |
 |---|---|
-| Listings/month | 12 |
-| Basic (50%) | 6 × €49 = €294 |
-| Premium (50%) | 6 × €99 = €594 |
-| **Monthly Revenue** | ~€888 |
-| **Annual Revenue** | ~€10,650 |
+| Listings/month | 125 |
+| Basic (50%) | 62 × €49 = €3,038 |
+| Premium (50%) | 63 × €99 = €6,237 |
+| Dealer/Financing/Ads | €5,400 |
+| **Monthly Revenue** | ~€14,675 |
+| **Annual Revenue** | ~€175,000 |
 
 ### Base Case (Y1)
 
 | Metric | Value |
 |---|---|
-| Listings/month | 25 |
-| Basic (50%) | 12.5 × €49 = €613 |
-| Premium (50%) | 12.5 × €99 = €1,238 |
-| **Monthly Revenue** | ~€1,850 |
-| **Annual Revenue** | ~€22,200 |
+| Listings/month | 250 |
+| Basic (50%) | 125 × €49 = €6,125 |
+| Premium (50%) | 125 × €99 = €12,375 |
+| Dealer/Financing/Ads | €20,400 |
+| **Monthly Revenue** | ~€38,900 |
+| **Annual Revenue** | ~€467,000 |
 
 ### Optimistic (Y1)
 
 | Metric | Value |
 |---|---|
-| Listings/month | 42 |
-| Basic (40%) | 17 × €49 = €833 |
-| Premium (60%) | 25 × €99 = €2,475 |
-| **Monthly Revenue** | ~€3,308 |
-| **Annual Revenue** | ~€39,700 |
+| Listings/month | 420 |
+| Basic (40%) | 168 × €49 = €8,232 |
+| Premium (60%) | 252 × €99 = €24,948 |
+| Dealer/Financing/Ads | €29,300 |
+| **Monthly Revenue** | ~€62,480 |
+| **Annual Revenue** | ~€750,000 |
 
 ---
 
@@ -258,4 +261,4 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 
 ---
 
-*Document status: V2 — Updated to flat-fee pricing model (€49 Basic / €99 Premium). For investor data room. Subject to refinement based on actual market performance.*
+*Document status: V3 — Updated to align with pitch deck projections (Y1 3,000 listings/€467K). For investor data room. Subject to refinement based on actual market performance.*

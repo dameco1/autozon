@@ -207,15 +207,13 @@ The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds
 
 | Period | Monthly Burn | Cumulative Spend | Remaining (of €300K) |
 |---|---|---|---|
-| Month 1–3 | €5,500 | €16,500 | €283,500 |
-| Month 4–6 | €8,500 | €42,000 | €258,000 |
-| Month 7–9 | €12,000 | €78,000 | €222,000 |
-| Month 10–12 | €14,000 | €120,000 | €180,000 |
-| Month 13–15 | €13,000 | €159,000 | €141,000 |
-| Month 16–18 | €12,500 | €196,500 | €103,500 |
-| Month 19–24 | Revenue-funded | — | Reserve |
+| Month 1–3 | €18,000 | €54,000 | €246,000 |
+| Month 4–6 | €20,000 | €114,000 | €186,000 |
+| Month 7–9 | €20,500 | €175,500 | €124,500 |
+| Month 10–12 | €20,500 | €237,000 | €63,000 |
+| Month 13+ | Revenue-funded | — | Reserve |
 
-**Break-even target:** Month 14–16 (base case)
+**Note:** The €300K seed is runway insurance. With Y1 base case revenue of €467K, the company becomes cash-flow positive by Q2 and the seed fund acts as a safety buffer, not survival capital.
 
 ---
 
@@ -223,12 +221,12 @@ The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds
 
 | Period | Monthly Revenue | Monthly Burn | Net Burn |
 |---|---|---|---|
-| Month 1–3 | €200 | €4,500 | -€4,300 |
-| Month 4–6 | €1,200 | €6,800 | -€5,600 |
-| Month 7–9 | €3,500 | €10,200 | -€6,700 |
-| Month 10–12 | €7,000 | €12,500 | -€5,500 |
-| Month 13–15 | €11,000 | €11,000 | **€0 (break-even)** |
-| Month 16–18 | €15,000 | €10,800 | +€4,200 |
+| Month 1–3 | €16,700 | €18,000 | -€1,300 |
+| Month 4–6 | €26,700 | €20,000 | +€6,700 |
+| Month 7–9 | €43,300 | €20,500 | +€22,800 |
+| Month 10–12 | €69,000 | €20,500 | +€48,500 |
+
+**Break-even target:** Month 4–5 (base case)
 
 ---
 
@@ -236,11 +234,11 @@ The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds
 
 | Metric | Value | Benchmark |
 |---|---|---|
-| **Burn multiple** | 1.8x (Y1 cumulative) | < 2x is excellent for seed stage |
-| **Revenue per € invested** | €0.55 by Month 18 | Target > €0.50 |
-| **Months to break-even** | 14–16 months | Seed average: 18–24 months |
-| **Cash efficiency ratio** | 67% goes to growth (team + marketing) | > 60% is best practice |
-| **Tech cost as % of revenue** | 35% (Y1) → 8% (Y3) | SaaS benchmark: 10–25% |
+| **Burn multiple** | 0.5x (Y1 cumulative) | < 2x is excellent for seed stage |
+| **Revenue per € invested** | €1.56 by Month 12 | Target > €0.50 |
+| **Months to break-even** | 4–5 months | Seed average: 18–24 months |
+| **Cash efficiency ratio** | 54% goes to growth (team + marketing) | > 60% is best practice |
+| **Tech cost as % of revenue** | 4% (Y1) → 1% (Y3) | SaaS benchmark: 10–25% |
 
 ---
 
@@ -248,13 +246,13 @@ The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds
 
 | Metric | Bootstrapped (€0) | Seed (€300K) | Pre-Series A (€750K) |
 |---|---|---|---|
-| **Team size (Y1)** | 1 (founder) | 2–3 | 5–7 |
-| **Time to 100 monthly sales** | 18 months | 10 months | 6 months |
-| **Y1 revenue** | €20K | €50K | €120K |
-| **Y2 revenue** | €120K | €350K | €800K |
-| **Germany launch** | Y3 | Y2 Q3 | Y2 Q1 |
+| **Team size (Y1)** | 1–2 (founders) | 3–4 | 5–8 |
+| **Time to 250 monthly listings** | 14 months | 6 months | 3 months |
+| **Y1 revenue** | €175K | €467K | €750K |
+| **Y2 revenue** | €960K | €2.5M | €4.2M |
+| **Germany launch** | Y1 Q4 | Y1 Q1 | Y1 Q1 |
 | **Risk level** | High (slow growth) | Medium (balanced) | Low (execution risk) |
-| **Investor ROI (5-year)** | N/A | 15–25x | 8–15x |
+| **Investor ROI (5-year)** | N/A | 20–80x | 10–40x |
 
 ---
 
@@ -262,14 +260,14 @@ The platform will migrate from Lovable Cloud to AWS when growth-stage thresholds
 
 | Assumption | Value | Sensitivity |
 |---|---|---|
-| Average transaction value | €15,000 | ±20% → ±€10K revenue Y1 |
-| Take rate (success fee) | 2.5% | Fixed in Y1 |
-| Placement fee conversion | 30% of listings | ±10% → ±€3K revenue Y1 |
-| Monthly user growth rate | 15% (M4–M12) | Critical — drives all projections |
+| Average transaction value | €15,000 | ±20% → ±€45K revenue Y1 |
+| Listing fee conversion | 50% Basic / 50% Premium | ±10% Premium shift → ±€25K revenue Y1 |
+| Monthly listing growth rate | 20% (M3–M12) | Critical — drives all projections |
+| Advertising revenue | €100K Y1 base case | ±30% → ±€30K Y1 |
 | AI cost per call | €0.08 average | Decreasing with model efficiency |
 | Hosting cost growth | 10% per quarter | Scales sub-linearly with usage |
 | Team cost inflation | 3% annual | Standard AT market |
 
 ---
 
-*Document status: V1 — For investor data room. Updated as funding discussions progress.*
+*Document status: V2 — Updated to align with pitch deck projections and corrected summary/detail consistency. For investor data room.*
