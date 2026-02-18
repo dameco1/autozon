@@ -767,10 +767,10 @@ export const SlideFounder = () => (
 // Slide 17: Cap Table / Equity
 export const SlideCapTable = () => {
   const segments = [
-    { label: "Damir Buljubasic\nCo-Founder & CIO", pct: 60, color: "#00C896" },
-    { label: "Emina Mukic-Buljubasic\nCo-Founder & CEO", pct: 10, color: "#00A87A" },
-    { label: "Nenad Brankovic\nCFO", pct: 10, color: "#007A5A" },
-    { label: "First Investor\n€300K for 20%", pct: 20, color: "#FFD166" },
+    { label: "Damir Buljubasic\nCo-Founder & CIO", pct: 57.69, color: "#00C896" },
+    { label: "Emina Mukic-Buljubasic\nCo-Founder & CEO", pct: 9.62, color: "#00A87A" },
+    { label: "Nenad Brankovic\nCFO", pct: 9.62, color: "#007A5A" },
+    { label: "First Investor\n€300K for 23.08%", pct: 23.08, color: "#FFD166" },
   ];
 
   // Build a simple horizontal stacked bar
@@ -789,7 +789,7 @@ export const SlideCapTable = () => {
             style={{ width: `${s.pct}%`, backgroundColor: s.color }}
             className="flex items-center justify-center"
           >
-            <span className="text-[24px] font-bold text-charcoal">{s.pct}%</span>
+            <span className="text-[24px] font-bold text-charcoal">{Number.isInteger(s.pct) ? s.pct : s.pct.toFixed(1)}%</span>
           </div>
         ))}
       </div>
@@ -801,7 +801,7 @@ export const SlideCapTable = () => {
             <div className="w-5 h-5 rounded-full shrink-0 mt-1" style={{ backgroundColor: s.color }} />
             <div>
               <p className="text-[20px] text-white font-bold whitespace-pre-line">{s.label}</p>
-              <p className="text-[28px] font-black text-white mt-1">{s.pct}%</p>
+              <p className="text-[28px] font-black text-white mt-1">{Number.isInteger(s.pct) ? s.pct : s.pct.toFixed(2)}%</p>
             </div>
           </div>
         ))}
@@ -812,12 +812,12 @@ export const SlideCapTable = () => {
         <div className={cardBg + " text-center"}>
           <p className="text-[18px] text-silver mb-2">Investment</p>
           <p className="font-display text-[40px] font-black text-white">€300K</p>
-          <p className="text-[16px] text-silver mt-1">for 20% equity</p>
+          <p className="text-[16px] text-silver mt-1">for 23.08% equity</p>
         </div>
         <div className={cardBg + " text-center"}>
-          <p className="text-[18px] text-silver mb-2">Implied Valuation</p>
-          <p className={`font-display text-[40px] font-black ${green}`}>€1M</p>
-          <p className="text-[16px] text-silver mt-1">pre-money</p>
+          <p className="text-[18px] text-silver mb-2">Post-Money Valuation</p>
+          <p className={`font-display text-[40px] font-black ${green}`}>€1.3M</p>
+          <p className="text-[16px] text-silver mt-1">pre-money €1M</p>
         </div>
         <div className={cardBg + " text-center"}>
           <p className="text-[18px] text-silver mb-2">Projected Return (Y5)</p>
