@@ -153,10 +153,12 @@ const BuyerMatches: React.FC = () => {
     setOfferDialogOpen(true);
   };
 
-  const handleCreateOffer = async () => {
-    if (!selectedBuyer || !carId || !authUser || !car) return;
-    const amt = parseFloat(offerAmount);
-    if (!amt || amt <= 0) { toast.error("Enter a valid amount"); return; }
+   const handleCreateOffer = async () => {
+     if (!selectedBuyer || !carId || !authUser || !car) return;
+     // Prevent self-dealing
+     if (selectedBuyer.id === authUser.id) { toast.error("You cannot make an offer on your own car."); return; }
+     const amt = parseFloat(offerAmount);
+     if (!amt || amt <= 0) { toast.error("Enter a valid amount"); return; }
 
     setCreatingOffer(true);
     const { data, error } = await supabase.from("offers").insert({
