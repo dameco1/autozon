@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import {
   Car, TrendingUp, Users, DollarSign, Plus, Eye, Edit, ExternalLink,
   ArrowRight, BarChart3, Clock, CheckCircle2, AlertCircle, Trash2, Pencil, Lock, CreditCard,
-  Bookmark, Handshake, BadgeCheck, Loader2,
+  Bookmark, Handshake, BadgeCheck, Loader2, Receipt, FileText,
 } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
@@ -63,6 +63,7 @@ const Dashboard: React.FC = () => {
   const [placingCarId, setPlacingCarId] = useState<string | null>(null);
   const [activeOffers, setActiveOffers] = useState<{ id: string; car_id: string; amount: number; status: string; current_round: number; created_at: string }[]>([]);
   const [recentShortlists, setRecentShortlists] = useState<{ id: string; car_id: string; user_id: string; created_at: string }[]>([]);
+  const [placementReceipts, setPlacementReceipts] = useState<{ id: string; carId: string | null; amountPaid: number; currency: string; paidAt: string | null; receiptUrl: string | null; invoiceUrl: string | null }[]>([]);
 
   useEffect(() => {
     const init = async () => {
@@ -105,6 +106,12 @@ const Dashboard: React.FC = () => {
       }
       if (matchesResult.data) setMatches(matchesResult.data);
       if (sellerOffersResult.data) setActiveOffers(sellerOffersResult.data as any);
+
+      // Fetch placement payment receipts
+      supabase.functions.invoke("get-placement-receipts").then(({ data }) => {
+        if (data?.receipts) setPlacementReceipts(data.receipts);
+      });
+
       setLoading(false);
     };
     init();
@@ -423,6 +430,68 @@ const Dashboard: React.FC = () => {
                 )}
               </Card>
             </motion.div>
+
+            {/* Payment History */}
+            {placementReceipts.length > 0 && (
+              <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6.5}>
+                <Card className="bg-secondary/50 border-border">
+                  <div className="px-6 py-4 border-b border-border">
+                    <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                      <Receipt className="h-5 w-5 text-primary" /> {(t.dashboard as any).paymentHistory}
+                    </h2>
+                  </div>
+                  <div className="divide-y divide-border">
+                    {placementReceipts.map((receipt) => {
+                      const car = cars.find((c) => c.id === receipt.carId);
+                      return (
+                        <div key={receipt.id} className="px-6 py-3">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-semibold text-white">
+                                {(t.dashboard as any).placementFee}
+                                {car ? ` — ${car.year} ${car.make} ${car.model}` : ""}
+                              </p>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-xs text-primary font-semibold">
+                                  €{receipt.amountPaid.toLocaleString()}
+                                </span>
+                                {receipt.paidAt && (
+                                  <span className="text-[10px] text-muted-foreground">
+                                    {new Date(receipt.paidAt).toLocaleDateString()}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex gap-1.5">
+                              {receipt.receiptUrl && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 text-xs text-primary hover:text-primary/80 gap-1"
+                                  onClick={() => window.open(receipt.receiptUrl!, "_blank")}
+                                >
+                                  <Receipt className="h-3 w-3" /> {(t.dashboard as any).receipt}
+                                </Button>
+                              )}
+                              {receipt.invoiceUrl && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 text-xs text-primary hover:text-primary/80 gap-1"
+                                  onClick={() => window.open(receipt.invoiceUrl!, "_blank")}
+                                >
+                                  <FileText className="h-3 w-3" /> {(t.dashboard as any).invoice}
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+              </motion.div>
+            )}
 
             {/* Quick Actions */}
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={7}>
