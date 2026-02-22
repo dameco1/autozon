@@ -54,15 +54,13 @@ const HeroSection: React.FC = () => {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 w-full">
         {/* Centered title area */}
         <div className="text-center mb-16">
-          <motion.div
-            className="flex items-center justify-center gap-2 mb-6"
+          <motion.span
+            className="text-xs font-medium text-primary tracking-wide uppercase mb-6 block"
             initial="hidden" animate="visible" variants={fadeUp} custom={0}
           >
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary tracking-wide uppercase">
-              <Sparkles className="h-3.5 w-3.5" />
-              {t.hero.badge}
-            </span>
-          </motion.div>
+            <Sparkles className="inline h-3.5 w-3.5 mr-1.5 -mt-0.5" />
+            {t.hero.badge}
+          </motion.span>
 
           <motion.h1
             className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-[0.95] tracking-tight mb-4"
