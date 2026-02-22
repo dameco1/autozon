@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Shield, Zap, Target, Truck, Bell } from "lucide-react";
+import { Brain, Cpu, Search, FileCheck, TrendingDown } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const fadeUp = {
@@ -12,7 +12,7 @@ const fadeUp = {
   }),
 };
 
-const icons = [Shield, Zap, Target, Truck, Bell];
+const icons = [Brain, Cpu, Search, FileCheck, TrendingDown];
 
 const SolutionSection: React.FC = () => {
   const { t } = useLanguage();
