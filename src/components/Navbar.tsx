@@ -49,6 +49,9 @@ const Navbar: React.FC = () => {
             <a href="#why-autozon" className="text-sm text-silver/80 hover:text-primary transition-colors">
               {t.nav.whyAutozon}
             </a>
+            <Link to="/qa" className="text-sm text-silver/80 hover:text-primary transition-colors">
+              {t.nav.qa}
+            </Link>
             <button onClick={toggleLanguage} className="text-sm text-silver/80 hover:text-primary transition-colors flex items-center gap-1">
               <Globe className="h-4 w-4" />
               {t.nav.language}
@@ -94,6 +97,9 @@ const Navbar: React.FC = () => {
           <a href="#why-autozon" className="block text-sm text-silver/80 hover:text-primary" onClick={() => setMenuOpen(false)}>
             {t.nav.whyAutozon}
           </a>
+          <Link to="/qa" className="block text-sm text-silver/80 hover:text-primary" onClick={() => setMenuOpen(false)}>
+            {t.nav.qa}
+          </Link>
           <button onClick={() => { toggleLanguage(); setMenuOpen(false); }} className="block text-sm text-silver/80 hover:text-primary">
             <Globe className="h-4 w-4 inline mr-1" />{t.nav.language}
           </button>

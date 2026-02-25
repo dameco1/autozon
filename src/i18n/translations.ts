@@ -13,6 +13,7 @@ export const translations = {
       language: "DE",
       tagline: "buy. sell. cars.",
       amazonTagline: "Like Amazon, only for cars!",
+      qa: "Q&A",
     },
     hero: {
       badge: "AI-Powered Car Trading",
@@ -875,6 +876,7 @@ export const translations = {
       language: "EN",
       tagline: "buy. sell. cars.",
       amazonTagline: "Wie Amazon, nur für Autos!",
+      qa: "Fragen",
     },
     hero: {
       badge: "KI-gesteuerter Autohandel",
