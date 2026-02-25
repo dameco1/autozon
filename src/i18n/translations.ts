@@ -884,7 +884,7 @@ export const translations = {
     hero: {
       badge: "KI-gesteuerter Autohandel",
       title: "Schluss mit Einstellen & Hoffen.",
-      titleAccent: "AIntelligenter Weg, Ihr Auto zu kaufen oder zu verkaufen. Mehr Tempo, Mehr Wert!",
+      titleAccent: "KIntelligenter Weg, Ihr Auto zu kaufen oder zu verkaufen. Mehr Tempo, Mehr Wert!",
       subtitle: "Angetrieben von KI, die Tausende von Marktsignalen analysiert — Autozon bietet faire Preise, verifizierte Matches und null Aufwand.",
       cta: "Mein Auto verkaufen",
       ctaSecondary: "Nächstes Auto finden",
