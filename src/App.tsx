@@ -35,6 +35,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Documentation from "./pages/Documentation";
 import ResetPassword from "./pages/ResetPassword";
 import DocViewer from "./pages/DocViewer";
+import QA from "./pages/QA";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +63,7 @@ const App = () => (
               <Route path="/docs" element={<Documentation />} />
               <Route path="/docs/view/:slug" element={<DocViewer />} />
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/qa" element={<QA />} />
 
               {/* MFA-protected routes */}
               <Route path="/dashboard" element={<MfaGuard><Dashboard /></MfaGuard>} />
