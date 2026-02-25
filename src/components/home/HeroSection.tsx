@@ -70,6 +70,13 @@ const HeroSection: React.FC = () => {
             <br />
             <span className="text-gradient">{t.hero.titleAccent}</span>
           </motion.h1>
+
+          <motion.p
+            className="text-silver/50 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed"
+            initial="hidden" animate="visible" variants={fadeUp} custom={1.5}
+          >
+            {t.hero.manifesto}
+          </motion.p>
         </div>
 
         {/* Two-column Selling / Buying grid */}
@@ -81,7 +88,8 @@ const HeroSection: React.FC = () => {
           <div className="flex gap-5">
             <div className="w-1 shrink-0 rounded-full bg-primary" />
             <div>
-              <h2 className="text-xl font-display font-bold text-white mb-3">{t.hero.sellingTitle}</h2>
+              <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.sellingTitle}</h2>
+              <p className="text-primary text-xs font-bold tracking-wider uppercase mb-3">{t.hero.sellingTagline}</p>
               <p className="text-silver/50 text-sm leading-relaxed mb-5">
                 {t.hero.sellingDesc}
               </p>
@@ -100,7 +108,8 @@ const HeroSection: React.FC = () => {
           <div className="flex gap-5">
             <div className="w-1 shrink-0 rounded-full bg-primary" />
             <div>
-              <h2 className="text-xl font-display font-bold text-white mb-3">{t.hero.buyingTitle}</h2>
+              <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.buyingTitle}</h2>
+              <p className="text-primary text-xs font-bold tracking-wider uppercase mb-3">{t.hero.buyingTagline}</p>
               <p className="text-silver/50 text-sm leading-relaxed mb-5">
                 {t.hero.buyingDesc}
               </p>
