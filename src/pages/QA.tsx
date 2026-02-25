@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -180,12 +181,19 @@ Autozon ist kein Browsing-Tool. Es ist eine Transaktions-Engine, die matcht, ver
 
 const QA = () => {
   const { language } = useLanguage();
+  const [search, setSearch] = useState("");
   const qaContent = language === "de" ? qaContentDE : qaContentEN;
+  const filtered = qaContent.filter(
+    (item) =>
+      item.q.toLowerCase().includes(search.toLowerCase()) ||
+      item.a.toLowerCase().includes(search.toLowerCase())
+  );
   const title = language === "de" ? "Häufige Fragen" : "Questions & Answers";
   const subtitle = language === "de"
     ? "Antworten auf die wichtigsten Fragen rund um Autozon."
     : "Answers to the most important questions about Autozon.";
   const backLabel = language === "de" ? "← Zurück zur Startseite" : "← Back to Home";
+  const searchPlaceholder = language === "de" ? "Fragen durchsuchen…" : "Search questions…";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -202,10 +210,21 @@ const QA = () => {
         </Link>
 
         <h1 className="text-3xl sm:text-4xl font-display font-bold mb-3">{title}</h1>
-        <p className="text-muted-foreground mb-10">{subtitle}</p>
+        <p className="text-muted-foreground mb-6">{subtitle}</p>
+
+        <div className="relative mb-8">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={searchPlaceholder}
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-secondary/30 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          />
+        </div>
 
         <Accordion type="single" collapsible className="space-y-2">
-          {qaContent.map((item, i) => (
+          {filtered.map((item, i) => (
             <AccordionItem
               key={i}
               value={`q-${i}`}
