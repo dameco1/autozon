@@ -71,7 +71,7 @@ const HeroSection: React.FC = () => {
             <span className="text-gradient">
               {t.hero.titleAccent.split("AI").map((part, i, arr) =>
                 i < arr.length - 1 ? (
-                  <React.Fragment key={i}>{part}<span className="text-primary font-black">AI</span></React.Fragment>
+                  <React.Fragment key={i}>{part}<span className="text-white bg-primary/20 px-1 rounded">AI</span></React.Fragment>
                 ) : (
                   <React.Fragment key={i}>{part}</React.Fragment>
                 )
