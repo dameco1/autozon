@@ -1,73 +1,47 @@
 
 
-## Revamp Homepage Messaging: AI-Powered Identity
+## Add Q&A Page from Investor Document
 
-### Problem
-The current homepage copy mentions AI only once ("AI-powered matching" in Trust section). For an AI-driven platform with AI valuation, AI damage detection, AI matching, and AI concierge, the messaging severely undersells the core differentiator.
+### Overview
+Create a new `/qa` page displaying the 7 investor Q&A items from the uploaded PDF, formatted as an accordion-style FAQ. Add a "Q&A" link in the Navbar. Replace all "Canada" references with "Worldwide".
 
-### Strategy
-Infuse "AI" into every section without making it feel forced. The narrative arc becomes:
+### Content (7 Q&A pairs, reformulated as generic questions)
 
-**Hero** -> AI engine that knows your car's true worth
-**Problem** -> Dealers use gut feeling; you deserve data + AI
-**Solution** -> 5 AI-powered features (each explicitly names the AI capability)
-**How It Works** -> AI scores, AI matches, AI handles
-**Trust** -> AI-transparent, AI-fair, AI-fast
-**CTA** -> Get your AI valuation in 2 minutes
+1. **Q: How does Autozon solve the trade-off between selling fast (dealer) and selling for more (private)?**
+   Answer: Autozon removes the forced choice by creating a verified, cross-border buyer network...
 
-### Proposed Copy Changes (EN + DE)
+2. **Q: How is Autozon different from existing platforms like Autotrader or Mobile.de?**
+   Answer: Traditional platforms are classified ad marketplaces...
 
-#### 1. Hero Section
-- Badge: "The fair car market" -> **"AI-Powered Car Trading"**
-- Title: "Fair Value. Best Prices." -> **"AI Knows Your Car's True Worth."**
-- Title accent: "Zero Friction." -> **"You Keep the Profit."**
-- Selling desc: Emphasize "AI Fair Value Engine analyzes 50+ data points in real time"
-- Buying desc: Emphasize "AI matching algorithm finds your ideal car"
-- Subtitle: Add "Powered by AI that analyzes thousands of market signals"
+3. **Q: In some markets, trade-ins offer tax benefits. How does Autozon compete?**
+   Answer: (Original says "Canada" — changed to "Worldwide") In many markets, tax credits make trade-ins attractive...
 
-#### 2. Problem Section
-- Description: Add contrast -- "Dealers use gut feeling. You deserve an AI that knows the real number."
+4. **Q: There are many websites where you post photos and wait for buyers. What's different?**
+   Answer: Autozon replaces the "post and wait" model...
 
-#### 3. Solution Section
-- Badge: "The Solution" -> **"AI-Powered Solution"**
-- Feature titles rewritten:
-  - "Fair-Value Pricing" -> **"AI Fair Value Engine"**
-  - "Instant Buyer Matching" -> **"AI Smart Matching"**
-  - "Next-Car Curation" -> **"AI Car Discovery"**
-  - "Full Transaction Handling" -> **"AI-Assisted Transactions"**
-  - "Depreciation Alerts" -> **"AI Depreciation Radar"**
-- Descriptions updated to name specific AI capabilities (computer vision, market analysis, predictive modeling)
+5. **Q: People already post free or paid ads to sell privately. Why use Autozon?**
+   Answer: The core problem with free/paid ads...
 
-#### 4. How It Works
-- Step descriptions updated:
-  - "Enter your car details" -> **"Upload photos -- our AI analyzes them instantly"**
-  - "Get your fair-value score instantly" -> **"AI calculates fair value from 50+ signals"**
-  - "See matched buyers" -> **"AI matches you with verified buyers"**
+6. **Q: Valuation tools already tell you retail value. What more does Autozon offer?**
+   Answer: Valuation tools give a number but don't create a transaction...
 
-#### 5. Trust Section
-- Title: "Built on transparency." -> **"AI You Can Trust."**
-- Pillars updated to reference AI:
-  - "Intelligent" -> **"AI-Native"** with "Built from day one on machine learning..."
-  - Others get AI context where natural
-
-#### 6. CTA Section
-- Title: "Your car's true value," -> **"Your AI-powered advantage,"**
-- Subtitle: "Get your AI fair-value score in under 2 minutes."
-
-#### 7. Hero Component Enhancement
-- Add a subtle animated "AI-powered" chip/badge near the hero title (small green pill with a sparkle icon)
-- The badge text: "Powered by AI" with a Brain/Sparkles icon
+7. **Q: How is Autozon different from the many car apps available worldwide?**
+   Answer: (Original says "for Canada" — changed to "worldwide") Most car apps are catalogues...
 
 ### Technical Changes
 
 | File | Change |
 |---|---|
-| `src/i18n/translations.ts` | Update all EN + DE strings for hero, problem, solution, howItWorks, trust, cta sections |
-| `src/components/home/HeroSection.tsx` | Change badge text from hardcoded "The fair car market" to use translation key; add AI badge with Sparkles icon |
-| `src/components/home/SolutionSection.tsx` | Update icons array: Shield->Brain, Zap->Cpu, Target->Search, Truck->FileCheck, Bell->TrendingDown (more AI-relevant) |
+| `src/pages/QA.tsx` | New page with accordion-based Q&A using existing Accordion components |
+| `src/i18n/translations.ts` | Add `nav.qa: "Q&A"` / `"Fragen"` to both EN and DE nav sections |
+| `src/components/Navbar.tsx` | Add Q&A link in both desktop and mobile menus |
+| `src/App.tsx` | Add `/qa` route (public) |
 
-### What Stays the Same
-- Layout, animations, spacing, colors -- no structural changes
-- German translations updated in parallel
-- All other pages unaffected
+### Design Details
+- Uses existing `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent` from shadcn
+- Same dark theme as other pages (Navbar + dark background)
+- Questions reformulated as generic/universal (not investor-conversation-style)
+- All "Canada" references replaced with "Worldwide" or "many markets"
+- SEO component included
+- Back-to-home link like other legal pages
 
