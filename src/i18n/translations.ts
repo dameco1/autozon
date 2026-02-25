@@ -17,8 +17,8 @@ export const translations = {
     },
     hero: {
       badge: "AI-Powered Car Trading",
-      title: "AI Knows Your Car's True Worth.",
-      titleAccent: "You Keep the Profit.",
+      title: "No more Post & Pray.",
+      titleAccent: "Finally an AIntelligent way to buy or sell your car. More Speed, More Value!",
       subtitle: "Powered by AI that analyzes thousands of market signals — Autozon gives you fair prices, verified matches, and zero hassle.",
       cta: "Sell My Car",
       ctaSecondary: "Find My Next Car",
@@ -883,8 +883,8 @@ export const translations = {
     },
     hero: {
       badge: "KI-gesteuerter Autohandel",
-      title: "KI kennt den wahren Wert Ihres Autos.",
-      titleAccent: "Sie behalten den Gewinn.",
+      title: "Schluss mit Einstellen & Hoffen.",
+      titleAccent: "Endlich ein AIntelligenter Weg, Ihr Auto zu kaufen oder zu verkaufen. Mehr Tempo, Mehr Wert!",
       subtitle: "Angetrieben von KI, die Tausende von Marktsignalen analysiert — Autozon bietet faire Preise, verifizierte Matches und null Aufwand.",
       cta: "Mein Auto verkaufen",
       ctaSecondary: "Nächstes Auto finden",
