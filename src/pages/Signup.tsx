@@ -68,7 +68,7 @@ const Signup: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-charcoal border-border text-white placeholder:text-silver/30"
+              className="bg-navy border-border text-white placeholder:text-silver/30"
               placeholder="you@example.com"
             />
           </div>
