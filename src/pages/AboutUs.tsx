@@ -24,33 +24,21 @@ const AboutUs: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
-  const solutions = [
-    { title: "AI Fair Value Engine", description: "Machine learning analyzes 50+ signals — condition, demand, market liquidity — to calculate your car's true worth in seconds." },
-    { title: "AI Smart Matching", description: "Our matching algorithm connects you with verified buyers who actually want your car, at the right price." },
-    { title: "AI Car Discovery", description: "Predictive modeling curates 3–7 handpicked recommendations based on your lifestyle, not random listings." },
-    { title: "AI-Assisted Transactions", description: "AI coordinates inspection, pickup, paperwork, and payment — managing the entire process end-to-end." },
-    { title: "AI Depreciation Radar", description: "Predictive analytics monitor market shifts and alert you when to sell — before your car loses value." },
-  ];
+  const solutions = t.solution.features;
 
   const steps = [
-    { number: "01", title: "Upload", description: "Upload photos — our AI analyzes them instantly." },
-    { number: "02", title: "Score", description: "AI calculates fair value from 50+ market signals." },
-    { number: "03", title: "Match", description: "AI matches you with verified buyers." },
-    { number: "04", title: "Choose", description: "Pick the best deal or swap." },
-    { number: "05", title: "Done", description: "AI coordinates inspection, pickup & payment." },
+    { number: "01", title: "Upload", description: "Upload photos and car details — our AI starts analyzing instantly." },
+    { number: "02", title: "Price", description: "AI cross-references your photos, specs, and condition against live market data." },
+    { number: "03", title: "List", description: "Your ad goes live for €49. It stays online until your car is sold." },
+    { number: "04", title: "Match", description: "AI connects you with verified buyers looking for a car like yours." },
+    { number: "05", title: "Close", description: "Negotiate directly. Pay by card up to €10K. Done." },
   ];
 
-  const trustPillars = [
-    { title: "AI-Transparent", description: "Every AI decision is explained. See exactly how your price was calculated." },
-    { title: "AI-Fast", description: "AI matches in minutes, not weeks of listing and waiting." },
-    { title: "AI-Fair", description: "Machine learning pricing that protects both buyers and sellers equally." },
-    { title: "AI-Native", description: "Built from day one on machine learning — not bolted on as an afterthought." },
-    { title: "AI-Premium", description: "AI concierge handles inspection, logistics, and paperwork end-to-end." },
-  ];
+  const trustPillars = t.trust.pillars;
 
   return (
     <div className="min-h-screen bg-navy">
-      <SEO path="/about" description="Learn about Autozon — Austria's AI-powered car marketplace. Fair prices, verified matches, zero hassle." />
+      <SEO path="/about" description="Learn about Autozon — the AI-powered car platform that shows you your car's real market value. Fair prices, verified matches, zero dealer margin." />
       <Navbar />
 
       {/* Hero / Manifesto */}
@@ -62,31 +50,23 @@ const AboutUs: React.FC = () => {
             initial="hidden" animate="visible" variants={fadeUp} custom={0}
           >
             <Sparkles className="inline h-3.5 w-3.5 mr-1.5 -mt-0.5" />
-            AI-Powered Car Trading
+            AI-Powered Fair Value
           </motion.span>
 
           <motion.h1
             className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight tracking-tight mb-4"
             initial="hidden" animate="visible" variants={fadeUp} custom={1}
           >
-            No more Post &amp; Pray.
+            Your Photos. Your Data.
             <br />
-            <span className="text-orange">
-              <span className="text-white bg-orange/20 px-1 rounded">AI</span>ntelligent way to buy or sell your car.
-            </span>
+            <span className="text-orange">Your Fair Price.</span>
           </motion.h1>
-          <motion.p
-            className="text-lg text-orange font-bold tracking-wide mb-6"
-            initial="hidden" animate="visible" variants={fadeUp} custom={1.5}
-          >
-            More Speed, More Value!
-          </motion.p>
 
           <motion.p
-            className="text-silver/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
+            className="text-silver/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mt-6"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            We are not a listing site nor marketplace. We are an AI-driven matching engine that compresses the entire selling process into a guided, trusted, and fast transaction.
+            Autozon's AI analyzes your car photos, condition, mileage, and specs — then compares it against live market data to calculate the fairest price you can sell for. You keep the margin. Not the dealer.
           </motion.p>
         </div>
       </section>
@@ -102,17 +82,17 @@ const AboutUs: React.FC = () => {
             <div className="flex gap-5">
               <div className="w-1 shrink-0 rounded-full bg-orange" />
               <div>
-                <h2 className="text-xl font-display font-bold text-white mb-1">Selling a Car</h2>
-                <p className="text-orange text-xs font-bold tracking-wider uppercase mb-3">YOU KEEP THE PROFIT.</p>
+                <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.sellingTitle}</h2>
+                <p className="text-orange text-xs font-bold tracking-wider uppercase mb-3">{t.hero.sellingTagline}</p>
                 <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                  Our AI Fair Value Engine analyzes 50+ data points in real time — condition, demand, market trends, and computer vision damage detection — then matches you with verified buyers ready to pay what your car is truly worth.
+                  Upload your car. Our AI scans photos for condition and damage, cross-references mileage, specs, and equipment against thousands of live market listings — and returns your car's true market value. List for €49. Your ad stays live until it sells.
                 </p>
                 <Button
                   size="sm"
                   className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg"
                   onClick={() => navigate("/intent")}
                 >
-                  Sell My Car
+                  {t.hero.sellerCta}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -122,10 +102,10 @@ const AboutUs: React.FC = () => {
             <div className="flex gap-5">
               <div className="w-1 shrink-0 rounded-full bg-orange" />
               <div>
-                <h2 className="text-xl font-display font-bold text-white mb-1">Buying a Car</h2>
-                <p className="text-orange text-xs font-bold tracking-wider uppercase mb-3">PERFECT CAR IS YOUR NEXT CAR.</p>
+                <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.buyingTitle}</h2>
+                <p className="text-orange text-xs font-bold tracking-wider uppercase mb-3">{t.hero.buyingTagline}</p>
                 <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                  Tell us what you're looking for and our AI matching algorithm finds your ideal car from thousands of listings. Fair price, delivered to your door — inspected, verified, and hassle-free.
+                  Tell us your budget, preferences, and lifestyle. Our AI matches you with fairly priced, verified cars — not random listings padded with dealer margins. Every car is AI-appraised. Every price is market-verified.
                 </p>
                 <Button
                   size="sm"
@@ -133,19 +113,12 @@ const AboutUs: React.FC = () => {
                   className="border-silver/30 text-white hover:bg-white/5 font-semibold rounded-lg"
                   onClick={() => navigate("/intent")}
                 >
-                  Find My Next Car
+                  {t.hero.buyerCta}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
             </div>
           </motion.div>
-
-          <motion.p
-            className="mt-12 text-center text-silver/50 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
-          >
-            Powered by AI that analyzes thousands of market signals — Autozon gives you fair prices, verified matches, and zero hassle.
-          </motion.p>
         </div>
       </section>
 
@@ -154,21 +127,22 @@ const AboutUs: React.FC = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,hsl(0_84%_60%/0.04),transparent)]" />
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <span className="text-xs font-semibold tracking-widest uppercase text-destructive/80 mb-4 block">The Problem</span>
+            <span className="text-xs font-semibold tracking-widest uppercase text-destructive/80 mb-4 block">{t.problem.badge}</span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight">
-              Car depreciation is<br /><span className="text-destructive">broken.</span>
+              {t.problem.title}<br /><span className="text-destructive">{t.problem.titleAccent}</span>
             </h2>
             <p className="text-silver/50 text-lg max-w-2xl mt-6 leading-relaxed">
-              Dealers use gut feeling. You deserve an AI that knows the real number. The moment you drive off the lot, they pocket up to 30% — not because the car changed, but because the system is designed against you.
+              {t.problem.description}
             </p>
+            {t.problem.italicLine && (
+              <p className="text-orange text-base sm:text-lg italic mt-4 whitespace-pre-line max-w-2xl">
+                {t.problem.italicLine}
+              </p>
+            )}
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { value: "30%", label: "Average value lost at dealerships" },
-              { value: "€4,200", label: "Hidden dealer margin per car" },
-              { value: "73%", label: "Sellers get below fair value" },
-            ].map((stat, i) => (
+            {t.problem.stats.map((stat, i) => (
               <motion.div
                 key={i}
                 className="group relative bg-navy border border-border rounded-2xl p-10 overflow-hidden hover:border-destructive/30 transition-all duration-500"
@@ -187,8 +161,8 @@ const AboutUs: React.FC = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_100%,hsl(24_95%_53%/0.04),transparent)]" />
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <span className="text-xs font-semibold tracking-widest uppercase text-orange/80 mb-4 block">AI-Powered Solution</span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">Autozon fixes this.</h2>
+            <span className="text-xs font-semibold tracking-widest uppercase text-orange/80 mb-4 block">{t.solution.badge}</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">{t.solution.title}</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
@@ -217,8 +191,8 @@ const AboutUs: React.FC = () => {
       <section className="py-16 bg-charcoal relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <span className="text-xs font-semibold tracking-widest uppercase text-orange/80 mb-4 block">How It Works</span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">5 steps to fair value.</h2>
+            <span className="text-xs font-semibold tracking-widest uppercase text-orange/80 mb-4 block">{t.howItWorks.badge}</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">{t.howItWorks.title}</h2>
           </motion.div>
 
           <div className="relative">
@@ -246,8 +220,8 @@ const AboutUs: React.FC = () => {
       <section className="py-16 bg-navy">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <span className="text-xs font-semibold tracking-widest uppercase text-orange/80 mb-4 block">Why Autozon</span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">AI You Can Trust.</h2>
+            <span className="text-xs font-semibold tracking-widest uppercase text-orange/80 mb-4 block">{t.trust.badge}</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">{t.trust.title}</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -277,17 +251,18 @@ const AboutUs: React.FC = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight mb-4">
-              Your AI-powered advantage starts now.
+              {t.cta.title}
             </h2>
+            <p className="text-white/80 text-sm sm:text-base italic mb-2 whitespace-pre-line">{t.cta.aiLine}</p>
             <p className="text-white/80 text-base sm:text-lg mb-8 max-w-xl mx-auto">
-              Get your AI fair-value score in under 2 minutes. No dealers, no guesswork — just data.
+              {t.cta.subtitle}
             </p>
             <Button
               size="lg"
               className="bg-white text-orange hover:bg-white/90 font-bold text-base px-10 py-6 rounded-full shadow-lg"
               onClick={() => navigate("/signup")}
             >
-              Get Started — It's Free
+              {t.cta.button}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </motion.div>
