@@ -24,7 +24,7 @@ const AiEngineSection: React.FC = () => {
     seller: {
       badge: "FÜR VERKÄUFER",
       title: "Kenne deinen Preis. Inseriere mit Vertrauen.",
-      body: "Lade Fotos und Fahrzeugdaten hoch. Unsere KI scannt echte europäische Marktdaten — Zustand, Kilometerstand, Nachfrage — und gibt dir den wahren Wert deines Autos in Sekunden.\nKein Händler-Tiefpreis. Keine wilde Schätzung.\nDein tatsächlicher Marktpreis.\n\nDann geht dein Inserat live — und bleibt live, bis dein Auto verkauft ist. Keine Zeitlimits. Keine Neu-Einstellungsgebühren.\nEchte Käufer finden dich.",
+      body: "Lade Fotos und Fahrzeugdaten hoch. Unsere KI scannt echte Marktdaten — Zustand, Kilometerstand, Nachfrage — und gibt dir den wahren Wert deines Autos in Sekunden.\nKein Händler-Tiefpreis. Keine wilde Schätzung.\nDein tatsächlicher Marktpreis.\n\nDann geht dein Inserat live — und bleibt live, bis dein Auto verkauft ist. Keine Zeitlimits. Keine Neu-Einstellungsgebühren.\nEchte Käufer finden dich.",
       cta: "Auto inserieren — €49 Pauschal →",
     },
     buyer: {
