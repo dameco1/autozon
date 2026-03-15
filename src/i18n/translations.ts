@@ -52,7 +52,7 @@ export const translations = {
       manifesto: "We are not a listing site nor marketplace. We are an AI-driven matching engine that compresses the entire selling process into a guided, trusted, and fast transaction.",
     },
     whyAutozon: {
-      title: "Why Smart Austrians Choose Autozon",
+      title: "Why Customers Choose Autozon",
       cards: [
         { icon: "coin", title: "Fair Price Guarantee", description: "We use real market data to show you what your car is actually worth — not what a dealer wants to pay." },
         { icon: "zap", title: "Sell in Days, Not Weeks", description: "List in under 3 minutes. Get serious buyers fast. No time-wasters, no ghost inquiries." },
