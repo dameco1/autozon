@@ -102,6 +102,7 @@ export const translations = {
     comparison: {
       title: "Why Autozon Beats the Alternatives",
       features: [
+        "AI-powered price valuation",
         "Free listings for private sellers",
         "Fair price calculator built-in",
         "Trade-in option on platform",
@@ -111,6 +112,7 @@ export const translations = {
       competitors: ["AutoScout24", "Willhaben", "mobile.de"],
       // true = has feature, false = doesn't
       competitorData: [
+        [false, false, false],
         [false, true, false],
         [false, false, false],
         [false, false, false],
