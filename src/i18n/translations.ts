@@ -1003,6 +1003,7 @@ export const translations = {
     comparison: {
       title: "Warum Autozon die Alternativen schlägt",
       features: [
+        "KI-gestützte Preisbewertung",
         "Kostenlose Inserate für Privatverkäufer",
         "Fairer Preisrechner integriert",
         "Eintausch-Option auf der Plattform",
@@ -1011,6 +1012,7 @@ export const translations = {
       ],
       competitors: ["AutoScout24", "Willhaben", "mobile.de"],
       competitorData: [
+        [false, false, false],
         [false, true, false],
         [false, false, false],
         [false, false, false],
