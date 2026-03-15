@@ -96,7 +96,7 @@ export const translations = {
       subtitle: "You handle the car. Our AI handles everything else.",
       steps: [
         { number: "01", title: "📸 Upload Your Car", description: "Snap a few photos. Add make, model, mileage and condition. Takes under 3 minutes." },
-        { number: "02", title: "🧠 Get Your AI Price", description: "Our AI reads 50+ live European market signals and gives you your car's true value in under 60 seconds. No guessing. No dealer needed." },
+        { number: "02", title: "🧠 Get Your AI Price", description: "Our AI reads 50+ live market signals and gives you your car's true value in under 60 seconds. No guessing. No dealer needed." },
         { number: "03", title: "📣 Go Live — Until Sold", description: "Your listing is published to real buyers immediately. It stays live until your car finds its next owner. No time limits. No re-listing fees." },
         { number: "04", title: "💬 Negotiate Directly", description: "Buyers contact you through Autozon. Chat, counter-offer, agree on price — all on-platform, all in one place." },
         { number: "05", title: "💳 Close the Deal", description: "Agree and seal it. If the price is under €10,000, the buyer can pay by card right here on Autozon. Instant. Safe. Done." },
