@@ -20,15 +20,15 @@ export const translations = {
       qa: "Q&A",
     },
     hero: {
-      headline: "Your Car's Real Price.\nIn Seconds. Not Guesswork.",
-      headlineAccent: "Europe's smartest AI-powered car classifieds.\nFair for sellers. Fast for buyers.",
-      subheadline: "Upload your car. Our AI reads the live European market\nand tells you exactly what it's worth — before you list.\nYour ad stays live until your car sells.\nBuyers can even pay by card. No one else offers this.",
+      headline: "Stop Guessing.\nStart Selling Smarter.",
+      headlineAccent: "AI tells you the price. We bring you the buyer.\nYou keep the profit.",
+      subheadline: "Other platforms make you guess your price, wait for weeks,\nand hope someone calls. Autozon is different.\nOur AI scans the live European market, values your car\nin seconds, and connects you with real buyers — instantly.\nPay €49 once. Your ad never expires. Done.",
       primaryCta: "🚘 Get My Free AI Valuation",
       secondaryCta: "Find My Next Car →",
       trustBadges: [
-        { icon: "check", text: "🤖 AI Valuation in Seconds" },
-        { icon: "lock", text: "📅 Ad Live Until Sold" },
-        { icon: "zap", text: "💳 Buy by Card up to €10K" },
+        { icon: "check", text: "🤖 AI prices your car in 60 seconds" },
+        { icon: "lock", text: "📅 Your ad stays live — forever" },
+        { icon: "zap", text: "💳 Buyers pay by card up to €10K" },
       ],
       // legacy keys kept for other pages
       badge: "AI-Powered Car Trading",
