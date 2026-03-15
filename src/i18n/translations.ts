@@ -1057,8 +1057,8 @@ export const translations = {
       ],
     },
     cta: {
-      title: "Einmal inserieren. Wir arbeiten, bis es verkauft ist.",
-      aiLine: "KI-Preise. Echte Käufer.\n€49 pauschal. Dein Inserat läuft nie ab.",
+      title: "Dein Auto hat einen fairen Preis. Wir finden ihn.",
+      aiLine: "KI-gestützte Bewertung. Echte Marktdaten.\n€49 pauschal. Dein Inserat läuft nie ab.",
       subtitle: "Ein Auto auf Autozon kaufen? Immer 100% kostenlos.",
       button: "Kostenlose KI-Bewertung",
     },
