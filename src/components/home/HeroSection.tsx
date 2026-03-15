@@ -45,7 +45,7 @@ const HeroSection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden bg-navy">
+    <section className="relative min-h-screen flex items-center pt-24 pb-20 overflow-hidden bg-navy">
       {/* Subtle center radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
 
