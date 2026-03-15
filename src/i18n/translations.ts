@@ -15,7 +15,7 @@ export const translations = {
       dashboard: "Dashboard",
       logout: "Log Out",
       language: "DE",
-      tagline: "buy. sell. cars.",
+      tagline: "Know the Price. Make the Deal.",
       amazonTagline: "Like Amazon, only for cars!",
       qa: "Q&A",
     },
