@@ -1082,9 +1082,6 @@ export const translations = {
       tagline: "Know the Price. Make the Deal.",
       copyright: "© 2026 Autozon. Alle Rechte vorbehalten.",
     },
-      tagline: "buy. sell. cars.",
-      copyright: "© 2026 Autozon. Alle Rechte vorbehalten.",
-    },
     auth: {
       loginTitle: "Willkommen zurück",
       loginSubtitle: "Melden Sie sich bei Ihrem Autozon-Konto an",
