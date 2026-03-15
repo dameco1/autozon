@@ -943,7 +943,7 @@ export const translations = {
     },
     hero: {
       headline: "Smart verkaufen. Fair kaufen.",
-      headlineAccent: "Europas KI-gestützte Auto-Kleinanzeigen.",
+      headlineAccent: "KI-gestützte Auto-Kleinanzeigen.",
       subheadline: "KI bewertet dein Auto. Dein Inserat bleibt online, bis es verkauft ist.",
       primaryCta: "🚘 Kostenlose KI-Bewertung",
       secondaryCta: "Mein nächstes Auto finden →",
