@@ -51,7 +51,7 @@ const AboutUs: React.FC = () => {
             initial="hidden" animate="visible" variants={fadeUp} custom={0}
           >
             <Sparkles className="inline h-3.5 w-3.5 mr-1.5 -mt-0.5" />
-            AI-Powered Fair Value
+            {aboutUs?.badge ?? "AI-Powered Fair Value"}
           </motion.span>
 
           <motion.h1
