@@ -1025,7 +1025,7 @@ export const translations = {
       cta: "Kostenlose KI-Bewertung — Gratis",
     },
     comparison: {
-      title: "Warum smarte Verkäufer zu Autozon wechseln",
+      title: "Warum Verkäufer zu Autozon wechseln",
       features: [
         "KI-Fair-Value-Preis vor dem Inserieren",
         "Inserat online bis Auto verkauft — kein Ablauf",
