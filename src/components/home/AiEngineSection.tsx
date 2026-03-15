@@ -40,7 +40,7 @@ const AiEngineSection: React.FC = () => {
     seller: {
       badge: "FOR SELLERS",
       title: "Know Your Number. List With Confidence.",
-      body: "Upload your photos and car details. Our AI scans real European market data — condition, mileage, demand — and gives you your car's true value in seconds.\nNot a dealer's lowball. Not a wild guess.\nYour actual market price.\n\nThen your listing goes live — and stays live until your car sells. No time limits. No re-listing fees.\nJust real buyers, finding you.",
+      body: "Upload your photos and car details. Our AI scans real market data — condition, mileage, demand — and gives you your car's true value in seconds.\nNot a dealer's lowball. Not a wild guess.\nYour actual market price.\n\nThen your listing goes live — and stays live until your car sells. No time limits. No re-listing fees.\nJust real buyers, finding you.",
       cta: "List My Car — €49 Flat Fee →",
     },
     buyer: {
