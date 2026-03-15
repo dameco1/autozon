@@ -41,6 +41,15 @@ const ProblemSection: React.FC = () => {
             </motion.div>
           ))}
         </div>
+
+        {(t.problem as any).italicLine && (
+          <motion.p
+            className="text-orange/80 text-base sm:text-lg italic text-center mt-8 whitespace-pre-line max-w-xl mx-auto"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
+          >
+            {(t.problem as any).italicLine}
+          </motion.p>
+        )}
       </div>
     </section>
   );

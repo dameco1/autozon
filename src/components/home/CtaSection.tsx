@@ -22,7 +22,7 @@ const CtaSection: React.FC = () => {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight mb-3">
             {t.cta.title}
           </h2>
-          <p className="text-white/80 text-sm italic mb-2">{t.cta.aiLine}</p>
+          <p className="text-white/80 text-sm sm:text-base italic mb-2 whitespace-pre-line">{t.cta.aiLine}</p>
           <p className="text-white/80 text-base sm:text-lg mb-8 max-w-xl mx-auto">{t.cta.subtitle}</p>
           <Button
             size="lg"
