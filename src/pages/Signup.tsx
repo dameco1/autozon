@@ -80,7 +80,7 @@ const Signup: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="bg-charcoal border-border text-white placeholder:text-silver/30"
+              className="bg-navy border-border text-white placeholder:text-silver/30"
               placeholder="••••••••"
             />
           </div>
