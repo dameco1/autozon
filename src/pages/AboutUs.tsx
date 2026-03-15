@@ -67,7 +67,7 @@ const AboutUs: React.FC = () => {
             className="text-silver/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mt-6"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            Autozon's AI analyzes your car photos, condition, mileage, and specs — then compares it against live market data to calculate the fairest price you can sell for. You keep the margin. Not the dealer.
+            {aboutUs?.heroDescription ?? "Autozon's AI analyzes your car photos, condition, mileage, and specs — then compares it against live market data to calculate the fairest price you can sell for. You keep the margin. Not the dealer."}
           </motion.p>
         </div>
       </section>
