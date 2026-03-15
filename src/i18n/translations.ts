@@ -20,15 +20,15 @@ export const translations = {
       qa: "Q&A",
     },
     hero: {
-      headline: "Buy, Sell or Trade Your Car.",
-      headlineAccent: "Fast. Fair. Without the Hassle.",
-      subheadline: "Europe's car marketplace built on honest pricing.\nNo hidden fees. No lowball tricks. Just real deals.",
+      headline: "Your Car's True Price.",
+      headlineAccent: "Found by AI. Confirmed by the Market.",
+      subheadline: "Autozon's AI analyses thousands of real European deals\nto tell you exactly what your car is worth — before you list it.\nBuyers get matched to the right car automatically.\nNo guessing. No haggling. Just the right price.",
       primaryCta: "🚘 List My Car — It's Free",
       secondaryCta: "Browse Cars Now →",
       trustBadges: [
-        { icon: "check", text: "Free to List" },
-        { icon: "lock", text: "Secure Transactions" },
-        { icon: "zap", text: "Sell in Days, Not Months" },
+        { icon: "check", text: "🤖 AI Valuation in Seconds" },
+        { icon: "lock", text: "🎯 Smart Buyer Matching" },
+        { icon: "zap", text: "⚡ Sell in Days, Not Months" },
       ],
       // legacy keys kept for other pages
       badge: "AI-Powered Car Trading",
