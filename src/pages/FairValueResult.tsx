@@ -321,7 +321,7 @@ const FairValueResult: React.FC = () => {
                   ]}
                 />
                 <Line type="monotone" dataKey="segment" stroke="hsl(0 0% 60%)" strokeWidth={2} strokeDasharray="6 4" dot={false} />
-                <Line type="monotone" dataKey="value" stroke="hsl(155, 100%, 42%)" strokeWidth={3} dot={false} />
+                <Line type="monotone" dataKey="value" stroke="hsl(24, 95%, 53%)" strokeWidth={3} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>

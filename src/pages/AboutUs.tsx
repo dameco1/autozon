@@ -26,7 +26,8 @@ const AboutUs: React.FC = () => {
 
   const solutions = t.solution.features;
 
-  const steps = [
+  const aboutUs = (t as any).aboutUs;
+  const steps = aboutUs?.steps ?? [
     { number: "01", title: "Upload", description: "Upload photos and car details — our AI starts analyzing instantly." },
     { number: "02", title: "Price", description: "AI cross-references your photos, specs, and condition against live market data." },
     { number: "03", title: "List", description: "Your ad goes live for €49. It stays online until your car is sold." },
@@ -50,23 +51,23 @@ const AboutUs: React.FC = () => {
             initial="hidden" animate="visible" variants={fadeUp} custom={0}
           >
             <Sparkles className="inline h-3.5 w-3.5 mr-1.5 -mt-0.5" />
-            AI-Powered Fair Value
+            {aboutUs?.badge ?? "AI-Powered Fair Value"}
           </motion.span>
 
           <motion.h1
             className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight tracking-tight mb-4"
             initial="hidden" animate="visible" variants={fadeUp} custom={1}
           >
-            Your Photos. Your Data.
+            {aboutUs?.heroTitle ?? "Your Photos. Your Data."}
             <br />
-            <span className="text-orange">Your Fair Price.</span>
+            <span className="text-orange">{aboutUs?.heroTitleAccent ?? "Your Fair Price."}</span>
           </motion.h1>
 
           <motion.p
             className="text-silver/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mt-6"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            Autozon's AI analyzes your car photos, condition, mileage, and specs — then compares it against live market data to calculate the fairest price you can sell for. You keep the margin. Not the dealer.
+            {aboutUs?.heroDescription ?? "Autozon's AI analyzes your car photos, condition, mileage, and specs — then compares it against live market data to calculate the fairest price you can sell for. You keep the margin. Not the dealer."}
           </motion.p>
         </div>
       </section>
@@ -85,7 +86,7 @@ const AboutUs: React.FC = () => {
                 <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.sellingTitle}</h2>
                 <p className="text-orange text-xs font-bold tracking-wider uppercase mb-3">{t.hero.sellingTagline}</p>
                 <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                  Upload your car. Our AI scans photos for condition and damage, cross-references mileage, specs, and equipment against thousands of live market listings — and returns your car's true market value. List for €49. Your ad stays live until it sells.
+                  {aboutUs?.sellingDescription ?? "Upload your car. Our AI scans photos for condition and damage, cross-references mileage, specs, and equipment against thousands of live market listings — and returns your car's true market value. List for €49. Your ad stays live until it sells."}
                 </p>
                 <Button
                   size="sm"
@@ -105,7 +106,7 @@ const AboutUs: React.FC = () => {
                 <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.buyingTitle}</h2>
                 <p className="text-orange text-xs font-bold tracking-wider uppercase mb-3">{t.hero.buyingTagline}</p>
                 <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                  Tell us your budget, preferences, and lifestyle. Our AI matches you with fairly priced, verified cars — not random listings padded with dealer margins. Every car is AI-appraised. Every price is market-verified.
+                  {aboutUs?.buyingDescription ?? "Tell us your budget, preferences, and lifestyle. Our AI matches you with fairly priced, verified cars — not random listings padded with dealer margins. Every car is AI-appraised. Every price is market-verified."}
                 </p>
                 <Button
                   size="sm"
