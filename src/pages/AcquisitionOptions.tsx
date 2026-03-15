@@ -172,24 +172,35 @@ const AcquisitionOptions: React.FC = () => {
 
   const handleMethodSelect = async (method: "digital" | "manual") => {
     setCompletionMethod(method);
+    const txId = await ensureTransaction();
+    if (!txId) return;
     if (method === "manual") {
-      await saveTransaction({ completion_method: "manual", status: "completed", current_step: 5 });
-      await markCarSold();
-      setStep(99); // Show manual complete
+      await supabase.rpc("transaction_set_method", {
+        _transaction_id: txId,
+        _completion_method: "manual",
+        _status: "completed",
+        _current_step: 5,
+      });
+      // Car marked sold by the insurance function won't apply here, do it via RPC or direct
+      await supabase.from("cars").update({ status: "sold" } as any).eq("id", offer!.car_id);
+      setStep(99);
     } else {
-      await saveTransaction({ completion_method: "digital", status: "contract_pending", current_step: 2 });
+      await supabase.rpc("transaction_set_method", {
+        _transaction_id: txId,
+        _completion_method: "digital",
+        _status: "contract_pending",
+        _current_step: 2,
+      });
       setStep(2);
     }
   };
 
   const handleContractDone = async (type: string) => {
     setContractType(type);
-    await saveTransaction({
-      contract_type: type,
-      contract_generated_at: new Date().toISOString(),
-      contract_signed_buyer: true,
-      status: "payment_pending",
-      current_step: 3,
+    if (!transactionId) return;
+    await supabase.rpc("transaction_set_contract", {
+      _transaction_id: transactionId,
+      _contract_type: type,
     });
     setStep(3);
   };
@@ -197,12 +208,11 @@ const AcquisitionOptions: React.FC = () => {
   const handlePaymentDone = async (method: string, partnerId?: string) => {
     setPaymentMethod(method);
     setFinancingPartnerId(partnerId || null);
-    await saveTransaction({
-      payment_method: method,
-      financing_partner_id: partnerId || null,
-      payment_confirmed: true,
-      status: "insurance_pending",
-      current_step: 4,
+    if (!transactionId) return;
+    await supabase.rpc("transaction_set_payment", {
+      _transaction_id: transactionId,
+      _payment_method: method,
+      _financing_partner_id: partnerId || null,
     });
     setStep(4);
   };
@@ -210,25 +220,25 @@ const AcquisitionOptions: React.FC = () => {
   const handleInsuranceDone = async (tier: string, partnerId?: string) => {
     setInsuranceTier(tier);
     setInsurancePartnerId(partnerId || null);
-    await saveTransaction({
-      insurance_tier: tier,
-      insurance_partner_id: partnerId || null,
-      insurance_confirmed: true,
-      status: "completed",
-      current_step: 5,
+    if (!transactionId) return;
+    await supabase.rpc("transaction_set_insurance", {
+      _transaction_id: transactionId,
+      _insurance_tier: tier,
+      _insurance_partner_id: partnerId || null,
+      _insurance_confirmed: true,
     });
-    await markCarSold();
+    // Car is marked sold inside the DB function
     setStep(5);
   };
 
   const handleInsuranceSkip = async () => {
-    await saveTransaction({
-      insurance_tier: null,
-      insurance_confirmed: false,
-      status: "completed",
-      current_step: 5,
+    if (!transactionId) return;
+    await supabase.rpc("transaction_set_insurance", {
+      _transaction_id: transactionId,
+      _insurance_tier: null,
+      _insurance_partner_id: null,
+      _insurance_confirmed: false,
     });
-    await markCarSold();
     setStep(5);
   };
 
