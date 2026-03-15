@@ -35,8 +35,8 @@ const AiEngineSection: React.FC = () => {
     },
   } : {
     badge: "POWERED BY AI",
-    title: "The Smartest Way to Buy or Sell a Car in Europe",
-    subtitle: "We built AI that actually understands the European car market. Real-time pricing. Smart buyer matching. One flat fee. No expiry date on your listing.",
+    title: "The Smartest Way to Buy or Sell a Car",
+    subtitle: "We built AI that actually understands the car market. Real-time pricing. Smart buyer matching. One flat fee. No expiry date on your listing.",
     seller: {
       badge: "FOR SELLERS",
       title: "Know Your Number. List With Confidence.",
