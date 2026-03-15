@@ -121,6 +121,9 @@ const Navbar: React.FC = () => {
           <a href="#how-it-works" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             {t.nav.howItWorks}
           </a>
+          <Link to="/about" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+            About Us
+          </Link>
           <Link to="/qa" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             Q&A
           </Link>
