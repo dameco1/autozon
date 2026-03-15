@@ -60,6 +60,9 @@ const Navbar: React.FC = () => {
             <a href="#how-it-works" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
               {t.nav.howItWorks}
             </a>
+            <Link to="/about" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
+              About Us
+            </Link>
             <Link to="/qa" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
               Q&A
             </Link>
@@ -118,6 +121,9 @@ const Navbar: React.FC = () => {
           <a href="#how-it-works" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             {t.nav.howItWorks}
           </a>
+          <Link to="/about" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+            About Us
+          </Link>
           <Link to="/qa" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             Q&A
           </Link>
