@@ -950,7 +950,7 @@ export const translations = {
       manifesto: "Wir sind keine Inserats-Seite. Wir sind eine KI-gesteuerte Matching-Engine.",
     },
     whyAutozon: {
-      title: "Warum kluge Österreicher Autozon wählen",
+      title: "Warum Kunden Autozon wählen",
       cards: [
         { icon: "coin", title: "Faire Preisgarantie", description: "Wir nutzen echte Marktdaten, um dir zu zeigen, was dein Auto wirklich wert ist — nicht was ein Händler zahlen will." },
         { icon: "zap", title: "Verkauf in Tagen", description: "In unter 3 Minuten inserieren. Ernsthafte Käufer schnell finden. Keine Zeitverschwender." },
