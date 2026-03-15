@@ -992,8 +992,8 @@ export const translations = {
       badge: "Das Problem",
       title: "Wertverlust bei Autos ist",
       titleAccent: "unfair.",
-      description: "Händler verlassen sich auf Bauchgefühl. Sie verdienen eine KI, die die echte Zahl kennt.",
-      italicLine: "Andere Plattformen lassen dich einstellen und hoffen.\nAutozon gibt dir die Zahl — dann den Käufer.",
+      description: "Händler kaufen billig und verkaufen teuer — das ist ihr Geschäftsmodell. Du verlierst bis zu 30% des Autowerts, sobald du einen Trade-in akzeptierst. Andere Plattformen lassen dich einen Preis einstellen und hoffen. Niemand sagt dir, was dein Auto wirklich wert ist.",
+      italicLine: "Autozon schon. KI analysiert dein Auto. Marktdaten setzen den Preis.\nDu behältst die Marge.",
       stats: [
         { value: "30%", label: "Durchschnittlicher Wertverlust beim Händlerverkauf" },
         { value: "€4.200", label: "Versteckte Händlermarge pro Gebrauchtwagen" },
