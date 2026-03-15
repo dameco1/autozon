@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
           <p className="text-silver/60 mt-2">{t.auth.signupSubtitle}</p>
         </div>
 
-        <form onSubmit={handleSignup} className="bg-secondary/50 border border-border rounded-2xl p-8 space-y-5">
+        <form onSubmit={handleSignup} className="bg-charcoal/60 border border-border rounded-2xl p-8 space-y-5">
           <div className="space-y-2">
             <Label className="text-silver/80">{t.auth.fullName}</Label>
             <Input
