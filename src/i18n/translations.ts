@@ -104,7 +104,7 @@ export const translations = {
       cta: "Get My Free AI Valuation — It's Free",
     },
     comparison: {
-      title: "Why Smart Sellers Are Switching to Autozon",
+      title: "See Why Sellers Switch to Autozon",
       features: [
         "AI fair-value price before you list",
         "Ad live until car is sold — no expiry",
