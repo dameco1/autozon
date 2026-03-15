@@ -942,9 +942,9 @@ export const translations = {
       qa: "Fragen",
     },
     hero: {
-      headline: "Hör auf zu raten.\nVerkauf smarter.",
-      headlineAccent: "Die KI nennt den Preis. Wir bringen den Käufer.\nDu behältst den Gewinn.",
-      subheadline: "Andere Plattformen lassen dich raten, wochenlang warten\nund hoffen, dass jemand anruft. Autozon ist anders.\nUnsere KI scannt den europäischen Live-Markt, bewertet dein Auto\nin Sekunden und verbindet dich sofort mit echten Käufern.\nZahl €49 einmal. Dein Inserat läuft unbegrenzt. Fertig.",
+      headline: "Smart verkaufen. Fair kaufen.",
+      headlineAccent: "Europas KI-gestützte Auto-Kleinanzeigen.",
+      subheadline: "KI bewertet dein Auto. Dein Inserat bleibt online, bis es verkauft ist.",
       primaryCta: "🚘 Kostenlose KI-Bewertung",
       secondaryCta: "Mein nächstes Auto finden →",
       trustBadges: [
