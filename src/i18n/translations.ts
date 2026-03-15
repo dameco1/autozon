@@ -1004,11 +1004,11 @@ export const translations = {
       badge: "KI-gesteuerte Lösung",
       title: "Autozon löst das.",
       features: [
-        { title: "KI Fair-Value-Engine", description: "Machine Learning analysiert 50+ Signale — Zustand, Nachfrage, Marktliquidität." },
-        { title: "KI Smart-Matching", description: "Verbindet Sie mit verifizierten Käufern, die Ihr Auto wirklich wollen." },
-        { title: "KI Auto-Entdeckung", description: "Prädiktive Modelle kuratieren handverlesene Empfehlungen basierend auf Ihrem Lebensstil." },
+        { title: "KI Fair-Value-Engine", description: "Analysiert deine Fotos, Zustand, Kilometerstand und Ausstattung — vergleicht es mit aktuellen Marktangeboten und berechnet den wahren Wert in Sekunden." },
+        { title: "KI Smart-Matching", description: "Verbindet dich mit verifizierten Käufern, die aktiv nach einem Auto wie deinem suchen — zum richtigen Preis." },
+        { title: "KI Auto-Entdeckung", description: "Prädiktive Modelle kuratieren handverlesene Empfehlungen basierend auf deinem Lebensstil." },
         { title: "KI-gestützte Transaktionen", description: "KI koordiniert Inspektion, Abholung, Papierkram und Zahlung." },
-        { title: "KI Wertverlust-Radar", description: "Überwacht Marktveränderungen und warnt Sie, wann Sie verkaufen sollten." },
+        { title: "KI Wertverlust-Radar", description: "Überwacht Marktveränderungen und warnt dich, wann du verkaufen solltest." },
       ],
     },
     howItWorks: {
