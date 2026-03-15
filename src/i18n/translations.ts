@@ -54,7 +54,7 @@ export const translations = {
     whyAutozon: {
       title: "Why Customers Choose Autozon",
       cards: [
-        { icon: "coin", title: "AI That Knows the Real Price", description: "Not a ballpark. Not a dealer's guess. Our AI reads 50+ live market signals to calculate your car's true value every time." },
+        { icon: "coin", title: "AI That Shows You the Real Number", description: "Our engine analyzes your photos, condition, mileage, and equipment — then compares it against live market data. You get your car's actual worth, not a dealer's estimate." },
         { icon: "zap", title: "Your Ad Doesn't Expire", description: "Unlike AutoScout24, willhaben and mobile.de — your listing stays live until your car is sold. Pay once. We work until the deal is done." },
         { icon: "refresh", title: "Pay by Card. Close Faster.", description: "Buyers can pay up to €10,000 by card — directly on Autozon. No bank transfers, no waiting, no friction. The easiest close in the car market." },
       ],
@@ -71,8 +71,8 @@ export const translations = {
       badge: "The Problem",
       title: "Car depreciation is",
       titleAccent: "broken.",
-      description: "Dealers use gut feeling. You deserve an AI that knows the real number. The moment you drive off the lot, they pocket up to 30% — not because the car changed, but because the system is designed against you.",
-      italicLine: "Other platforms let you post and pray.\nAutozon gives you the number — then the buyer.",
+      description: "Dealers buy low and sell high — that's their business model. You lose up to 30% of your car's value the moment you accept a trade-in. Other platforms let you post a price and hope for the best. Nobody tells you what your car is actually worth.",
+      italicLine: "Autozon does. AI analyzes your car. Market data sets the price.\nYou keep the margin.",
       stats: [
         { value: "30%", label: "Average value lost selling to dealers" },
         { value: "€4,200", label: "Hidden dealer margin on every used car" },
@@ -83,8 +83,8 @@ export const translations = {
       badge: "AI-Powered Solution",
       title: "Autozon fixes this.",
       features: [
-        { title: "AI Fair Value Engine", description: "Machine learning analyzes 50+ signals — condition, demand, market liquidity — to calculate your car's true worth in seconds." },
-        { title: "AI Smart Matching", description: "Our matching algorithm connects you with verified buyers who actually want your car, at the right price." },
+        { title: "AI Fair Value Engine", description: "Analyzes your photos, condition, mileage, and specs — then cross-references live market listings to calculate your car's true worth in seconds." },
+        { title: "AI Smart Matching", description: "Connects you with verified buyers actively looking for a car like yours, at the right price." },
         { title: "AI Car Discovery", description: "Predictive modeling curates 3–7 handpicked recommendations based on your lifestyle, not random listings." },
         { title: "AI-Assisted Transactions", description: "AI coordinates inspection, pickup, paperwork, and payment — managing the entire process end-to-end." },
         { title: "AI Depreciation Radar", description: "Predictive analytics monitor market shifts and alert you when to sell — before your car loses value." },
@@ -104,7 +104,7 @@ export const translations = {
       cta: "Get My Free AI Valuation — It's Free",
     },
     comparison: {
-      title: "Why Smart Sellers Are Switching to Autozon",
+      title: "See Why Sellers Switch to Autozon",
       features: [
         "AI fair-value price before you list",
         "Ad live until car is sold — no expiry",
@@ -136,8 +136,8 @@ export const translations = {
       ],
     },
     cta: {
-      title: "List once. We work until it sells.",
-      aiLine: "AI pricing. Real buyers.\n€49 flat. Your ad never expires.",
+      title: "Your car has a fair price. We'll find it.",
+      aiLine: "AI-powered valuation. Real market data.\n€49 flat. Your ad never expires.",
       subtitle: "Buying a car on Autozon? Always 100% free.",
       button: "Get My Free AI Valuation",
     },
@@ -975,7 +975,7 @@ export const translations = {
     whyAutozon: {
       title: "Warum Kunden Autozon wählen",
       cards: [
-        { icon: "coin", title: "KI kennt den echten Preis", description: "Kein Schätzwert. Kein Händler-Ratemal. Unsere KI liest 50+ Live-Marktsignale und berechnet jedes Mal den wahren Wert deines Autos." },
+        { icon: "coin", title: "KI zeigt dir die echte Zahl", description: "Unsere Engine analysiert deine Fotos, Zustand, Kilometerstand und Ausstattung — und vergleicht es mit aktuellen Marktdaten. Du bekommst den echten Wert, nicht die Schätzung eines Händlers." },
         { icon: "zap", title: "Dein Inserat läuft nicht ab", description: "Anders als bei AutoScout24, willhaben und mobile.de — dein Inserat bleibt online, bis dein Auto verkauft ist. Einmal zahlen. Wir arbeiten, bis der Deal steht." },
         { icon: "refresh", title: "Per Karte zahlen. Schneller abschließen.", description: "Käufer können bis zu €10.000 per Karte zahlen — direkt auf Autozon. Keine Überweisungen, kein Warten, keine Reibung." },
       ],
@@ -992,8 +992,8 @@ export const translations = {
       badge: "Das Problem",
       title: "Wertverlust bei Autos ist",
       titleAccent: "unfair.",
-      description: "Händler verlassen sich auf Bauchgefühl. Sie verdienen eine KI, die die echte Zahl kennt.",
-      italicLine: "Andere Plattformen lassen dich einstellen und hoffen.\nAutozon gibt dir die Zahl — dann den Käufer.",
+      description: "Händler kaufen billig und verkaufen teuer — das ist ihr Geschäftsmodell. Du verlierst bis zu 30% des Autowerts, sobald du einen Trade-in akzeptierst. Andere Plattformen lassen dich einen Preis einstellen und hoffen. Niemand sagt dir, was dein Auto wirklich wert ist.",
+      italicLine: "Autozon schon. KI analysiert dein Auto. Marktdaten setzen den Preis.\nDu behältst die Marge.",
       stats: [
         { value: "30%", label: "Durchschnittlicher Wertverlust beim Händlerverkauf" },
         { value: "€4.200", label: "Versteckte Händlermarge pro Gebrauchtwagen" },
@@ -1004,11 +1004,11 @@ export const translations = {
       badge: "KI-gesteuerte Lösung",
       title: "Autozon löst das.",
       features: [
-        { title: "KI Fair-Value-Engine", description: "Machine Learning analysiert 50+ Signale — Zustand, Nachfrage, Marktliquidität." },
-        { title: "KI Smart-Matching", description: "Verbindet Sie mit verifizierten Käufern, die Ihr Auto wirklich wollen." },
-        { title: "KI Auto-Entdeckung", description: "Prädiktive Modelle kuratieren handverlesene Empfehlungen basierend auf Ihrem Lebensstil." },
+        { title: "KI Fair-Value-Engine", description: "Analysiert deine Fotos, Zustand, Kilometerstand und Ausstattung — vergleicht es mit aktuellen Marktangeboten und berechnet den wahren Wert in Sekunden." },
+        { title: "KI Smart-Matching", description: "Verbindet dich mit verifizierten Käufern, die aktiv nach einem Auto wie deinem suchen — zum richtigen Preis." },
+        { title: "KI Auto-Entdeckung", description: "Prädiktive Modelle kuratieren handverlesene Empfehlungen basierend auf deinem Lebensstil." },
         { title: "KI-gestützte Transaktionen", description: "KI koordiniert Inspektion, Abholung, Papierkram und Zahlung." },
-        { title: "KI Wertverlust-Radar", description: "Überwacht Marktveränderungen und warnt Sie, wann Sie verkaufen sollten." },
+        { title: "KI Wertverlust-Radar", description: "Überwacht Marktveränderungen und warnt dich, wann du verkaufen solltest." },
       ],
     },
     howItWorks: {
@@ -1025,7 +1025,7 @@ export const translations = {
       cta: "Kostenlose KI-Bewertung — Gratis",
     },
     comparison: {
-      title: "Warum smarte Verkäufer zu Autozon wechseln",
+      title: "Warum Verkäufer zu Autozon wechseln",
       features: [
         "KI-Fair-Value-Preis vor dem Inserieren",
         "Inserat online bis Auto verkauft — kein Ablauf",
@@ -1057,8 +1057,8 @@ export const translations = {
       ],
     },
     cta: {
-      title: "Einmal inserieren. Wir arbeiten, bis es verkauft ist.",
-      aiLine: "KI-Preise. Echte Käufer.\n€49 pauschal. Dein Inserat läuft nie ab.",
+      title: "Dein Auto hat einen fairen Preis. Wir finden ihn.",
+      aiLine: "KI-gestützte Bewertung. Echte Marktdaten.\n€49 pauschal. Dein Inserat läuft nie ab.",
       subtitle: "Ein Auto auf Autozon kaufen? Immer 100% kostenlos.",
       button: "Kostenlose KI-Bewertung",
     },

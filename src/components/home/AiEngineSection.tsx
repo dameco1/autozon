@@ -18,35 +18,35 @@ const AiEngineSection: React.FC = () => {
   const { language } = useLanguage();
 
   const content = language === "de" ? {
-    badge: "ANGETRIEBEN VON KI",
-    title: "Der smarteste Weg, ein Auto zu kaufen oder verkaufen",
-    subtitle: "Wir haben eine KI gebaut, die den Automarkt wirklich versteht. Echtzeit-Preise. Smartes Käufer-Matching. Eine Pauschalgebühr. Kein Ablaufdatum für dein Inserat.",
+    badge: "SO FUNKTIONIERT'S",
+    title: "Deine Fotos. Deine Daten. Dein fairer Preis.",
+    subtitle: "Lade dein Auto hoch. Unsere KI analysiert deine Fotos, Ausstattung und Zustand — vergleicht es mit aktuellen Marktdaten und berechnet den fairsten Preis, zu dem du verkaufen kannst. Du behältst die Marge. Nicht der Händler.",
     seller: {
       badge: "FÜR VERKÄUFER",
-      title: "Kenne deinen Preis. Inseriere mit Vertrauen.",
-      body: "Lade Fotos und Fahrzeugdaten hoch. Unsere KI scannt echte Marktdaten — Zustand, Kilometerstand, Nachfrage — und gibt dir den wahren Wert deines Autos in Sekunden.\nKein Händler-Tiefpreis. Keine wilde Schätzung.\nDein tatsächlicher Marktpreis.\n\nDann geht dein Inserat live — und bleibt live, bis dein Auto verkauft ist. Keine Zeitlimits. Keine Neu-Einstellungsgebühren.\nEchte Käufer finden dich.",
+      title: "Hochladen. Echten Preis erhalten. Verkaufen.",
+      body: "Mach ein paar Fotos. Gib die Fahrzeugdaten ein. Unsere KI scannt die Bilder auf Zustand und Schäden, vergleicht Kilometerstand, Ausstattung und Spezifikationen mit Tausenden aktueller Marktangebote — und liefert den wahren Marktwert deines Autos.\n\nKein Händler-Abschlag. Kein Raten. Der Preis spiegelt wider, was echte Käufer gerade zahlen.\n\nInseriere für €49. Dein Inserat bleibt online, bis es verkauft ist.",
       cta: "Auto inserieren — €49 Pauschal →",
     },
     buyer: {
       badge: "FÜR KÄUFER",
-      title: "Finde das richtige Auto. Überspringe das Scrollen.",
-      body: "Sag uns, was du willst — Budget, Typ, Lebensstil. Unsere KI matcht dich mit den richtigen Autos aus echten, verifizierten Inseraten. Kein Lärm. Kein Spam.\nNur die Autos, die wirklich zu dir passen.\n\nDas Richtige gefunden? Verhandle direkt mit dem Verkäufer.\nUnd wenn es unter €10.000 liegt — zahle per Karte, direkt hier.\nKein Überweisungs-Aufwand. Erledigt.",
+      title: "Schluss mit Überzahlen. Anfangen zu finden.",
+      body: "Sag uns dein Budget, deine Vorlieben und deinen Lebensstil. Unsere KI matcht dich mit fair bepreisten, verifizierten Autos — nicht mit zufälligen Inseraten voller Händlermargen.\n\nJedes Auto ist KI-bewertet. Jeder Preis ist marktverifiziert.\n\nDas Richtige gefunden? Verhandle direkt. Zahle per Karte bis €10.000. Erledigt.",
       cta: "Mein perfektes Auto finden →",
     },
   } : {
-    badge: "POWERED BY AI",
-    title: "The Smartest Way to Buy or Sell a Car",
-    subtitle: "We built AI that actually understands the car market. Real-time pricing. Smart buyer matching. One flat fee. No expiry date on your listing.",
+    badge: "HOW IT WORKS",
+    title: "Your Photos. Your Data. Your Fair Price.",
+    subtitle: "Upload your car. Our AI analyzes your photos, specs, and condition — then compares it against live market data to calculate the fairest price you can sell for. You keep the margin. Not the dealer.",
     seller: {
       badge: "FOR SELLERS",
-      title: "Know Your Number. List With Confidence.",
-      body: "Upload your photos and car details. Our AI scans real market data — condition, mileage, demand — and gives you your car's true value in seconds.\nNot a dealer's lowball. Not a wild guess.\nYour actual market price.\n\nThen your listing goes live — and stays live until your car sells. No time limits. No re-listing fees.\nJust real buyers, finding you.",
+      title: "Upload. Get Your Real Price. Sell.",
+      body: "Take a few photos. Enter your car's details. Our AI scans the images for condition and damage, cross-references mileage, specs, and equipment against thousands of live market listings — and returns your car's true market value.\n\nNo dealer markdown. No guesswork. The price reflects what real buyers are paying right now.\n\nList it for €49. Your ad stays live until it sells.",
       cta: "List My Car — €49 Flat Fee →",
     },
     buyer: {
       badge: "FOR BUYERS",
-      title: "Find the Right Car. Skip the Scroll.",
-      body: "Tell us what you want — budget, type, lifestyle. Our AI matches you to the right cars from real, verified listings. No noise. No spam.\nJust the cars that actually fit you.\n\nFound the one? Negotiate directly with the seller.\nAnd if it's under €10,000 — pay by card, right here.\nNo bank transfer hassle. Done.",
+      title: "Stop Overpaying. Start Finding.",
+      body: "Tell us your budget, preferences, and lifestyle. Our AI matches you with fairly priced, verified cars — not random listings padded with dealer margins.\n\nEvery car is AI-appraised. Every price is market-verified.\n\nFound the one? Negotiate directly. Pay by card up to €10,000. Done.",
       cta: "Find My Perfect Car →",
     },
   };
