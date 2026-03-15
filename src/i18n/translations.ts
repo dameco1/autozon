@@ -937,7 +937,7 @@ export const translations = {
       dashboard: "Dashboard",
       logout: "Abmelden",
       language: "EN",
-      tagline: "buy. sell. cars.",
+      tagline: "Know the Price. Make the Deal.",
       amazonTagline: "Wie Amazon, nur für Autos!",
       qa: "Fragen",
     },
