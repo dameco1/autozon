@@ -106,7 +106,7 @@ const AboutUs: React.FC = () => {
                 <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.buyingTitle}</h2>
                 <p className="text-orange text-xs font-bold tracking-wider uppercase mb-3">{t.hero.buyingTagline}</p>
                 <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                  Tell us your budget, preferences, and lifestyle. Our AI matches you with fairly priced, verified cars — not random listings padded with dealer margins. Every car is AI-appraised. Every price is market-verified.
+                  {aboutUs?.buyingDescription ?? "Tell us your budget, preferences, and lifestyle. Our AI matches you with fairly priced, verified cars — not random listings padded with dealer margins. Every car is AI-appraised. Every price is market-verified."}
                 </p>
                 <Button
                   size="sm"
