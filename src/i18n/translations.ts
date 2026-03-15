@@ -135,6 +135,22 @@ export const translations = {
         { title: "AI-Premium", description: "AI concierge handles inspection, logistics, and paperwork end-to-end." },
       ],
     },
+    aboutUs: {
+      badge: "AI-Powered Fair Value",
+      heroTitle: "Your Photos. Your Data.",
+      heroTitleAccent: "Your Fair Price.",
+      heroDescription: "Autozon's AI analyzes your car photos, condition, mileage, and specs — then compares it against live market data to calculate the fairest price you can sell for. You keep the margin. Not the dealer.",
+      sellingDescription: "Upload your car. Our AI scans photos for condition and damage, cross-references mileage, specs, and equipment against thousands of live market listings — and returns your car's true market value. List for €49. Your ad stays live until it sells.",
+      buyingDescription: "Tell us your budget, preferences, and lifestyle. Our AI matches you with fairly priced, verified cars — not random listings padded with dealer margins. Every car is AI-appraised. Every price is market-verified.",
+      steps: [
+        { number: "01", title: "Upload", description: "Upload photos and car details — our AI starts analyzing instantly." },
+        { number: "02", title: "Price", description: "AI cross-references your photos, specs, and condition against live market data." },
+        { number: "03", title: "List", description: "Your ad goes live for €49. It stays online until your car is sold." },
+        { number: "04", title: "Match", description: "AI connects you with verified buyers looking for a car like yours." },
+        { number: "05", title: "Close", description: "Negotiate directly. Pay by card up to €10K. Done." },
+      ],
+      back: "Back",
+    },
     cta: {
       title: "Your car has a fair price. We'll find it.",
       aiLine: "AI-powered valuation. Real market data.\n€49 flat. Your ad never expires.",
