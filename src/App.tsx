@@ -65,6 +65,7 @@ const App = () => (
               <Route path="/docs/view/:slug" element={<DocViewer />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/qa" element={<QA />} />
+              <Route path="/about" element={<AboutUs />} />
 
               {/* MFA-protected routes */}
               <Route path="/dashboard" element={<MfaGuard><Dashboard /></MfaGuard>} />
