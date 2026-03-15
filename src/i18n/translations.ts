@@ -1072,6 +1072,22 @@ export const translations = {
         { title: "KI-Premium", description: "KI-Concierge übernimmt Inspektion, Logistik und Papierkram." },
       ],
     },
+    aboutUs: {
+      badge: "KI-gestützte Bewertung",
+      heroTitle: "Deine Fotos. Deine Daten.",
+      heroTitleAccent: "Dein fairer Preis.",
+      heroDescription: "Autozons KI analysiert deine Autofotos, Zustand, Kilometerstand und Ausstattung — vergleicht es mit aktuellen Marktdaten und berechnet den fairsten Preis, zu dem du verkaufen kannst. Du behältst die Marge. Nicht der Händler.",
+      sellingDescription: "Lade dein Auto hoch. Unsere KI scannt Fotos auf Zustand und Schäden, vergleicht Kilometerstand, Ausstattung und Specs mit Tausenden von Live-Marktangeboten — und liefert den wahren Marktwert. Inseriere für €49. Dein Inserat bleibt online, bis es verkauft ist.",
+      buyingDescription: "Sag uns dein Budget, deine Präferenzen und deinen Lebensstil. Unsere KI matcht dich mit fair bewerteten, verifizierten Autos — keine zufälligen Inserate mit Händlermargen. Jedes Auto ist KI-bewertet. Jeder Preis ist marktverifiziert.",
+      steps: [
+        { number: "01", title: "Hochladen", description: "Lade Fotos und Fahrzeugdetails hoch — unsere KI beginnt sofort mit der Analyse." },
+        { number: "02", title: "Bewerten", description: "KI vergleicht deine Fotos, Specs und Zustand mit aktuellen Marktdaten." },
+        { number: "03", title: "Inserieren", description: "Dein Inserat geht für €49 live. Es bleibt online, bis dein Auto verkauft ist." },
+        { number: "04", title: "Matchen", description: "KI verbindet dich mit verifizierten Käufern, die ein Auto wie deines suchen." },
+        { number: "05", title: "Abschließen", description: "Direkt verhandeln. Per Karte zahlen bis €10K. Erledigt." },
+      ],
+      back: "Zurück",
+    },
     cta: {
       title: "Dein Auto hat einen fairen Preis. Wir finden ihn.",
       aiLine: "KI-gestützte Bewertung. Echte Marktdaten.\n€49 pauschal. Dein Inserat läuft nie ab.",

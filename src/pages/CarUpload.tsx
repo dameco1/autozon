@@ -341,7 +341,7 @@ const CarUpload: React.FC = () => {
           className="text-silver/60 mb-4 -ml-2 hover:text-white"
           onClick={() => navigate(-1)}
         >
-          <ChevronLeft className="mr-1 h-4 w-4" /> Back
+          <ChevronLeft className="mr-1 h-4 w-4" /> {(t as any).aboutUs?.back || t.auth.back}
         </Button>
 
         <div className="text-center mb-8">
