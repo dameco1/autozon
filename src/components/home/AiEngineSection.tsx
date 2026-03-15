@@ -19,8 +19,8 @@ const AiEngineSection: React.FC = () => {
 
   const content = language === "de" ? {
     badge: "ANGETRIEBEN VON KI",
-    title: "Der smarteste Weg, ein Auto in Europa zu kaufen oder verkaufen",
-    subtitle: "Wir haben eine KI gebaut, die den europäischen Automarkt wirklich versteht. Echtzeit-Preise. Smartes Käufer-Matching. Eine Pauschalgebühr. Kein Ablaufdatum für dein Inserat.",
+    title: "Der smarteste Weg, ein Auto zu kaufen oder verkaufen",
+    subtitle: "Wir haben eine KI gebaut, die den Automarkt wirklich versteht. Echtzeit-Preise. Smartes Käufer-Matching. Eine Pauschalgebühr. Kein Ablaufdatum für dein Inserat.",
     seller: {
       badge: "FÜR VERKÄUFER",
       title: "Kenne deinen Preis. Inseriere mit Vertrauen.",
