@@ -20,9 +20,9 @@ export const translations = {
       qa: "Q&A",
     },
     hero: {
-      headline: "Stop Guessing.\nStart Selling Smarter.",
-      headlineAccent: "AI tells you the price. We bring you the buyer.\nYou keep the profit.",
-      subheadline: "Other platforms make you guess your price, wait for weeks,\nand hope someone calls. Autozon is different.\nOur AI scans the live European market, values your car\nin seconds, and connects you with real buyers — instantly.\nPay €49 once. Your ad never expires. Done.",
+      headline: "Sell Smart. Buy Fair.",
+      headlineAccent: "Europe's AI-powered car classifieds.",
+      subheadline: "AI prices your car. Your ad stays live until it sells.",
       primaryCta: "🚘 Get My Free AI Valuation",
       secondaryCta: "Find My Next Car →",
       trustBadges: [
@@ -942,9 +942,9 @@ export const translations = {
       qa: "Fragen",
     },
     hero: {
-      headline: "Hör auf zu raten.\nVerkauf smarter.",
-      headlineAccent: "Die KI nennt den Preis. Wir bringen den Käufer.\nDu behältst den Gewinn.",
-      subheadline: "Andere Plattformen lassen dich raten, wochenlang warten\nund hoffen, dass jemand anruft. Autozon ist anders.\nUnsere KI scannt den europäischen Live-Markt, bewertet dein Auto\nin Sekunden und verbindet dich sofort mit echten Käufern.\nZahl €49 einmal. Dein Inserat läuft unbegrenzt. Fertig.",
+      headline: "Smart verkaufen. Fair kaufen.",
+      headlineAccent: "Europas KI-gestützte Auto-Kleinanzeigen.",
+      subheadline: "KI bewertet dein Auto. Dein Inserat bleibt online, bis es verkauft ist.",
       primaryCta: "🚘 Kostenlose KI-Bewertung",
       secondaryCta: "Mein nächstes Auto finden →",
       trustBadges: [
