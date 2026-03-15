@@ -16,7 +16,7 @@ const ComparisonSection: React.FC = () => {
 
   if (!isMobile) {
     return (
-      <section className="py-16 sm:py-20 bg-charcoal">
+      <section className="py-10 sm:py-14 bg-charcoal">
         <div className="max-w-5xl mx-auto px-4">
           <motion.h2
             className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white text-center mb-12"
@@ -66,7 +66,7 @@ const ComparisonSection: React.FC = () => {
   }
 
   return (
-    <section className="py-12 bg-charcoal">
+    <section className="py-8 bg-charcoal">
       <div className="max-w-lg mx-auto px-4">
         <h2 className="text-2xl font-display font-black text-white text-center mb-8">
           {t.comparison.title}
