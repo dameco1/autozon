@@ -6,9 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 import carBmw5 from "@/assets/pitch/car-bmw-5-blue.jpg";
+import carBmw5Black from "@/assets/pitch/car-bmw-5-black.jpg";
 import carPorsche911 from "@/assets/pitch/car-porsche-911.jpg";
+import carPorschePanamera from "@/assets/pitch/car-porsche-panamera.jpg";
 import carBmwX6 from "@/assets/pitch/car-bmw-x6-red.jpg";
+import carBmwX2 from "@/assets/pitch/car-bmw-x2.jpg";
 import carBmwZ4 from "@/assets/pitch/car-bmw-z4.jpg";
+import carCitroen from "@/assets/pitch/car-citroen-ds5.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -26,10 +30,14 @@ const badgeIcons: Record<string, React.ReactNode> = {
 };
 
 const bgCars = [
-  { src: carBmw5, className: "top-[10%] left-[-8%] w-[340px] rotate-[-8deg]" },
-  { src: carPorsche911, className: "top-[15%] right-[-6%] w-[320px] rotate-[6deg]" },
-  { src: carBmwX6, className: "bottom-[8%] left-[-4%] w-[300px] rotate-[4deg]" },
-  { src: carBmwZ4, className: "bottom-[12%] right-[-8%] w-[280px] rotate-[-5deg]" },
+  { src: carBmw5, className: "top-[6%] left-[-6%] w-[300px] rotate-[-8deg]" },
+  { src: carPorsche911, className: "top-[8%] right-[-4%] w-[280px] rotate-[6deg]" },
+  { src: carBmwX6, className: "bottom-[6%] left-[-3%] w-[280px] rotate-[4deg]" },
+  { src: carBmwZ4, className: "bottom-[10%] right-[-6%] w-[260px] rotate-[-5deg]" },
+  { src: carBmw5Black, className: "top-[42%] left-[-10%] w-[260px] rotate-[-3deg]" },
+  { src: carPorschePanamera, className: "top-[38%] right-[-10%] w-[270px] rotate-[3deg]" },
+  { src: carBmwX2, className: "top-[68%] left-[2%] w-[240px] rotate-[6deg]" },
+  { src: carCitroen, className: "top-[65%] right-[0%] w-[250px] rotate-[-4deg]" },
 ];
 
 const HeroSection: React.FC = () => {
