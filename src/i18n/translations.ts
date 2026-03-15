@@ -412,7 +412,7 @@ export const translations = {
       },
       market: {
         label: "Brand & Market Demand",
-        explain: "{make} {bodyType} has {demand} market demand in the current European market.",
+        explain: "{make} {bodyType} has {demand} market demand in the current market.",
         high: "high",
         moderate: "moderate",
         low: "lower",
