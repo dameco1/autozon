@@ -20,7 +20,7 @@ export const translations = {
       qa: "Q&A",
     },
     hero: {
-      headline: "Sell Smart. Buy Fair.",
+      headline: "Sell Fair. Buy Smart.",
       headlineAccent: "AI-powered car classifieds.",
       subheadline: "AI prices your car. Your ad stays live until it sells.",
       primaryCta: "🚘 Get My Free AI Valuation",
