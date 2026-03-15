@@ -6,7 +6,7 @@ const FooterSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <footer className="py-8 bg-navy border-t border-white/10">
+    <footer className="py-9 bg-navy border-t border-white/10">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-2">

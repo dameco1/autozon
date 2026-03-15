@@ -18,7 +18,7 @@ const WhyAutozonSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-10 sm:py-14 bg-charcoal">
+    <section className="py-12 sm:py-16 bg-charcoal">
       <div className="max-w-6xl mx-auto px-4">
         <motion.h2
           className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white text-center mb-12"

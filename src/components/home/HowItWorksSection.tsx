@@ -19,7 +19,7 @@ const HowItWorksSection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="how-it-works" className="py-10 sm:py-14 bg-navy">
+    <section id="how-it-works" className="py-12 sm:py-16 bg-navy">
       <div className="max-w-5xl mx-auto px-4">
         <motion.div className="text-center mb-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <span className="text-xs font-semibold tracking-widest uppercase text-orange mb-3 block">{t.howItWorks.badge}</span>

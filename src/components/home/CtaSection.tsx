@@ -9,7 +9,7 @@ const CtaSection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="py-10 sm:py-14 bg-orange relative overflow-hidden">
+    <section className="py-12 sm:py-16 bg-orange relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,hsl(24_80%_45%/0.3),transparent)]" />
 
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
