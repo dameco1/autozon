@@ -84,7 +84,7 @@ const Signup: React.FC = () => {
               placeholder="••••••••"
             />
           </div>
-          <Button type="submit" disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl">
+          <Button type="submit" disabled={loading} className="w-full bg-orange text-orange-foreground hover:bg-orange/90 font-bold py-6 rounded-xl">
             {loading ? "..." : t.auth.signup}
           </Button>
           <p className="text-center text-silver/60 text-sm">
