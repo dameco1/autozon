@@ -17,13 +17,13 @@ const Index: React.FC = () => {
     <div className="min-h-screen">
       <SEO
         path="/"
-        description="Buy and sell cars at fair prices in Europe. AI-powered valuations, honest pricing, and secure transactions — Autozon is the smarter way to trade cars."
+        description="Buy and sell cars at fair prices. AI-powered valuations, honest pricing, and secure transactions — Autozon is the smarter way to trade cars."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "Autozon",
           url: "https://autozon.lovable.app",
-          description: "Europe's AI-powered fair value car marketplace with honest pricing.",
+          description: "AI-powered fair value car marketplace with honest pricing.",
           potentialAction: {
             "@type": "SearchAction",
             target: "https://autozon.lovable.app/car-selection?q={search_term_string}",

@@ -21,7 +21,7 @@ export const translations = {
     },
     hero: {
       headline: "Sell Smart. Buy Fair.",
-      headlineAccent: "Europe's AI-powered car classifieds.",
+      headlineAccent: "AI-powered car classifieds.",
       subheadline: "AI prices your car. Your ad stays live until it sells.",
       primaryCta: "🚘 Get My Free AI Valuation",
       secondaryCta: "Find My Next Car →",
@@ -54,9 +54,9 @@ export const translations = {
     whyAutozon: {
       title: "Why Customers Choose Autozon",
       cards: [
-        { icon: "coin", title: "AI That Knows the Real Price", description: "Not a ballpark. Not a dealer's guess. Our AI reads 50+ live European market signals to calculate your car's true value every time." },
+        { icon: "coin", title: "AI That Knows the Real Price", description: "Not a ballpark. Not a dealer's guess. Our AI reads 50+ live market signals to calculate your car's true value every time." },
         { icon: "zap", title: "Your Ad Doesn't Expire", description: "Unlike AutoScout24, willhaben and mobile.de — your listing stays live until your car is sold. Pay once. We work until the deal is done." },
-        { icon: "refresh", title: "Pay by Card. Close Faster.", description: "Buyers can pay up to €10,000 by card — directly on Autozon. No bank transfers, no waiting, no friction. The easiest close in the European car market." },
+        { icon: "refresh", title: "Pay by Card. Close Faster.", description: "Buyers can pay up to €10,000 by card — directly on Autozon. No bank transfers, no waiting, no friction. The easiest close in the car market." },
       ],
     },
     statsBar: {
@@ -96,7 +96,7 @@ export const translations = {
       subtitle: "You handle the car. Our AI handles everything else.",
       steps: [
         { number: "01", title: "📸 Upload Your Car", description: "Snap a few photos. Add make, model, mileage and condition. Takes under 3 minutes." },
-        { number: "02", title: "🧠 Get Your AI Price", description: "Our AI reads 50+ live European market signals and gives you your car's true value in under 60 seconds. No guessing. No dealer needed." },
+        { number: "02", title: "🧠 Get Your AI Price", description: "Our AI reads 50+ live market signals and gives you your car's true value in under 60 seconds. No guessing. No dealer needed." },
         { number: "03", title: "📣 Go Live — Until Sold", description: "Your listing is published to real buyers immediately. It stays live until your car finds its next owner. No time limits. No re-listing fees." },
         { number: "04", title: "💬 Negotiate Directly", description: "Buyers contact you through Autozon. Chat, counter-offer, agree on price — all on-platform, all in one place." },
         { number: "05", title: "💳 Close the Deal", description: "Agree and seal it. If the price is under €10,000, the buyer can pay by card right here on Autozon. Instant. Safe. Done." },
@@ -137,7 +137,7 @@ export const translations = {
     },
     cta: {
       title: "List once. We work until it sells.",
-      aiLine: "AI pricing. Real European buyers.\n€49 flat. Your ad never expires.",
+      aiLine: "AI pricing. Real buyers.\n€49 flat. Your ad never expires.",
       subtitle: "Buying a car on Autozon? Always 100% free.",
       button: "Get My Free AI Valuation",
     },
@@ -412,7 +412,7 @@ export const translations = {
       },
       market: {
         label: "Brand & Market Demand",
-        explain: "{make} {bodyType} has {demand} market demand in the current European market.",
+        explain: "{make} {bodyType} has {demand} market demand in the current market.",
         high: "high",
         moderate: "moderate",
         low: "lower",
@@ -552,7 +552,7 @@ export const translations = {
       methodSubtitle: "How would you like to complete this transaction?",
       digitalTitle: "Digital Transaction via Autozon",
       digitalBadge: "Recommended",
-      digitalDesc: "We handle the contract, payment, and insurance — all digitally. Standard ÖAMTC (Austria) or ADAC (Germany) purchase contract.",
+      digitalDesc: "We handle the contract, payment, and insurance — all digitally. Standard purchase contract included.",
       manualTitle: "Complete Manually",
       manualDesc: "Handle the contract, payment, and registration yourself. We provide a checklist and links to official contract templates.",
       featureContract: "Digital Contract",
@@ -943,7 +943,7 @@ export const translations = {
     },
     hero: {
       headline: "Smart verkaufen. Fair kaufen.",
-      headlineAccent: "Europas KI-gestützte Auto-Kleinanzeigen.",
+      headlineAccent: "KI-gestützte Auto-Kleinanzeigen.",
       subheadline: "KI bewertet dein Auto. Dein Inserat bleibt online, bis es verkauft ist.",
       primaryCta: "🚘 Kostenlose KI-Bewertung",
       secondaryCta: "Mein nächstes Auto finden →",
@@ -975,7 +975,7 @@ export const translations = {
     whyAutozon: {
       title: "Warum Kunden Autozon wählen",
       cards: [
-        { icon: "coin", title: "KI kennt den echten Preis", description: "Kein Schätzwert. Kein Händler-Ratemal. Unsere KI liest 50+ europäische Live-Marktsignale und berechnet jedes Mal den wahren Wert deines Autos." },
+        { icon: "coin", title: "KI kennt den echten Preis", description: "Kein Schätzwert. Kein Händler-Ratemal. Unsere KI liest 50+ Live-Marktsignale und berechnet jedes Mal den wahren Wert deines Autos." },
         { icon: "zap", title: "Dein Inserat läuft nicht ab", description: "Anders als bei AutoScout24, willhaben und mobile.de — dein Inserat bleibt online, bis dein Auto verkauft ist. Einmal zahlen. Wir arbeiten, bis der Deal steht." },
         { icon: "refresh", title: "Per Karte zahlen. Schneller abschließen.", description: "Käufer können bis zu €10.000 per Karte zahlen — direkt auf Autozon. Keine Überweisungen, kein Warten, keine Reibung." },
       ],
@@ -1017,7 +1017,7 @@ export const translations = {
       subtitle: "Du kümmerst dich ums Auto. Unsere KI kümmert sich um den Rest.",
       steps: [
         { number: "01", title: "📸 Auto hochladen", description: "Ein paar Fotos machen. Marke, Modell, Kilometerstand und Zustand angeben. Dauert unter 3 Minuten." },
-        { number: "02", title: "🧠 KI-Preis erhalten", description: "Unsere KI liest 50+ europäische Live-Marktsignale und gibt dir den wahren Wert deines Autos in unter 60 Sekunden. Kein Raten. Kein Händler nötig." },
+        { number: "02", title: "🧠 KI-Preis erhalten", description: "Unsere KI liest 50+ Live-Marktsignale und gibt dir den wahren Wert deines Autos in unter 60 Sekunden. Kein Raten. Kein Händler nötig." },
         { number: "03", title: "📣 Live gehen — bis verkauft", description: "Dein Inserat wird sofort veröffentlicht. Es bleibt online, bis dein Auto seinen nächsten Besitzer findet. Keine Zeitlimits. Keine Neu-Einstellungsgebühren." },
         { number: "04", title: "💬 Direkt verhandeln", description: "Käufer kontaktieren dich über Autozon. Chatten, Gegenangebot, Preis vereinbaren — alles auf der Plattform, alles an einem Ort." },
         { number: "05", title: "💳 Deal abschließen", description: "Einigen und besiegeln. Liegt der Preis unter €10.000, kann der Käufer hier auf Autozon per Karte zahlen. Sofort. Sicher. Erledigt." },
@@ -1058,7 +1058,7 @@ export const translations = {
     },
     cta: {
       title: "Einmal inserieren. Wir arbeiten, bis es verkauft ist.",
-      aiLine: "KI-Preise. Echte europäische Käufer.\n€49 pauschal. Dein Inserat läuft nie ab.",
+      aiLine: "KI-Preise. Echte Käufer.\n€49 pauschal. Dein Inserat läuft nie ab.",
       subtitle: "Ein Auto auf Autozon kaufen? Immer 100% kostenlos.",
       button: "Kostenlose KI-Bewertung",
     },
