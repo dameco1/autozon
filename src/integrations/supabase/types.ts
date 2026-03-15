@@ -839,6 +839,36 @@ export type Database = {
         }
         Returns: boolean
       }
+      transaction_set_contract: {
+        Args: { _contract_type: string; _transaction_id: string }
+        Returns: undefined
+      }
+      transaction_set_insurance: {
+        Args: {
+          _insurance_confirmed?: boolean
+          _insurance_partner_id?: string
+          _insurance_tier?: string
+          _transaction_id: string
+        }
+        Returns: undefined
+      }
+      transaction_set_method: {
+        Args: {
+          _completion_method: string
+          _current_step: number
+          _status: string
+          _transaction_id: string
+        }
+        Returns: undefined
+      }
+      transaction_set_payment: {
+        Args: {
+          _financing_partner_id?: string
+          _payment_method: string
+          _transaction_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
