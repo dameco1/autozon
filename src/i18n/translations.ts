@@ -83,8 +83,8 @@ export const translations = {
       badge: "AI-Powered Solution",
       title: "Autozon fixes this.",
       features: [
-        { title: "AI Fair Value Engine", description: "Machine learning analyzes 50+ signals — condition, demand, market liquidity — to calculate your car's true worth in seconds." },
-        { title: "AI Smart Matching", description: "Our matching algorithm connects you with verified buyers who actually want your car, at the right price." },
+        { title: "AI Fair Value Engine", description: "Analyzes your photos, condition, mileage, and specs — then cross-references live market listings to calculate your car's true worth in seconds." },
+        { title: "AI Smart Matching", description: "Connects you with verified buyers actively looking for a car like yours, at the right price." },
         { title: "AI Car Discovery", description: "Predictive modeling curates 3–7 handpicked recommendations based on your lifestyle, not random listings." },
         { title: "AI-Assisted Transactions", description: "AI coordinates inspection, pickup, paperwork, and payment — managing the entire process end-to-end." },
         { title: "AI Depreciation Radar", description: "Predictive analytics monitor market shifts and alert you when to sell — before your car loses value." },
