@@ -42,7 +42,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal flex items-center justify-center px-4">
+    <div className="min-h-screen bg-navy flex items-center justify-center px-4">
       <SEO title="Log In" description="Log in to your Autozon account to manage your cars, track valuations, and connect with buyers." path="/login" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
