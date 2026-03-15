@@ -1017,7 +1017,7 @@ export const translations = {
       subtitle: "Du kümmerst dich ums Auto. Unsere KI kümmert sich um den Rest.",
       steps: [
         { number: "01", title: "📸 Auto hochladen", description: "Ein paar Fotos machen. Marke, Modell, Kilometerstand und Zustand angeben. Dauert unter 3 Minuten." },
-        { number: "02", title: "🧠 KI-Preis erhalten", description: "Unsere KI liest 50+ europäische Live-Marktsignale und gibt dir den wahren Wert deines Autos in unter 60 Sekunden. Kein Raten. Kein Händler nötig." },
+        { number: "02", title: "🧠 KI-Preis erhalten", description: "Unsere KI liest 50+ Live-Marktsignale und gibt dir den wahren Wert deines Autos in unter 60 Sekunden. Kein Raten. Kein Händler nötig." },
         { number: "03", title: "📣 Live gehen — bis verkauft", description: "Dein Inserat wird sofort veröffentlicht. Es bleibt online, bis dein Auto seinen nächsten Besitzer findet. Keine Zeitlimits. Keine Neu-Einstellungsgebühren." },
         { number: "04", title: "💬 Direkt verhandeln", description: "Käufer kontaktieren dich über Autozon. Chatten, Gegenangebot, Preis vereinbaren — alles auf der Plattform, alles an einem Ort." },
         { number: "05", title: "💳 Deal abschließen", description: "Einigen und besiegeln. Liegt der Preis unter €10.000, kann der Käufer hier auf Autozon per Karte zahlen. Sofort. Sicher. Erledigt." },
