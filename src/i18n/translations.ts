@@ -93,7 +93,7 @@ export const translations = {
       badge: "How It Works",
       title: "Selling Your Car Takes 3 Steps",
       steps: [
-        { number: "01", title: "📸 Snap & List", description: "Upload photos, enter details. Done in under 3 minutes." },
+        { number: "01", title: "🤖 Get Your AI Valuation", description: "Enter your car details. Our AI analyses the live European market and gives you a real price in under 60 seconds. No forms, no waiting, no dealer middlemen." },
         { number: "02", title: "💬 Get Real Offers", description: "Buyers contact you directly. No middlemen, no commissions." },
         { number: "03", title: "🤝 Close the Deal", description: "Meet, agree, done. We guide you through every step safely." },
       ],
