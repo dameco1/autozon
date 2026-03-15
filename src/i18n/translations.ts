@@ -137,7 +137,7 @@ export const translations = {
     },
     cta: {
       title: "List once. We work until it sells.",
-      aiLine: "AI pricing. Real European buyers.\n€49 flat. Your ad never expires.",
+      aiLine: "AI pricing. Real buyers.\n€49 flat. Your ad never expires.",
       subtitle: "Buying a car on Autozon? Always 100% free.",
       button: "Get My Free AI Valuation",
     },
