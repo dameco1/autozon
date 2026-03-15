@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Coins, Zap, RefreshCw } from "lucide-react";
+import { Brain, CalendarCheck, CreditCard } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const fadeUp = {
@@ -12,7 +12,7 @@ const fadeUp = {
   }),
 };
 
-const icons = [Coins, Zap, RefreshCw];
+const icons = [Brain, CalendarCheck, CreditCard];
 
 const WhyAutozonSection: React.FC = () => {
   const { t } = useLanguage();

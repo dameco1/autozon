@@ -41,12 +41,13 @@ const ComparisonSection: React.FC = () => {
               </thead>
               <tbody>
                 {t.comparison.features.map((feature, fi) => {
-                  const isAiRow = fi === 0;
+                  const highlightRows = (t.comparison as any).highlightRows || [];
+                  const isHighlighted = highlightRows.includes(fi);
                   return (
-                    <tr key={fi} className="border-b border-border/30 last:border-0">
-                      <td className={`p-4 ${isAiRow ? "text-white font-semibold" : "text-silver/70"}`}>{feature}</td>
-                      <td className={`p-4 text-center ${isAiRow ? "bg-orange/[0.12]" : ""}`}>
-                        <CheckCircle2 className={`h-5 w-5 mx-auto ${isAiRow ? "text-orange font-bold" : "text-orange"}`} />
+                    <tr key={fi} className={`border-b border-border/30 last:border-0 ${isHighlighted ? "bg-orange/[0.10]" : ""}`}>
+                      <td className={`p-4 ${isHighlighted ? "text-white font-semibold" : "text-silver/70"}`}>{feature}</td>
+                      <td className={`p-4 text-center ${isHighlighted ? "bg-orange/[0.12]" : ""}`}>
+                        <CheckCircle2 className={`h-5 w-5 mx-auto ${isHighlighted ? "text-orange font-bold" : "text-orange"}`} />
                       </td>
                       {t.comparison.competitorData[fi].map((has, ci) => (
                         <td key={ci} className="p-4 text-center">
