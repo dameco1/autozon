@@ -5,6 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 
+import carBmw5 from "@/assets/pitch/car-bmw-5-blue.jpg";
+import carPorsche911 from "@/assets/pitch/car-porsche-911.jpg";
+import carBmwX6 from "@/assets/pitch/car-bmw-x6-red.jpg";
+import carBmwZ4 from "@/assets/pitch/car-bmw-z4.jpg";
+
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: (i: number) => ({
@@ -20,12 +25,33 @@ const badgeIcons: Record<string, React.ReactNode> = {
   zap: <Zap className="h-4 w-4 text-orange" />,
 };
 
+const bgCars = [
+  { src: carBmw5, className: "top-[10%] left-[-8%] w-[340px] rotate-[-8deg]" },
+  { src: carPorsche911, className: "top-[15%] right-[-6%] w-[320px] rotate-[6deg]" },
+  { src: carBmwX6, className: "bottom-[8%] left-[-4%] w-[300px] rotate-[4deg]" },
+  { src: carBmwZ4, className: "bottom-[12%] right-[-8%] w-[280px] rotate-[-5deg]" },
+];
+
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden bg-navy">
+      {/* Background car images */}
+      {bgCars.map((car, i) => (
+        <motion.img
+          key={i}
+          src={car.src}
+          alt=""
+          aria-hidden="true"
+          className={`absolute ${car.className} opacity-[0.07] pointer-events-none select-none object-cover rounded-2xl blur-[1px]`}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.07, scale: 1 }}
+          transition={{ delay: 0.3 + i * 0.2, duration: 1.2, ease: "easeOut" }}
+        />
+      ))}
+
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_95%_53%/0.06),transparent)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_80%,hsl(210_60%_20%/0.3),transparent)]" />
