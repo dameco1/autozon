@@ -17,7 +17,7 @@ const Index: React.FC = () => {
     <div className="min-h-screen">
       <SEO
         path="/"
-        description="Buy and sell cars at fair prices in Europe. AI-powered valuations, honest pricing, and secure transactions — Autozon is the smarter way to trade cars."
+        description="Buy and sell cars at fair prices. AI-powered valuations, honest pricing, and secure transactions — Autozon is the smarter way to trade cars."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebSite",
