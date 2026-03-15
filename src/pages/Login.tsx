@@ -47,8 +47,8 @@ const Login: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <Car className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-display font-bold text-white">auto<span className="text-primary">zon</span></span>
+            <Car className="h-8 w-8 text-orange" />
+            <span className="text-2xl font-display font-bold text-white">auto<span className="text-orange">zon</span></span>
           </Link>
           <h1 className="text-3xl font-display font-bold text-white">{t.auth.loginTitle}</h1>
           <p className="text-silver/60 mt-2">{t.auth.loginSubtitle}</p>
