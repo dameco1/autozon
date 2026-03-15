@@ -37,8 +37,12 @@
     --radius: 0.75rem;
 
     --charcoal: 240 6% 11%;
+    --navy: 210 60% 7%;
     --green: 155 100% 42%;
+    --orange: 24 95% 53%;
+    --orange-foreground: 0 0% 100%;
     --silver: 0 0% 85%;
+    --light-bg: 210 20% 98%;
 
     --sidebar-background: 240 6% 11%;
     --sidebar-foreground: 0 0% 85%;
