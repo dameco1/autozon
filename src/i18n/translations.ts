@@ -21,7 +21,7 @@ export const translations = {
     },
     hero: {
       headline: "Sell Smart. Buy Fair.",
-      headlineAccent: "Europe's AI-powered car classifieds.",
+      headlineAccent: "AI-powered car classifieds.",
       subheadline: "AI prices your car. Your ad stays live until it sells.",
       primaryCta: "🚘 Get My Free AI Valuation",
       secondaryCta: "Find My Next Car →",
