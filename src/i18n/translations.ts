@@ -942,7 +942,7 @@ export const translations = {
       qa: "Fragen",
     },
     hero: {
-      headline: "Smart verkaufen. Fair kaufen.",
+      headline: "Fair verkaufen. Smart kaufen.",
       headlineAccent: "KI-gestützte Auto-Kleinanzeigen.",
       subheadline: "KI bewertet dein Auto. Dein Inserat bleibt online, bis es verkauft ist.",
       primaryCta: "🚘 Kostenlose KI-Bewertung",
