@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -10,30 +9,26 @@ const CtaSection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="py-16 sm:py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-secondary via-charcoal to-charcoal" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,hsl(155_100%_42%/0.06),transparent)]" />
+    <section className="py-16 sm:py-20 bg-orange relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,hsl(24_80%_45%/0.3),transparent)]" />
 
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-[0.95] mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight mb-4">
             {t.cta.title}
-            <br />
-            <span className="text-gradient">{t.cta.titleAccent}</span>
           </h2>
-          <p className="text-silver/50 text-lg sm:text-xl mb-12 max-w-xl mx-auto">{t.cta.subtitle}</p>
+          <p className="text-white/80 text-base sm:text-lg mb-8 max-w-xl mx-auto">{t.cta.subtitle}</p>
           <Button
             size="lg"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-lg px-12 py-7 rounded-xl shadow-[0_0_60px_hsl(155_100%_42%/0.3)] hover:shadow-[0_0_80px_hsl(155_100%_42%/0.4)] transition-shadow"
+            className="bg-white text-orange hover:bg-white/90 font-bold text-base px-10 py-6 rounded-full shadow-lg"
             onClick={() => navigate("/signup")}
           >
             {t.cta.button}
-            <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </motion.div>
       </div>

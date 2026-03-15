@@ -1,147 +1,92 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Lock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { carImages } from "./carImages";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+    transition: { delay: i * 0.14, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
+};
+
+const badgeIcons: Record<string, React.ReactNode> = {
+  check: <CheckCircle2 className="h-4 w-4 text-green" />,
+  lock: <Lock className="h-4 w-4 text-silver/60" />,
+  zap: <Zap className="h-4 w-4 text-orange" />,
 };
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
-  const bgImages = carImages.slice(0, 6);
-
   return (
-    <section className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-charcoal" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsl(155_100%_42%/0.08),transparent)]" />
+    <section className="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden bg-navy">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_95%_53%/0.06),transparent)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_80%,hsl(210_60%_20%/0.3),transparent)]" />
 
-      {/* Subtle car images grid in background */}
-      <div className="absolute inset-0 grid grid-cols-3 gap-2 p-4 opacity-[0.12]">
-        {bgImages.map((car, i) => (
-          <img
-            key={i}
-            src={car.url}
-            alt=""
-            aria-hidden="true"
-            className="w-full h-full object-cover rounded-lg"
-          />
-        ))}
-      </div>
-      {/* Dark overlay to keep text readable */}
-      <div className="absolute inset-0 bg-charcoal/60" />
-
-      {/* Grid pattern overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(hsl(var(--silver)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--silver)) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 w-full">
-        {/* Centered title area */}
-        <div className="text-center mb-16">
-          <motion.span
-            className="text-xs font-medium text-primary tracking-wide uppercase mb-6 block"
-            initial="hidden" animate="visible" variants={fadeUp} custom={0}
-          >
-            <Sparkles className="inline h-3.5 w-3.5 mr-1.5 -mt-0.5" />
-            {t.hero.badge}
-          </motion.span>
-
-          <motion.h1
-            className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-[0.95] tracking-tight mb-4"
-            initial="hidden" animate="visible" variants={fadeUp} custom={1}
-          >
-            {t.hero.title}
-            <br />
-            <span className="text-gradient">
-              {(() => {
-                const text = t.hero.titleAccent;
-                const match = text.match(/^(.*?)(AI|KI)(.*)/);
-                if (!match) return text;
-                const [, before, tag, after] = match;
-                return <>{before}<span className="text-white bg-primary/20 px-1 rounded">{tag}</span>{after}</>;
-              })()}
-            </span>
-          </motion.h1>
-
-          <motion.p
-            className="text-silver/50 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed"
-            initial="hidden" animate="visible" variants={fadeUp} custom={1.5}
-          >
-            {t.hero.manifesto}
-          </motion.p>
-        </div>
-
-        {/* Two-column Selling / Buying grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16"
-          initial="hidden" animate="visible" variants={fadeUp} custom={2}
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full text-center">
+        {/* Headline */}
+        <motion.h1
+          className="text-4xl sm:text-5xl lg:text-[56px] font-display font-black text-white leading-[1.08] tracking-tight mb-2"
+          initial="hidden" animate="visible" variants={fadeUp} custom={0}
         >
-          {/* Selling a Car */}
-          <div className="flex gap-5">
-            <div className="w-1 shrink-0 rounded-full bg-primary" />
-            <div>
-              <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.sellingTitle}</h2>
-              <p className="text-primary text-xs font-bold tracking-wider uppercase mb-3">{t.hero.sellingTagline}</p>
-              <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                {t.hero.sellingDesc}
-              </p>
-              <Button
-                size="sm"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-lg shadow-[0_0_30px_hsl(155_100%_42%/0.2)] hover:shadow-[0_0_50px_hsl(155_100%_42%/0.3)] transition-shadow"
-                onClick={() => navigate("/intent")}
-              >
-                {t.hero.sellerCta}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+          {t.hero.headline}
+        </motion.h1>
+        <motion.span
+          className="block text-3xl sm:text-4xl lg:text-[48px] font-display font-black text-orange leading-[1.1] mb-6"
+          initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
+        >
+          {t.hero.headlineAccent}
+        </motion.span>
 
-          {/* Buying a Car */}
-          <div className="flex gap-5">
-            <div className="w-1 shrink-0 rounded-full bg-primary" />
-            <div>
-              <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.buyingTitle}</h2>
-              <p className="text-primary text-xs font-bold tracking-wider uppercase mb-3">{t.hero.buyingTagline}</p>
-              <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                {t.hero.buyingDesc}
-              </p>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border-border text-white hover:bg-secondary hover:text-white font-semibold rounded-lg"
-                onClick={() => navigate("/intent")}
-              >
-                {t.hero.buyerCta}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+        {/* Subheadline */}
+        <motion.p
+          className="text-silver/70 text-base sm:text-lg lg:text-xl max-w-[560px] mx-auto leading-relaxed mb-10 whitespace-pre-line"
+          initial="hidden" animate="visible" variants={fadeUp} custom={1}
+        >
+          {t.hero.subheadline}
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
+          initial="hidden" animate="visible" variants={fadeUp} custom={1.5}
+        >
+          <Button
+            size="lg"
+            className="w-full sm:w-auto bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-6 rounded-full shadow-[0_0_40px_hsl(24_95%_53%/0.3)] hover:shadow-[0_0_60px_hsl(24_95%_53%/0.4)] transition-all"
+            onClick={() => navigate("/intent")}
+          >
+            {t.hero.primaryCta}
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="w-full sm:w-auto border-silver/30 text-white hover:bg-white/5 font-semibold text-base px-8 py-6 rounded-full"
+            onClick={() => navigate("/car-selection")}
+          >
+            {t.hero.secondaryCta}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
         </motion.div>
 
-        {/* Divider + tagline */}
+        {/* Trust Badges */}
         <motion.div
-          className="mt-16 pt-8 border-t border-border/50 text-center"
-          initial="hidden" animate="visible" variants={fadeUp} custom={3}
+          className="flex flex-wrap items-center justify-center gap-6 text-silver/50 text-sm"
+          initial="hidden" animate="visible" variants={fadeUp} custom={2}
         >
-          <p className="text-silver/50 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            {t.hero.subtitle}
-          </p>
+          {t.hero.trustBadges.map((badge, i) => (
+            <span key={i} className="flex items-center gap-1.5">
+              {badgeIcons[badge.icon]}
+              {badge.text}
+            </span>
+          ))}
         </motion.div>
       </div>
     </section>

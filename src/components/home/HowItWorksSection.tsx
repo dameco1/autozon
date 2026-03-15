@@ -1,5 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const fadeUp = {
@@ -7,41 +10,48 @@ const fadeUp = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+    transition: { delay: i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
 const HowItWorksSection: React.FC = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   return (
-    <section id="how-it-works" className="py-14 sm:py-18 bg-secondary relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4">
-        <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-          <span className="text-xs font-semibold tracking-widest uppercase text-primary/80 mb-4 block">{t.howItWorks.badge}</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">{t.howItWorks.title}</h2>
+    <section id="how-it-works" className="py-16 sm:py-20 bg-white">
+      <div className="max-w-5xl mx-auto px-4">
+        <motion.div className="text-center mb-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
+          <span className="text-xs font-semibold tracking-widest uppercase text-orange mb-3 block">{t.howItWorks.badge}</span>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-navy">{t.howItWorks.title}</h2>
         </motion.div>
 
-        <div className="relative">
-          {/* Connecting line */}
-          <div className="hidden md:block absolute top-10 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-            {t.howItWorks.steps.map((step, i) => (
-              <motion.div
-                key={i}
-                className="relative text-center md:text-left"
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
-              >
-                <div className="relative inline-flex items-center justify-center w-14 h-14 rounded-full border border-primary/20 bg-charcoal mb-4">
-                  <span className="text-sm font-display font-black text-primary">{step.number}</span>
-                </div>
-                <h3 className="text-lg font-display font-bold text-white mb-2">{step.title}</h3>
-                <p className="text-silver/50 text-sm leading-relaxed">{step.description}</p>
-              </motion.div>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          {t.howItWorks.steps.map((step, i) => (
+            <motion.div
+              key={i}
+              className="text-center"
+              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
+            >
+              <div className="relative inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange/10 border-2 border-orange/20 mb-5">
+                <span className="text-lg font-display font-black text-orange">{step.number}</span>
+              </div>
+              <h3 className="text-lg font-display font-bold text-navy mb-2">{step.title}</h3>
+              <p className="text-navy/60 text-sm leading-relaxed max-w-xs mx-auto">{step.description}</p>
+            </motion.div>
+          ))}
         </div>
+
+        <motion.div className="text-center" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}>
+          <Button
+            size="lg"
+            className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-6 rounded-full shadow-[0_0_40px_hsl(24_95%_53%/0.2)]"
+            onClick={() => navigate("/intent")}
+          >
+            {t.howItWorks.cta}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </motion.div>
       </div>
     </section>
   );
