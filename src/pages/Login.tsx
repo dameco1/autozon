@@ -85,7 +85,7 @@ const Login: React.FC = () => {
           </Button>
           <p className="text-center text-silver/60 text-sm">
             {t.auth.noAccount}{" "}
-            <Link to="/signup" className="text-primary hover:underline font-medium">{t.auth.signupLink}</Link>
+            <Link to="/signup" className="text-orange hover:underline font-medium">{t.auth.signupLink}</Link>
           </p>
         </form>
 
