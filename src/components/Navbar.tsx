@@ -42,11 +42,10 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex flex-col">
-            <span className={`text-2xl font-display font-bold tracking-tight transition-colors ${scrolled ? "text-navy" : "text-white"}`}>
+          <Link to="/" className="flex items-center">
+            <span className={`text-3xl font-display font-bold tracking-tight transition-colors ${scrolled ? "text-navy" : "text-white"}`}>
               auto<span className="text-orange">zon</span>
             </span>
-            <span className={`text-[10px] tracking-widest uppercase leading-none transition-colors ${scrolled ? "text-navy/40" : "text-silver/50"}`}>{t.nav.tagline}</span>
           </Link>
 
           {/* Desktop nav */}

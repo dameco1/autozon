@@ -10,10 +10,9 @@ const FooterSection: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-2">
-            <span className="font-display font-bold text-white">
+            <span className="font-display font-bold text-lg text-white">
               auto<span className="text-orange">zon</span>
             </span>
-            <span className="text-silver/40 text-sm ml-2">{t.footer.tagline}</span>
           </div>
           <p className="text-silver/40 text-sm">{t.footer.copyright}</p>
         </div>
