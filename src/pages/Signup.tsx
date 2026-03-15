@@ -37,7 +37,7 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal flex items-center justify-center px-4">
+    <div className="min-h-screen bg-navy flex items-center justify-center px-4">
       <SEO title="Sign Up" description="Create your free Autozon account. Start selling your car at fair value or find your perfect next ride." path="/signup" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
