@@ -26,7 +26,8 @@ const AboutUs: React.FC = () => {
 
   const solutions = t.solution.features;
 
-  const steps = [
+  const aboutUs = (t as any).aboutUs;
+  const steps = aboutUs?.steps ?? [
     { number: "01", title: "Upload", description: "Upload photos and car details — our AI starts analyzing instantly." },
     { number: "02", title: "Price", description: "AI cross-references your photos, specs, and condition against live market data." },
     { number: "03", title: "List", description: "Your ad goes live for €49. It stays online until your car is sold." },
