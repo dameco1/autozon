@@ -76,7 +76,7 @@ const Login: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-charcoal border-border text-white placeholder:text-silver/30"
+              className="bg-navy border-border text-white placeholder:text-silver/30"
               placeholder="••••••••"
             />
           </div>
