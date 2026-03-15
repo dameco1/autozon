@@ -86,7 +86,7 @@ const AboutUs: React.FC = () => {
                 <h2 className="text-xl font-display font-bold text-white mb-1">{t.hero.sellingTitle}</h2>
                 <p className="text-orange text-xs font-bold tracking-wider uppercase mb-3">{t.hero.sellingTagline}</p>
                 <p className="text-silver/50 text-sm leading-relaxed mb-5">
-                  Upload your car. Our AI scans photos for condition and damage, cross-references mileage, specs, and equipment against thousands of live market listings — and returns your car's true market value. List for €49. Your ad stays live until it sells.
+                  {aboutUs?.sellingDescription ?? "Upload your car. Our AI scans photos for condition and damage, cross-references mileage, specs, and equipment against thousands of live market listings — and returns your car's true market value. List for €49. Your ad stays live until it sells."}
                 </p>
                 <Button
                   size="sm"
