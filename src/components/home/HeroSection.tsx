@@ -29,16 +29,8 @@ const badgeIcons: Record<string, React.ReactNode> = {
   zap: <Zap className="h-4 w-4 text-orange" />,
 };
 
-const bgCars = [
-  { src: carBmw5, className: "top-[6%] left-[-6%] w-[300px] rotate-[-8deg]" },
-  { src: carPorsche911, className: "top-[8%] right-[-4%] w-[280px] rotate-[6deg]" },
-  { src: carBmwX6, className: "bottom-[6%] left-[-3%] w-[280px] rotate-[4deg]" },
-  { src: carBmwZ4, className: "bottom-[10%] right-[-6%] w-[260px] rotate-[-5deg]" },
-  { src: carBmw5Black, className: "top-[42%] left-[-10%] w-[260px] rotate-[-3deg]" },
-  { src: carPorschePanamera, className: "top-[38%] right-[-10%] w-[270px] rotate-[3deg]" },
-  { src: carBmwX2, className: "top-[68%] left-[2%] w-[240px] rotate-[6deg]" },
-  { src: carCitroen, className: "top-[65%] right-[0%] w-[250px] rotate-[-4deg]" },
-];
+const leftColumn = [carBmw5, carPorsche911, carBmwX2, carCitroen];
+const rightColumn = [carBmwZ4, carBmwX6, carPorschePanamera, carBmw5Black];
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
@@ -46,21 +38,42 @@ const HeroSection: React.FC = () => {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden bg-navy">
-      {/* Background car images */}
-      {bgCars.map((car, i) => (
-        <motion.img
-          key={i}
-          src={car.src}
-          alt=""
-          aria-hidden="true"
-          className={`absolute ${car.className} opacity-[0.07] pointer-events-none select-none object-cover rounded-2xl blur-[1px]`}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 0.07, scale: 1 }}
-          transition={{ delay: 0.3 + i * 0.2, duration: 1.2, ease: "easeOut" }}
-        />
-      ))}
+      {/* Left column of car cards */}
+      <div className="absolute left-0 top-0 bottom-0 w-[220px] lg:w-[280px] hidden md:flex flex-col justify-center gap-4 pl-4 -translate-x-[30%]">
+        {leftColumn.map((src, i) => (
+          <motion.div
+            key={i}
+            className="relative rounded-xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, x: -60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 + i * 0.15, duration: 0.9, ease: "easeOut" }}
+          >
+            <img src={src} alt="" aria-hidden="true" className="w-full h-[120px] lg:h-[140px] object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-navy/90" />
+          </motion.div>
+        ))}
+      </div>
 
-      {/* Gradient overlay */}
+      {/* Right column of car cards */}
+      <div className="absolute right-0 top-0 bottom-0 w-[220px] lg:w-[280px] hidden md:flex flex-col justify-center gap-4 pr-4 translate-x-[30%]">
+        {rightColumn.map((src, i) => (
+          <motion.div
+            key={i}
+            className="relative rounded-xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 + i * 0.15, duration: 0.9, ease: "easeOut" }}
+          >
+            <img src={src} alt="" aria-hidden="true" className="w-full h-[120px] lg:h-[140px] object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent to-navy/90" />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Center vignette to keep text readable */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_50%_50%,hsl(var(--navy))_40%,transparent_100%)]" />
+
+      {/* Accent gradients */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_95%_53%/0.06),transparent)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_80%,hsl(210_60%_20%/0.3),transparent)]" />
 
