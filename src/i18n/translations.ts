@@ -975,7 +975,7 @@ export const translations = {
     whyAutozon: {
       title: "Warum Kunden Autozon wählen",
       cards: [
-        { icon: "coin", title: "KI kennt den echten Preis", description: "Kein Schätzwert. Kein Händler-Ratemal. Unsere KI liest 50+ Live-Marktsignale und berechnet jedes Mal den wahren Wert deines Autos." },
+        { icon: "coin", title: "KI zeigt dir die echte Zahl", description: "Unsere Engine analysiert deine Fotos, Zustand, Kilometerstand und Ausstattung — und vergleicht es mit aktuellen Marktdaten. Du bekommst den echten Wert, nicht die Schätzung eines Händlers." },
         { icon: "zap", title: "Dein Inserat läuft nicht ab", description: "Anders als bei AutoScout24, willhaben und mobile.de — dein Inserat bleibt online, bis dein Auto verkauft ist. Einmal zahlen. Wir arbeiten, bis der Deal steht." },
         { icon: "refresh", title: "Per Karte zahlen. Schneller abschließen.", description: "Käufer können bis zu €10.000 per Karte zahlen — direkt auf Autozon. Keine Überweisungen, kein Warten, keine Reibung." },
       ],
