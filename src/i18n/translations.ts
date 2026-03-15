@@ -20,7 +20,7 @@ export const translations = {
       qa: "Q&A",
     },
     hero: {
-      headline: "Sell Smart. Buy Fair.",
+      headline: "Sell Fair. Buy Smart.",
       headlineAccent: "AI-powered car classifieds.",
       subheadline: "AI prices your car. Your ad stays live until it sells.",
       primaryCta: "🚘 Get My Free AI Valuation",
@@ -942,7 +942,7 @@ export const translations = {
       qa: "Fragen",
     },
     hero: {
-      headline: "Smart verkaufen. Fair kaufen.",
+      headline: "Fair verkaufen. Smart kaufen.",
       headlineAccent: "KI-gestützte Auto-Kleinanzeigen.",
       subheadline: "KI bewertet dein Auto. Dein Inserat bleibt online, bis es verkauft ist.",
       primaryCta: "🚘 Kostenlose KI-Bewertung",
