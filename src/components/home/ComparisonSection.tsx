@@ -66,7 +66,7 @@ const ComparisonSection: React.FC = () => {
   }
 
   return (
-    <section className="py-12 bg-charcoal">
+    <section className="py-8 bg-charcoal">
       <div className="max-w-lg mx-auto px-4">
         <h2 className="text-2xl font-display font-black text-white text-center mb-8">
           {t.comparison.title}
