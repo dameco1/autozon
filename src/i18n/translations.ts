@@ -921,7 +921,7 @@ export const translations = {
     hero: {
       headline: "Kauf, Verkauf oder Tausch deines Autos.",
       headlineAccent: "Schnell. Fair. Ohne Stress.",
-      subheadline: "Österreichs Automarktplatz mit ehrlichen Preisen.\nKeine versteckten Gebühren. Keine Tiefpreistricks. Nur echte Deals.",
+      subheadline: "Europas Automarktplatz mit ehrlichen Preisen.\nKeine versteckten Gebühren. Keine Tiefpreistricks. Nur echte Deals.",
       primaryCta: "🚘 Auto inserieren — Kostenlos",
       secondaryCta: "Autos durchsuchen →",
       trustBadges: [
