@@ -20,15 +20,15 @@ export const translations = {
       qa: "Q&A",
     },
     hero: {
-      headline: "Buy, Sell or Trade Your Car.",
-      headlineAccent: "Fast. Fair. Without the Hassle.",
-      subheadline: "Europe's car marketplace built on honest pricing.\nNo hidden fees. No lowball tricks. Just real deals.",
+      headline: "Your Car's True Price.",
+      headlineAccent: "Found by AI. Confirmed by the Market.",
+      subheadline: "Autozon's AI analyses thousands of real European deals\nto tell you exactly what your car is worth — before you list it.\nBuyers get matched to the right car automatically.\nNo guessing. No haggling. Just the right price.",
       primaryCta: "🚘 List My Car — It's Free",
       secondaryCta: "Browse Cars Now →",
       trustBadges: [
-        { icon: "check", text: "Free to List" },
-        { icon: "lock", text: "Secure Transactions" },
-        { icon: "zap", text: "Sell in Days, Not Months" },
+        { icon: "check", text: "🤖 AI Valuation in Seconds" },
+        { icon: "lock", text: "🎯 Smart Buyer Matching" },
+        { icon: "zap", text: "⚡ Sell in Days, Not Months" },
       ],
       // legacy keys kept for other pages
       badge: "AI-Powered Car Trading",
@@ -93,7 +93,7 @@ export const translations = {
       badge: "How It Works",
       title: "Selling Your Car Takes 3 Steps",
       steps: [
-        { number: "01", title: "📸 Snap & List", description: "Upload photos, enter details. Done in under 3 minutes." },
+        { number: "01", title: "🤖 Get Your AI Valuation", description: "Enter your car details. Our AI analyses the live European market and gives you a real price in under 60 seconds. No forms, no waiting, no dealer middlemen." },
         { number: "02", title: "💬 Get Real Offers", description: "Buyers contact you directly. No middlemen, no commissions." },
         { number: "03", title: "🤝 Close the Deal", description: "Meet, agree, done. We guide you through every step safely." },
       ],
@@ -102,6 +102,7 @@ export const translations = {
     comparison: {
       title: "Why Autozon Beats the Alternatives",
       features: [
+        "AI-powered price valuation",
         "Free listings for private sellers",
         "Fair price calculator built-in",
         "Trade-in option on platform",
@@ -111,6 +112,7 @@ export const translations = {
       competitors: ["AutoScout24", "Willhaben", "mobile.de"],
       // true = has feature, false = doesn't
       competitorData: [
+        [false, false, false],
         [false, true, false],
         [false, false, false],
         [false, false, false],
@@ -131,6 +133,7 @@ export const translations = {
     },
     cta: {
       title: "Your next car deal starts here.",
+      aiLine: "Powered by AI that knows the European market inside out.",
       subtitle: "Join 50,000+ Austrians who buy, sell and trade smarter.",
       button: "Get Started — Free",
     },
@@ -919,15 +922,15 @@ export const translations = {
       qa: "Fragen",
     },
     hero: {
-      headline: "Kauf, Verkauf oder Tausch deines Autos.",
-      headlineAccent: "Schnell. Fair. Ohne Stress.",
-      subheadline: "Europas Automarktplatz mit ehrlichen Preisen.\nKeine versteckten Gebühren. Keine Tiefpreistricks. Nur echte Deals.",
+      headline: "Der wahre Preis deines Autos.",
+      headlineAccent: "Gefunden von KI. Bestätigt vom Markt.",
+      subheadline: "Autozons KI analysiert tausende echte europäische Deals\num dir genau zu sagen, was dein Auto wert ist — bevor du es inserierst.\nKäufer werden automatisch zum richtigen Auto gematcht.\nKein Raten. Kein Feilschen. Einfach der richtige Preis.",
       primaryCta: "🚘 Auto inserieren — Kostenlos",
       secondaryCta: "Autos durchsuchen →",
       trustBadges: [
-        { icon: "check", text: "Kostenlos inserieren" },
-        { icon: "lock", text: "Sichere Transaktionen" },
-        { icon: "zap", text: "Verkauf in Tagen, nicht Monaten" },
+        { icon: "check", text: "🤖 KI-Bewertung in Sekunden" },
+        { icon: "lock", text: "🎯 Smartes Käufer-Matching" },
+        { icon: "zap", text: "⚡ Verkauf in Tagen, nicht Monaten" },
       ],
       badge: "KI-gesteuerter Autohandel",
       title: "Schluss mit Einstellen & Hoffen.",
@@ -991,7 +994,7 @@ export const translations = {
       badge: "So funktioniert's",
       title: "Dein Auto verkaufen in 3 Schritten",
       steps: [
-        { number: "01", title: "📸 Fotografieren & Inserieren", description: "Fotos hochladen, Details eingeben. In unter 3 Minuten erledigt." },
+        { number: "01", title: "🤖 KI-Bewertung erhalten", description: "Gib deine Autodaten ein. Unsere KI analysiert den europäischen Live-Markt und gibt dir in unter 60 Sekunden einen echten Preis. Keine Formulare, kein Warten, keine Händler." },
         { number: "02", title: "💬 Echte Angebote erhalten", description: "Käufer kontaktieren dich direkt. Keine Mittelmänner, keine Provisionen." },
         { number: "03", title: "🤝 Deal abschließen", description: "Treffen, einigen, fertig. Wir begleiten dich sicher durch jeden Schritt." },
       ],
@@ -1000,6 +1003,7 @@ export const translations = {
     comparison: {
       title: "Warum Autozon die Alternativen schlägt",
       features: [
+        "KI-gestützte Preisbewertung",
         "Kostenlose Inserate für Privatverkäufer",
         "Fairer Preisrechner integriert",
         "Eintausch-Option auf der Plattform",
@@ -1008,6 +1012,7 @@ export const translations = {
       ],
       competitors: ["AutoScout24", "Willhaben", "mobile.de"],
       competitorData: [
+        [false, false, false],
         [false, true, false],
         [false, false, false],
         [false, false, false],
@@ -1028,6 +1033,7 @@ export const translations = {
     },
     cta: {
       title: "Dein nächster Autodeal beginnt hier.",
+      aiLine: "Angetrieben von KI, die den europäischen Markt in- und auswendig kennt.",
       subtitle: "Schließe dich 50.000+ Österreichern an, die smarter kaufen, verkaufen und tauschen.",
       button: "Jetzt starten — Kostenlos",
     },

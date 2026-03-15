@@ -40,23 +40,26 @@ const ComparisonSection: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {t.comparison.features.map((feature, fi) => (
-                  <tr key={fi} className="border-b border-border/30 last:border-0">
-                    <td className="p-4 text-silver/70">{feature}</td>
-                    <td className="p-4 text-center">
-                      <CheckCircle2 className="h-5 w-5 text-orange mx-auto" />
-                    </td>
-                    {t.comparison.competitorData[fi].map((has, ci) => (
-                      <td key={ci} className="p-4 text-center">
-                        {has ? (
-                          <CheckCircle2 className="h-5 w-5 text-silver/30 mx-auto" />
-                        ) : (
-                          <XCircle className="h-5 w-5 text-silver/20 mx-auto" />
-                        )}
+                {t.comparison.features.map((feature, fi) => {
+                  const isAiRow = fi === 0;
+                  return (
+                    <tr key={fi} className="border-b border-border/30 last:border-0">
+                      <td className={`p-4 ${isAiRow ? "text-white font-semibold" : "text-silver/70"}`}>{feature}</td>
+                      <td className={`p-4 text-center ${isAiRow ? "bg-orange/[0.12]" : ""}`}>
+                        <CheckCircle2 className={`h-5 w-5 mx-auto ${isAiRow ? "text-orange font-bold" : "text-orange"}`} />
                       </td>
-                    ))}
-                  </tr>
-                ))}
+                      {t.comparison.competitorData[fi].map((has, ci) => (
+                        <td key={ci} className="p-4 text-center">
+                          {has ? (
+                            <CheckCircle2 className="h-5 w-5 text-silver/30 mx-auto" />
+                          ) : (
+                            <XCircle className="h-5 w-5 text-silver/20 mx-auto" />
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </motion.div>
