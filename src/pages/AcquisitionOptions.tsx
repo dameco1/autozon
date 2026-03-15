@@ -125,27 +125,23 @@ const AcquisitionOptions: React.FC = () => {
     init();
   }, [offerId, navigate]);
 
-  const saveTransaction = useCallback(async (updates: Record<string, any>) => {
-    if (!offer) return;
-    if (transactionId) {
-      await supabase.from("transactions").update(updates as any).eq("id", transactionId);
-    } else {
-      const { data } = await supabase.from("transactions").insert({
-        offer_id: offer.id,
-        car_id: offer.car_id,
-        buyer_id: offer.buyer_id,
-        seller_id: offer.seller_id,
-        agreed_price: offer.agreed_price,
-        ...updates,
-      } as any).select("id").single();
-      if (data) setTransactionId((data as any).id);
+  const ensureTransaction = useCallback(async (): Promise<string | null> => {
+    if (!offer) return null;
+    if (transactionId) return transactionId;
+    const { data } = await supabase.from("transactions").insert({
+      offer_id: offer.id,
+      car_id: offer.car_id,
+      buyer_id: offer.buyer_id,
+      seller_id: offer.seller_id,
+      agreed_price: offer.agreed_price,
+    } as any).select("id").single();
+    if (data) {
+      const id = (data as any).id;
+      setTransactionId(id);
+      return id;
     }
+    return null;
   }, [offer, transactionId]);
-
-  const markCarSold = useCallback(async () => {
-    if (!offer) return;
-    await supabase.from("cars").update({ status: "sold" } as any).eq("id", offer.car_id);
-  }, [offer]);
 
   if (loading) {
     return (
