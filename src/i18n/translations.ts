@@ -22,7 +22,7 @@ export const translations = {
     hero: {
       headline: "Buy, Sell or Trade Your Car.",
       headlineAccent: "Fast. Fair. Without the Hassle.",
-      subheadline: "Europe's car marketplace built on honest pricing.\nNo hidden fees. No lowball tricks. Just real deals.",
+      subheadline: "Austria's car marketplace built on honest pricing.\nNo hidden fees. No lowball tricks. Just real deals.",
       primaryCta: "🚘 List My Car — It's Free",
       secondaryCta: "Browse Cars Now →",
       trustBadges: [
@@ -52,7 +52,7 @@ export const translations = {
       manifesto: "We are not a listing site nor marketplace. We are an AI-driven matching engine that compresses the entire selling process into a guided, trusted, and fast transaction.",
     },
     whyAutozon: {
-      title: "Why Customers Choose Autozon",
+      title: "Why Smart Austrians Choose Autozon",
       cards: [
         { icon: "coin", title: "Fair Price Guarantee", description: "We use real market data to show you what your car is actually worth — not what a dealer wants to pay." },
         { icon: "zap", title: "Sell in Days, Not Weeks", description: "List in under 3 minutes. Get serious buyers fast. No time-wasters, no ghost inquiries." },
