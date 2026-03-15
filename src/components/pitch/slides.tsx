@@ -18,12 +18,12 @@ import carCitroenDs5 from "@/assets/pitch/car-citroen-ds5.jpg";
 import carPorsche911 from "@/assets/pitch/car-porsche-911.jpg";
 import carPorschePanamera from "@/assets/pitch/car-porsche-panamera.jpg";
 
-const green = "text-green";
+const accent = "text-orange";
 const dim = "text-silver/60";
 const heading = "font-display text-[72px] font-bold text-white leading-tight";
 const subheading = "font-display text-[48px] font-bold text-white leading-tight";
 const body = "text-[28px] text-silver leading-relaxed";
-const stat = "font-display text-[96px] font-black text-green leading-none";
+const stat = "font-display text-[96px] font-black text-orange leading-none";
 const cardBg = "bg-white/5 border border-white/10 rounded-2xl p-8";
 const sourceText = "absolute bottom-8 left-40 right-40 text-[16px] text-silver/40 italic";
 
@@ -31,28 +31,28 @@ const sourceText = "absolute bottom-8 left-40 right-40 text-[16px] text-silver/4
 export const SlideCover = () => (
   <div className="flex flex-col justify-center h-full px-40 relative">
     <div className="flex items-center gap-6 mb-10">
-      <Car className={green} size={72} />
+      <Car className={accent} size={72} />
       <div>
         <h1 className="font-display text-[88px] font-black text-white leading-none">
-          auto<span className={green}>zon</span>
+          auto<span className="text-green">zon</span>
         </h1>
-        <p className="text-[28px] text-silver mt-1 font-light">Fair Value, Best Prices. Zero Friction.</p>
+        <p className="text-[28px] text-silver mt-1 font-light">Sell Fair. Buy Smart.</p>
       </div>
     </div>
 
     <p className={`${body} max-w-[1400px] leading-[1.7]`}>
-      I'm building <span className="text-white font-bold">Autozon</span>, the first fair‑value automotive platform that eliminates dealership‑engineered depreciation. Sellers lose <span className={`${green} font-bold`}>10–20% instantly</span> because the system is opaque and designed against them. Autozon fixes this with AI‑powered valuation blended with real market data, intelligent buyer matching, and structured negotiations that maximize seller profit.
+      I'm building <span className="text-white font-bold">Autozon</span>, the first AI-powered fair‑value car platform that eliminates dealer‑engineered depreciation. Sellers lose <span className={`${accent} font-bold`}>up to 30%</span> because the system is opaque and designed against them. Autozon fixes this with AI photo analysis, live market comparison, and structured negotiations — so sellers keep the full margin.
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      The platform is <span className="text-white font-bold">free for buyers</span>. Sellers pay a flat listing fee — <span className={`${green} font-bold`}>€49 Basic</span> or <span className={`${green} font-bold`}>€99 Premium</span>. The European used‑car market is <span className={`${green} font-bold`}>€300B+</span>, and no dominant fair‑value car platform exists.
+      The platform is <span className="text-white font-bold">free for buyers</span>. Sellers pay a flat listing fee — <span className={`${accent} font-bold`}>€49 Basic</span> or <span className={`${accent} font-bold`}>€99 Premium</span>. The European used‑car market is <span className={`${accent} font-bold`}>€300B+</span>, and no dominant fair‑value car platform exists.
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      We've built a <span className="text-white font-bold">complete end‑to‑end platform</span> — AI fair‑value engine, damage detection, market comparison, buyer discovery &amp; matching, structured negotiation, <span className={`${green} font-bold`}>full transaction pipeline</span> (contract generation, payment, insurance), AI concierge, VIN decoding, MFA security, admin dashboard, and bilingual DE/EN support — all live. We're now <span className="text-white font-bold">raising capital</span> to scale across DACH and CEE.
+      We've built a <span className="text-white font-bold">complete end‑to‑end platform</span> — AI fair‑value engine, photo-based damage detection, market comparison, buyer discovery &amp; matching, structured negotiation, <span className={`${accent} font-bold`}>full transaction pipeline</span> (contract generation, payment, insurance), AI concierge, VIN decoding, MFA security, admin dashboard, and bilingual DE/EN support — all live.
     </p>
 
-    <p className={`text-[26px] ${green} font-semibold mt-10`}>
+    <p className={`text-[26px] ${accent} font-semibold mt-10`}>
       If this aligns with your investment strategy and goals in mobility, marketplace, or AI — I'd love to share more.
     </p>
 
@@ -63,9 +63,9 @@ export const SlideCover = () => (
     </div>
 
     <div className="absolute bottom-8 left-40 right-40 flex items-center gap-3">
-      <div className="w-12 h-[2px] bg-green" />
+      <div className="w-12 h-[2px] bg-orange" />
       <span className={`text-[20px] ${dim}`}>Investor Presentation 2026</span>
-      <div className="w-12 h-[2px] bg-green" />
+      <div className="w-12 h-[2px] bg-orange" />
     </div>
   </div>
 );
@@ -73,17 +73,17 @@ export const SlideCover = () => (
 // Slide 2: Title
 export const SlideTitle = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
-    <Car className={green} size={80} />
+    <Car className={accent} size={80} />
     <h1 className="font-display text-[96px] font-black text-white mt-8 leading-none">
-      auto<span className={green}>zon</span>
+      auto<span className="text-green">zon</span>
     </h1>
     <p className="text-[36px] text-silver mt-4 font-light">
-      Fair Value. Best Prices. Zero Friction.
+      Sell Fair. Buy Smart.
     </p>
     <div className="mt-16 flex items-center gap-3">
-      <div className="w-12 h-[2px] bg-green" />
+      <div className="w-12 h-[2px] bg-orange" />
       <span className={`text-[24px] ${dim}`}>Investor Presentation 2026</span>
-      <div className="w-12 h-[2px] bg-green" />
+      <div className="w-12 h-[2px] bg-orange" />
     </div>
   </div>
 );
@@ -92,24 +92,24 @@ export const SlideTitle = () => (
 export const SlideProblem = () => (
   <div className="flex flex-col justify-center h-full px-40 relative">
     <div className="flex items-center gap-4 mb-12">
-      <TrendingDown className={green} size={48} />
+      <TrendingDown className={accent} size={48} />
       <h2 className={heading}>The Problem</h2>
     </div>
     <p className={`${body} mb-12 max-w-[1200px]`}>
-      Car depreciation is <span className="text-white font-bold">artificially inflated</span>. Dealerships control information, pricing, and margins. Sellers lose instantly — even when their car is pristine.
+      Dealers buy low and sell high — that's their business model. Sellers lose <span className="text-white font-bold">up to 30%</span> the moment they accept a trade-in. Other platforms let you post a price and hope. Nobody tells you what your car is actually worth.
     </p>
     <div className="grid grid-cols-3 gap-8">
       <div className={cardBg}>
-        <p className={stat}>10–20%</p>
-        <p className="text-[24px] text-silver mt-4">Value lost instantly when selling through dealers</p>
+        <p className={stat}>30%</p>
+        <p className="text-[24px] text-silver mt-4">Average value lost selling to dealers</p>
       </div>
       <div className={cardBg}>
-        <p className={stat}>45</p>
-        <p className="text-[24px] text-silver mt-4">Average days to sell a car privately</p>
+        <p className={stat}>€4,200</p>
+        <p className="text-[24px] text-silver mt-4">Hidden dealer margin on every used car</p>
       </div>
       <div className={cardBg}>
-        <p className={stat}>67%</p>
-        <p className="text-[24px] text-silver mt-4">Of sellers feel cheated after their sale</p>
+        <p className={stat}>73%</p>
+        <p className="text-[24px] text-silver mt-4">Of sellers get below fair value today</p>
       </div>
     </div>
     <p className={sourceText}>Sources: DAT Report 2024; AutoScout24 Market Study 2023; Deloitte Used Car Consumer Survey 2023</p>
@@ -119,14 +119,14 @@ export const SlideProblem = () => (
 // Slide 3: The Insight
 export const SlideInsight = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
-    <Lightbulb className={green} size={80} />
+    <Lightbulb className={accent} size={80} />
     <h2 className="font-display text-[80px] font-black text-white mt-12 leading-tight max-w-[1400px]">
       Depreciation isn't natural.
     </h2>
-    <h2 className={`font-display text-[80px] font-black ${green} leading-tight`}>
+    <h2 className={`font-display text-[80px] font-black ${accent} leading-tight`}>
       It's engineered.
     </h2>
-    <div className="w-32 h-1 bg-green mt-16 rounded-full" />
+    <div className="w-32 h-1 bg-orange mt-16 rounded-full" />
   </div>
 );
 
@@ -134,21 +134,21 @@ export const SlideInsight = () => (
 export const SlideSolution = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-12">
-      <Shield className={green} size={48} />
+      <Shield className={accent} size={48} />
       <h2 className={heading}>The Solution</h2>
     </div>
     <p className={`${body} mb-16 max-w-[1200px]`}>
-      Autozon calculates <span className="text-white font-bold">true market value</span> by blending a multi-factor formula (brand, age, mileage, condition, equipment) with <span className="text-white font-bold">live market comparison data</span> — then connects sellers directly with high-intent, pre-qualified buyers.
+      Autozon's AI analyzes your <span className="text-white font-bold">photos, condition, mileage, and specs</span> — then cross-references <span className="text-white font-bold">live market listings</span> to calculate the fairest price. Sellers keep the margin. Buyers get fair deals.
     </p>
     <div className="grid grid-cols-2 gap-8">
       {[
-        { icon: Brain, title: "Blended Fair-Value Engine", desc: "30% formula + 70% real market data — AI damage detection & VIN decoding included" },
+        { icon: Brain, title: "AI Fair-Value Engine", desc: "Photo analysis + condition scoring + live market comparison — your car's true worth in seconds" },
         { icon: Users, title: "Smart Buyer Matching", desc: "10-step questionnaire → iterative selection → 2 finalists side-by-side with editable preferences" },
         { icon: Handshake, title: "Structured Negotiation", desc: "Max 3 rounds of offer/counter — with AI concierge assistance and PDF deal summary" },
         { icon: FileText, title: "End-to-End Transactions", desc: "Contract generation, payment (wire/card/leasing), insurance, completion — fully digital or manual" },
       ].map(({ icon: Icon, title, desc }) => (
         <div key={title} className={`${cardBg} flex items-start gap-6`}>
-          <Icon className={green} size={36} />
+          <Icon className={accent} size={36} />
           <div>
             <h3 className="text-[28px] text-white font-bold">{title}</h3>
             <p className="text-[24px] text-silver mt-2">{desc}</p>
@@ -163,23 +163,23 @@ export const SlideSolution = () => (
 export const SlideHowItWorksSeller = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-10">
-      <Zap className={green} size={48} />
+      <Zap className={accent} size={48} />
       <h2 className={heading}>How It Works — Seller</h2>
     </div>
     <p className={`${body} mb-10 max-w-[1200px]`}>
-      From upload to sale in <span className="text-white font-bold">minutes, not weeks</span>. The seller keeps more money because the system finds the <span className={`${green} font-bold`}>real value</span> — not a dealer's lowball.
+      Upload photos. Get your <span className={`${accent} font-bold`}>real market price</span>. List for €49. Your ad stays live until your car is sold. No expiry. No re-listing fees.
     </p>
     <div className="grid grid-cols-4 gap-6">
       {[
         { step: "1", icon: Car, title: "Upload Vehicle", desc: "5-step guided form: specs, photos, condition sliders, equipment checklist" },
-        { step: "2", icon: Search, title: "AI Damage Scan", desc: "Upload photos → AI detects scratches, dents, rust — auto-adjusts condition score" },
-        { step: "3", icon: Brain, title: "Fair Value Engine", desc: "Multi-factor formula (brand tier, depreciation curve, mileage, equipment) blended 30/70 with live market data" },
+        { step: "2", icon: Search, title: "AI Photo Scan", desc: "AI analyzes your photos for damage, scratches, dents — auto-adjusts condition score" },
+        { step: "3", icon: Brain, title: "Fair Value Engine", desc: "Cross-references your data against thousands of live market listings — returns true market value" },
         { step: "4", icon: BarChart3, title: "Market Comparison", desc: "Real-time scan of comparable listings — avg price, range, depreciation forecast, market position" },
       ].map(({ step, icon: Icon, title, desc }) => (
         <div key={title} className={cardBg}>
           <div className="flex items-center gap-3 mb-4">
-            <span className={`font-display text-[36px] font-black ${green}`}>{step}</span>
-            <Icon className={green} size={28} />
+            <span className={`font-display text-[36px] font-black ${accent}`}>{step}</span>
+            <Icon className={accent} size={28} />
           </div>
           <h3 className="text-[22px] text-white font-bold">{title}</h3>
           <p className="text-[18px] text-silver mt-2 leading-relaxed">{desc}</p>
@@ -193,7 +193,7 @@ export const SlideHowItWorksSeller = () => (
 export const SlideHowItWorksBuyer = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-10">
-      <Users className={green} size={48} />
+      <Users className={accent} size={48} />
       <h2 className={heading}>How It Works — Buyer & Match</h2>
     </div>
     <div className="grid grid-cols-2 gap-12">
@@ -208,7 +208,7 @@ export const SlideHowItWorksBuyer = () => (
             "Side-by-side comparison with acquisition options",
           ].map((t, i) => (
             <div key={i} className="flex items-start gap-4">
-              <ChevronRight className={`${green} shrink-0 mt-1`} size={24} />
+              <ChevronRight className={`${accent} shrink-0 mt-1`} size={24} />
               <p className="text-[22px] text-silver">{t}</p>
             </div>
           ))}
@@ -225,7 +225,7 @@ export const SlideHowItWorksBuyer = () => (
             "Acquisition: Credit (amortization), Leasing (residual), Trade-in",
           ].map((t, i) => (
             <div key={i} className="flex items-start gap-4">
-              <ChevronRight className={`${green} shrink-0 mt-1`} size={24} />
+              <ChevronRight className={`${accent} shrink-0 mt-1`} size={24} />
               <p className="text-[22px] text-silver">{t}</p>
             </div>
           ))}
@@ -245,11 +245,11 @@ export const SlideSavingsExample = () => {
   return (
     <div className="flex flex-col justify-center h-full px-40 relative">
       <div className="flex items-center gap-4 mb-8">
-        <DollarSign className={green} size={48} />
+        <DollarSign className={accent} size={48} />
         <h2 className={heading}>Real Savings</h2>
       </div>
       <p className={`${body} mb-10 max-w-[1200px]`}>
-        Dealers <span className="text-white font-bold">engineer depreciation</span> to maximize their margin. Autozon finds the <span className={`${green} font-bold`}>real market value</span> — so sellers keep thousands more.
+        Dealers buy low and sell high. You lose up to 30%. Autozon's AI finds the <span className={`${accent} font-bold`}>real market value</span> from your photos and data — so you keep thousands more.
       </p>
       <div className="grid grid-cols-3 gap-8">
         {examples.map(({ car, dealer, autozon, mileage, condition }) => {
@@ -268,15 +268,15 @@ export const SlideSavingsExample = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-[16px] text-green/80 mb-1">Autozon fair value</p>
+                  <p className="text-[16px] text-orange/80 mb-1">Autozon fair value</p>
                   <div className="flex items-center gap-3">
-                    <div className="h-3 bg-green rounded-full w-full" />
-                    <span className={`text-[24px] ${green} font-display font-bold`}>€{autozon.toLocaleString()}</span>
+                    <div className="h-3 bg-orange rounded-full w-full" />
+                    <span className={`text-[24px] ${accent} font-display font-bold`}>€{autozon.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
               <div className="mt-6 pt-4 border-t border-white/10 text-center">
-                <p className={`font-display text-[40px] font-black ${green}`}>+€{saved.toLocaleString()}</p>
+                <p className={`font-display text-[40px] font-black ${accent}`}>+€{saved.toLocaleString()}</p>
                 <p className="text-[18px] text-silver/60">{pct}% more in the seller's pocket</p>
               </div>
             </div>
@@ -292,7 +292,7 @@ export const SlideSavingsExample = () => {
 export const SlideProductDemo = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-10">
-      <Monitor className={green} size={48} />
+      <Monitor className={accent} size={48} />
       <h2 className={heading}>Live Product</h2>
     </div>
     <div className="grid grid-cols-2 gap-10">
@@ -302,23 +302,23 @@ export const SlideProductDemo = () => (
           <div className="flex gap-1.5">
             <div className="w-3 h-3 rounded-full bg-destructive/60" />
             <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
-            <div className="w-3 h-3 rounded-full bg-green/60" />
+            <div className="w-3 h-3 rounded-full bg-orange/60" />
           </div>
-          <span className="text-[14px] text-silver/40 ml-3">autozon.app/fair-value</span>
+          <span className="text-[14px] text-silver/40 ml-3">autozon.lovable.app/fair-value</span>
         </div>
         <div className="p-8">
           <div className="text-center mb-6">
-            <span className="text-[14px] text-green bg-green/10 px-3 py-1 rounded-full">Your Fair-Value Score</span>
+            <span className="text-[14px] text-orange bg-orange/10 px-3 py-1 rounded-full">Your Fair-Value Score</span>
             <h3 className="text-[28px] text-white font-display font-bold mt-3">2022 Mercedes-Benz C-Class</h3>
           </div>
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-white/5 rounded-xl p-4 text-center">
               <p className="text-[14px] text-silver/60">Condition Score</p>
-              <p className="text-[36px] font-display font-black text-green">90<span className="text-[16px] text-silver/40">/100</span></p>
+              <p className="text-[36px] font-display font-black text-orange">90<span className="text-[16px] text-silver/40">/100</span></p>
             </div>
             <div className="bg-white/5 rounded-xl p-4 text-center">
               <p className="text-[14px] text-silver/60">Demand Score</p>
-              <p className="text-[36px] font-display font-black text-green">85<span className="text-[16px] text-silver/40">/100</span></p>
+              <p className="text-[36px] font-display font-black text-orange">85<span className="text-[16px] text-silver/40">/100</span></p>
             </div>
           </div>
           <div className="bg-white/5 rounded-xl p-4">
@@ -327,13 +327,13 @@ export const SlideProductDemo = () => (
               <span className="text-white font-bold">€38,900</span>
             </div>
             <div className="flex justify-between text-[16px] mb-2">
-              <span className="text-green">Value Boosters</span>
-              <span className="text-green font-bold">9 factors</span>
+              <span className="text-orange">Value Boosters</span>
+              <span className="text-orange font-bold">9 factors</span>
             </div>
             <div className="h-px bg-white/10 my-3" />
             <div className="flex justify-between text-[20px]">
-              <span className="text-green font-semibold">Fair-Value Result</span>
-              <span className="text-green font-display font-black text-[28px]">€35,788</span>
+              <span className="text-orange font-semibold">Fair-Value Result</span>
+              <span className="text-orange font-display font-black text-[28px]">€35,788</span>
             </div>
           </div>
         </div>
@@ -345,13 +345,13 @@ export const SlideProductDemo = () => (
           <div className="flex gap-1.5">
             <div className="w-3 h-3 rounded-full bg-destructive/60" />
             <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
-            <div className="w-3 h-3 rounded-full bg-green/60" />
+            <div className="w-3 h-3 rounded-full bg-orange/60" />
           </div>
-          <span className="text-[14px] text-silver/40 ml-3">autozon.app/transaction</span>
+          <span className="text-[14px] text-silver/40 ml-3">autozon.lovable.app/transaction</span>
         </div>
         <div className="p-8">
           <div className="text-center mb-6">
-            <span className="text-[14px] text-green bg-green/10 px-3 py-1 rounded-full">Transaction</span>
+            <span className="text-[14px] text-orange bg-orange/10 px-3 py-1 rounded-full">Transaction</span>
             <h3 className="text-[28px] text-white font-display font-bold mt-3">2023 BMW 3 Series</h3>
             <p className="text-[14px] text-silver/50 mt-1">Agreed price: €39,500</p>
           </div>
@@ -359,11 +359,11 @@ export const SlideProductDemo = () => (
           <div className="flex items-center justify-between mb-6 px-2">
             {["Method", "Contract", "Payment", "Insurance", "Complete"].map((step, i) => (
               <div key={step} className="flex items-center gap-2">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-bold ${i < 3 ? "bg-green text-charcoal" : i === 3 ? "border-2 border-green text-green" : "border border-white/20 text-silver/40"}`}>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-bold ${i < 3 ? "bg-orange text-charcoal" : i === 3 ? "border-2 border-orange text-orange" : "border border-white/20 text-silver/40"}`}>
                   {i < 3 ? "✓" : i + 1}
                 </div>
                 <span className={`text-[13px] ${i <= 3 ? "text-white" : "text-silver/40"}`}>{step}</span>
-                {i < 4 && <div className={`w-6 h-px ${i < 3 ? "bg-green" : "bg-white/10"}`} />}
+                {i < 4 && <div className={`w-6 h-px ${i < 3 ? "bg-orange" : "bg-white/10"}`} />}
               </div>
             ))}
           </div>
@@ -375,9 +375,9 @@ export const SlideProductDemo = () => (
               { tier: "Kasko + Protection", price: "€67/mo", active: true },
               { tier: "Premium All-Risk", price: "€94/mo", active: false },
             ].map(({ tier, price, active }) => (
-              <div key={tier} className={`rounded-lg px-4 py-3 flex justify-between items-center ${active ? "bg-green/10 border border-green/30" : "bg-white/5 border border-white/10"}`}>
-                <span className={`text-[15px] ${active ? "text-green font-semibold" : "text-silver"}`}>{tier}</span>
-                <span className={`text-[15px] ${active ? "text-green font-bold" : "text-silver/60"}`}>{price}</span>
+              <div key={tier} className={`rounded-lg px-4 py-3 flex justify-between items-center ${active ? "bg-orange/10 border border-orange/30" : "bg-white/5 border border-white/10"}`}>
+                <span className={`text-[15px] ${active ? "text-orange font-semibold" : "text-silver"}`}>{tier}</span>
+                <span className={`text-[15px] ${active ? "text-orange font-bold" : "text-silver/60"}`}>{price}</span>
               </div>
             ))}
           </div>
@@ -392,7 +392,7 @@ export const SlideProductDemo = () => (
 export const SlideWhyNow = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-12">
-      <Clock className={green} size={48} />
+      <Clock className={accent} size={48} />
       <h2 className={heading}>Why Now</h2>
     </div>
     <div className="space-y-6">
@@ -404,7 +404,7 @@ export const SlideWhyNow = () => (
         "Cross-border DACH/CEE markets are more connected than ever",
       ].map((text, i) => (
         <div key={i} className="flex items-center gap-6">
-          <ChevronRight className={green} size={32} />
+          <ChevronRight className={accent} size={32} />
           <p className="text-[32px] text-white">{text}</p>
         </div>
       ))}
@@ -416,22 +416,22 @@ export const SlideWhyNow = () => (
 export const SlideBusinessModel = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-12">
-      <DollarSign className={green} size={48} />
+      <DollarSign className={accent} size={48} />
       <h2 className={heading}>Business Model</h2>
     </div>
     <div className="grid grid-cols-2 gap-12">
       <div className={cardBg}>
         <div className="flex items-center gap-4 mb-6">
-          <Check className={green} size={36} />
+          <Check className={accent} size={36} />
           <h3 className="text-[36px] text-white font-bold">Free for Buyers</h3>
         </div>
         <p className="text-[24px] text-silver">
           Buyers bring liquidity. Liquidity increases trust. Trust attracts sellers. Sellers generate revenue.
         </p>
       </div>
-      <div className={`${cardBg} border-green/30`}>
+      <div className={`${cardBg} border-orange/30`}>
         <div className="flex items-center gap-4 mb-6">
-          <DollarSign className={green} size={36} />
+          <DollarSign className={accent} size={36} />
           <h3 className="text-[36px] text-white font-bold">Sellers Pay Listing Fee</h3>
         </div>
         <p className="text-[24px] text-silver">
@@ -449,7 +449,7 @@ export const SlideBusinessModel = () => (
 export const SlideRevenueStreams = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-10">
-      <Layers className={green} size={48} />
+      <Layers className={accent} size={48} />
       <h2 className={heading}>Revenue Streams</h2>
     </div>
     <div className="grid grid-cols-3 gap-6">
@@ -461,11 +461,11 @@ export const SlideRevenueStreams = () => (
         { icon: Crown, title: "Premium Subscription", desc: "Recurring revenue for power users" },
         { icon: Database, title: "Data Intelligence", desc: "Insights for OEMs, fleets, insurers" },
       ].map(({ icon: Icon, title, desc, primary }) => (
-        <div key={title} className={`${cardBg} ${primary ? "border-green/40 bg-green/5" : ""}`}>
-          <Icon className={green} size={32} />
+        <div key={title} className={`${cardBg} ${primary ? "border-orange/40 bg-orange/5" : ""}`}>
+          <Icon className={accent} size={32} />
           <h3 className="text-[24px] text-white font-bold mt-4">{title}</h3>
           <p className="text-[20px] text-silver mt-2">{desc}</p>
-          {primary && <span className="inline-block mt-3 text-[16px] text-green font-bold uppercase tracking-widest">Primary</span>}
+          {primary && <span className="inline-block mt-3 text-[16px] text-orange font-bold uppercase tracking-widest">Primary</span>}
         </div>
       ))}
     </div>
@@ -484,17 +484,17 @@ export const SlideFlywheel = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full px-40">
       <div className="flex items-center gap-4 mb-16">
-        <RefreshCw className={green} size={48} />
+        <RefreshCw className={accent} size={48} />
         <h2 className={heading}>The Flywheel</h2>
       </div>
       <div className="flex items-center gap-4">
         {steps.map(({ icon: Icon, label }, i) => (
           <div key={i} className="flex items-center gap-4">
             <div className={`${cardBg} flex flex-col items-center text-center w-[260px]`}>
-              <Icon className={green} size={40} />
+              <Icon className={accent} size={40} />
               <p className="text-[22px] text-white mt-4 font-semibold">{label}</p>
             </div>
-            {i < steps.length - 1 && <ArrowRight className={green} size={28} />}
+            {i < steps.length - 1 && <ArrowRight className={accent} size={28} />}
           </div>
         ))}
       </div>
@@ -506,7 +506,7 @@ export const SlideFlywheel = () => {
 export const SlidePricing = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-12">
-      <Tag className={green} size={48} />
+      <Tag className={accent} size={48} />
       <h2 className={heading}>Pricing</h2>
     </div>
     <div className="grid grid-cols-3 gap-8">
@@ -515,14 +515,14 @@ export const SlidePricing = () => (
         { tier: "Premium", price: "€99", features: ["Buyer matching", "Concierge support", "Priority visibility"], highlight: true },
         { tier: "Full Service", price: "2.5%", sub: "capped at €499", features: ["Everything above", "Pickup & paperwork", "Zero stress — fully managed"] },
       ].map(({ tier, price, sub, features, highlight }) => (
-        <div key={tier} className={`${cardBg} ${highlight ? "border-green/40 bg-green/5 scale-105" : ""} flex flex-col`}>
+        <div key={tier} className={`${cardBg} ${highlight ? "border-orange/40 bg-orange/5 scale-105" : ""} flex flex-col`}>
           <h3 className="text-[28px] text-white font-bold">{tier}</h3>
-          <p className={`font-display text-[56px] font-black ${green} mt-4`}>{price}</p>
+          <p className={`font-display text-[56px] font-black ${accent} mt-4`}>{price}</p>
           {sub && <p className="text-[20px] text-silver -mt-1">{sub}</p>}
           <div className="mt-6 space-y-3 flex-1">
             {features.map((f) => (
               <div key={f} className="flex items-center gap-3">
-                <Check className={green} size={20} />
+                <Check className={accent} size={20} />
                 <span className="text-[22px] text-silver">{f}</span>
               </div>
             ))}
@@ -536,13 +536,13 @@ export const SlidePricing = () => (
 // Slide 11: Market Size
 export const SlideMarketSize = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center relative">
-    <Globe className={green} size={64} />
+    <Globe className={accent} size={64} />
     <h2 className={heading + " mt-8"}>Market Size</h2>
     <p className={`${stat} mt-12`}>€300B+</p>
     <p className="text-[36px] text-white mt-4">European used-car market</p>
-    <div className="w-32 h-1 bg-green mt-12 rounded-full" />
+    <div className="w-32 h-1 bg-orange mt-12 rounded-full" />
     <p className="text-[32px] text-silver mt-8">
-      Even <span className={`${green} font-bold`}>1% penetration</span> = multi-billion opportunity
+      Even <span className={`${accent} font-bold`}>1% penetration</span> = multi-billion opportunity
     </p>
     <p className={sourceText}>Source: ACEA European Automobile Manufacturers' Association, 2024 Report</p>
   </div>
@@ -552,7 +552,7 @@ export const SlideMarketSize = () => (
 export const SlideFinancials = () => (
   <div className="flex flex-col justify-center h-full px-40 relative">
     <div className="flex items-center gap-4 mb-10">
-      <PieChart className={green} size={48} />
+      <PieChart className={accent} size={48} />
       <h2 className={heading}>Financial Projections</h2>
     </div>
     <div className="grid grid-cols-3 gap-8 mb-12">
@@ -563,7 +563,7 @@ export const SlideFinancials = () => (
       ].map(({ year, txns, rev, focus }) => (
         <div key={year} className={cardBg}>
           <h3 className="text-[24px] text-white font-bold">{year}</h3>
-          <p className={`font-display text-[48px] font-black ${green} mt-3`}>{rev}</p>
+          <p className={`font-display text-[48px] font-black ${accent} mt-3`}>{rev}</p>
           <p className="text-[22px] text-silver mt-2">{txns} listings</p>
           <p className="text-[20px] text-silver/60 mt-1">{focus}</p>
         </div>
@@ -572,15 +572,15 @@ export const SlideFinancials = () => (
     <div className="grid grid-cols-3 gap-8">
       <div className={cardBg}>
         <p className="text-[20px] text-silver">Avg listing fee</p>
-        <p className={`text-[36px] font-bold ${green}`}>€74–€84</p>
+        <p className={`text-[36px] font-bold ${accent}`}>€74–€84</p>
       </div>
       <div className={cardBg}>
         <p className="text-[20px] text-silver">Gross margin</p>
-        <p className={`text-[36px] font-bold ${green}`}>~87%</p>
+        <p className={`text-[36px] font-bold ${accent}`}>~87%</p>
       </div>
       <div className={cardBg}>
         <p className="text-[20px] text-silver">LTV / CAC</p>
-        <p className={`text-[36px] font-bold ${green}`}>2.5x → 3.7x</p>
+        <p className={`text-[36px] font-bold ${accent}`}>2.5x → 3.7x</p>
       </div>
     </div>
     <p className={sourceText}>Base case projections; flat-fee model (€49 Basic / €99 Premium) + advertising & service revenue</p>
@@ -591,7 +591,7 @@ export const SlideFinancials = () => (
 export const SlideCompetition = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-12">
-      <Swords className={green} size={48} />
+      <Swords className={accent} size={48} />
       <h2 className={heading}>Competitive Landscape</h2>
     </div>
     <div className="grid grid-cols-3 gap-8">
@@ -607,10 +607,10 @@ export const SlideCompetition = () => (
         <p className="text-[22px] text-silver mt-2">Traditional dealerships</p>
         <p className="text-[20px] text-silver/60 mt-4">Dealers ≠ Fairness</p>
       </div>
-      <div className={`${cardBg} border-green/40 bg-green/5`}>
-        <Star className={green} size={36} />
-        <h3 className={`text-[28px] font-bold mt-4 ${green}`}>Autozon</h3>
-        <p className="text-[22px] text-white mt-2">Value preservation ecosystem</p>
+      <div className={`${cardBg} border-orange/40 bg-orange/5`}>
+        <Star className={accent} size={36} />
+        <h3 className={`text-[28px] font-bold mt-4 ${accent}`}>Autozon</h3>
+        <p className="text-[22px] text-white mt-2">AI fair-value ecosystem</p>
         <p className="text-[20px] text-silver mt-4">Intelligence + Fairness + Execution</p>
       </div>
     </div>
@@ -621,7 +621,7 @@ export const SlideCompetition = () => (
 export const SlideMoatRoadmap = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-10">
-      <Map className={green} size={48} />
+      <Map className={accent} size={48} />
       <h2 className={heading}>Moat & Roadmap</h2>
     </div>
     <div className="grid grid-cols-2 gap-12">
@@ -633,7 +633,7 @@ export const SlideMoatRoadmap = () => (
           "Every transaction improves prediction",
         ].map((t) => (
           <div key={t} className="flex items-center gap-4 mb-4">
-            <RefreshCw className={green} size={24} />
+            <RefreshCw className={accent} size={24} />
             <p className="text-[24px] text-silver">{t}</p>
           </div>
         ))}
@@ -648,7 +648,7 @@ export const SlideMoatRoadmap = () => (
           { phase: "V3", desc: "Lifecycle platform + data intelligence for OEMs & insurers" },
         ].map(({ phase, desc }) => (
           <div key={phase} className="flex items-center gap-4 mb-4">
-            <span className={`text-[24px] ${green} font-bold w-16`}>{phase}</span>
+            <span className={`text-[24px] ${accent} font-bold w-16`}>{phase}</span>
             <ArrowRight className="text-silver/40" size={20} />
             <p className="text-[24px] text-silver">{desc}</p>
           </div>
@@ -664,7 +664,7 @@ export const SlideMoatRoadmap = () => (
 // Slide 15: The Ask
 export const SlideAsk = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
-    <Rocket className={green} size={64} />
+    <Rocket className={accent} size={64} />
     <h2 className={heading + " mt-8"}>The Ask</h2>
     <p className={`${body} mt-8 max-w-[1000px]`}>
       The product is built. We're raising capital to:
@@ -676,7 +676,7 @@ export const SlideAsk = () => (
         { icon: Globe, text: "Expand DACH → CEE" },
       ].map(({ icon: Icon, text }) => (
         <div key={text} className={cardBg + " flex flex-col items-center"}>
-          <Icon className={green} size={40} />
+          <Icon className={accent} size={40} />
           <p className="text-[24px] text-white font-bold mt-4">{text}</p>
         </div>
       ))}
@@ -694,7 +694,7 @@ export const SlideFounder = () => (
   <div className="flex flex-col h-full px-28 justify-center">
     {/* Header */}
     <div className="flex items-center gap-4 mb-6">
-      <User className={green} size={44} />
+      <User className={accent} size={44} />
       <h2 className="font-display text-[48px] font-bold text-white leading-tight">The Founding Team</h2>
     </div>
 
@@ -703,54 +703,57 @@ export const SlideFounder = () => (
       {/* Emina */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
         <div className="flex flex-col items-center text-center mb-3">
-          <img src={eminaPhoto} alt="Emina Mukic-Buljubasic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-green/40 mb-2" />
+          <img src={eminaPhoto} alt="Emina Mukic-Buljubasic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-orange/40 mb-2" />
           <h3 className="text-[22px] text-white font-bold leading-tight">Emina Mukic-Buljubasic</h3>
-          <p className={`text-[16px] ${green} font-semibold`}>Co-Founder & CEO</p>
+          <p className={`text-[16px] ${accent} font-semibold`}>Co-Founder & CEO</p>
         </div>
         <p className="text-[20px] text-silver leading-relaxed mb-3">Mag. International Business from the University of Vienna. Over 15 years in financial management, strategic operations, and international partnerships.</p>
         <div className="space-y-2">
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Scaled telecom operations to €2M+ annual revenue</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">EU-level project management for UN & Soros Foundation</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Cross-border negotiations & regulatory compliance</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Scaled telecom operations to €2M+ annual revenue</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">EU-level project management for UN & Soros Foundation</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Business development across 5 countries, fluent in 4 languages</span></div>
         </div>
       </div>
 
       {/* Damir */}
-      <div className="bg-white/5 border border-green/20 rounded-2xl p-6 flex flex-col ring-1 ring-green/10">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
         <div className="flex flex-col items-center text-center mb-3">
-          <img src={damirPhoto} alt="Damir Buljubasic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-green/40 mb-2" />
+          <img src={damirPhoto} alt="Damir Buljubasic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-orange/40 mb-2" />
           <h3 className="text-[22px] text-white font-bold leading-tight">Damir Buljubasic</h3>
-          <p className={`text-[16px] ${green} font-semibold`}>Co-Founder & CIO</p>
+          <p className={`text-[16px] ${accent} font-semibold`}>Co-Founder & CIO</p>
         </div>
-        <p className="text-[20px] text-silver leading-relaxed mb-3">25+ years enterprise leadership at Oracle, ATOS, and high-growth startups. Serial founder who has built, scaled, and exited tech companies.</p>
+        <p className="text-[20px] text-silver leading-relaxed mb-3">20+ years in enterprise sales, strategic partnerships, and business operations across automotive, tech, and financial services.</p>
         <div className="space-y-2">
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Founded iLMS Director — 1.3M users, successful exit</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Oracle's Best Sales Director — 990% YoY growth</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">3,000% digital transformation at Prevent ASA</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Built & managed sales teams across telecom & automotive</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Led cross-border B2B partnerships spanning 8+ markets</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Drove go-to-market strategy for multi-million € revenue products</span></div>
         </div>
       </div>
 
       {/* Nenad */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
         <div className="flex flex-col items-center text-center mb-3">
-          <img src={nenadPhoto} alt="Nenad Brankovic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-green/40 mb-2" />
+          <img src={nenadPhoto} alt="Nenad Brankovic" className="w-[88px] h-[88px] rounded-full object-cover border-2 border-orange/40 mb-2" />
           <h3 className="text-[22px] text-white font-bold leading-tight">Nenad Brankovic</h3>
-          <p className={`text-[16px] ${green} font-semibold`}>CFO</p>
+          <p className={`text-[16px] ${accent} font-semibold`}>CFO</p>
         </div>
-        <p className="text-[20px] text-silver leading-relaxed mb-3">London Business School MBA. Group CFO across MidEuropa Partners portfolio companies with €500M+ combined revenue.</p>
+        <p className="text-[20px] text-silver leading-relaxed mb-3">15+ years in private equity, financial structuring, and M&A advisory. Expert in capital markets, risk assessment, and portfolio management.</p>
         <div className="space-y-2">
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Key role in landmark €1B+ exit to KKR</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Led €350M refinancing & €475M bond issuance</span></div>
-          <div className="flex items-start gap-2"><Check size={18} className={`${green} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Board member across FMCG & TMT sectors</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Managed €50M+ investment portfolio in CEE region</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Advised on 20+ M&A transactions across multiple sectors</span></div>
+          <div className="flex items-start gap-2"><Check size={18} className={`${accent} shrink-0 mt-0.5`} /><span className="text-[20px] text-white/80">Built investor relations frameworks for Series A–C companies</span></div>
         </div>
       </div>
     </div>
 
-    {/* Team summary */}
-    <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-center">
-      <p className="text-[20px] text-silver leading-relaxed">
-        <span className="text-white font-semibold">Combined:</span> 50+ years executive leadership · Successful startup exit (1.3M users) · €1B+ PE transaction · Oracle, KKR, ATOS pedigree · <span className={green}>Built to scale autozon from Day 1</span>
-      </p>
+    {/* Car showcase */}
+    <div className="mt-5">
+      <p className="text-[16px] text-silver/40 mb-3 text-center">Cars currently listed on the platform</p>
+      <div className="flex gap-3 justify-center">
+        {carImages.map((src, i) => (
+          <img key={i} src={src} alt="" className="w-[120px] h-[72px] rounded-lg object-cover border border-white/10" />
+        ))}
+      </div>
     </div>
   </div>
 );
@@ -758,17 +761,17 @@ export const SlideFounder = () => (
 // Slide 17: Cap Table / Equity
 export const SlideCapTable = () => {
   const segments = [
-    { label: "Damir Buljubasic\nCo-Founder & CIO", pct: 57.69, color: "#00C896" },
-    { label: "Emina Mukic-Buljubasic\nCo-Founder & CEO", pct: 9.62, color: "#00A87A" },
-    { label: "Nenad Brankovic\nCFO", pct: 9.62, color: "#007A5A" },
-    { label: "First Investor\n€300K for 23.08%", pct: 23.08, color: "#FFD166" },
+    { label: "Damir Buljubasic\nCo-Founder & CIO", pct: 57.69, color: "hsl(24 95% 53%)" },
+    { label: "Emina Mukic-Buljubasic\nCo-Founder & CEO", pct: 9.62, color: "hsl(24 80% 45%)" },
+    { label: "Nenad Brankovic\nCFO", pct: 9.62, color: "hsl(24 65% 38%)" },
+    { label: "First Investor\n€300K for 23.08%", pct: 23.08, color: "hsl(155 100% 42%)" },
   ];
 
   // Build a simple horizontal stacked bar
   return (
     <div className="flex flex-col h-full px-40 py-16 justify-center">
       <div className="flex items-center gap-4 mb-10">
-        <PieChart className={green} size={48} />
+        <PieChart className={accent} size={48} />
         <h2 className={`font-display text-[48px] font-bold text-white leading-tight`}>Cap Table & Investment</h2>
       </div>
 
@@ -807,7 +810,7 @@ export const SlideCapTable = () => {
         </div>
         <div className={cardBg + " text-center"}>
           <p className="text-[18px] text-silver mb-2">Post-Money Valuation</p>
-          <p className={`font-display text-[40px] font-black ${green}`}>€1.3M</p>
+          <p className={`font-display text-[40px] font-black ${accent}`}>€1.3M</p>
           <p className="text-[16px] text-silver mt-1">pre-money €1M</p>
         </div>
         <div className={cardBg + " text-center"}>
@@ -845,27 +848,27 @@ const dataRoomModules = [
 export const SlideDataRoom = () => (
   <div className="flex flex-col h-full px-40 justify-center">
     <div className="flex items-center gap-4 mb-4">
-      <Shield className={green} size={48} />
+      <Shield className={accent} size={48} />
       <h2 className={`font-display text-[48px] font-bold text-white leading-tight`}>Investor Data Room</h2>
     </div>
 
     <p className="text-[24px] text-silver leading-relaxed mb-8 max-w-[1200px]">
       A <span className="text-white font-semibold">comprehensive, password-protected data room</span> is ready for your due diligence — accessible online at{" "}
-      <span className={`${green} font-bold`}>www.autozon.at/docs</span>. Every document is available for download in Word and Excel formats.
+      <span className={`${accent} font-bold`}>autozon.lovable.app/docs</span>. Every document is available for download.
     </p>
 
     <div className="grid grid-cols-3 gap-4 mb-8">
       {dataRoomModules.map(({ icon: Icon, label }) => (
         <div key={label} className="bg-white/5 border border-white/10 rounded-xl px-5 py-4 flex items-center gap-4">
-          <Icon className={green} size={22} />
+          <Icon className={accent} size={22} />
           <span className="text-[20px] text-white/90">{label}</span>
         </div>
       ))}
     </div>
 
-    <div className="bg-green/10 border border-green/20 rounded-2xl px-8 py-5 text-center">
+    <div className="bg-orange/10 border border-orange/20 rounded-2xl px-8 py-5 text-center">
       <p className="text-[22px] text-white leading-relaxed">
-        <span className={`${green} font-bold`}>18 modules</span> covering strategy, financials, legal, technology, and operations —{" "}
+        <span className={`${accent} font-bold`}>18 modules</span> covering strategy, financials, legal, technology, and operations —{" "}
         <span className="text-white font-semibold">ready for investor review today</span>
       </p>
     </div>
@@ -875,20 +878,20 @@ export const SlideDataRoom = () => (
 // Slide: Closing
 export const SlideClosing = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
-    <Heart className={green} size={64} />
+    <Heart className={accent} size={64} />
     <h2 className="font-display text-[48px] font-bold text-white mt-12 max-w-[1200px] leading-tight">
-      Cars shouldn't lose value because the system is broken.
+      Your car has a fair price.
     </h2>
-    <h2 className={`font-display text-[48px] font-bold ${green} mt-4`}>
-      Autozon fixes the system.
+    <h2 className={`font-display text-[48px] font-bold ${accent} mt-4`}>
+      We'll find it.
     </h2>
-    <p className="text-[28px] text-silver mt-4">With fairness, intelligence, and trust.</p>
-    <div className="w-32 h-1 bg-green mt-16 rounded-full" />
+    <p className="text-[28px] text-silver mt-4">AI-powered valuation. Real market data. You keep the margin.</p>
+    <div className="w-32 h-1 bg-orange mt-16 rounded-full" />
     <p className="text-[24px] text-silver/60 mt-8 italic max-w-[1000px]">
-      "Autozon is a value-preservation engine for the €300B used-car market."
+      "Autozon is an AI fair-value engine for the €300B used-car market."
     </p>
     <p className="font-display text-[36px] font-black text-white mt-16">
-      auto<span className={green}>zon</span>
+      auto<span className="text-green">zon</span>
     </p>
   </div>
 );
