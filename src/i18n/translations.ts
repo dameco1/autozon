@@ -71,8 +71,8 @@ export const translations = {
       badge: "The Problem",
       title: "Car depreciation is",
       titleAccent: "broken.",
-      description: "Dealers use gut feeling. You deserve an AI that knows the real number. The moment you drive off the lot, they pocket up to 30% — not because the car changed, but because the system is designed against you.",
-      italicLine: "Other platforms let you post and pray.\nAutozon gives you the number — then the buyer.",
+      description: "Dealers buy low and sell high — that's their business model. You lose up to 30% of your car's value the moment you accept a trade-in. Other platforms let you post a price and hope for the best. Nobody tells you what your car is actually worth.",
+      italicLine: "Autozon does. AI analyzes your car. Market data sets the price.\nYou keep the margin.",
       stats: [
         { value: "30%", label: "Average value lost selling to dealers" },
         { value: "€4,200", label: "Hidden dealer margin on every used car" },
