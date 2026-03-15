@@ -56,7 +56,7 @@ export const translations = {
       cards: [
         { icon: "coin", title: "AI That Knows the Real Price", description: "Not a ballpark. Not a dealer's guess. Our AI reads 50+ live market signals to calculate your car's true value every time." },
         { icon: "zap", title: "Your Ad Doesn't Expire", description: "Unlike AutoScout24, willhaben and mobile.de — your listing stays live until your car is sold. Pay once. We work until the deal is done." },
-        { icon: "refresh", title: "Pay by Card. Close Faster.", description: "Buyers can pay up to €10,000 by card — directly on Autozon. No bank transfers, no waiting, no friction. The easiest close in the European car market." },
+        { icon: "refresh", title: "Pay by Card. Close Faster.", description: "Buyers can pay up to €10,000 by card — directly on Autozon. No bank transfers, no waiting, no friction. The easiest close in the car market." },
       ],
     },
     statsBar: {
