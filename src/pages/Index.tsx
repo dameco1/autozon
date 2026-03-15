@@ -23,7 +23,7 @@ const Index: React.FC = () => {
           "@type": "WebSite",
           name: "Autozon",
           url: "https://autozon.lovable.app",
-          description: "Europe's AI-powered fair value car marketplace with honest pricing.",
+          description: "AI-powered fair value car marketplace with honest pricing.",
           potentialAction: {
             "@type": "SearchAction",
             target: "https://autozon.lovable.app/car-selection?q={search_term_string}",
