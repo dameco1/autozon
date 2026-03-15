@@ -57,7 +57,7 @@ const Signup: React.FC = () => {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
-              className="bg-charcoal border-border text-white placeholder:text-silver/30"
+              className="bg-navy border-border text-white placeholder:text-silver/30"
               placeholder="Max Mustermann"
             />
           </div>
