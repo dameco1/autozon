@@ -22,7 +22,7 @@ export const translations = {
     hero: {
       headline: "Buy, Sell or Trade Your Car.",
       headlineAccent: "Fast. Fair. Without the Hassle.",
-      subheadline: "Austria's car marketplace built on honest pricing.\nNo hidden fees. No lowball tricks. Just real deals.",
+      subheadline: "Europe's car marketplace built on honest pricing.\nNo hidden fees. No lowball tricks. Just real deals.",
       primaryCta: "🚘 List My Car — It's Free",
       secondaryCta: "Browse Cars Now →",
       trustBadges: [
