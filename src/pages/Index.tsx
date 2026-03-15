@@ -3,26 +3,25 @@ import Navbar from "@/components/Navbar";
 import CookieConsent from "@/components/CookieConsent";
 import SEO from "@/components/SEO";
 import HeroSection from "@/components/home/HeroSection";
-import CarTicker from "@/components/home/CarTicker";
-import ProblemSection from "@/components/home/ProblemSection";
-import SolutionSection from "@/components/home/SolutionSection";
+import WhyAutozonSection from "@/components/home/WhyAutozonSection";
+import StatsBar from "@/components/home/StatsBar";
 import HowItWorksSection from "@/components/home/HowItWorksSection";
-import TrustSection from "@/components/home/TrustSection";
+import ComparisonSection from "@/components/home/ComparisonSection";
 import CtaSection from "@/components/home/CtaSection";
 import FooterSection from "@/components/home/FooterSection";
 
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-charcoal text-silver">
+    <div className="min-h-screen">
       <SEO
         path="/"
-        description="Buy and sell cars at fair prices. AI-powered valuations, verified buyer matching, and zero hassle — Autozon is the smarter way to trade cars."
+        description="Buy and sell cars at fair prices in Austria. Free listings, honest pricing, and secure transactions — Autozon is the smarter way to trade cars."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "Autozon",
           url: "https://autozon.lovable.app",
-          description: "Fair value car trading platform with AI-powered valuations.",
+          description: "Austria's fair value car marketplace with honest pricing.",
           potentialAction: {
             "@type": "SearchAction",
             target: "https://autozon.lovable.app/car-selection?q={search_term_string}",
@@ -32,11 +31,10 @@ const Index: React.FC = () => {
       />
       <Navbar />
       <HeroSection />
-      <CarTicker />
-      <ProblemSection />
-      <SolutionSection />
+      <WhyAutozonSection />
+      <StatsBar />
       <HowItWorksSection />
-      <TrustSection />
+      <ComparisonSection />
       <CtaSection />
       <FooterSection />
       <CookieConsent />

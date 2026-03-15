@@ -24,8 +24,14 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         charcoal: "hsl(var(--charcoal))",
+        navy: "hsl(var(--navy))",
         green: "hsl(var(--green))",
+        orange: {
+          DEFAULT: "hsl(var(--orange))",
+          foreground: "hsl(var(--orange-foreground))",
+        },
         silver: "hsl(var(--silver))",
+        "light-bg": "hsl(var(--light-bg))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
