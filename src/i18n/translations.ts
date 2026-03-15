@@ -3,9 +3,13 @@ export type Language = "en" | "de";
 export const translations = {
   en: {
     nav: {
+      buyCar: "Buy a Car",
+      sellCar: "Sell My Car",
+      tradeIn: "Trade In",
+      pricing: "Pricing",
       howItWorks: "How It Works",
       whyAutozon: "Why Autozon",
-      getStarted: "Get Started",
+      getStarted: "List Your Car",
       login: "Log In",
       signup: "Sign Up",
       dashboard: "Dashboard",
@@ -16,6 +20,17 @@ export const translations = {
       qa: "Q&A",
     },
     hero: {
+      headline: "Buy, Sell or Trade Your Car.",
+      headlineAccent: "Fast. Fair. Without the Hassle.",
+      subheadline: "Austria's car marketplace built on honest pricing.\nNo hidden fees. No lowball tricks. Just real deals.",
+      primaryCta: "🚘 List My Car — It's Free",
+      secondaryCta: "Browse Cars Now →",
+      trustBadges: [
+        { icon: "check", text: "Free to List" },
+        { icon: "lock", text: "Secure Transactions" },
+        { icon: "zap", text: "Sell in Days, Not Months" },
+      ],
+      // legacy keys kept for other pages
       badge: "AI-Powered Car Trading",
       title: "No more Post & Pray.",
       titleAccent: "AIntelligent way to buy or sell your car. More Speed, More Value!",
@@ -36,6 +51,22 @@ export const translations = {
       buyingDesc: "Tell us what you're looking for and our AI matching algorithm finds your ideal car from thousands of listings. Fair price, delivered to your door — inspected, verified, and hassle-free.",
       manifesto: "We are not a listing site nor marketplace. We are an AI-driven matching engine that compresses the entire selling process into a guided, trusted, and fast transaction.",
     },
+    whyAutozon: {
+      title: "Why Smart Austrians Choose Autozon",
+      cards: [
+        { icon: "coin", title: "Fair Price Guarantee", description: "We use real market data to show you what your car is actually worth — not what a dealer wants to pay." },
+        { icon: "zap", title: "Sell in Days, Not Weeks", description: "List in under 3 minutes. Get serious buyers fast. No time-wasters, no ghost inquiries." },
+        { icon: "refresh", title: "Trade Without Stress", description: "Swap your current car for your next one — all in one place, with zero paperwork confusion." },
+      ],
+    },
+    statsBar: {
+      items: [
+        { value: "12,000+", label: "Cars Listed" },
+        { value: "€140M+", label: "in Deals Closed" },
+        { value: "4.8★", label: "Avg. Seller Rating" },
+        { value: "3 Days", label: "Avg. Time to Sell" },
+      ],
+    },
     problem: {
       badge: "The Problem",
       title: "Car depreciation is",
@@ -51,37 +82,40 @@ export const translations = {
       badge: "AI-Powered Solution",
       title: "Autozon fixes this.",
       features: [
-        {
-          title: "AI Fair Value Engine",
-          description: "Machine learning analyzes 50+ signals — condition, demand, market liquidity — to calculate your car's true worth in seconds.",
-        },
-        {
-          title: "AI Smart Matching",
-          description: "Our matching algorithm connects you with verified buyers who actually want your car, at the right price.",
-        },
-        {
-          title: "AI Car Discovery",
-          description: "Predictive modeling curates 3–7 handpicked recommendations based on your lifestyle, not random listings.",
-        },
-        {
-          title: "AI-Assisted Transactions",
-          description: "AI coordinates inspection, pickup, paperwork, and payment — managing the entire process end-to-end.",
-        },
-        {
-          title: "AI Depreciation Radar",
-          description: "Predictive analytics monitor market shifts and alert you when to sell — before your car loses value.",
-        },
+        { title: "AI Fair Value Engine", description: "Machine learning analyzes 50+ signals — condition, demand, market liquidity — to calculate your car's true worth in seconds." },
+        { title: "AI Smart Matching", description: "Our matching algorithm connects you with verified buyers who actually want your car, at the right price." },
+        { title: "AI Car Discovery", description: "Predictive modeling curates 3–7 handpicked recommendations based on your lifestyle, not random listings." },
+        { title: "AI-Assisted Transactions", description: "AI coordinates inspection, pickup, paperwork, and payment — managing the entire process end-to-end." },
+        { title: "AI Depreciation Radar", description: "Predictive analytics monitor market shifts and alert you when to sell — before your car loses value." },
       ],
     },
     howItWorks: {
       badge: "How It Works",
-      title: "5 steps to fair value.",
+      title: "Selling Your Car Takes 3 Steps",
       steps: [
-        { number: "01", title: "Upload", description: "Upload photos — our AI analyzes them instantly." },
-        { number: "02", title: "Score", description: "AI calculates fair value from 50+ market signals." },
-        { number: "03", title: "Match", description: "AI matches you with verified buyers." },
-        { number: "04", title: "Choose", description: "Pick the best deal or swap." },
-        { number: "05", title: "Done", description: "AI coordinates inspection, pickup & payment." },
+        { number: "01", title: "📸 Snap & List", description: "Upload photos, enter details. Done in under 3 minutes." },
+        { number: "02", title: "💬 Get Real Offers", description: "Buyers contact you directly. No middlemen, no commissions." },
+        { number: "03", title: "🤝 Close the Deal", description: "Meet, agree, done. We guide you through every step safely." },
+      ],
+      cta: "Start Listing Now — It's Free",
+    },
+    comparison: {
+      title: "Why Autozon Beats the Alternatives",
+      features: [
+        "Free listings for private sellers",
+        "Fair price calculator built-in",
+        "Trade-in option on platform",
+        "No hidden premium fees to get noticed",
+        "Austrian-first, local market focus",
+      ],
+      competitors: ["AutoScout24", "Willhaben", "mobile.de"],
+      // true = has feature, false = doesn't
+      competitorData: [
+        [false, true, false],
+        [false, false, false],
+        [false, false, false],
+        [false, false, false],
+        [false, true, false],
       ],
     },
     trust: {
@@ -96,10 +130,9 @@ export const translations = {
       ],
     },
     cta: {
-      title: "Your AI-powered advantage,",
-      titleAccent: "starts now.",
-      subtitle: "Get your AI fair-value score in under 2 minutes. No dealers, no guesswork — just data.",
-      button: "Get Started — It's Free",
+      title: "Your next car deal starts here.",
+      subtitle: "Join 50,000+ Austrians who buy, sell and trade smarter.",
+      button: "Get Started — Free",
     },
     footer: {
       tagline: "buy. sell. cars.",
