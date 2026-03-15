@@ -994,7 +994,7 @@ export const translations = {
       badge: "So funktioniert's",
       title: "Dein Auto verkaufen in 3 Schritten",
       steps: [
-        { number: "01", title: "📸 Fotografieren & Inserieren", description: "Fotos hochladen, Details eingeben. In unter 3 Minuten erledigt." },
+        { number: "01", title: "🤖 KI-Bewertung erhalten", description: "Gib deine Autodaten ein. Unsere KI analysiert den europäischen Live-Markt und gibt dir in unter 60 Sekunden einen echten Preis. Keine Formulare, kein Warten, keine Händler." },
         { number: "02", title: "💬 Echte Angebote erhalten", description: "Käufer kontaktieren dich direkt. Keine Mittelmänner, keine Provisionen." },
         { number: "03", title: "🤝 Deal abschließen", description: "Treffen, einigen, fertig. Wir begleiten dich sicher durch jeden Schritt." },
       ],
