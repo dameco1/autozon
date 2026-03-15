@@ -944,7 +944,7 @@ export const translations = {
     hero: {
       headline: "Fair verkaufen. Smart kaufen.",
       headlineAccent: "KI-gestützte Auto-Kleinanzeigen.",
-      subheadline: "KI bewertet dein Auto. Dein Inserat bleibt online, bis es verkauft ist.",
+      subheadline: "Verkaufen und kaufen Sie Ihr Auto zum wahren Wert. Keine Händler mehr, kein Raten. Für Verkäufer: Maximale Rendite & für Käufer: Ultimative Fahrzufriedenheit.",
       primaryCta: "🚘 Kostenlose KI-Bewertung",
       secondaryCta: "Mein nächstes Auto finden →",
       trustBadges: [
