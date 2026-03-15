@@ -58,9 +58,9 @@ const AboutUs: React.FC = () => {
             className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight tracking-tight mb-4"
             initial="hidden" animate="visible" variants={fadeUp} custom={1}
           >
-            Your Photos. Your Data.
+            {aboutUs?.heroTitle ?? "Your Photos. Your Data."}
             <br />
-            <span className="text-orange">Your Fair Price.</span>
+            <span className="text-orange">{aboutUs?.heroTitleAccent ?? "Your Fair Price."}</span>
           </motion.h1>
 
           <motion.p
