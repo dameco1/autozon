@@ -30,7 +30,7 @@ const AiEngineSection: React.FC = () => {
     buyer: {
       badge: "FÜR KÄUFER",
       title: "Finde das richtige Auto. Überspringe das Scrollen.",
-      body: "Sag uns, was du willst — Budget, Typ, Lebensstil. Unsere KI matcht dich mit den richtigen Autos aus echten, verifizierten europäischen Inseraten. Kein Lärm. Kein Spam.\nNur die Autos, die wirklich zu dir passen.\n\nDas Richtige gefunden? Verhandle direkt mit dem Verkäufer.\nUnd wenn es unter €10.000 liegt — zahle per Karte, direkt hier.\nKein Überweisungs-Aufwand. Erledigt.",
+      body: "Sag uns, was du willst — Budget, Typ, Lebensstil. Unsere KI matcht dich mit den richtigen Autos aus echten, verifizierten Inseraten. Kein Lärm. Kein Spam.\nNur die Autos, die wirklich zu dir passen.\n\nDas Richtige gefunden? Verhandle direkt mit dem Verkäufer.\nUnd wenn es unter €10.000 liegt — zahle per Karte, direkt hier.\nKein Überweisungs-Aufwand. Erledigt.",
       cta: "Mein perfektes Auto finden →",
     },
   } : {
