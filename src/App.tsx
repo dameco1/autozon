@@ -36,6 +36,7 @@ import Documentation from "./pages/Documentation";
 import ResetPassword from "./pages/ResetPassword";
 import DocViewer from "./pages/DocViewer";
 import QA from "./pages/QA";
+import AboutUs from "./pages/AboutUs";
 
 const queryClient = new QueryClient();
 
