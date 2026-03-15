@@ -20,9 +20,9 @@ export const translations = {
       qa: "Q&A",
     },
     hero: {
-      headline: "Stop Guessing.\nStart Selling Smarter.",
-      headlineAccent: "AI tells you the price. We bring you the buyer.\nYou keep the profit.",
-      subheadline: "Other platforms make you guess your price, wait for weeks,\nand hope someone calls. Autozon is different.\nOur AI scans the live European market, values your car\nin seconds, and connects you with real buyers — instantly.\nPay €49 once. Your ad never expires. Done.",
+      headline: "Sell Smart. Buy Fair.",
+      headlineAccent: "Europe's AI-powered car classifieds.",
+      subheadline: "AI prices your car. Your ad stays live until it sells.",
       primaryCta: "🚘 Get My Free AI Valuation",
       secondaryCta: "Find My Next Car →",
       trustBadges: [
