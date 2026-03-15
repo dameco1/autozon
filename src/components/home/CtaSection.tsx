@@ -19,9 +19,10 @@ const CtaSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight mb-3">
             {t.cta.title}
           </h2>
+          <p className="text-white/80 text-sm italic mb-2">{t.cta.aiLine}</p>
           <p className="text-white/80 text-base sm:text-lg mb-8 max-w-xl mx-auto">{t.cta.subtitle}</p>
           <Button
             size="lg"
