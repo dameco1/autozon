@@ -14,45 +14,44 @@ const ComparisonSection: React.FC = () => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
 
-  // Desktop: full table
   if (!isMobile) {
     return (
-      <section className="py-16 sm:py-20 bg-light-bg">
+      <section className="py-16 sm:py-20 bg-charcoal">
         <div className="max-w-5xl mx-auto px-4">
           <motion.h2
-            className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-navy text-center mb-12"
+            className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white text-center mb-12"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
           >
             {t.comparison.title}
           </motion.h2>
 
           <motion.div
-            className="bg-white rounded-2xl shadow-sm border border-border/50 overflow-hidden"
+            className="bg-navy rounded-2xl border border-border overflow-hidden"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
           >
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border/50">
-                  <th className="text-left p-4 font-display font-bold text-navy/70">Feature</th>
+                <tr className="border-b border-border">
+                  <th className="text-left p-4 font-display font-bold text-silver/70">Feature</th>
                   <th className="p-4 font-display font-bold text-orange text-center">Autozon ✅</th>
                   {t.comparison.competitors.map((c, i) => (
-                    <th key={i} className="p-4 font-display font-semibold text-navy/50 text-center">{c}</th>
+                    <th key={i} className="p-4 font-display font-semibold text-silver/40 text-center">{c}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {t.comparison.features.map((feature, fi) => (
                   <tr key={fi} className="border-b border-border/30 last:border-0">
-                    <td className="p-4 text-navy/80">{feature}</td>
+                    <td className="p-4 text-silver/70">{feature}</td>
                     <td className="p-4 text-center">
-                      <CheckCircle2 className="h-5 w-5 text-green mx-auto" />
+                      <CheckCircle2 className="h-5 w-5 text-orange mx-auto" />
                     </td>
                     {t.comparison.competitorData[fi].map((has, ci) => (
                       <td key={ci} className="p-4 text-center">
                         {has ? (
-                          <CheckCircle2 className="h-5 w-5 text-silver/40 mx-auto" />
+                          <CheckCircle2 className="h-5 w-5 text-silver/30 mx-auto" />
                         ) : (
-                          <XCircle className="h-5 w-5 text-silver/30 mx-auto" />
+                          <XCircle className="h-5 w-5 text-silver/20 mx-auto" />
                         )}
                       </td>
                     ))}
@@ -66,11 +65,10 @@ const ComparisonSection: React.FC = () => {
     );
   }
 
-  // Mobile: accordion
   return (
-    <section className="py-12 bg-light-bg">
+    <section className="py-12 bg-charcoal">
       <div className="max-w-lg mx-auto px-4">
-        <h2 className="text-2xl font-display font-black text-navy text-center mb-8">
+        <h2 className="text-2xl font-display font-black text-white text-center mb-8">
           {t.comparison.title}
         </h2>
 
@@ -98,26 +96,26 @@ const ComparisonAccordionItem: React.FC<{
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full bg-white rounded-xl p-4 shadow-sm border border-border/50 text-left">
+      <CollapsibleTrigger className="flex items-center justify-between w-full bg-navy rounded-xl p-4 border border-border text-left">
         <div className="flex items-center gap-3">
-          <CheckCircle2 className="h-5 w-5 text-green shrink-0" />
-          <span className="text-sm font-medium text-navy">{feature}</span>
+          <CheckCircle2 className="h-5 w-5 text-orange shrink-0" />
+          <span className="text-sm font-medium text-white">{feature}</span>
         </div>
-        <ChevronDown className={`h-4 w-4 text-navy/40 transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`h-4 w-4 text-silver/40 transition-transform ${open ? "rotate-180" : ""}`} />
       </CollapsibleTrigger>
-      <CollapsibleContent className="bg-white rounded-b-xl border-x border-b border-border/50 px-4 pb-3">
+      <CollapsibleContent className="bg-navy rounded-b-xl border-x border-b border-border px-4 pb-3">
         <div className="space-y-2 pt-2">
           <div className="flex items-center justify-between text-sm">
             <span className="font-bold text-orange">Autozon</span>
-            <CheckCircle2 className="h-4 w-4 text-green" />
+            <CheckCircle2 className="h-4 w-4 text-orange" />
           </div>
           {competitors.map((c, ci) => (
             <div key={ci} className="flex items-center justify-between text-sm">
-              <span className="text-navy/60">{c}</span>
+              <span className="text-silver/50">{c}</span>
               {competitorData[ci] ? (
-                <CheckCircle2 className="h-4 w-4 text-silver/40" />
+                <CheckCircle2 className="h-4 w-4 text-silver/30" />
               ) : (
-                <XCircle className="h-4 w-4 text-silver/30" />
+                <XCircle className="h-4 w-4 text-silver/20" />
               )}
             </div>
           ))}

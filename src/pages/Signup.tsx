@@ -37,19 +37,19 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal flex items-center justify-center px-4">
+    <div className="min-h-screen bg-navy flex items-center justify-center px-4">
       <SEO title="Sign Up" description="Create your free Autozon account. Start selling your car at fair value or find your perfect next ride." path="/signup" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <Car className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-display font-bold text-white">auto<span className="text-primary">zon</span></span>
+            <Car className="h-8 w-8 text-orange" />
+            <span className="text-2xl font-display font-bold text-white">auto<span className="text-orange">zon</span></span>
           </Link>
           <h1 className="text-3xl font-display font-bold text-white">{t.auth.signupTitle}</h1>
           <p className="text-silver/60 mt-2">{t.auth.signupSubtitle}</p>
         </div>
 
-        <form onSubmit={handleSignup} className="bg-secondary/50 border border-border rounded-2xl p-8 space-y-5">
+        <form onSubmit={handleSignup} className="bg-charcoal/60 border border-border rounded-2xl p-8 space-y-5">
           <div className="space-y-2">
             <Label className="text-silver/80">{t.auth.fullName}</Label>
             <Input
@@ -57,7 +57,7 @@ const Signup: React.FC = () => {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
-              className="bg-charcoal border-border text-white placeholder:text-silver/30"
+              className="bg-navy border-border text-white placeholder:text-silver/30"
               placeholder="Max Mustermann"
             />
           </div>
@@ -68,7 +68,7 @@ const Signup: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-charcoal border-border text-white placeholder:text-silver/30"
+              className="bg-navy border-border text-white placeholder:text-silver/30"
               placeholder="you@example.com"
             />
           </div>
@@ -80,16 +80,16 @@ const Signup: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="bg-charcoal border-border text-white placeholder:text-silver/30"
+              className="bg-navy border-border text-white placeholder:text-silver/30"
               placeholder="••••••••"
             />
           </div>
-          <Button type="submit" disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl">
+          <Button type="submit" disabled={loading} className="w-full bg-orange text-orange-foreground hover:bg-orange/90 font-bold py-6 rounded-xl">
             {loading ? "..." : t.auth.signup}
           </Button>
           <p className="text-center text-silver/60 text-sm">
             {t.auth.hasAccount}{" "}
-            <Link to="/login" className="text-primary hover:underline font-medium">{t.auth.loginLink}</Link>
+            <Link to="/login" className="text-orange hover:underline font-medium">{t.auth.loginLink}</Link>
           </p>
         </form>
 
