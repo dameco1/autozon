@@ -1033,6 +1033,7 @@ export const translations = {
     },
     cta: {
       title: "Dein nächster Autodeal beginnt hier.",
+      aiLine: "Angetrieben von KI, die den europäischen Markt in- und auswendig kennt.",
       subtitle: "Schließe dich 50.000+ Österreichern an, die smarter kaufen, verkaufen und tauschen.",
       button: "Jetzt starten — Kostenlos",
     },
