@@ -133,6 +133,7 @@ export const translations = {
     },
     cta: {
       title: "Your next car deal starts here.",
+      aiLine: "Powered by AI that knows the European market inside out.",
       subtitle: "Join 50,000+ Austrians who buy, sell and trade smarter.",
       button: "Get Started — Free",
     },
