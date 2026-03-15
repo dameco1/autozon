@@ -46,7 +46,7 @@ const AiEngineSection: React.FC = () => {
     buyer: {
       badge: "FOR BUYERS",
       title: "Find the Right Car. Skip the Scroll.",
-      body: "Tell us what you want — budget, type, lifestyle. Our AI matches you to the right cars from real, verified European listings. No noise. No spam.\nJust the cars that actually fit you.\n\nFound the one? Negotiate directly with the seller.\nAnd if it's under €10,000 — pay by card, right here.\nNo bank transfer hassle. Done.",
+      body: "Tell us what you want — budget, type, lifestyle. Our AI matches you to the right cars from real, verified listings. No noise. No spam.\nJust the cars that actually fit you.\n\nFound the one? Negotiate directly with the seller.\nAnd if it's under €10,000 — pay by card, right here.\nNo bank transfer hassle. Done.",
       cta: "Find My Perfect Car →",
     },
   };
