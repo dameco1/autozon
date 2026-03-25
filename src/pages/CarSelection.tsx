@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,7 @@ type CarRow = {
 const CarSelection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [userId, setUserId] = useState<string | null>(null);
   const [cars, setCars] = useState<CarRow[]>([]);
   const [liked, setLiked] = useState<Set<string>>(new Set());
@@ -41,48 +42,67 @@ const CarSelection: React.FC = () => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        navigate("/login");
-        return;
+      if (session) {
+        setUserId(session.user.id);
       }
-      setUserId(session.user.id);
-      loadMatchingCars(session.user.id);
+      // Load cars regardless of auth status
+      loadMatchingCars(session?.user?.id ?? null);
     });
   }, [navigate]);
 
-  const loadMatchingCars = async (uid: string) => {
+  const loadMatchingCars = async (uid: string | null) => {
     setLoading(true);
-    // Fetch user preferences
-    const { data: prefs } = await supabase
-      .from("user_preferences")
-      .select("*")
-      .eq("user_id", uid)
-      .maybeSingle();
 
-    // Build query for matching cars
+    // Check for URL search params first (from homepage search)
+    const urlMake = searchParams.get("make");
+    const urlModel = searchParams.get("model");
+    const urlMaxPrice = searchParams.get("maxPrice");
+    const urlYearFrom = searchParams.get("yearFrom");
+    const urlFuelType = searchParams.get("fuelType");
+    const urlMaxMileage = searchParams.get("maxMileage");
+
+    const hasUrlFilters = urlMake || urlModel || urlMaxPrice || urlYearFrom || urlFuelType || urlMaxMileage;
+
     let query = supabase
       .from("cars")
       .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, detected_damages")
       .eq("status", "available")
       .limit(10);
 
-    if (prefs) {
-      if (prefs.min_budget) query = query.gte("price", prefs.min_budget);
-      if (prefs.max_budget) query = query.lte("price", prefs.max_budget);
-      if (prefs.min_year) query = query.gte("year", prefs.min_year);
-      if (prefs.max_year) query = query.lte("year", prefs.max_year);
-      if (prefs.max_mileage) query = query.lte("mileage", prefs.max_mileage);
-      if (prefs.preferred_makes && prefs.preferred_makes.length > 0) {
-        query = query.in("make", prefs.preferred_makes);
-      }
-      if (prefs.preferred_fuel_types && prefs.preferred_fuel_types.length > 0) {
-        query = query.in("fuel_type", prefs.preferred_fuel_types);
-      }
-      if (prefs.preferred_body_types && prefs.preferred_body_types.length > 0) {
-        query = query.in("body_type", prefs.preferred_body_types);
-      }
-      if (prefs.preferred_transmission) {
-        query = query.eq("transmission", prefs.preferred_transmission);
+    if (hasUrlFilters) {
+      // Apply URL-based filters from homepage search
+      if (urlMake) query = query.eq("make", urlMake);
+      if (urlModel) query = query.eq("model", urlModel);
+      if (urlMaxPrice) query = query.lte("price", Number(urlMaxPrice));
+      if (urlYearFrom) query = query.gte("year", Number(urlYearFrom));
+      if (urlFuelType) query = query.eq("fuel_type", urlFuelType);
+      if (urlMaxMileage) query = query.lte("mileage", Number(urlMaxMileage));
+    } else if (uid) {
+      // Fall back to user preferences if logged in and no URL filters
+      const { data: prefs } = await supabase
+        .from("user_preferences")
+        .select("*")
+        .eq("user_id", uid)
+        .maybeSingle();
+
+      if (prefs) {
+        if (prefs.min_budget) query = query.gte("price", prefs.min_budget);
+        if (prefs.max_budget) query = query.lte("price", prefs.max_budget);
+        if (prefs.min_year) query = query.gte("year", prefs.min_year);
+        if (prefs.max_year) query = query.lte("year", prefs.max_year);
+        if (prefs.max_mileage) query = query.lte("mileage", prefs.max_mileage);
+        if (prefs.preferred_makes && prefs.preferred_makes.length > 0) {
+          query = query.in("make", prefs.preferred_makes);
+        }
+        if (prefs.preferred_fuel_types && prefs.preferred_fuel_types.length > 0) {
+          query = query.in("fuel_type", prefs.preferred_fuel_types);
+        }
+        if (prefs.preferred_body_types && prefs.preferred_body_types.length > 0) {
+          query = query.in("body_type", prefs.preferred_body_types);
+        }
+        if (prefs.preferred_transmission) {
+          query = query.eq("transmission", prefs.preferred_transmission);
+        }
       }
     }
 
@@ -98,6 +118,11 @@ const CarSelection: React.FC = () => {
   };
 
   const toggleLike = (carId: string) => {
+    if (!userId) {
+      toast.error("Please log in to save favorites");
+      navigate("/login");
+      return;
+    }
     setLiked((prev) => {
       const next = new Set(prev);
       if (next.has(carId)) next.delete(carId);
