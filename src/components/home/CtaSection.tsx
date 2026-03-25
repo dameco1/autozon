@@ -26,7 +26,7 @@ const CtaSection: React.FC = () => {
           <p className="text-white/80 text-base sm:text-lg mb-8 max-w-xl mx-auto">{t.cta.subtitle}</p>
           <Button
             size="lg"
-            className="bg-white text-orange hover:bg-white/90 font-bold text-base px-10 py-6 rounded-full shadow-lg"
+            className="bg-white text-orange hover:bg-white/90 font-bold text-base px-10 py-6 rounded-lg shadow-lg"
             onClick={() => navigate("/signup")}
           >
             {t.cta.button}
