@@ -32,6 +32,7 @@ type CarRow = {
 const CarSelection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [userId, setUserId] = useState<string | null>(null);
   const [cars, setCars] = useState<CarRow[]>([]);
   const [liked, setLiked] = useState<Set<string>>(new Set());
@@ -41,12 +42,11 @@ const CarSelection: React.FC = () => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        navigate("/login");
-        return;
+      if (session) {
+        setUserId(session.user.id);
       }
-      setUserId(session.user.id);
-      loadMatchingCars(session.user.id);
+      // Load cars regardless of auth status
+      loadMatchingCars(session?.user?.id ?? null);
     });
   }, [navigate]);
 
