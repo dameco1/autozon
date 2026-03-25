@@ -66,7 +66,7 @@ const HowItWorksSection: React.FC = () => {
         <motion.div className="text-center" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}>
           <Button
             size="lg"
-            className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-6 rounded-full shadow-[0_0_40px_hsl(24_95%_53%/0.2)]"
+            className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-6 rounded-lg shadow-[0_0_40px_hsl(24_95%_53%/0.2)]"
             onClick={() => navigate("/intent")}
           >
             {t.howItWorks.cta}
