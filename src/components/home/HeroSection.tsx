@@ -60,7 +60,7 @@ const HeroSection: React.FC = () => {
         >
           <Button
             size="lg"
-            className="w-full sm:w-auto bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-6 rounded-full shadow-[0_0_40px_hsl(24_95%_53%/0.3)] hover:shadow-[0_0_60px_hsl(24_95%_53%/0.4)] transition-all"
+            className="w-full sm:w-auto bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-6 rounded-lg shadow-[0_4px_24px_hsl(24_95%_53%/0.35)] hover:shadow-[0_6px_32px_hsl(24_95%_53%/0.45)] hover:translate-y-[-1px] transition-all"
             onClick={() => navigate("/intent")}
           >
             {t.hero.primaryCta}
@@ -68,7 +68,7 @@ const HeroSection: React.FC = () => {
           <Button
             size="lg"
             variant="outline"
-            className="w-full sm:w-auto border-silver/30 text-white hover:bg-white/5 font-semibold text-base px-8 py-6 rounded-full"
+            className="w-full sm:w-auto border-silver/30 text-white hover:bg-white/5 font-semibold text-base px-8 py-6 rounded-lg"
             onClick={() => {
               document.getElementById("car-search")?.scrollIntoView({ behavior: "smooth" });
             }}

@@ -184,7 +184,7 @@ const CarSearchSection: React.FC = () => {
 
             <Button
               size="lg"
-              className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-5 rounded-full"
+              className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-5 rounded-lg"
               onClick={handleSearch}
             >
               <Search className="mr-2 h-4 w-4" />
