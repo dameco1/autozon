@@ -89,7 +89,7 @@ const Navbar: React.FC = () => {
                 <Button variant="ghost" className={`${scrolled ? "text-navy/70" : "text-silver/80"}`} onClick={() => navigate("/login")}>
                   {t.nav.login}
                 </Button>
-                <Button className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-full px-5" onClick={() => navigate("/intent")}>
+                <Button className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg px-5" onClick={() => navigate("/intent")}>
                   {t.nav.getStarted}
                 </Button>
               </>
@@ -98,7 +98,7 @@ const Navbar: React.FC = () => {
 
           {/* Mobile: CTA + hamburger */}
           <div className="flex md:hidden items-center gap-2">
-            <Button size="sm" className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-full text-xs px-3" onClick={() => navigate("/intent")}>
+            <Button size="sm" className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg text-xs px-3" onClick={() => navigate("/intent")}>
               {t.nav.getStarted}
             </Button>
             <button onClick={() => setMenuOpen(!menuOpen)} className={`${scrolled ? "text-navy" : "text-silver"}`}>
