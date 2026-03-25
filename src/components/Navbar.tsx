@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
               {t.nav.howItWorks}
             </button>
             <Link to="/about" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
-              {t.nav.aboutUs || "About Us"}
+              {t.nav.aboutUs}
             </Link>
             <Link to="/qa" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
               Q&A
