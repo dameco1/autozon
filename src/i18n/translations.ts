@@ -18,6 +18,7 @@ export const translations = {
       tagline: "Know the Price. Make the Deal.",
       amazonTagline: "Like Amazon, only for cars!",
       qa: "Q&A",
+      aboutUs: "About Us",
     },
     hero: {
       headline: "The Easiest Way to",
@@ -967,6 +968,7 @@ export const translations = {
       tagline: "Know the Price. Make the Deal.",
       amazonTagline: "Wie Amazon, nur für Autos!",
       qa: "Fragen",
+      aboutUs: "Über uns",
     },
     hero: {
       headline: "Der einfachste Weg,",
