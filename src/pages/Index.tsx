@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import CookieConsent from "@/components/CookieConsent";
 import SEO from "@/components/SEO";
 import HeroSection from "@/components/home/HeroSection";
+import CarSearchSection from "@/components/home/CarSearchSection";
 import AiEngineSection from "@/components/home/AiEngineSection";
 import WhyAutozonSection from "@/components/home/WhyAutozonSection";
 import StatsBar from "@/components/home/StatsBar";
@@ -33,6 +34,7 @@ const Index: React.FC = () => {
       />
       <Navbar />
       <HeroSection />
+      <CarSearchSection />
       <AiEngineSection />
       <WhyAutozonSection />
       <StatsBar />
