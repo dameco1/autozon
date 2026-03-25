@@ -104,7 +104,7 @@ export const translations = {
       cta: "Get My Free AI Valuation — It's Free",
     },
     comparison: {
-      title: "See Why Sellers Switch to Autozon",
+      title: "Why Should You Switch to Autozon",
       features: [
         "AI fair-value price before you list",
         "Ad live until car is sold — no expiry",
@@ -1052,7 +1052,7 @@ export const translations = {
       cta: "Kostenlose KI-Bewertung — Gratis",
     },
     comparison: {
-      title: "Warum Verkäufer zu Autozon wechseln",
+      title: "Warum solltest du zu Autozon wechseln",
       features: [
         "KI-Fair-Value-Preis vor dem Inserieren",
         "Inserat online bis Auto verkauft — kein Ablauf",
