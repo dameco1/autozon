@@ -968,6 +968,7 @@ export const translations = {
       tagline: "Know the Price. Make the Deal.",
       amazonTagline: "Wie Amazon, nur für Autos!",
       qa: "Fragen",
+      aboutUs: "Über uns",
     },
     hero: {
       headline: "Der einfachste Weg,",
