@@ -1,47 +1,68 @@
 
 
-## Add Q&A Page from Investor Document
+# Redesign Hero + Add Search Engine Below It
 
-### Overview
-Create a new `/qa` page displaying the 7 investor Q&A items from the uploaded PDF, formatted as an accordion-style FAQ. Add a "Q&A" link in the Navbar. Replace all "Canada" references with "Worldwide".
+## Inspiration from Competitors
 
-### Content (7 Q&A pairs, reformulated as generic questions)
+- **AutoScout24**: Clean search form right on the homepage — Make, Model, Price, Registration Year, Location, big results button
+- **mobile.de**: Hero image with tagline + search form with Make, Model, Year, Mileage, Price, Location
+- **willhaben**: Category-based entry, less car-specific
 
-1. **Q: How does Autozon solve the trade-off between selling fast (dealer) and selling for more (private)?**
-   Answer: Autozon removes the forced choice by creating a verified, cross-border buyer network...
+The common pattern: **short punchy headline + integrated search form = immediate utility for buyers**.
 
-2. **Q: How is Autozon different from existing platforms like Autotrader or Mobile.de?**
-   Answer: Traditional platforms are classified ad marketplaces...
+## What Changes
 
-3. **Q: In some markets, trade-ins offer tax benefits. How does Autozon compete?**
-   Answer: (Original says "Canada" — changed to "Worldwide") In many markets, tax credits make trade-ins attractive...
+### 1. Simplify the Hero Section (`HeroSection.tsx`)
+- **Remove** the SVG car silhouettes (too abstract, adds visual noise)
+- **New headline**: "The Easiest Way to Sell and Buy Cars" (orange accent on key words)
+- **Subheadline**: Keep it tight — one line about AI fair pricing, no dealer markup
+- **Two clear CTAs**: "Sell My Car" (orange) and "Browse Cars" (outline) — same as now but cleaner
+- **Trust badges**: Keep the 3 existing ones below CTAs
+- **Background**: Keep the dark navy + subtle radial gradients (no silhouettes)
+- **Height**: Reduce from `min-h-screen` to a more compact hero (~60vh) so the search engine is visible without scrolling
 
-4. **Q: There are many websites where you post photos and wait for buyers. What's different?**
-   Answer: Autozon replaces the "post and wait" model...
+### 2. New Search Engine Section (`CarSearchSection.tsx`)
+A new component placed directly below the hero on the Index page. Styled as a prominent card/bar on a slightly lighter background.
 
-5. **Q: People already post free or paid ads to sell privately. Why use Autozon?**
-   Answer: The core problem with free/paid ads...
+**Search Fields** (inspired by AutoScout24/mobile.de):
+- **Make** — dropdown, populated from `cars` table distinct makes
+- **Model** — dropdown, dependent on selected make
+- **Price up to** — dropdown with preset ranges (€5k, €10k, €15k, €20k, €30k, €50k+)
+- **Year from** — dropdown with year ranges
+- **Fuel type** — dropdown (Petrol, Diesel, Electric, Hybrid)
+- **Mileage up to** — dropdown with preset ranges
 
-6. **Q: Valuation tools already tell you retail value. What more does Autozon offer?**
-   Answer: Valuation tools give a number but don't create a transaction...
+**Search button**: Orange, shows result count text like "Search X cars"
 
-7. **Q: How is Autozon different from the many car apps available worldwide?**
-   Answer: (Original says "for Canada" — changed to "worldwide") Most car apps are catalogues...
+**Behavior**: On submit, navigates to `/car-selection` with query params for the filters. The CarSelection page already filters by these fields, so we pass them as URL search params and the page picks them up.
 
-### Technical Changes
+**No auth required**: This search is public — it queries the `cars` table for available listings (status = 'available'). Users only need auth when they want to interact (like, negotiate).
 
-| File | Change |
-|---|---|
-| `src/pages/QA.tsx` | New page with accordion-based Q&A using existing Accordion components |
-| `src/i18n/translations.ts` | Add `nav.qa: "Q&A"` / `"Fragen"` to both EN and DE nav sections |
-| `src/components/Navbar.tsx` | Add Q&A link in both desktop and mobile menus |
-| `src/App.tsx` | Add `/qa` route (public) |
+### 3. Update `Index.tsx`
+- Import and render `CarSearchSection` between `HeroSection` and `AiEngineSection`
 
-### Design Details
-- Uses existing `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent` from shadcn
-- Same dark theme as other pages (Navbar + dark background)
-- Questions reformulated as generic/universal (not investor-conversation-style)
-- All "Canada" references replaced with "Worldwide" or "many markets"
-- SEO component included
-- Back-to-home link like other legal pages
+### 4. Update Translations (`translations.ts`)
+- Update `hero.headline` / `hero.headlineAccent` / `hero.subheadline` for EN + DE
+- Add `carSearch` translation keys for the search section (title, placeholders, button text)
+
+### 5. Update `CarSelection.tsx`
+- Read URL search params on mount and use them as initial filter values
+- Remove the auth requirement for browsing (keep auth for liking/interacting)
+
+## Files to Create/Edit
+| File | Action |
+|------|--------|
+| `src/components/home/HeroSection.tsx` | Simplify: remove silhouettes, new headline, compact height |
+| `src/components/home/CarSearchSection.tsx` | **New** — search form with dropdowns |
+| `src/pages/Index.tsx` | Add CarSearchSection after HeroSection |
+| `src/i18n/translations.ts` | New hero copy + carSearch keys (EN+DE) |
+| `src/pages/CarSelection.tsx` | Accept URL params as initial filters, allow unauthenticated browsing |
+
+## Technical Details
+
+- Search dropdowns use `supabase.from('cars').select('make').eq('status','available')` with distinct to populate Make options dynamically
+- Model dropdown filters by selected make
+- Result count queries the count with current filters before navigating
+- Navigation: `navigate(/car-selection?make=BMW&maxPrice=20000&...)`
+- CarSelection reads `useSearchParams()` and applies them to its existing query logic
 
