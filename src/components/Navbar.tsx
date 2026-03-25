@@ -140,7 +140,7 @@ const Navbar: React.FC = () => {
             {t.nav.howItWorks}
           </button>
           <Link to="/about" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
-            {t.nav.aboutUs || "About Us"}
+            {t.nav.aboutUs}
           </Link>
           <Link to="/qa" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             Q&A
