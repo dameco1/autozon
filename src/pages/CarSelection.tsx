@@ -118,6 +118,11 @@ const CarSelection: React.FC = () => {
   };
 
   const toggleLike = (carId: string) => {
+    if (!userId) {
+      toast.error("Please log in to save favorites");
+      navigate("/login");
+      return;
+    }
     setLiked((prev) => {
       const next = new Set(prev);
       if (next.has(carId)) next.delete(carId);
