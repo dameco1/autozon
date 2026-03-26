@@ -80,17 +80,17 @@ const IntentSelection: React.FC = () => {
 
   if (checkingIntent) {
     return (
-      <div className="min-h-screen bg-charcoal flex items-center justify-center">
-        <div className="animate-pulse text-silver/40">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-charcoal flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <Button
         variant="ghost"
-        className="absolute top-6 right-6 text-silver/50 hover:text-white"
+        className="absolute top-6 right-6 text-muted-foreground hover:text-foreground"
         onClick={() => navigate("/dashboard")}
       >
         <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
@@ -106,10 +106,10 @@ const IntentSelection: React.FC = () => {
           >
             <div className="text-center mb-8">
               <Car className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h1 className="text-3xl font-display font-bold text-white mb-3">
+              <h1 className="text-3xl font-display font-bold text-foreground mb-3">
                 {t.intent.welcomeBack}
               </h1>
-              <p className="text-silver/60 text-lg">
+              <p className="text-muted-foreground text-lg">
                 {t.intent.welcomeBackDesc.replace(
                   "{intent}",
                   previousIntent === "selling" ? t.intent.selling : t.intent.buying
@@ -126,10 +126,10 @@ const IntentSelection: React.FC = () => {
                   <Play className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-display font-bold text-white">
+                  <h3 className="text-lg font-display font-bold text-foreground">
                     {t.intent.continueSession}
                   </h3>
-                  <p className="text-silver/50 text-sm">{t.intent.continueDesc}</p>
+                  <p className="text-muted-foreground text-sm">{t.intent.continueDesc}</p>
                 </div>
                 <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-1 transition-transform" />
               </button>
@@ -140,15 +140,15 @@ const IntentSelection: React.FC = () => {
                 className="w-full group bg-secondary/50 border-2 border-border hover:border-silver/30 rounded-2xl p-6 text-left transition-all duration-300 flex items-center gap-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center shrink-0">
-                  <RotateCcw className="h-6 w-6 text-silver/60" />
+                  <RotateCcw className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-display font-bold text-white">
+                  <h3 className="text-lg font-display font-bold text-foreground">
                     {t.intent.startFresh}
                   </h3>
-                  <p className="text-silver/50 text-sm">{t.intent.startFreshDesc}</p>
+                  <p className="text-muted-foreground text-sm">{t.intent.startFreshDesc}</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-silver/40 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </motion.div>
@@ -162,10 +162,10 @@ const IntentSelection: React.FC = () => {
           >
             <div className="text-center mb-12">
               <Car className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h1 className="text-4xl font-display font-bold text-white mb-3">
+              <h1 className="text-4xl font-display font-bold text-foreground mb-3">
                 {t.intent.title}
               </h1>
-              <p className="text-silver/60 text-lg">{t.intent.subtitle}</p>
+              <p className="text-muted-foreground text-lg">{t.intent.subtitle}</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -180,10 +180,10 @@ const IntentSelection: React.FC = () => {
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
                   <Tag className="h-8 w-8 text-primary" />
                 </div>
-                <h2 className="text-2xl font-display font-bold text-white mb-3">
+                <h2 className="text-2xl font-display font-bold text-foreground mb-3">
                   {t.intent.selling}
                 </h2>
-                <p className="text-silver/60 mb-6">{t.intent.sellingDesc}</p>
+                <p className="text-muted-foreground mb-6">{t.intent.sellingDesc}</p>
                 <div className="flex items-center text-primary font-medium text-sm">
                   {t.intent.sellingCta} <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -200,10 +200,10 @@ const IntentSelection: React.FC = () => {
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
                   <ShoppingCart className="h-8 w-8 text-primary" />
                 </div>
-                <h2 className="text-2xl font-display font-bold text-white mb-3">
+                <h2 className="text-2xl font-display font-bold text-foreground mb-3">
                   {t.intent.buying}
                 </h2>
-                <p className="text-silver/60 mb-6">{t.intent.buyingDesc}</p>
+                <p className="text-muted-foreground mb-6">{t.intent.buyingDesc}</p>
                 <div className="flex items-center text-primary font-medium text-sm">
                   {t.intent.buyingCta} <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </div>

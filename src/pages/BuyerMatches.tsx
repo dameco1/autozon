@@ -195,24 +195,24 @@ const BuyerMatches: React.FC = () => {
   const scoreBadge = (score: number) => {
     if (score >= 85) return { label: t.buyerMatches.perfect, bg: "bg-primary/10 border-primary text-primary" };
     if (score >= 70) return { label: t.buyerMatches.strong, bg: "bg-primary/5 border-primary/50 text-primary/80" };
-    return { label: t.buyerMatches.acceptable, bg: "bg-muted border-border text-silver/60" };
+    return { label: t.buyerMatches.acceptable, bg: "bg-muted border-border text-muted-foreground" };
   };
 
   const statusColor = (status: string) => {
     if (status === "accepted") return "text-primary";
     if (status === "rejected") return "text-destructive";
     if (status === "countered") return "text-amber-400";
-    return "text-silver/60";
+    return "text-muted-foreground";
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-charcoal flex items-center justify-center"><span className="text-silver/60">Loading...</span></div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center"><span className="text-muted-foreground">Loading...</span></div>;
   }
 
   const offerDialog = (t.buyerMatches as any).offerDialog;
 
   return (
-    <div className="min-h-screen bg-charcoal text-silver">
+    <div className="min-h-screen bg-background text-muted-foreground">
       <Navbar />
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
         <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -220,11 +220,11 @@ const BuyerMatches: React.FC = () => {
             <Users className="h-4 w-4" /> {t.buyerMatches.title}
           </span>
           {car && (
-            <h1 className="text-4xl sm:text-5xl font-display font-black text-white">
+            <h1 className="text-4xl sm:text-5xl font-display font-black text-foreground">
               {car.year} {car.make} {car.model}
             </h1>
           )}
-          <p className="text-silver/60 mt-2">{t.buyerMatches.subtitle}</p>
+          <p className="text-muted-foreground mt-2">{t.buyerMatches.subtitle}</p>
         </motion.div>
 
         {/* Payment Gate Banner */}
@@ -236,8 +236,8 @@ const BuyerMatches: React.FC = () => {
             <div className="flex items-center gap-3 flex-1">
               <Lock className="h-6 w-6 text-primary flex-shrink-0" />
               <div>
-                <h3 className="text-white font-display font-bold">{t.buyerMatches.paywall.title}</h3>
-                <p className="text-silver/60 text-sm">{t.buyerMatches.paywall.subtitle}</p>
+                <h3 className="text-foreground font-display font-bold">{t.buyerMatches.paywall.title}</h3>
+                <p className="text-muted-foreground text-sm">{t.buyerMatches.paywall.subtitle}</p>
               </div>
             </div>
             <Button
@@ -259,7 +259,7 @@ const BuyerMatches: React.FC = () => {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
           >
             <div className="px-6 py-4 border-b border-border">
-              <h2 className="font-display font-bold text-white flex items-center gap-2">
+              <h2 className="font-display font-bold text-foreground flex items-center gap-2">
                 <Handshake className="h-5 w-5 text-primary" /> {(t.buyerMatches as any).activeNegotiations}
               </h2>
             </div>
@@ -267,11 +267,11 @@ const BuyerMatches: React.FC = () => {
               {activeOffers.map((offer) => (
                 <div key={offer.id} className="px-6 py-4 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-white">{isPaid ? offer.buyerName : offer.buyerName.charAt(0) + "••••••"}</p>
+                    <p className="text-sm font-semibold text-foreground">{isPaid ? offer.buyerName : offer.buyerName.charAt(0) + "••••••"}</p>
                     <div className="flex items-center gap-3 mt-1">
-                      <span className="text-xs text-silver/40">€{offer.amount.toLocaleString()}</span>
+                      <span className="text-xs text-muted-foreground">€{offer.amount.toLocaleString()}</span>
                       <span className={`text-xs font-medium capitalize ${statusColor(offer.status)}`}>{offer.status}</span>
-                      <span className="text-xs text-silver/30">Round {offer.current_round}/3</span>
+                      <span className="text-xs text-muted-foreground">Round {offer.current_round}/3</span>
                     </div>
                   </div>
                   <Button
@@ -289,7 +289,7 @@ const BuyerMatches: React.FC = () => {
         )}
 
         {buyers.length === 0 ? (
-          <div className="text-center py-20 text-silver/40">{t.buyerMatches.noBuyers}</div>
+          <div className="text-center py-20 text-muted-foreground">{t.buyerMatches.noBuyers}</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {buyers.map((buyer, i) => {
@@ -306,13 +306,13 @@ const BuyerMatches: React.FC = () => {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                        {buyer.type === "dealer" ? <Building2 className="h-5 w-5 text-primary" /> : <User className="h-5 w-5 text-silver/60" />}
+                        {buyer.type === "dealer" ? <Building2 className="h-5 w-5 text-primary" /> : <User className="h-5 w-5 text-muted-foreground" />}
                       </div>
                       <div>
-                        <h3 className={`font-display font-bold text-white ${!isPaid ? "select-none" : ""}`}>
+                        <h3 className={`font-display font-bold text-foreground ${!isPaid ? "select-none" : ""}`}>
                           {blurName(buyer.name)}
                         </h3>
-                        <span className="text-xs text-silver/40">
+                        <span className="text-xs text-muted-foreground">
                           {buyer.type === "dealer" ? t.buyerMatches.types.dealer : t.buyerMatches.types.private}
                         </span>
                       </div>
@@ -323,18 +323,18 @@ const BuyerMatches: React.FC = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 text-sm mb-5">
-                    <div className="flex items-center gap-2 text-silver/60">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                       <MapPin className="h-4 w-4" /> {buyer.location}
                     </div>
-                    <div className="flex items-center gap-2 text-silver/60">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                       <Target className="h-4 w-4" />
                       {t.buyerMatches.intent}: {t.buyerMatches.intentLevels[buyer.intent_level as keyof typeof t.buyerMatches.intentLevels]}
                     </div>
-                    <div className="flex items-center gap-2 text-silver/60">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                       <Star className="h-4 w-4" />
                       €{buyer.budget_min.toLocaleString()} – €{buyer.budget_max.toLocaleString()}
                     </div>
-                    <div className="flex items-center gap-2 text-silver/60">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                       <Clock className="h-4 w-4" /> {buyer.timing_preference}
                     </div>
                   </div>
@@ -366,7 +366,7 @@ const BuyerMatches: React.FC = () => {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="flex-1 border-border text-silver/40 cursor-not-allowed"
+                        className="flex-1 border-border text-muted-foreground cursor-not-allowed"
                         disabled
                       >
                         <Lock className="mr-2 h-3 w-3" /> {t.buyerMatches.paywall.badge}
@@ -384,18 +384,18 @@ const BuyerMatches: React.FC = () => {
       <Dialog open={offerDialogOpen} onOpenChange={setOfferDialogOpen}>
         <DialogContent className="bg-secondary border-border max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-white font-display">{offerDialog?.title}</DialogTitle>
+            <DialogTitle className="text-foreground font-display">{offerDialog?.title}</DialogTitle>
             <DialogDescription>{offerDialog?.subtitle}</DialogDescription>
           </DialogHeader>
 
           {selectedBuyer && (
-            <div className="flex items-center gap-3 p-3 bg-charcoal/50 rounded-xl mb-2">
+            <div className="flex items-center gap-3 p-3 bg-muted rounded-xl mb-2">
               <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center">
-                {selectedBuyer.type === "dealer" ? <Building2 className="h-4 w-4 text-primary" /> : <User className="h-4 w-4 text-silver/60" />}
+                {selectedBuyer.type === "dealer" ? <Building2 className="h-4 w-4 text-primary" /> : <User className="h-4 w-4 text-muted-foreground" />}
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">{selectedBuyer.name}</p>
-                <p className="text-xs text-silver/40">
+                <p className="text-sm font-semibold text-foreground">{selectedBuyer.name}</p>
+                <p className="text-xs text-muted-foreground">
                   Budget: €{selectedBuyer.budget_min.toLocaleString()} – €{selectedBuyer.budget_max.toLocaleString()}
                 </p>
               </div>
@@ -404,31 +404,31 @@ const BuyerMatches: React.FC = () => {
 
           {car?.fair_value_price && (
             <div className="flex items-center justify-between p-3 bg-primary/5 border border-primary/20 rounded-xl text-sm">
-              <span className="text-silver/60">{t.negotiation.fairValueLabel}</span>
+              <span className="text-muted-foreground">{t.negotiation.fairValueLabel}</span>
               <span className="text-primary font-display font-bold">€{car.fair_value_price.toLocaleString()}</span>
             </div>
           )}
 
           <div className="space-y-4 mt-2">
             <div>
-              <Label className="text-silver/70 text-sm">{offerDialog?.amountLabel}</Label>
+              <Label className="text-muted-foreground text-sm">{offerDialog?.amountLabel}</Label>
               <div className="relative mt-1">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-silver/40">€</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">€</span>
                 <Input
                   type="number"
                   value={offerAmount}
                   onChange={(e) => setOfferAmount(e.target.value)}
-                  className="pl-7 bg-charcoal border-border text-white"
+                  className="pl-7 bg-background border-border text-foreground"
                 />
               </div>
             </div>
             <div>
-              <Label className="text-silver/70 text-sm">{offerDialog?.messageLabel}</Label>
+              <Label className="text-muted-foreground text-sm">{offerDialog?.messageLabel}</Label>
               <Textarea
                 value={offerMessage}
                 onChange={(e) => setOfferMessage(e.target.value)}
                 placeholder={offerDialog?.messagePlaceholder}
-                className="bg-charcoal border-border text-white text-sm h-20 mt-1"
+                className="bg-background border-border text-foreground text-sm h-20 mt-1"
               />
             </div>
             <Button

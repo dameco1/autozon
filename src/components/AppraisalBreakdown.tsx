@@ -450,20 +450,20 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 flex-1">
           <div className={`mt-0.5 ${
-            factor.type === "booster" ? "text-primary" : factor.type === "reducer" ? "text-destructive" : "text-silver/60"
+            factor.type === "booster" ? "text-primary" : factor.type === "reducer" ? "text-destructive" : "text-muted-foreground"
           }`}>
             {factor.icon}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-white font-medium text-sm">{factor.label}</span>
+              <span className="text-foreground font-medium text-sm">{factor.label}</span>
               {factor.actionable && (
                 <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-accent/20 text-accent-foreground font-medium">
                   {a.improvable}
                 </span>
               )}
             </div>
-            <p className="text-silver/50 text-xs leading-relaxed">{factor.explanation}</p>
+            <p className="text-muted-foreground text-xs leading-relaxed">{factor.explanation}</p>
             <div className="mt-2">
               <Progress
                 value={factor.barValue}
@@ -483,7 +483,7 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
                 {factor.percentImpact >= 0 ? "+" : ""}{factor.percentImpact.toFixed(1)}%
               </button>
             </PopoverTrigger>
-            <PopoverContent side="left" className="max-w-xs text-xs bg-charcoal border-border text-silver p-3">
+            <PopoverContent side="left" className="max-w-xs text-xs bg-background border-border text-muted-foreground p-3">
               <p className="font-mono text-[11px] leading-relaxed">{factor.formulaTooltip}</p>
             </PopoverContent>
           </Popover>
@@ -513,14 +513,14 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
       >
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="h-5 w-5 text-primary" />
-          <h3 className="text-lg font-display font-bold text-white">{a.title}</h3>
+          <h3 className="text-lg font-display font-bold text-foreground">{a.title}</h3>
         </div>
-        <p className="text-silver/50 text-sm mb-5">{a.subtitle}</p>
+        <p className="text-muted-foreground text-sm mb-5">{a.subtitle}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
           <div className="bg-charcoal/80 rounded-xl p-4 text-center">
-            <div className="text-xs text-silver/40 mb-1">{a.askingPrice}</div>
-            <div className="text-xl font-bold text-white">€{car.price.toLocaleString()}</div>
+            <div className="text-xs text-muted-foreground mb-1">{a.askingPrice}</div>
+            <div className="text-xl font-bold text-foreground">€{car.price.toLocaleString()}</div>
           </div>
           <div className="bg-charcoal/80 rounded-xl p-4 text-center">
             <div className="text-xs text-primary/70 mb-1 flex items-center justify-center gap-1">
@@ -555,10 +555,10 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           <div className="flex items-start gap-3">
             <Sparkles className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-white font-display font-bold text-sm mb-1">
+              <h4 className="text-foreground font-display font-bold text-sm mb-1">
                 {a.improvableTitle.replace("{count}", String(actionable.length))}
               </h4>
-              <p className="text-silver/50 text-xs mb-3">{a.improvableSubtitle}</p>
+              <p className="text-muted-foreground text-xs mb-3">{a.improvableSubtitle}</p>
               <div className="flex flex-wrap gap-2">
                 {actionable.map(f => (
                   <Button
@@ -584,7 +584,7 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           <div className="flex items-center gap-2 mb-3">
             <Star className="h-4 w-4 text-primary" />
             <h4 className="text-sm font-bold text-primary">{a.boostersTitle}</h4>
-            <span className="text-xs text-silver/40">({boosters.length} {a.factors})</span>
+            <span className="text-xs text-muted-foreground">({boosters.length} {a.factors})</span>
           </div>
           <div className="space-y-3">
             {boosters.map((f, i) => renderFactor(f, i))}
@@ -598,7 +598,7 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           <div className="flex items-center gap-2 mb-3">
             <AlertTriangle className="h-4 w-4 text-destructive" />
             <h4 className="text-sm font-bold text-destructive">{a.reducersTitle}</h4>
-            <span className="text-xs text-silver/40">({reducers.length} {a.factors})</span>
+            <span className="text-xs text-muted-foreground">({reducers.length} {a.factors})</span>
           </div>
           <div className="space-y-3">
             {reducers.map((f, i) => renderFactor(f, i))}
@@ -613,7 +613,7 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
         const severityColors: Record<string, string> = {
           high: "text-destructive bg-destructive/10 border-destructive/20",
           medium: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
-          low: "text-silver/70 bg-silver/5 border-silver/10",
+          low: "text-muted-foreground bg-silver/5 border-silver/10",
         };
         const severityLabels: Record<string, string> = {
           high: ad.severityHigh,
@@ -631,9 +631,9 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           >
             <div className="flex items-center gap-2 mb-4">
               <ScanSearch className="h-5 w-5 text-primary" />
-              <h3 className="text-sm font-display font-bold text-white">{ad.title}</h3>
+              <h3 className="text-sm font-display font-bold text-foreground">{ad.title}</h3>
             </div>
-            <p className="text-silver/50 text-xs mb-4">{ad.subtitle}</p>
+            <p className="text-muted-foreground text-xs mb-4">{ad.subtitle}</p>
 
             {damages.length === 0 ? (
               <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-xl p-4">
@@ -648,20 +648,20 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.55 + i * 0.05 }}
-                    className="flex items-start gap-3 bg-charcoal/50 rounded-xl p-4 border border-border"
+                    className="flex items-start gap-3 bg-muted rounded-xl p-4 border border-border"
                   >
                     <CircleAlert className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
-                      d.severity === "high" ? "text-destructive" : d.severity === "medium" ? "text-yellow-400" : "text-silver/50"
+                      d.severity === "high" ? "text-destructive" : d.severity === "medium" ? "text-yellow-400" : "text-muted-foreground"
                     }`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="text-white text-sm font-medium capitalize">{d.type.replace("_", " ")}</span>
+                        <span className="text-foreground text-sm font-medium capitalize">{d.type.replace("_", " ")}</span>
                         <span className={`text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${severityColors[d.severity]}`}>
                           {severityLabels[d.severity]}
                         </span>
-                        <span className="text-silver/40 text-[10px]">📍 {d.location}</span>
+                        <span className="text-muted-foreground text-[10px]">📍 {d.location}</span>
                       </div>
-                      <p className="text-silver/50 text-xs">{d.description}</p>
+                      <p className="text-muted-foreground text-xs">{d.description}</p>
                     </div>
                     <div className="text-right flex-shrink-0">
                       {d.estimated_repair_cost_eur ? (
@@ -681,7 +681,7 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
 
                 {/* Total impact */}
                 <div className="flex items-center justify-between bg-destructive/5 border border-destructive/20 rounded-xl p-4 mt-2">
-                  <span className="text-sm text-white font-medium">{ad.totalImpact}</span>
+                  <span className="text-sm text-foreground font-medium">{ad.totalImpact}</span>
                   {totalRepairCost > 0 ? (
                     <span className="text-destructive font-bold">-€{totalRepairCost.toLocaleString()}</span>
                   ) : (
@@ -710,7 +710,7 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
           <Pencil className="mr-2 h-5 w-5" />
           {a.resubmitCta}
         </Button>
-        <p className="text-silver/40 text-xs mt-2">{a.resubmitHint}</p>
+        <p className="text-muted-foreground text-xs mt-2">{a.resubmitHint}</p>
       </motion.div>
     </div>
   );

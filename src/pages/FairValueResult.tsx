@@ -114,16 +114,16 @@ const FairValueResult: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-charcoal flex items-center justify-center">
-        <div className="text-silver/60">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Loading...</div>
       </div>
     );
   }
 
   if (!car) {
     return (
-      <div className="min-h-screen bg-charcoal flex items-center justify-center">
-        <div className="text-silver/60">Car not found</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Car not found</div>
       </div>
     );
   }
@@ -203,7 +203,7 @@ const FairValueResult: React.FC = () => {
   const demandBadge = scoreBadge(car.demand_score);
 
   return (
-    <div className="min-h-screen bg-charcoal text-silver">
+    <div className="min-h-screen bg-background text-muted-foreground">
       <SEO 
         title={`${car.year} ${car.make} ${car.model} - Fair Value: €${displayFairValue.toLocaleString()}`}
         description={`Fair value appraisal for ${car.year} ${car.make} ${car.model} (${car.mileage.toLocaleString()} km). Condition: ${car.condition_score}/100. Market value: €${displayFairValue.toLocaleString()}.`}
@@ -222,10 +222,10 @@ const FairValueResult: React.FC = () => {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
             <BarChart3 className="h-4 w-4" /> {t.fairValue.title}
           </span>
-          <h1 className="text-4xl sm:text-5xl font-display font-black text-white">
+          <h1 className="text-4xl sm:text-5xl font-display font-black text-foreground">
             {car.year} {car.make} {car.model}
           </h1>
-          <p className="text-silver/60 mt-2">{t.fairValue.subtitle}</p>
+          <p className="text-muted-foreground mt-2">{t.fairValue.subtitle}</p>
         </motion.div>
 
         {/* Quick Score Cards */}
@@ -236,9 +236,9 @@ const FairValueResult: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="text-sm text-silver/60 mb-2">{t.fairValue.conditionScore}</div>
+            <div className="text-sm text-muted-foreground mb-2">{t.fairValue.conditionScore}</div>
             <div className={`text-4xl font-display font-black ${condBadge.color}`}>
-              {car.condition_score}<span className="text-lg text-silver/40">/100</span>
+              {car.condition_score}<span className="text-lg text-muted-foreground">/100</span>
             </div>
             <div className={`text-sm mt-2 ${condBadge.color}`}>{condBadge.label}</div>
           </motion.div>
@@ -249,9 +249,9 @@ const FairValueResult: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="text-sm text-silver/60 mb-2">{t.fairValue.demandScore}</div>
+            <div className="text-sm text-muted-foreground mb-2">{t.fairValue.demandScore}</div>
             <div className={`text-4xl font-display font-black ${demandBadge.color}`}>
-              {car.demand_score}<span className="text-lg text-silver/40">/100</span>
+              {car.demand_score}<span className="text-lg text-muted-foreground">/100</span>
             </div>
             <div className={`text-sm mt-2 ${demandBadge.color}`}>{demandBadge.label}</div>
           </motion.div>
@@ -277,10 +277,10 @@ const FairValueResult: React.FC = () => {
         >
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h3 className="text-lg font-display font-bold text-white mb-1 flex items-center gap-2">
+              <h3 className="text-lg font-display font-bold text-foreground mb-1 flex items-center gap-2">
                 <TrendingDown className="h-5 w-5 text-primary" /> {t.fairValue.depreciationTitle}
               </h3>
-              <p className="text-silver/40 text-xs">
+              <p className="text-muted-foreground text-xs">
                 {hasAiForecast
                   ? `AI-powered forecast for ${car.year} ${car.make} ${car.model} (${car.fuel_type}, ${car.body_type})`
                   : `Estimated for ${car.make} ${car.model} (${car.fuel_type}, ${car.body_type}) — formula-based`}
@@ -290,11 +290,11 @@ const FairValueResult: React.FC = () => {
               <div className="flex items-center gap-3">
                 <div>
                   <span className="text-2xl font-display font-black text-destructive">-{totalDepPercent}%</span>
-                  <p className="text-silver/40 text-[10px]">this car</p>
+                  <p className="text-muted-foreground text-[10px]">this car</p>
                 </div>
                 <div className="border-l border-border pl-3">
-                  <span className="text-lg font-display font-bold text-silver/50">-{segDepPercent}%</span>
-                  <p className="text-silver/40 text-[10px]">{car.body_type} avg</p>
+                  <span className="text-lg font-display font-bold text-muted-foreground">-{segDepPercent}%</span>
+                  <p className="text-muted-foreground text-[10px]">{car.body_type} avg</p>
                 </div>
               </div>
             </div>
@@ -336,8 +336,8 @@ const FairValueResult: React.FC = () => {
         >
           <Shield className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
           <div>
-            <h4 className="text-white font-display font-bold mb-1">{t.fairValue.insight}</h4>
-            <p className="text-silver/60 text-sm">{t.fairValue.insightText}</p>
+            <h4 className="text-foreground font-display font-bold mb-1">{t.fairValue.insight}</h4>
+            <p className="text-muted-foreground text-sm">{t.fairValue.insightText}</p>
           </div>
         </motion.div>
 
@@ -381,7 +381,7 @@ const FairValueResult: React.FC = () => {
           <Button
             size="lg"
             variant="outline"
-            className="border-silver/20 text-silver hover:bg-silver/5 font-semibold py-6 rounded-xl"
+            className="border-silver/20 text-muted-foreground hover:bg-silver/5 font-semibold py-6 rounded-xl"
             onClick={() => navigate("/car-upload")}
           >
             <Plus className="mr-2 h-5 w-5" /> {t.fairValue.uploadAnother}
@@ -389,7 +389,7 @@ const FairValueResult: React.FC = () => {
           <Button
             size="lg"
             variant="ghost"
-            className="text-silver/60 font-semibold py-6 rounded-xl"
+            className="text-muted-foreground font-semibold py-6 rounded-xl"
             onClick={() => navigate("/dashboard")}
           >
             <LayoutDashboard className="mr-2 h-5 w-5" /> Dashboard

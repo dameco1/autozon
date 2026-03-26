@@ -127,7 +127,7 @@ const Negotiation: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-charcoal flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -135,9 +135,9 @@ const Negotiation: React.FC = () => {
 
   if (!offer || !car || !user) {
     return (
-      <div className="min-h-screen bg-charcoal text-silver">
+      <div className="min-h-screen bg-background text-muted-foreground">
         <Navbar />
-        <div className="flex items-center justify-center pt-32 text-silver/50">Offer not found</div>
+        <div className="flex items-center justify-center pt-32 text-muted-foreground">Offer not found</div>
       </div>
     );
   }
@@ -254,7 +254,7 @@ const Negotiation: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal text-silver">
+    <div className="min-h-screen bg-background text-muted-foreground">
       <SEO title={`Negotiate — ${car.year} ${car.make} ${car.model}`} description="Negotiate the price" path={`/negotiate/${offerId}`} noIndex />
       <Navbar />
 
@@ -264,7 +264,7 @@ const Negotiation: React.FC = () => {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
             <Handshake className="h-4 w-4" /> {t.negotiation.title}
           </span>
-          <h1 className="text-3xl sm:text-4xl font-display font-black text-white">
+          <h1 className="text-3xl sm:text-4xl font-display font-black text-foreground">
             {car.year} {car.make} {car.model}
           </h1>
         </motion.div>
@@ -277,14 +277,14 @@ const Negotiation: React.FC = () => {
           <ShieldCheck className="h-6 w-6 text-primary flex-shrink-0" />
           <div className="flex-1">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-silver/60">{t.negotiation.fairValueLabel}</span>
+              <span className="text-sm text-muted-foreground">{t.negotiation.fairValueLabel}</span>
               <span className="text-lg font-display font-bold text-primary">€{fairValue.toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-sm text-silver/60">{t.negotiation.askingPrice}</span>
-              <span className="text-lg font-display font-bold text-white">€{car.price.toLocaleString()}</span>
+              <span className="text-sm text-muted-foreground">{t.negotiation.askingPrice}</span>
+              <span className="text-lg font-display font-bold text-foreground">€{car.price.toLocaleString()}</span>
             </div>
-            <div className="mt-2 w-full bg-charcoal/50 rounded-full h-2">
+            <div className="mt-2 w-full bg-muted rounded-full h-2">
               <div
                 className="bg-primary h-2 rounded-full transition-all"
                 style={{ width: `${Math.min(100, (fairValue / car.price) * 100)}%` }}
@@ -299,10 +299,10 @@ const Negotiation: React.FC = () => {
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
         >
           <div className="px-6 py-4 border-b border-border flex items-center justify-between">
-            <h2 className="font-display font-bold text-white flex items-center gap-2">
+            <h2 className="font-display font-bold text-foreground flex items-center gap-2">
               <MessageSquare className="h-5 w-5 text-primary" /> {t.negotiation.timeline}
             </h2>
-            <span className="text-xs text-silver/40">
+            <span className="text-xs text-muted-foreground">
               {t.negotiation.round} {offer.current_round} / {offer.max_rounds}
             </span>
           </div>
@@ -321,7 +321,7 @@ const Negotiation: React.FC = () => {
                     ) : (
                       <ArrowRight className="h-5 w-5 text-primary" />
                     )}
-                    <span className="text-sm font-semibold text-white">
+                    <span className="text-sm font-semibold text-foreground">
                       {ev.by === "buyer" ? t.negotiation.buyer : t.negotiation.seller}
                       {" "}
                       {ev.type === "offer" && t.negotiation.offered}
@@ -330,12 +330,12 @@ const Negotiation: React.FC = () => {
                       {ev.type === "reject" && t.negotiation.rejected}
                     </span>
                   </div>
-                  <span className="text-2xl font-display font-black text-white">€{ev.amount.toLocaleString()}</span>
+                  <span className="text-2xl font-display font-black text-foreground">€{ev.amount.toLocaleString()}</span>
                 </div>
                 {ev.message && (
-                  <p className="text-sm text-silver/60 italic ml-7">"{ev.message}"</p>
+                  <p className="text-sm text-muted-foreground italic ml-7">"{ev.message}"</p>
                 )}
-                <p className="text-xs text-silver/30 ml-7 mt-1">
+                <p className="text-xs text-muted-foreground ml-7 mt-1">
                   {new Date(ev.timestamp).toLocaleString()}
                 </p>
               </div>
@@ -343,7 +343,7 @@ const Negotiation: React.FC = () => {
 
             {/* Waiting state */}
             {!isFinished && (
-              <div className="px-6 py-4 flex items-center gap-2 text-silver/40 text-sm">
+              <div className="px-6 py-4 flex items-center gap-2 text-muted-foreground text-sm">
                 <div className="w-4 h-4 border-2 border-silver/20 border-t-primary rounded-full animate-spin" />
                 {waitingForSeller ? t.negotiation.waitingSeller : t.negotiation.waitingBuyer}
                 {roundsLeft > 0 && ` · ${roundsLeft} ${t.negotiation.roundsLeft}`}
@@ -358,7 +358,7 @@ const Negotiation: React.FC = () => {
             className="bg-secondary/50 border border-border rounded-2xl p-6 mb-8"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           >
-            <h3 className="font-display font-bold text-white mb-4">{t.negotiation.yourTurn}</h3>
+            <h3 className="font-display font-bold text-foreground mb-4">{t.negotiation.yourTurn}</h3>
 
             {roundsLeft === 0 && (
               <div className="flex items-center gap-2 text-amber-400 text-sm mb-4">
@@ -388,16 +388,16 @@ const Negotiation: React.FC = () => {
             {roundsLeft > 0 && (
               <>
                 <div className="border-t border-border pt-4 mt-2">
-                  <p className="text-sm text-silver/60 mb-3">{t.negotiation.orCounter}</p>
+                  <p className="text-sm text-muted-foreground mb-3">{t.negotiation.orCounter}</p>
                   <div className="flex gap-3 mb-3">
                     <div className="relative flex-1">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-silver/40 text-sm">€</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">€</span>
                       <Input
                         type="number"
                         value={counterAmount}
                         onChange={(e) => setCounterAmount(e.target.value)}
                         placeholder="0"
-                        className="pl-7 bg-charcoal/50 border-border text-white"
+                        className="pl-7 bg-muted border-border text-foreground"
                       />
                     </div>
                     <Button
@@ -413,7 +413,7 @@ const Negotiation: React.FC = () => {
                     value={counterMessage}
                     onChange={(e) => setCounterMessage(e.target.value)}
                     placeholder={t.negotiation.messagePlaceholder}
-                    className="bg-charcoal/50 border-border text-white text-sm h-20"
+                    className="bg-muted border-border text-foreground text-sm h-20"
                   />
                 </div>
               </>
@@ -428,11 +428,11 @@ const Negotiation: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
           >
             <CheckCircle2 className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-display font-black text-white mb-2">{t.negotiation.dealAgreed}</h3>
-            <p className="text-silver/60 mb-2">
+            <h3 className="text-2xl font-display font-black text-foreground mb-2">{t.negotiation.dealAgreed}</h3>
+            <p className="text-muted-foreground mb-2">
               {t.negotiation.agreedAt} <span className="text-primary font-bold">€{offer.agreed_price.toLocaleString()}</span>
             </p>
-            <p className="text-sm text-silver/40 mb-6">
+            <p className="text-sm text-muted-foreground mb-6">
               {t.negotiation.youSaved} €{(car.price - offer.agreed_price).toLocaleString()} ({Math.round((1 - offer.agreed_price / car.price) * 100)}%)
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -446,7 +446,7 @@ const Negotiation: React.FC = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-border text-silver hover:bg-secondary font-semibold px-8 py-6 rounded-xl"
+                className="border-border text-muted-foreground hover:bg-secondary font-semibold px-8 py-6 rounded-xl"
                 onClick={() =>
                   generateNegotiationPdf({
                     car,
@@ -469,9 +469,9 @@ const Negotiation: React.FC = () => {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
           >
             <XCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
-            <h3 className="text-xl font-display font-bold text-white mb-2">{t.negotiation.dealRejected}</h3>
-            <p className="text-silver/60 text-sm mb-6">{t.negotiation.couldNotAgree}</p>
-            <Button variant="outline" className="border-border text-silver" onClick={() => navigate("/recommendations")}>
+            <h3 className="text-xl font-display font-bold text-foreground mb-2">{t.negotiation.dealRejected}</h3>
+            <p className="text-muted-foreground text-sm mb-6">{t.negotiation.couldNotAgree}</p>
+            <Button variant="outline" className="border-border text-muted-foreground" onClick={() => navigate("/recommendations")}>
               {t.negotiation.browseSimilar}
             </Button>
           </motion.div>

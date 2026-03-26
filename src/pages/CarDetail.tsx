@@ -130,10 +130,10 @@ const CarDetail: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-charcoal flex items-center justify-center"><span className="text-silver/60">Loading...</span></div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center"><span className="text-muted-foreground">Loading...</span></div>;
   }
   if (!car) {
-    return <div className="min-h-screen bg-charcoal flex items-center justify-center"><span className="text-silver/60">Car not found</span></div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center"><span className="text-muted-foreground">Car not found</span></div>;
   }
 
   const photos = car.photos && car.photos.length > 0 ? car.photos : [];
@@ -174,7 +174,7 @@ const CarDetail: React.FC = () => {
   const hasInspection = inspectionChecklist && Object.keys(inspectionChecklist).length > 0;
 
   return (
-    <div className="min-h-screen bg-charcoal text-silver">
+    <div className="min-h-screen bg-background text-muted-foreground">
       <SEO 
         title={pageTitle}
         description={pageDescription}
@@ -183,25 +183,25 @@ const CarDetail: React.FC = () => {
       <Navbar />
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
         {/* Back */}
-        <Button variant="ghost" className="text-silver/40 mb-6" onClick={() => navigate(-1)}>
+        <Button variant="ghost" className="text-muted-foreground mb-6" onClick={() => navigate(-1)}>
           <ArrowLeft className="mr-2 h-4 w-4" /> {t.carDetail.back}
         </Button>
 
         {/* Header */}
         <motion.div className="mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="text-4xl sm:text-5xl font-display font-black text-white">
+          <h1 className="text-4xl sm:text-5xl font-display font-black text-foreground">
             {car.year} {car.make} {car.model}
           </h1>
 
           {/* Price row */}
           <div className="flex items-center gap-6 mt-4">
             <div>
-              <div className="text-xs text-silver/40">{t.carDetail.price}</div>
-              <div className="text-3xl font-display font-black text-white">€{car.price.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">{t.carDetail.price}</div>
+              <div className="text-3xl font-display font-black text-foreground">€{car.price.toLocaleString()}</div>
             </div>
             {car.fair_value_price > 0 && (
               <div>
-                <div className="text-xs text-silver/40">{t.carDetail.fairValue}</div>
+                <div className="text-xs text-muted-foreground">{t.carDetail.fairValue}</div>
                 <div className="text-3xl font-display font-black text-primary">€{car.fair_value_price.toLocaleString()}</div>
               </div>
             )}
@@ -214,26 +214,26 @@ const CarDetail: React.FC = () => {
             className="mb-8 rounded-2xl overflow-hidden border border-border"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
           >
-            <div className="relative aspect-[16/9] bg-charcoal/50 cursor-pointer group" onClick={() => openLightbox(activePhoto)}>
+            <div className="relative aspect-[16/9] bg-muted cursor-pointer group" onClick={() => openLightbox(activePhoto)}>
               <img
                 src={photos[activePhoto]}
                 alt={`${car.make} ${car.model} photo ${activePhoto + 1}`}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute top-3 right-3 w-9 h-9 rounded-full bg-charcoal/70 border border-border flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-3 right-3 w-9 h-9 rounded-full bg-muted/90 border border-border flex items-center justify-center text-foreground opacity-0 group-hover:opacity-100 transition-opacity">
                 <Maximize2 className="h-4 w-4" />
               </div>
               {photos.length > 1 && (
                 <>
                   <button
                     onClick={(e) => { e.stopPropagation(); setActivePhoto((p) => (p - 1 + photos.length) % photos.length); }}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-charcoal/70 border border-border flex items-center justify-center text-white hover:bg-charcoal transition-colors"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-muted/90 border border-border flex items-center justify-center text-foreground hover:bg-background transition-colors"
                   >
                     <ChevronLeft className="h-5 w-5" />
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); setActivePhoto((p) => (p + 1) % photos.length); }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-charcoal/70 border border-border flex items-center justify-center text-white hover:bg-charcoal transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-muted/90 border border-border flex items-center justify-center text-foreground hover:bg-background transition-colors"
                   >
                     <ChevronRight className="h-5 w-5" />
                   </button>
@@ -272,8 +272,8 @@ const CarDetail: React.FC = () => {
             className="bg-secondary/50 border border-border rounded-2xl p-6 mb-6"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}
           >
-            <h3 className="font-display font-bold text-white text-lg mb-3">{t.carDetail.description}</h3>
-            <p className="text-silver/70 leading-relaxed whitespace-pre-line">{car.description}</p>
+            <h3 className="font-display font-bold text-foreground text-lg mb-3">{t.carDetail.description}</h3>
+            <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{car.description}</p>
           </motion.div>
         )}
 
@@ -285,7 +285,7 @@ const CarDetail: React.FC = () => {
               className="bg-secondary/50 border border-border rounded-2xl p-6"
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             >
-              <h3 className="font-display font-bold text-white text-lg mb-5 flex items-center gap-2">
+              <h3 className="font-display font-bold text-foreground text-lg mb-5 flex items-center gap-2">
                 <BarChart3 className="h-5 w-5 text-primary" /> {t.carDetail.specs}
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -295,8 +295,8 @@ const CarDetail: React.FC = () => {
                       <spec.icon className="h-4 w-4 text-primary" />
                     </div>
                     <div>
-                      <div className="text-xs text-silver/40">{spec.label}</div>
-                      <div className="text-sm text-white font-medium">{spec.value}</div>
+                      <div className="text-xs text-muted-foreground">{spec.label}</div>
+                      <div className="text-sm text-foreground font-medium">{spec.value}</div>
                     </div>
                   </div>
                 ))}
@@ -306,7 +306,7 @@ const CarDetail: React.FC = () => {
                     <Star className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <div className="text-xs text-silver/40">{t.carDetail.condition}</div>
+                    <div className="text-xs text-muted-foreground">{t.carDetail.condition}</div>
                     <div className={`text-sm font-bold ${scoreBadge(car.condition_score)}`}>{car.condition_score}/100</div>
                   </div>
                 </div>
@@ -315,7 +315,7 @@ const CarDetail: React.FC = () => {
                     <Star className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <div className="text-xs text-silver/40">{t.carDetail.demand}</div>
+                    <div className="text-xs text-muted-foreground">{t.carDetail.demand}</div>
                     <div className={`text-sm font-bold ${scoreBadge(car.demand_score)}`}>{car.demand_score}/100</div>
                   </div>
                 </div>
@@ -328,10 +328,10 @@ const CarDetail: React.FC = () => {
                 className="bg-secondary/50 border border-border rounded-2xl p-6"
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               >
-                <h3 className="font-display font-bold text-white text-lg mb-5">{t.carDetail.equipment}</h3>
+                <h3 className="font-display font-bold text-foreground text-lg mb-5">{t.carDetail.equipment}</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {car.equipment.map((item) => (
-                    <div key={item} className="flex items-center gap-2 text-sm text-silver/60">
+                    <div key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Check className="h-4 w-4 text-primary flex-shrink-0" /> {item}
                     </div>
                   ))}
@@ -345,7 +345,7 @@ const CarDetail: React.FC = () => {
                 className="bg-secondary/50 border border-border rounded-2xl p-6"
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
               >
-                <h3 className="font-display font-bold text-white text-lg mb-5 flex items-center gap-2">
+                <h3 className="font-display font-bold text-foreground text-lg mb-5 flex items-center gap-2">
                   <ClipboardCheck className="h-5 w-5 text-primary" /> {t.carDetail.inspectionChecklist}
                 </h3>
                 <div className="space-y-5">
@@ -361,8 +361,8 @@ const CarDetail: React.FC = () => {
                           {catItems.map((item) => {
                             const answer = inspectionChecklist![item.id];
                             return (
-                              <div key={item.id} className="flex items-center justify-between gap-3 py-1.5 px-3 rounded-lg bg-charcoal/30">
-                                <span className="text-sm text-silver/70 flex-1">
+                              <div key={item.id} className="flex items-center justify-between gap-3 py-1.5 px-3 rounded-lg bg-muted/60">
+                                <span className="text-sm text-muted-foreground flex-1">
                                   {isDE ? item.labelDe : item.labelEn}
                                 </span>
                                 <span className={`flex items-center gap-1 text-xs font-medium shrink-0 ${
@@ -392,30 +392,30 @@ const CarDetail: React.FC = () => {
               className="bg-secondary/50 border border-border rounded-2xl p-6"
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
             >
-              <h3 className="font-display font-bold text-white text-lg mb-5 flex items-center gap-2">
+              <h3 className="font-display font-bold text-foreground text-lg mb-5 flex items-center gap-2">
                 <Calculator className="h-5 w-5 text-primary" /> {t.carDetail.financing}
               </h3>
               <div className="space-y-4">
                 <div>
-                  <Label className="text-silver/60 text-xs">{t.carDetail.downPayment}</Label>
-                  <Input type="number" value={downPayment} onChange={(e) => setDownPayment(Number(e.target.value))} className="bg-charcoal border-border text-white mt-1" />
+                  <Label className="text-muted-foreground text-xs">{t.carDetail.downPayment}</Label>
+                  <Input type="number" value={downPayment} onChange={(e) => setDownPayment(Number(e.target.value))} className="bg-background border-border text-foreground mt-1" />
                 </div>
                 <div>
-                  <Label className="text-silver/60 text-xs">{t.carDetail.loanTerm}</Label>
-                  <Input type="number" value={loanTerm} onChange={(e) => setLoanTerm(Number(e.target.value))} className="bg-charcoal border-border text-white mt-1" />
+                  <Label className="text-muted-foreground text-xs">{t.carDetail.loanTerm}</Label>
+                  <Input type="number" value={loanTerm} onChange={(e) => setLoanTerm(Number(e.target.value))} className="bg-background border-border text-foreground mt-1" />
                 </div>
                 <div>
-                  <Label className="text-silver/60 text-xs">{t.carDetail.interestRate}</Label>
-                  <Input type="number" step="0.1" value={interestRate} onChange={(e) => setInterestRate(Number(e.target.value))} className="bg-charcoal border-border text-white mt-1" />
+                  <Label className="text-muted-foreground text-xs">{t.carDetail.interestRate}</Label>
+                  <Input type="number" step="0.1" value={interestRate} onChange={(e) => setInterestRate(Number(e.target.value))} className="bg-background border-border text-foreground mt-1" />
                 </div>
                 <div className="border-t border-border pt-4 space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-silver/60 text-sm">{t.carDetail.monthlyPayment}</span>
-                    <span className="text-white font-display font-bold text-lg">€{monthlyPayment.toLocaleString()}</span>
+                    <span className="text-muted-foreground text-sm">{t.carDetail.monthlyPayment}</span>
+                    <span className="text-foreground font-display font-bold text-lg">€{monthlyPayment.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-silver/60 text-sm">{t.carDetail.totalCost}</span>
-                    <span className="text-silver/80 font-medium">€{totalCost.toLocaleString()}</span>
+                    <span className="text-muted-foreground text-sm">{t.carDetail.totalCost}</span>
+                    <span className="text-muted-foreground font-medium">€{totalCost.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -426,13 +426,13 @@ const CarDetail: React.FC = () => {
               className="bg-secondary/50 border border-border rounded-2xl p-6"
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
             >
-              <h3 className="font-display font-bold text-white text-lg mb-5 flex items-center gap-2">
+              <h3 className="font-display font-bold text-foreground text-lg mb-5 flex items-center gap-2">
                 <Umbrella className="h-5 w-5 text-primary" /> {t.carDetail.insurance}
               </h3>
               <div className="text-center py-4">
-                <div className="text-xs text-silver/40 mb-1">{t.carDetail.annualPremium}</div>
-                <div className="text-3xl font-display font-black text-white">€{annualPremium.toLocaleString()}</div>
-                <div className="text-xs text-silver/40 mt-2">≈ €{Math.round(annualPremium / 12).toLocaleString()}/mo</div>
+                <div className="text-xs text-muted-foreground mb-1">{t.carDetail.annualPremium}</div>
+                <div className="text-3xl font-display font-black text-foreground">€{annualPremium.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground mt-2">≈ €{Math.round(annualPremium / 12).toLocaleString()}/mo</div>
               </div>
             </motion.div>
 
@@ -446,7 +446,7 @@ const CarDetail: React.FC = () => {
               </Button>
               <Button
                 variant="outline"
-                className={`w-full border-border py-6 rounded-xl ${shortlisted ? "text-primary border-primary" : "text-silver hover:border-primary hover:text-primary"}`}
+                className={`w-full border-border py-6 rounded-xl ${shortlisted ? "text-primary border-primary" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
                 onClick={handleToggleShortlist}
                 disabled={shortlistLoading}
               >
@@ -468,8 +468,8 @@ const CarDetail: React.FC = () => {
           >
             {/* Top bar */}
             <div className="flex items-center justify-between p-4">
-              <span className="text-white/60 text-sm">{activePhoto + 1} / {photos.length}</span>
-              <button onClick={() => setLightboxOpen(false)} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+              <span className="text-foreground/60 text-sm">{activePhoto + 1} / {photos.length}</span>
+              <button onClick={() => setLightboxOpen(false)} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-foreground hover:bg-white/20 transition-colors">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -479,7 +479,7 @@ const CarDetail: React.FC = () => {
               {photos.length > 1 && (
                 <button
                   onClick={() => setActivePhoto((p) => (p - 1 + photos.length) % photos.length)}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-foreground hover:bg-white/20 transition-colors"
                 >
                   <ChevronLeft className="h-6 w-6" />
                 </button>
@@ -494,7 +494,7 @@ const CarDetail: React.FC = () => {
               {photos.length > 1 && (
                 <button
                   onClick={() => setActivePhoto((p) => (p + 1) % photos.length)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-foreground hover:bg-white/20 transition-colors"
                 >
                   <ChevronRight className="h-6 w-6" />
                 </button>

@@ -91,17 +91,17 @@ const ConciergeChat: React.FC = () => {
             className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-6rem)] bg-secondary border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-charcoal/50">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                   <Bot className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-display font-bold text-white">Autozon Concierge</h3>
+                  <h3 className="text-sm font-display font-bold text-foreground">Autozon Concierge</h3>
                   <span className="text-[10px] text-primary">Online</span>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} className="text-silver/50 hover:text-silver transition-colors">
+              <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-muted-foreground transition-colors">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -119,14 +119,14 @@ const ConciergeChat: React.FC = () => {
                     className={`max-w-[80%] rounded-xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
                       msg.role === "user"
                         ? "bg-primary text-primary-foreground"
-                        : "bg-charcoal/50 text-silver/80 border border-border"
+                        : "bg-muted text-muted-foreground border border-border"
                     }`}
                   >
                     {msg.content}
                   </div>
                   {msg.role === "user" && (
-                    <div className="w-6 h-6 rounded-full bg-silver/10 flex items-center justify-center shrink-0 mt-1">
-                      <User className="h-3 w-3 text-silver/60" />
+                    <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 mt-1">
+                      <User className="h-3 w-3 text-muted-foreground" />
                     </div>
                   )}
                 </div>
@@ -136,7 +136,7 @@ const ConciergeChat: React.FC = () => {
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                     <Bot className="h-3 w-3 text-primary" />
                   </div>
-                  <div className="bg-charcoal/50 border border-border rounded-xl px-3 py-2">
+                  <div className="bg-muted border border-border rounded-xl px-3 py-2">
                     <Loader2 className="h-4 w-4 text-primary animate-spin" />
                   </div>
                 </div>
@@ -154,7 +154,7 @@ const ConciergeChat: React.FC = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask me anything about cars..."
-                  className="bg-charcoal/50 border-border text-silver text-sm"
+                  className="bg-muted border-border text-muted-foreground text-sm"
                   disabled={isLoading}
                 />
                 <Button

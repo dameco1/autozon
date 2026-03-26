@@ -63,10 +63,10 @@ const NotificationBell: React.FC = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative text-silver/80">
+        <Button variant="ghost" size="icon" className="relative text-muted-foreground">
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-destructive text-[10px] font-bold text-white flex items-center justify-center">
+            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-destructive text-[10px] font-bold text-foreground flex items-center justify-center">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
@@ -74,7 +74,7 @@ const NotificationBell: React.FC = () => {
       </PopoverTrigger>
       <PopoverContent className="w-80 bg-secondary border-border p-0" align="end">
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-          <h3 className="text-sm font-display font-bold text-white">Notifications</h3>
+          <h3 className="text-sm font-display font-bold text-foreground">Notifications</h3>
           {unreadCount > 0 && (
             <button onClick={markAllRead} className="text-xs text-primary hover:underline">
               Mark all read
@@ -83,7 +83,7 @@ const NotificationBell: React.FC = () => {
         </div>
         <div className="max-h-64 overflow-y-auto">
           {notifications.length === 0 ? (
-            <p className="text-sm text-silver/50 p-4 text-center">No notifications yet</p>
+            <p className="text-sm text-muted-foreground p-4 text-center">No notifications yet</p>
           ) : (
             notifications.map((n) => (
               <button
@@ -93,16 +93,16 @@ const NotificationBell: React.FC = () => {
                   if (n.link) navigate(n.link);
                   setOpen(false);
                 }}
-                className={`w-full text-left px-4 py-3 border-b border-border/50 hover:bg-charcoal/30 transition-colors ${
+                className={`w-full text-left px-4 py-3 border-b border-border/50 hover:bg-muted/60 transition-colors ${
                   !n.read ? "bg-primary/5" : ""
                 }`}
               >
                 <div className="flex items-start gap-2">
                   {!n.read && <div className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0" />}
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-white truncate">{n.title}</p>
-                    <p className="text-xs text-silver/50 line-clamp-2">{n.message}</p>
-                    <p className="text-[10px] text-silver/30 mt-1">
+                    <p className="text-sm font-semibold text-foreground truncate">{n.title}</p>
+                    <p className="text-xs text-muted-foreground line-clamp-2">{n.message}</p>
+                    <p className="text-[10px] text-muted-foreground mt-1">
                       {new Date(n.created_at).toLocaleDateString()}
                     </p>
                   </div>

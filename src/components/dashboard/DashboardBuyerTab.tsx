@@ -177,7 +177,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
   };
 
   const prefChips = (arr: string[] | null, fallback: string) => {
-    if (!arr || arr.length === 0) return <span className="text-silver/30 text-xs">{fallback}</span>;
+    if (!arr || arr.length === 0) return <span className="text-muted-foreground text-xs">{fallback}</span>;
     return arr.map(v => <Badge key={v} variant="secondary" className="text-[10px] mr-1 mb-1">{v}</Badge>);
   };
 
@@ -208,12 +208,12 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
           <motion.div key={i} initial="hidden" animate="visible" variants={fadeUp} custom={i + 1}>
             <Card className="bg-secondary/50 border-border p-5">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-charcoal/50 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center">
                   <stat.icon className={`h-5 w-5 ${stat.color}`} />
                 </div>
                 <div>
-                  <p className="text-2xl font-display font-bold text-white">{stat.value}</p>
-                  <p className="text-xs text-silver/50">{stat.label}</p>
+                  <p className="text-2xl font-display font-bold text-foreground">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground">{stat.label}</p>
                 </div>
               </div>
             </Card>
@@ -225,7 +225,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
       <motion.div className="mb-8" initial="hidden" animate="visible" variants={fadeUp} custom={4.5}>
         <Card className="bg-secondary/50 border-border">
           <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-            <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+            <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
               <Settings2 className="h-5 w-5 text-primary" /> {dt.buyerPreferences || "Search Preferences"}
             </h2>
             {!editingPrefs ? (
@@ -234,7 +234,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
               </Button>
             ) : (
               <div className="flex gap-1">
-                <Button variant="ghost" size="sm" className="text-silver/50 text-xs" onClick={() => setEditingPrefs(false)}>
+                <Button variant="ghost" size="sm" className="text-muted-foreground text-xs" onClick={() => setEditingPrefs(false)}>
                   <X className="h-3 w-3" />
                 </Button>
                 <Button size="sm" className="bg-primary text-primary-foreground text-xs gap-1" onClick={handleSavePrefs} disabled={savingPrefs}>
@@ -249,42 +249,42 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
             prefs ? (
               <div className="px-6 py-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefBudget || "Budget"}</p>
-                  <p className="text-sm text-white font-semibold">€{(prefs.min_budget || 0).toLocaleString()} – €{(prefs.max_budget || 0).toLocaleString()}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{dt.prefBudget || "Budget"}</p>
+                  <p className="text-sm text-foreground font-semibold">€{(prefs.min_budget || 0).toLocaleString()} – €{(prefs.max_budget || 0).toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefYearRange || "Year Range"}</p>
-                  <p className="text-sm text-white font-semibold">{prefs.min_year || "—"} – {prefs.max_year || "—"}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{dt.prefYearRange || "Year Range"}</p>
+                  <p className="text-sm text-foreground font-semibold">{prefs.min_year || "—"} – {prefs.max_year || "—"}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefMaxMileage || "Max Mileage"}</p>
-                  <p className="text-sm text-white font-semibold">{prefs.max_mileage ? `${prefs.max_mileage.toLocaleString()} km` : "—"}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{dt.prefMaxMileage || "Max Mileage"}</p>
+                  <p className="text-sm text-foreground font-semibold">{prefs.max_mileage ? `${prefs.max_mileage.toLocaleString()} km` : "—"}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefBrands || "Brands"}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{dt.prefBrands || "Brands"}</p>
                   <div className="flex flex-wrap">{prefChips(prefs.preferred_makes, dt.prefAny || "Any")}</div>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefBodyTypes || "Body Types"}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{dt.prefBodyTypes || "Body Types"}</p>
                   <div className="flex flex-wrap">{prefChips(prefs.preferred_body_types, dt.prefAny || "Any")}</div>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefFuelTypes || "Fuel Types"}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{dt.prefFuelTypes || "Fuel Types"}</p>
                   <div className="flex flex-wrap">{prefChips(prefs.preferred_fuel_types, dt.prefAny || "Any")}</div>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefTransmission || "Transmission"}</p>
-                  <p className="text-sm text-white font-semibold">{prefs.preferred_transmission || (dt.prefAny || "Any")}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{dt.prefTransmission || "Transmission"}</p>
+                  <p className="text-sm text-foreground font-semibold">{prefs.preferred_transmission || (dt.prefAny || "Any")}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-silver/40 mb-1">{dt.prefTiming || "Timing"}</p>
-                  <p className="text-sm text-white font-semibold capitalize">{prefs.timing_preference || "—"}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{dt.prefTiming || "Timing"}</p>
+                  <p className="text-sm text-foreground font-semibold capitalize">{prefs.timing_preference || "—"}</p>
                 </div>
               </div>
             ) : (
               <div className="p-8 text-center">
-                <Settings2 className="h-12 w-12 text-silver/20 mx-auto mb-3" />
-                <p className="text-silver/50 text-sm mb-3">{dt.buyerNoPreferences || "No preferences set yet."}</p>
+                <Settings2 className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <p className="text-muted-foreground text-sm mb-3">{dt.buyerNoPreferences || "No preferences set yet."}</p>
                 <Button size="sm" className="bg-primary text-primary-foreground" onClick={handleStartEditPrefs}>
                   {dt.buyerSetPreferences || "Set Preferences"}
                 </Button>
@@ -295,68 +295,68 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
             <div className="px-6 py-4 space-y-5">
               {/* Budget */}
               <div>
-                <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefBudget || "Budget"}</p>
+                <p className="text-xs font-semibold text-muted-foreground mb-2">{dt.prefBudget || "Budget"}</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-silver/40">€</span>
-                  <Input type="number" className="h-8 w-28 bg-charcoal/50 border-border text-sm" value={editPrefs?.min_budget || 0} onChange={e => setEditPrefs(p => p ? { ...p, min_budget: +e.target.value } : p)} />
-                  <span className="text-xs text-silver/40">–</span>
-                  <span className="text-xs text-silver/40">€</span>
-                  <Input type="number" className="h-8 w-28 bg-charcoal/50 border-border text-sm" value={editPrefs?.max_budget || 0} onChange={e => setEditPrefs(p => p ? { ...p, max_budget: +e.target.value } : p)} />
+                  <span className="text-xs text-muted-foreground">€</span>
+                  <Input type="number" className="h-8 w-28 bg-muted border-border text-sm" value={editPrefs?.min_budget || 0} onChange={e => setEditPrefs(p => p ? { ...p, min_budget: +e.target.value } : p)} />
+                  <span className="text-xs text-muted-foreground">–</span>
+                  <span className="text-xs text-muted-foreground">€</span>
+                  <Input type="number" className="h-8 w-28 bg-muted border-border text-sm" value={editPrefs?.max_budget || 0} onChange={e => setEditPrefs(p => p ? { ...p, max_budget: +e.target.value } : p)} />
                 </div>
               </div>
               {/* Year & Mileage */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefYearRange || "Year Range"}</p>
+                  <p className="text-xs font-semibold text-muted-foreground mb-2">{dt.prefYearRange || "Year Range"}</p>
                   <div className="flex items-center gap-2">
-                    <Input type="number" className="h-8 bg-charcoal/50 border-border text-sm" value={editPrefs?.min_year || 2018} onChange={e => setEditPrefs(p => p ? { ...p, min_year: +e.target.value } : p)} />
-                    <span className="text-xs text-silver/40">–</span>
-                    <Input type="number" className="h-8 bg-charcoal/50 border-border text-sm" value={editPrefs?.max_year || 2026} onChange={e => setEditPrefs(p => p ? { ...p, max_year: +e.target.value } : p)} />
+                    <Input type="number" className="h-8 bg-muted border-border text-sm" value={editPrefs?.min_year || 2018} onChange={e => setEditPrefs(p => p ? { ...p, min_year: +e.target.value } : p)} />
+                    <span className="text-xs text-muted-foreground">–</span>
+                    <Input type="number" className="h-8 bg-muted border-border text-sm" value={editPrefs?.max_year || 2026} onChange={e => setEditPrefs(p => p ? { ...p, max_year: +e.target.value } : p)} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefMaxMileage || "Max Mileage"}</p>
-                  <Input type="number" className="h-8 bg-charcoal/50 border-border text-sm" value={editPrefs?.max_mileage || 100000} onChange={e => setEditPrefs(p => p ? { ...p, max_mileage: +e.target.value } : p)} />
+                  <p className="text-xs font-semibold text-muted-foreground mb-2">{dt.prefMaxMileage || "Max Mileage"}</p>
+                  <Input type="number" className="h-8 bg-muted border-border text-sm" value={editPrefs?.max_mileage || 100000} onChange={e => setEditPrefs(p => p ? { ...p, max_mileage: +e.target.value } : p)} />
                 </div>
               </div>
               {/* Body Types */}
               <div>
-                <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefBodyTypes || "Body Types"}</p>
+                <p className="text-xs font-semibold text-muted-foreground mb-2">{dt.prefBodyTypes || "Body Types"}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {BODY_TYPES.map(bt => (
                     <button key={bt} onClick={() => togglePrefArray("preferred_body_types", bt)}
                       className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
                         (editPrefs?.preferred_body_types || []).includes(bt)
                           ? "bg-primary/10 border-primary/30 text-primary"
-                          : "bg-charcoal/30 border-border text-silver/50 hover:border-silver/30"
+                          : "bg-muted/60 border-border text-muted-foreground hover:border-silver/30"
                       }`}>{bt}</button>
                   ))}
                 </div>
               </div>
               {/* Fuel Types */}
               <div>
-                <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefFuelTypes || "Fuel Types"}</p>
+                <p className="text-xs font-semibold text-muted-foreground mb-2">{dt.prefFuelTypes || "Fuel Types"}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {FUEL_TYPES.map(ft => (
                     <button key={ft} onClick={() => togglePrefArray("preferred_fuel_types", ft)}
                       className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
                         (editPrefs?.preferred_fuel_types || []).includes(ft)
                           ? "bg-primary/10 border-primary/30 text-primary"
-                          : "bg-charcoal/30 border-border text-silver/50 hover:border-silver/30"
+                          : "bg-muted/60 border-border text-muted-foreground hover:border-silver/30"
                       }`}>{ft}</button>
                   ))}
                 </div>
               </div>
               {/* Transmission */}
               <div>
-                <p className="text-xs font-semibold text-silver/60 mb-2">{dt.prefTransmission || "Transmission"}</p>
+                <p className="text-xs font-semibold text-muted-foreground mb-2">{dt.prefTransmission || "Transmission"}</p>
                 <div className="flex gap-1.5">
                   {["Manual", "Automatic"].map(tr => (
                     <button key={tr} onClick={() => setEditPrefs(p => p ? { ...p, preferred_transmission: p.preferred_transmission === tr ? null : tr } : p)}
                       className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                         editPrefs?.preferred_transmission === tr
                           ? "bg-primary/10 border-primary/30 text-primary"
-                          : "bg-charcoal/30 border-border text-silver/50 hover:border-silver/30"
+                          : "bg-muted/60 border-border text-muted-foreground hover:border-silver/30"
                       }`}>{tr}</button>
                   ))}
                 </div>
@@ -371,26 +371,26 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
         <motion.div className="lg:col-span-2" initial="hidden" animate="visible" variants={fadeUp} custom={5}>
           <Card className="bg-secondary/50 border-border">
             <div className="px-6 py-4 border-b border-border">
-              <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+              <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
                 <ShoppingCart className="h-5 w-5 text-emerald-400" /> {dt.buyerActiveAcquisitions || "Active Acquisitions"}
               </h2>
             </div>
             {activeAcquisitions.length === 0 ? (
               <div className="p-8 text-center">
-                <ShoppingCart className="h-12 w-12 text-silver/20 mx-auto mb-3" />
-                <p className="text-silver/50 text-sm">{dt.buyerNoAcquisitions || "No active acquisitions. Make an offer on a car to start!"}</p>
+                <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <p className="text-muted-foreground text-sm">{dt.buyerNoAcquisitions || "No active acquisitions. Make an offer on a car to start!"}</p>
               </div>
             ) : (
               <div className="divide-y divide-border">
                 {activeAcquisitions.map(tx => (
                   <div
                     key={tx.id}
-                    className="px-6 py-4 hover:bg-charcoal/20 transition-colors cursor-pointer"
+                    className="px-6 py-4 hover:bg-muted/40 transition-colors cursor-pointer"
                     onClick={() => navigate(`/acquire/${tx.offer_id}`)}
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <p className="text-sm font-semibold text-white">{carLabel(tx.car_id)}</p>
+                        <p className="text-sm font-semibold text-foreground">{carLabel(tx.car_id)}</p>
                         <p className="text-xs text-primary font-semibold mt-0.5">€{tx.agreed_price.toLocaleString()}</p>
                       </div>
                       <Badge variant="outline" className="text-xs">{tx.status}</Badge>
@@ -404,7 +404,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                             <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium w-full justify-center ${
                               isCompleted ? "bg-emerald-500/10 text-emerald-400" :
                               isCurrent ? "bg-primary/10 text-primary ring-1 ring-primary/30" :
-                              "bg-charcoal/30 text-silver/30"
+                              "bg-muted/60 text-muted-foreground"
                             }`}>
                               <step.icon className="h-3 w-3" />
                               <span className="hidden sm:inline">{step.label}</span>
@@ -426,7 +426,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={5.5}>
             <Card className="bg-secondary/50 border-border">
               <div className="px-6 py-4 border-b border-border">
-                <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
                   <Handshake className="h-5 w-5 text-primary" /> {dt.buyerMyOffers || "My Offers"}
                   {activeBuyerOffers.length > 0 && (
                     <span className="ml-1 inline-flex items-center justify-center h-6 min-w-[24px] px-1.5 rounded-full bg-primary/20 text-primary text-xs font-bold">
@@ -437,7 +437,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
               </div>
               {buyerOffers.length === 0 ? (
                 <div className="p-6 text-center">
-                  <p className="text-sm text-silver/50">{dt.buyerNoOffers || "No offers yet. Browse cars and make an offer!"}</p>
+                  <p className="text-sm text-muted-foreground">{dt.buyerNoOffers || "No offers yet. Browse cars and make an offer!"}</p>
                   <Button variant="ghost" size="sm" className="mt-2 text-primary text-xs" onClick={() => navigate("/cars")}>
                     <Search className="h-3 w-3 mr-1" /> {dt.buyerBrowseCars || "Browse Cars"}
                   </Button>
@@ -447,20 +447,20 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                   {buyerOffers.slice(0, 6).map(offer => (
                     <div
                       key={offer.id}
-                      className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-charcoal/20 transition-colors"
+                      className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-muted/40 transition-colors"
                       onClick={() => navigate(`/negotiate/${offer.id}`)}
                     >
                       <div>
-                        <p className="text-sm text-white font-semibold">{carLabel(offer.car_id)}</p>
+                        <p className="text-sm text-foreground font-semibold">{carLabel(offer.car_id)}</p>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs text-silver/40">€{offer.amount.toLocaleString()}</span>
+                          <span className="text-xs text-muted-foreground">€{offer.amount.toLocaleString()}</span>
                           {offerStatusBadge(offer.status)}
                           {offer.agreed_price && (
                             <span className="text-[10px] text-emerald-400">→ €{offer.agreed_price.toLocaleString()}</span>
                           )}
                         </div>
                       </div>
-                      <ArrowRight className="h-4 w-4 text-silver/30" />
+                      <ArrowRight className="h-4 w-4 text-muted-foreground" />
                     </div>
                   ))}
                 </div>
@@ -472,7 +472,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6}>
             <Card className="bg-secondary/50 border-border">
               <div className="px-6 py-4 border-b border-border">
-                <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
                   <Bookmark className="h-5 w-5 text-amber-400" /> {dt.buyerShortlist || "Shortlisted Cars"}
                   {shortlists.length > 0 && (
                     <span className="ml-1 inline-flex items-center justify-center h-6 min-w-[24px] px-1.5 rounded-full bg-amber-400/20 text-amber-400 text-xs font-bold">
@@ -482,29 +482,29 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                 </h2>
               </div>
               {shortlists.length === 0 ? (
-                <p className="p-6 text-sm text-silver/50 text-center">{dt.buyerNoShortlists || "No cars shortlisted yet."}</p>
+                <p className="p-6 text-sm text-muted-foreground text-center">{dt.buyerNoShortlists || "No cars shortlisted yet."}</p>
               ) : (
                 <div className="divide-y divide-border">
                   {shortlists.slice(0, 6).map(sl => (
                     <div
                       key={sl.id}
-                      className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-charcoal/20 transition-colors"
+                      className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-muted/40 transition-colors"
                       onClick={() => navigate(`/car/${sl.car_id}`)}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-8 rounded bg-charcoal/50 overflow-hidden shrink-0">
+                        <div className="w-10 h-8 rounded bg-muted overflow-hidden shrink-0">
                           {carCache[sl.car_id]?.image_url ? (
                             <img src={carCache[sl.car_id].image_url!} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center"><Car className="h-3 w-3 text-silver/20" /></div>
+                            <div className="w-full h-full flex items-center justify-center"><Car className="h-3 w-3 text-muted-foreground" /></div>
                           )}
                         </div>
                         <div>
-                          <p className="text-sm text-white font-semibold">{carLabel(sl.car_id)}</p>
+                          <p className="text-sm text-foreground font-semibold">{carLabel(sl.car_id)}</p>
                           <p className="text-xs text-primary font-semibold">€{carPrice(sl.car_id).toLocaleString()}</p>
                         </div>
                       </div>
-                      <ArrowRight className="h-4 w-4 text-silver/30" />
+                      <ArrowRight className="h-4 w-4 text-muted-foreground" />
                     </div>
                   ))}
                 </div>
@@ -515,15 +515,15 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
           {/* Quick Actions */}
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={7}>
             <Card className="bg-secondary/50 border-border p-6">
-              <h2 className="text-lg font-display font-bold text-white mb-4">{t.dashboard.quickActions}</h2>
+              <h2 className="text-lg font-display font-bold text-foreground mb-4">{t.dashboard.quickActions}</h2>
               <div className="space-y-2">
-                <Button variant="ghost" className="w-full justify-start text-silver/70 hover:text-white" onClick={() => navigate("/cars")}>
+                <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/cars")}>
                   <Search className="h-4 w-4 mr-3 text-primary" /> {dt.buyerBrowseCars || "Browse Cars"}
                 </Button>
-                <Button variant="ghost" className="w-full justify-start text-silver/70 hover:text-white" onClick={() => navigate("/recommendations")}>
+                <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/recommendations")}>
                   <BarChart3 className="h-4 w-4 mr-3 text-primary" /> {t.dashboard.myRecommendations}
                 </Button>
-                <Button variant="ghost" className="w-full justify-start text-silver/70 hover:text-white" onClick={() => navigate("/intent")}>
+                <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/intent")}>
                   <Car className="h-4 w-4 mr-3 text-primary" /> {t.dashboard.buyOrSell}
                 </Button>
               </div>
