@@ -585,13 +585,19 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          budget_max: number | null
+          budget_min: number | null
+          car_purpose: string | null
           city: string | null
           country: string | null
           created_at: string
           full_name: string
+          has_kids: boolean | null
           id: string
           language: string | null
+          num_kids: number | null
           phone: string | null
+          relationship_status: string | null
           suspended: boolean
           suspension_type: string | null
           updated_at: string
@@ -599,13 +605,19 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          budget_max?: number | null
+          budget_min?: number | null
+          car_purpose?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           full_name?: string
+          has_kids?: boolean | null
           id?: string
           language?: string | null
+          num_kids?: number | null
           phone?: string | null
+          relationship_status?: string | null
           suspended?: boolean
           suspension_type?: string | null
           updated_at?: string
@@ -613,13 +625,19 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          budget_max?: number | null
+          budget_min?: number | null
+          car_purpose?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           full_name?: string
+          has_kids?: boolean | null
           id?: string
           language?: string | null
+          num_kids?: number | null
           phone?: string | null
+          relationship_status?: string | null
           suspended?: boolean
           suspension_type?: string | null
           updated_at?: string

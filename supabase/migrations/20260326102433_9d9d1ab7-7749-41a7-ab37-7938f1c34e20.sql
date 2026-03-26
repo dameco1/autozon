@@ -1,0 +1,7 @@
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS relationship_status text DEFAULT NULL,
+  ADD COLUMN IF NOT EXISTS has_kids boolean DEFAULT NULL,
+  ADD COLUMN IF NOT EXISTS num_kids integer DEFAULT NULL,
+  ADD COLUMN IF NOT EXISTS car_purpose text DEFAULT NULL,
+  ADD COLUMN IF NOT EXISTS budget_min numeric DEFAULT NULL,
+  ADD COLUMN IF NOT EXISTS budget_max numeric DEFAULT NULL;
