@@ -26,7 +26,6 @@ const CarSearchSection: React.FC = () => {
   const [makeModelData, setMakeModelData] = useState<CarMakeModel[]>([]);
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
-  // Car filters
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -34,7 +33,6 @@ const CarSearchSection: React.FC = () => {
   const [fuelType, setFuelType] = useState("");
   const [maxMileage, setMaxMileage] = useState("");
 
-  // Lifestyle filters
   const [relationship, setRelationship] = useState("");
   const [hasKids, setHasKids] = useState("");
   const [purpose, setPurpose] = useState("");
@@ -64,7 +62,6 @@ const CarSearchSection: React.FC = () => {
     [makeModelData, make]
   );
 
-  // Use budget as maxPrice if set, otherwise use maxPrice
   const effectiveMaxPrice = budget || maxPrice;
 
   useEffect(() => {
@@ -111,24 +108,23 @@ const CarSearchSection: React.FC = () => {
   const ls = t.lifestyle;
 
   return (
-    <section id="car-search" className="bg-charcoal py-12 px-4">
+    <section id="car-search" className="bg-muted py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-display font-bold text-white text-center mb-2">
+        <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground text-center mb-2">
           {cs.title}
         </h2>
-        <p className="text-silver/50 text-center text-sm mb-8">{cs.subtitle}</p>
+        <p className="text-muted-foreground text-center text-sm mb-8">{cs.subtitle}</p>
 
-        <div className="bg-secondary/50 border border-border rounded-2xl p-6 sm:p-8">
+        <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
           {/* Lifestyle filters row */}
           <div className="mb-6">
-            <p className="text-silver/40 text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <p className="text-muted-foreground text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
               <Users className="h-3.5 w-3.5" /> {ls.sectionTitle}
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {/* Relationship */}
               <Select value={relationship} onValueChange={setRelationship}>
                 <SelectTrigger className="bg-background border-border text-foreground text-sm">
-                  <Heart className="h-3.5 w-3.5 mr-1 text-silver/40 shrink-0" />
+                  <Heart className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
                   <SelectValue placeholder={ls.relationship} />
                 </SelectTrigger>
                 <SelectContent>
@@ -138,10 +134,9 @@ const CarSearchSection: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              {/* Kids */}
               <Select value={hasKids} onValueChange={setHasKids}>
                 <SelectTrigger className="bg-background border-border text-foreground text-sm">
-                  <Baby className="h-3.5 w-3.5 mr-1 text-silver/40 shrink-0" />
+                  <Baby className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
                   <SelectValue placeholder={ls.kids} />
                 </SelectTrigger>
                 <SelectContent>
@@ -151,10 +146,9 @@ const CarSearchSection: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              {/* Purpose */}
               <Select value={purpose} onValueChange={setPurpose}>
                 <SelectTrigger className="bg-background border-border text-foreground text-sm">
-                  <Briefcase className="h-3.5 w-3.5 mr-1 text-silver/40 shrink-0" />
+                  <Briefcase className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
                   <SelectValue placeholder={ls.purpose} />
                 </SelectTrigger>
                 <SelectContent>
@@ -164,10 +158,9 @@ const CarSearchSection: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              {/* Budget */}
               <Select value={budget} onValueChange={setBudget}>
                 <SelectTrigger className="bg-background border-border text-foreground text-sm">
-                  <Wallet className="h-3.5 w-3.5 mr-1 text-silver/40 shrink-0" />
+                  <Wallet className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
                   <SelectValue placeholder={ls.budget} />
                 </SelectTrigger>
                 <SelectContent>
@@ -181,15 +174,15 @@ const CarSearchSection: React.FC = () => {
 
           {/* OR Divider */}
           <div className="relative my-6">
-            <div className="border-t border-border/50" />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-secondary px-4 py-1 rounded-full text-xs font-bold text-orange uppercase tracking-widest">
+            <div className="border-t border-border" />
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-4 py-1 rounded-full text-xs font-bold text-orange uppercase tracking-widest">
               {cs.or}
             </span>
           </div>
 
           {/* Car spec filters */}
           <div className="mb-3">
-            <p className="text-silver/40 text-xs uppercase tracking-wider flex items-center gap-1.5">
+            <p className="text-muted-foreground text-xs uppercase tracking-wider flex items-center gap-1.5">
               <Car className="h-3.5 w-3.5" /> {cs.vehicleType}
             </p>
           </div>
@@ -264,7 +257,7 @@ const CarSearchSection: React.FC = () => {
           <div className="flex items-center justify-between">
             <button
               onClick={resetAll}
-              className="text-sm text-silver/50 hover:text-silver transition-colors"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {cs.reset}
             </button>

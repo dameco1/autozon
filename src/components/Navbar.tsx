@@ -37,25 +37,23 @@ const Navbar: React.FC = () => {
     navigate("/");
   };
 
+  const linkClass = "text-sm font-medium transition-colors text-foreground/70 hover:text-orange";
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-md shadow-sm border-b border-border" : "bg-background/80 backdrop-blur-sm"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className={`text-3xl font-display font-bold tracking-tight transition-colors ${scrolled ? "text-navy" : "text-white"}`}>
+            <span className="text-3xl font-display font-bold tracking-tight text-foreground">
               auto<span className="text-orange">zon</span>
             </span>
           </Link>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-5">
-            <Link to="/car-selection" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
-              {t.nav.buyCar}
-            </Link>
-            <Link to="/intent" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
-              {t.nav.sellCar}
-            </Link>
+            <Link to="/car-selection" className={linkClass}>{t.nav.buyCar}</Link>
+            <Link to="/intent" className={linkClass}>{t.nav.sellCar}</Link>
             <button
               onClick={() => {
                 if (window.location.pathname === "/") {
@@ -64,17 +62,13 @@ const Navbar: React.FC = () => {
                   navigate("/#how-it-works");
                 }
               }}
-              className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}
+              className={linkClass}
             >
               {t.nav.howItWorks}
             </button>
-            <Link to="/about" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
-              {t.nav.aboutUs}
-            </Link>
-            <Link to="/qa" className={`text-sm font-medium transition-colors ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
-              Q&A
-            </Link>
-            <button onClick={toggleLanguage} className={`text-sm font-medium transition-colors flex items-center gap-1 ${scrolled ? "text-navy/70 hover:text-orange" : "text-silver/80 hover:text-orange"}`}>
+            <Link to="/about" className={linkClass}>{t.nav.aboutUs}</Link>
+            <Link to="/qa" className={linkClass}>Q&A</Link>
+            <button onClick={toggleLanguage} className={`${linkClass} flex items-center gap-1`}>
               <Globe className="h-4 w-4" />
               {t.nav.language}
             </button>
@@ -82,20 +76,20 @@ const Navbar: React.FC = () => {
               <>
                 <NotificationBell />
                 {isAdmin && (
-                  <Button variant="ghost" className={`${scrolled ? "text-navy/70" : "text-silver/80"}`} onClick={() => navigate("/admin")}>
+                  <Button variant="ghost" className="text-foreground/70" onClick={() => navigate("/admin")}>
                     <Shield className="h-4 w-4 mr-1" />Admin
                   </Button>
                 )}
-                <Button variant="ghost" className={`${scrolled ? "text-navy/70" : "text-silver/80"}`} onClick={() => navigate("/dashboard")}>
+                <Button variant="ghost" className="text-foreground/70" onClick={() => navigate("/dashboard")}>
                   {t.nav.dashboard}
                 </Button>
-                <Button variant="ghost" className={`${scrolled ? "text-navy/70" : "text-silver/80"}`} onClick={handleLogout}>
+                <Button variant="ghost" className="text-foreground/70" onClick={handleLogout}>
                   {t.nav.logout}
                 </Button>
               </>
             ) : (
               <>
-                <Button variant="ghost" className={`${scrolled ? "text-navy/70" : "text-silver/80"}`} onClick={() => navigate("/login")}>
+                <Button variant="ghost" className="text-foreground/70" onClick={() => navigate("/login")}>
                   {t.nav.login}
                 </Button>
                 <Button className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg px-5" onClick={() => navigate("/intent")}>
@@ -110,7 +104,7 @@ const Navbar: React.FC = () => {
             <Button size="sm" className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg text-xs px-3" onClick={() => navigate("/intent")}>
               {t.nav.getStarted}
             </Button>
-            <button onClick={() => setMenuOpen(!menuOpen)} className={`${scrolled ? "text-navy" : "text-silver"}`}>
+            <button onClick={() => setMenuOpen(!menuOpen)} className="text-foreground">
               {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
@@ -119,11 +113,11 @@ const Navbar: React.FC = () => {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-border px-4 py-4 space-y-3">
-          <Link to="/car-selection" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+        <div className="md:hidden bg-card border-t border-border px-4 py-4 space-y-3">
+          <Link to="/car-selection" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             {t.nav.buyCar}
           </Link>
-          <Link to="/intent" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+          <Link to="/intent" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             {t.nav.sellCar}
           </Link>
           <button
@@ -135,35 +129,35 @@ const Navbar: React.FC = () => {
                 navigate("/#how-it-works");
               }
             }}
-            className="block text-sm text-navy/80 hover:text-orange"
+            className="block text-sm text-foreground/80 hover:text-orange"
           >
             {t.nav.howItWorks}
           </button>
-          <Link to="/about" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+          <Link to="/about" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             {t.nav.aboutUs}
           </Link>
-          <Link to="/qa" className="block text-sm text-navy/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+          <Link to="/qa" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             Q&A
           </Link>
-          <button onClick={() => { toggleLanguage(); setMenuOpen(false); }} className="block text-sm text-navy/80 hover:text-orange">
+          <button onClick={() => { toggleLanguage(); setMenuOpen(false); }} className="block text-sm text-foreground/80 hover:text-orange">
             <Globe className="h-4 w-4 inline mr-1" />{t.nav.language}
           </button>
           {user ? (
             <>
               {isAdmin && (
-                <Button variant="ghost" className="w-full justify-start text-navy/80" onClick={() => { navigate("/admin"); setMenuOpen(false); }}>
+                <Button variant="ghost" className="w-full justify-start text-foreground/80" onClick={() => { navigate("/admin"); setMenuOpen(false); }}>
                   <Shield className="h-4 w-4 mr-1" />Admin
                 </Button>
               )}
-              <Button variant="ghost" className="w-full justify-start text-navy/80" onClick={() => { navigate("/dashboard"); setMenuOpen(false); }}>
+              <Button variant="ghost" className="w-full justify-start text-foreground/80" onClick={() => { navigate("/dashboard"); setMenuOpen(false); }}>
                 {t.nav.dashboard}
               </Button>
-              <Button variant="ghost" className="w-full justify-start text-navy/80" onClick={() => { handleLogout(); setMenuOpen(false); }}>
+              <Button variant="ghost" className="w-full justify-start text-foreground/80" onClick={() => { handleLogout(); setMenuOpen(false); }}>
                 {t.nav.logout}
               </Button>
             </>
           ) : (
-            <Button variant="ghost" className="w-full justify-start text-navy/80" onClick={() => { navigate("/login"); setMenuOpen(false); }}>
+            <Button variant="ghost" className="w-full justify-start text-foreground/80" onClick={() => { navigate("/login"); setMenuOpen(false); }}>
               {t.nav.login}
             </Button>
           )}

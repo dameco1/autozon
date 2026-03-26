@@ -52,24 +52,15 @@ const AiEngineSection: React.FC = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 relative overflow-hidden" style={{ backgroundColor: "#111827" }}>
-      {/* Dot pattern overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-        }}
-      />
-
+    <section className="py-16 sm:py-20 bg-muted relative overflow-hidden">
       <div className="relative z-10 max-w-5xl mx-auto px-4">
         {/* Header */}
         <motion.div className="text-center mb-14" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <span className="text-xs font-semibold tracking-[0.2em] uppercase text-orange mb-4 block">{content.badge}</span>
-          <h2 className="text-2xl sm:text-3xl lg:text-[40px] font-display font-black text-white leading-tight mb-5">
+          <h2 className="text-2xl sm:text-3xl lg:text-[40px] font-display font-black text-foreground leading-tight mb-5">
             {content.title}
           </h2>
-          <p className="text-silver/60 text-base sm:text-lg max-w-[600px] mx-auto leading-relaxed">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-[600px] mx-auto leading-relaxed">
             {content.subtitle}
           </p>
         </motion.div>
@@ -78,7 +69,7 @@ const AiEngineSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Seller card */}
           <motion.div
-            className="rounded-2xl border border-white/[0.08] bg-navy/60 p-8 transition-all duration-500 hover:border-orange/20 hover:shadow-[inset_0_1px_30px_rgba(249,115,22,0.04)]"
+            className="rounded-2xl border border-border bg-card p-8 shadow-sm transition-all duration-500 hover:border-orange/30 hover:shadow-md"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
           >
             <div className="flex items-center gap-3 mb-5">
@@ -89,8 +80,8 @@ const AiEngineSection: React.FC = () => {
                 {content.seller.badge}
               </span>
             </div>
-            <h3 className="text-xl font-display font-bold text-white mb-3">{content.seller.title}</h3>
-            <p className="text-silver/50 text-sm leading-relaxed mb-6">{content.seller.body}</p>
+            <h3 className="text-xl font-display font-bold text-foreground mb-3">{content.seller.title}</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6">{content.seller.body}</p>
             <button
               onClick={() => navigate("/car-upload")}
               className="text-orange font-semibold text-sm underline underline-offset-4 hover:text-orange/80 transition-colors"
@@ -101,7 +92,7 @@ const AiEngineSection: React.FC = () => {
 
           {/* Buyer card */}
           <motion.div
-            className="rounded-2xl border border-white/[0.08] bg-navy/60 p-8 transition-all duration-500 hover:border-orange/20 hover:shadow-[inset_0_1px_30px_rgba(249,115,22,0.04)]"
+            className="rounded-2xl border border-border bg-card p-8 shadow-sm transition-all duration-500 hover:border-orange/30 hover:shadow-md"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
           >
             <div className="flex items-center gap-3 mb-5">
@@ -112,8 +103,8 @@ const AiEngineSection: React.FC = () => {
                 {content.buyer.badge}
               </span>
             </div>
-            <h3 className="text-xl font-display font-bold text-white mb-3">{content.buyer.title}</h3>
-            <p className="text-silver/50 text-sm leading-relaxed mb-6">{content.buyer.body}</p>
+            <h3 className="text-xl font-display font-bold text-foreground mb-3">{content.buyer.title}</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6">{content.buyer.body}</p>
             <button
               onClick={() => navigate("/onboarding")}
               className="text-orange font-semibold text-sm underline underline-offset-4 hover:text-orange/80 transition-colors"
