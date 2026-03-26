@@ -103,10 +103,10 @@ const MarketComparison: React.FC<Props> = ({ data, loading, error, askingPrice, 
           <span className="text-muted-foreground">avg €{data.avg_price.toLocaleString()}</span>
           <span>€{data.max_price.toLocaleString()}</span>
         </div>
-        <div className="relative h-4 bg-charcoal/80 rounded-full overflow-hidden">
+        <div className="relative h-4 bg-muted rounded-full overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/40 to-destructive/20 rounded-full" />
           <div
-            className="absolute top-0 bottom-0 w-0.5 bg-silver/30"
+            className="absolute top-0 bottom-0 w-0.5 bg-border"
             style={{ left: `${range > 0 ? ((data.avg_price - data.min_price) / range) * 100 : 50}%` }}
           />
           <div
