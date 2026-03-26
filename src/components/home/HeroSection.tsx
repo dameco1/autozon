@@ -29,6 +29,28 @@ const HeroSection: React.FC = () => {
       {/* Warm radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
+      {/* Transparent car images */}
+      <motion.img
+        src={heroCar1}
+        alt=""
+        className="absolute bottom-0 left-[-5%] w-[320px] lg:w-[420px] opacity-[0.07] pointer-events-none select-none"
+        initial={{ opacity: 0, x: -40 }}
+        animate={{ opacity: 0.07, x: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        width={800}
+        height={512}
+      />
+      <motion.img
+        src={heroCar2}
+        alt=""
+        className="absolute bottom-0 right-[-5%] w-[300px] lg:w-[400px] opacity-[0.07] pointer-events-none select-none"
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 0.07, x: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+        width={800}
+        height={512}
+      />
+
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full text-center">
         {/* Headline */}
         <motion.h1
