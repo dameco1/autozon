@@ -1,0 +1,1 @@
+CREATE POLICY "Anyone can view car models" ON public.car_models FOR SELECT TO public USING (true);
