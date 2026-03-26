@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Lock, Zap } from "lucide-react";
+import { ArrowRight, CheckCircle2, Lock, Zap, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -15,9 +15,10 @@ const fadeUp = {
 };
 
 const badgeIcons: Record<string, React.ReactNode> = {
-  check: <CheckCircle2 className="h-4 w-4 text-green" />,
-  lock: <Lock className="h-4 w-4 text-silver/60" />,
-  zap: <Zap className="h-4 w-4 text-orange" />,
+  check: <CheckCircle2 className="h-4 w-4 text-green shrink-0" />,
+  lock: <Lock className="h-4 w-4 text-orange shrink-0" />,
+  zap: <Zap className="h-4 w-4 text-orange shrink-0" />,
+  card: <CreditCard className="h-4 w-4 text-orange shrink-0" />,
 };
 
 const HeroSection: React.FC = () => {
@@ -80,14 +81,17 @@ const HeroSection: React.FC = () => {
 
         {/* Trust Badges */}
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-6 text-silver/50 text-sm"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto"
           initial="hidden" animate="visible" variants={fadeUp} custom={2}
         >
           {t.hero.trustBadges.map((badge, i) => (
-            <span key={i} className="flex items-center gap-1.5">
+            <div
+              key={i}
+              className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2.5 backdrop-blur-sm hover:border-orange/20 transition-colors"
+            >
               {badgeIcons[badge.icon]}
-              {badge.text}
-            </span>
+              <span className="text-white text-xs font-semibold leading-tight">{badge.text}</span>
+            </div>
           ))}
         </motion.div>
       </div>
