@@ -16,7 +16,7 @@ const FooterSection: React.FC = () => {
           </div>
           <p className="text-white/40 text-sm">{t.footer.copyright}</p>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/40">
+        <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/40 mb-8">
           <Link to="/privacy-policy" className="hover:text-orange transition-colors">Privacy Policy</Link>
           <span>·</span>
           <Link to="/terms" className="hover:text-orange transition-colors">Terms & Conditions</Link>
@@ -35,6 +35,17 @@ const FooterSection: React.FC = () => {
             Cookie Settings
           </button>
         </div>
+
+        {/* Footnotes / Disclaimers */}
+        {t.hero.footnotes && (
+          <div className="border-t border-white/10 pt-5 space-y-1.5">
+            {t.hero.footnotes.map((note, i) => (
+              <p key={i} className="text-[10px] leading-relaxed text-white/30">
+                {note}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
     </footer>
   );
