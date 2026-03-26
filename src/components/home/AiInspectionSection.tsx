@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, Search, ShieldCheck, Sparkles, Crosshair } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -94,6 +94,24 @@ const severityDot: Record<string, string> = {
 const AiInspectionSection: React.FC = () => {
   const { language } = useLanguage();
 
+  const [activePin, setActivePin] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Close tooltip when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setActivePin(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
+
   const title = language === "de"
     ? "KI-Inspektion für faire Bewertung"
     : "AI Inspection for Fair Valuation";
@@ -145,7 +163,7 @@ const AiInspectionSection: React.FC = () => {
           custom={1}
         >
           {/* Car image container */}
-          <div className="relative rounded-2xl overflow-hidden border border-border bg-navy/50">
+          <div ref={containerRef} className="relative rounded-2xl overflow-hidden border border-border bg-navy/50">
             <img
               src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80"
               alt="BMW vehicle undergoing AI inspection"
@@ -165,40 +183,53 @@ const AiInspectionSection: React.FC = () => {
             />
 
             {/* Damage pins */}
-            {damagePins.map((pin, i) => (
-              <motion.div
-                key={pin.id}
-                className="absolute group"
-                style={{ top: pin.top, left: pin.left }}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={pulseRing}
-                custom={i}
-              >
-                {/* Pulsing ring */}
-                <span className={`absolute inset-0 w-6 h-6 -ml-3 -mt-3 rounded-full ${severityDot[pin.severity]} opacity-30 animate-ping`} />
-                {/* Dot */}
-                <span className={`relative block w-4 h-4 -ml-2 -mt-2 rounded-full ${severityDot[pin.severity]} border-2 border-white/30 shadow-lg cursor-pointer`} />
-
-                {/* Tooltip card */}
-                <div
-                  className={`absolute z-20 hidden group-hover:block w-56 ${
-                    pin.anchorSide === "left" ? "left-5 top-1/2 -translate-y-1/2" : "right-5 top-1/2 -translate-y-1/2"
-                  }`}
+            {damagePins.map((pin, i) => {
+              const isActive = activePin === pin.id;
+              return (
+                <motion.div
+                  key={pin.id}
+                  className="absolute group"
+                  style={{ top: pin.top, left: pin.left }}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={pulseRing}
+                  custom={i}
                 >
-                  <div className={`rounded-xl border p-3 backdrop-blur-md bg-navy/90 ${severityColor[pin.severity].split(" ")[0]}`}>
-                    <div className="flex items-center gap-2 mb-1">
-                      <AlertTriangle className={`h-3.5 w-3.5 ${
-                        pin.severity === "high" ? "text-destructive" : pin.severity === "medium" ? "text-orange" : "text-green"
-                      }`} />
-                      <span className="text-xs font-bold text-white">{pin.label}</span>
+                  {/* Pulsing ring */}
+                  <span className={`absolute inset-0 w-6 h-6 -ml-3 -mt-3 rounded-full ${severityDot[pin.severity]} opacity-30 animate-ping`} />
+                  {/* Dot — tap or hover */}
+                  <button
+                    type="button"
+                    className={`relative block w-5 h-5 -ml-2.5 -mt-2.5 rounded-full ${severityDot[pin.severity]} border-2 border-white/30 shadow-lg cursor-pointer focus:outline-none`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActivePin(isActive ? null : pin.id);
+                    }}
+                    aria-label={pin.label}
+                  />
+
+                  {/* Tooltip card — visible on hover (desktop) or when active (mobile tap) */}
+                  <div
+                    className={`absolute z-20 w-56 transition-opacity duration-200 ${
+                      isActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto"
+                    } ${
+                      pin.anchorSide === "left" ? "left-5 top-1/2 -translate-y-1/2" : "right-5 top-1/2 -translate-y-1/2"
+                    }`}
+                  >
+                    <div className={`rounded-xl border p-3 backdrop-blur-md bg-navy/90 ${severityColor[pin.severity].split(" ")[0]}`}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <AlertTriangle className={`h-3.5 w-3.5 ${
+                          pin.severity === "high" ? "text-destructive" : pin.severity === "medium" ? "text-orange" : "text-green"
+                        }`} />
+                        <span className="text-xs font-bold text-white">{pin.label}</span>
+                      </div>
+                      <p className="text-[11px] text-silver/60 leading-snug">{pin.detail}</p>
                     </div>
-                    <p className="text-[11px] text-silver/60 leading-snug">{pin.detail}</p>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
 
             {/* Bottom overlay stats bar */}
             <div className="absolute bottom-0 left-0 right-0 p-5 flex items-center justify-between">
