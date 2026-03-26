@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Heart, Users, Baby, Briefcase, Wallet, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useCarMakes, useCarModels } from "@/hooks/useCarModels";
 
 const PRICE_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000, 200000, -1];
 const MILEAGE_OPTIONS = [25000, 50000, 100000, 150000, 200000];
