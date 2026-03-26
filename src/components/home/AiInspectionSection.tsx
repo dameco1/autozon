@@ -186,10 +186,86 @@ const AiInspectionSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Feature pills below the image */}
+          {/* Fair Value Comparison Card */}
+          <motion.div
+            className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
+          >
+            {/* Without Autozon */}
+            <div className="bg-card border border-border rounded-2xl p-6 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-destructive/40" />
+              <p className="text-xs font-semibold uppercase tracking-widest text-destructive/70 mb-4">
+                {language === "de" ? "Ohne Autozon" : "Without Autozon"}
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{language === "de" ? "Händler-Angebot" : "Dealer Offer"}</span>
+                  <span className="text-lg font-display font-bold text-muted-foreground">€28,000</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-2.5 bg-destructive/30 rounded-full flex-1" />
+                </div>
+                <div className="bg-destructive/5 border border-destructive/10 rounded-xl p-4 mt-2">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {language === "de"
+                      ? "Händler nutzen fehlende Transparenz — Schäden werden pauschal abgezogen, oft €2.000+ über den tatsächlichen Reparaturkosten."
+                      : "Dealers exploit lack of transparency — damages are deducted as flat penalties, often €2,000+ above actual repair costs."}
+                  </p>
+                  <div className="flex items-center gap-2 mt-3">
+                    <AlertTriangle className="h-3.5 w-3.5 text-destructive" />
+                    <span className="text-xs font-semibold text-destructive">
+                      {language === "de" ? "–€5.500 pauschaler Abzug" : "–€5,500 flat deduction"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* With Autozon */}
+            <div className="bg-card border-2 border-primary/30 rounded-2xl p-6 relative overflow-hidden shadow-md">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
+              <div className="flex items-center gap-2 mb-4">
+                <ShieldCheck className="h-4 w-4 text-primary" />
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+                  {language === "de" ? "Mit Autozon KI" : "With Autozon AI"}
+                </p>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{language === "de" ? "Fairer Marktwert" : "Fair Market Value"}</span>
+                  <span className="text-lg font-display font-bold text-primary">€33,500</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-2.5 bg-primary rounded-full flex-1" />
+                </div>
+                <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 mt-2">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {language === "de"
+                      ? "KI erkennt 5 Schäden und berechnet exakte Reparaturkosten von €910 — nur das wird abgezogen, nicht mehr."
+                      : "AI detects 5 damages and calculates exact repair costs of €910 — only that is deducted, nothing more."}
+                  </p>
+                  <div className="flex items-center gap-2 mt-3">
+                    <Sparkles className="h-3.5 w-3.5 text-primary" />
+                    <span className="text-xs font-semibold text-primary">
+                      {language === "de" ? "–€910 exakte Reparaturkosten" : "–€910 exact repair costs"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {/* Savings callout */}
+              <div className="mt-4 pt-4 border-t border-primary/10 text-center">
+                <p className="font-display text-2xl sm:text-3xl font-black text-primary">+€5,500</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {language === "de" ? "mehr in der Tasche des Verkäufers" : "more in the seller's pocket"}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Feature pills below */}
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
           >
             {[
               { icon: Search, title: language === "de" ? "Foto-Analyse" : "Photo Analysis", desc: language === "de" ? "KI scannt jedes hochgeladene Bild" : "AI scans every uploaded image" },
