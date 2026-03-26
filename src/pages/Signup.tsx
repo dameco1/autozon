@@ -27,6 +27,7 @@ const Signup: React.FC = () => {
   const [numKids, setNumKids] = useState("");
   const [purpose, setPurpose] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
+  const [currentCar, setCurrentCar] = useState("");
   const [loading, setLoading] = useState(false);
 
   const ls = t.lifestyle;
