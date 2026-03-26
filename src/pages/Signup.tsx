@@ -14,7 +14,7 @@ import SEO from "@/components/SEO";
 
 const PURPOSES = ["daily", "work", "pleasure", "summer", "winter"] as const;
 const RELATIONSHIPS = ["single", "married", "divorced"] as const;
-const BUDGET_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000];
+const BUDGET_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000, 200000, -1];
 
 const Signup: React.FC = () => {
   const { t } = useLanguage();
@@ -56,7 +56,7 @@ const Signup: React.FC = () => {
         has_kids: hasKids === "yes" ? true : hasKids === "no" ? false : null,
         num_kids: hasKids === "yes" && numKids ? Number(numKids) : null,
         car_purpose: purpose || null,
-        budget_max: budgetMax ? Number(budgetMax) : null,
+        budget_max: budgetMax && Number(budgetMax) > 0 ? Number(budgetMax) : null,
         current_car: currentCar || null,
       }).eq("user_id", data.user.id);
     }
@@ -177,7 +177,7 @@ const Signup: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   {BUDGET_OPTIONS.map((b) => (
-                    <SelectItem key={b} value={String(b)}>€{b.toLocaleString()}</SelectItem>
+                    <SelectItem key={b} value={String(b)}>{b === -1 ? "Unlimited" : `€${b.toLocaleString()}`}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
