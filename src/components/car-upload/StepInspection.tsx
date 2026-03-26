@@ -31,10 +31,10 @@ const StepInspection: React.FC<Props> = ({ checklist, onChange }) => {
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-lg font-semibold text-white mb-1">
+        <h3 className="text-lg font-semibold text-foreground mb-1">
           {isDE ? "Fahrzeuginspektion" : "Vehicle Inspection Checklist"}
         </h3>
-        <p className="text-sm text-silver/50">
+        <p className="text-sm text-muted-foreground">
           {isDE
             ? "Beantworten Sie jede Frage ehrlich — dies hilft Käufern und verbessert Ihre Bewertung."
             : "Answer each question honestly — this helps buyers and improves your valuation."}
@@ -52,15 +52,15 @@ const StepInspection: React.FC<Props> = ({ checklist, onChange }) => {
               return (
                 <div
                   key={item.id}
-                  className="rounded-xl border border-border bg-charcoal/50 p-4 flex flex-col sm:flex-row sm:items-center gap-3"
+                  className="rounded-xl border border-border bg-muted p-4 flex flex-col sm:flex-row sm:items-center gap-3"
                 >
-                  <p className="text-sm text-white flex-1">
+                  <p className="text-sm text-foreground flex-1">
                     {isDE ? item.labelDe : item.labelEn}
                   </p>
                   <div className="flex gap-2 shrink-0">
                     {(["yes", "no", "unknown"] as ChecklistAnswer[]).map((ans) => {
                       const active = current === ans;
-                      let btnClass = "bg-secondary/50 border-border text-silver/50 hover:border-silver/40";
+                      let btnClass = "bg-secondary/50 border-border text-muted-foreground hover:border-silver/40";
                       if (active && ans === "yes") btnClass = "bg-primary/15 border-primary text-primary";
                       if (active && ans === "no") btnClass = "bg-destructive/15 border-destructive text-destructive";
                       if (active && ans === "unknown") btnClass = "bg-amber-500/15 border-amber-500 text-amber-400";

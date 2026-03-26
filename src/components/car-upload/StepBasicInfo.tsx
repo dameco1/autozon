@@ -109,7 +109,7 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
     <div className="space-y-5">
       {/* VIN Decode Section — prominent placement */}
       <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-        <Label className="text-silver/80 text-sm flex items-center gap-2 mb-2">
+        <Label className="text-muted-foreground text-sm flex items-center gap-2 mb-2">
           <ScanSearch className="h-4 w-4 text-primary" />
           {t.carUpload.vin} — Auto-fill from VIN
         </Label>
@@ -117,7 +117,7 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
           <Input
             value={data.vin}
             onChange={(e) => { onChange({ vin: e.target.value.toUpperCase() }); setVinDecoded(false); }}
-            className="bg-charcoal border-border text-white font-mono tracking-wider"
+            className="bg-background border-border text-foreground font-mono tracking-wider"
             placeholder="WVWZZZ3CZWE123456"
             maxLength={17}
           />
@@ -136,7 +136,7 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
             )}
           </Button>
         </div>
-        <p className="text-silver/40 text-xs mt-1.5">
+        <p className="text-muted-foreground text-xs mt-1.5">
           Enter your 17-character VIN to auto-fill make, model, year, specs, and suggested equipment
         </p>
       </div>
@@ -144,9 +144,9 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
       {/* Make → Model → Variant cascade */}
       <div className="grid grid-cols-3 gap-4">
         <div>
-          <Label className="text-silver/80 text-sm">{t.carUpload.make}</Label>
+          <Label className="text-muted-foreground text-sm">{t.carUpload.make}</Label>
           <Select value={data.make} onValueChange={handleMakeChange}>
-            <SelectTrigger className="bg-charcoal border-border text-white mt-1">
+            <SelectTrigger className="bg-background border-border text-foreground mt-1">
               <SelectValue placeholder={makesLoading ? "Loading..." : "Select make"} />
             </SelectTrigger>
             <SelectContent>
@@ -155,9 +155,9 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
           </Select>
         </div>
         <div>
-          <Label className="text-silver/80 text-sm">{t.carUpload.model}</Label>
+          <Label className="text-muted-foreground text-sm">{t.carUpload.model}</Label>
           <Select value={data.model} onValueChange={handleModelChange} disabled={!data.make}>
-            <SelectTrigger className="bg-charcoal border-border text-white mt-1">
+            <SelectTrigger className="bg-background border-border text-foreground mt-1">
               <SelectValue placeholder={modelsLoading ? "Loading..." : "Select model"} />
             </SelectTrigger>
             <SelectContent>
@@ -166,9 +166,9 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
           </Select>
         </div>
         <div>
-          <Label className="text-silver/80 text-sm">Variant</Label>
+          <Label className="text-muted-foreground text-sm">Variant</Label>
           <Select value={data.variant} onValueChange={(v) => onChange({ variant: v })} disabled={!data.model}>
-            <SelectTrigger className="bg-charcoal border-border text-white mt-1">
+            <SelectTrigger className="bg-background border-border text-foreground mt-1">
               <SelectValue placeholder={variantsLoading ? "Loading..." : "Select variant"} />
             </SelectTrigger>
             <SelectContent>
@@ -202,22 +202,22 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
       {/* Year, Mileage, Color */}
       <div className="grid grid-cols-3 gap-4">
         <div>
-          <Label className="text-silver/80 text-sm">{t.carUpload.year}</Label>
+          <Label className="text-muted-foreground text-sm">{t.carUpload.year}</Label>
           <Select value={String(data.year)} onValueChange={(v) => onChange({ year: Number(v) })}>
-            <SelectTrigger className="bg-charcoal border-border text-white mt-1"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="bg-background border-border text-foreground mt-1"><SelectValue /></SelectTrigger>
             <SelectContent>
               {YEARS.map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>
         <div>
-          <Label className="text-silver/80 text-sm">{t.carUpload.mileage}</Label>
-          <Input type="number" value={data.mileage} onChange={(e) => onChange({ mileage: Number(e.target.value) })} className="bg-charcoal border-border text-white mt-1" />
+          <Label className="text-muted-foreground text-sm">{t.carUpload.mileage}</Label>
+          <Input type="number" value={data.mileage} onChange={(e) => onChange({ mileage: Number(e.target.value) })} className="bg-background border-border text-foreground mt-1" />
         </div>
         <div>
-          <Label className="text-silver/80 text-sm">{t.carUpload.color}</Label>
+          <Label className="text-muted-foreground text-sm">{t.carUpload.color}</Label>
           <Select value={data.color} onValueChange={(v) => onChange({ color: v })}>
-            <SelectTrigger className="bg-charcoal border-border text-white mt-1"><SelectValue placeholder="Select color" /></SelectTrigger>
+            <SelectTrigger className="bg-background border-border text-foreground mt-1"><SelectValue placeholder="Select color" /></SelectTrigger>
             <SelectContent>
               {COLORS.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
             </SelectContent>
@@ -228,8 +228,8 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
       {/* Price */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <Label className="text-silver/80 text-sm">{t.carUpload.price}</Label>
-          <Input type="number" value={data.price} onChange={(e) => onChange({ price: Number(e.target.value) })} className="bg-charcoal border-border text-white mt-1" />
+          <Label className="text-muted-foreground text-sm">{t.carUpload.price}</Label>
+          <Input type="number" value={data.price} onChange={(e) => onChange({ price: Number(e.target.value) })} className="bg-background border-border text-foreground mt-1" />
         </div>
       </div>
     </div>

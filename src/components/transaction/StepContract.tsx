@@ -39,8 +39,8 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
       >
         <MapPin className="h-5 w-5 text-primary flex-shrink-0" />
         <div>
-          <p className="text-sm text-silver/60">{t.transaction.contractCountry}</p>
-          <p className="text-white font-semibold">
+          <p className="text-sm text-muted-foreground">{t.transaction.contractCountry}</p>
+          <p className="text-foreground font-semibold">
             {sellerCountry || "Germany"} → {contractOrg} {t.transaction.contractLabel}
           </p>
         </div>
@@ -57,8 +57,8 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
           <div className="flex items-center gap-3">
             <FileText className="h-5 w-5 text-primary" />
             <div>
-              <h3 className="font-display font-bold text-white">{contractTitle}</h3>
-              <p className="text-xs text-silver/40">{t.transaction.contractStandard} {contractOrg}</p>
+              <h3 className="font-display font-bold text-foreground">{contractTitle}</h3>
+              <p className="text-xs text-muted-foreground">{t.transaction.contractStandard} {contractOrg}</p>
             </div>
           </div>
           {signed && <CheckCircle2 className="h-5 w-5 text-primary" />}
@@ -68,35 +68,35 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
           {/* Contract summary fields */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-silver/40 text-xs">{t.transaction.seller}</p>
-              <p className="text-white font-medium">{sellerName}</p>
+              <p className="text-muted-foreground text-xs">{t.transaction.seller}</p>
+              <p className="text-foreground font-medium">{sellerName}</p>
             </div>
             <div>
-              <p className="text-silver/40 text-xs">{t.transaction.buyer}</p>
-              <p className="text-white font-medium">{buyerName}</p>
+              <p className="text-muted-foreground text-xs">{t.transaction.buyer}</p>
+              <p className="text-foreground font-medium">{buyerName}</p>
             </div>
             <div>
-              <p className="text-silver/40 text-xs">{t.transaction.vehicle}</p>
-              <p className="text-white font-medium">{car.year} {car.make} {car.model}</p>
+              <p className="text-muted-foreground text-xs">{t.transaction.vehicle}</p>
+              <p className="text-foreground font-medium">{car.year} {car.make} {car.model}</p>
             </div>
             <div>
-              <p className="text-silver/40 text-xs">{t.transaction.vinLabel}</p>
-              <p className="text-white font-medium font-mono text-xs">{car.vin || "—"}</p>
+              <p className="text-muted-foreground text-xs">{t.transaction.vinLabel}</p>
+              <p className="text-foreground font-medium font-mono text-xs">{car.vin || "—"}</p>
             </div>
             <div>
-              <p className="text-silver/40 text-xs">{t.transaction.purchasePrice}</p>
+              <p className="text-muted-foreground text-xs">{t.transaction.purchasePrice}</p>
               <p className="text-primary font-display font-bold text-lg">€{agreedPrice.toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-silver/40 text-xs">{t.transaction.contractType}</p>
-              <p className="text-white font-medium">{contractOrg} Kaufvertrag</p>
+              <p className="text-muted-foreground text-xs">{t.transaction.contractType}</p>
+              <p className="text-foreground font-medium">{contractOrg} Kaufvertrag</p>
             </div>
           </div>
 
           {/* Key clauses */}
           <div className="border-t border-border pt-4">
-            <p className="text-silver/40 text-xs mb-2">{t.transaction.keyClauses}</p>
-            <ul className="space-y-1.5 text-silver/60 text-xs">
+            <p className="text-muted-foreground text-xs mb-2">{t.transaction.keyClauses}</p>
+            <ul className="space-y-1.5 text-muted-foreground text-xs">
               <li>• {t.transaction.clause1}</li>
               <li>• {t.transaction.clause2}</li>
               <li>• {t.transaction.clause3}</li>
@@ -120,7 +120,7 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
           <>
             <Button
               variant="outline"
-              className="flex-1 border-border text-silver hover:bg-secondary"
+              className="flex-1 border-border text-muted-foreground hover:bg-secondary"
               onClick={() => {
                 // Placeholder for PDF download
                 import("@/lib/generateNegotiationPdf").then(({ generateNegotiationPdf }) => {
@@ -145,7 +145,7 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
         )}
       </div>
 
-      <p className="text-[11px] text-silver/30 text-center">{t.transaction.contractDisclaimer}</p>
+      <p className="text-[11px] text-muted-foreground text-center">{t.transaction.contractDisclaimer}</p>
     </div>
   );
 };

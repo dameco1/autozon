@@ -77,7 +77,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
             testMode
               ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"
-              : "bg-secondary/50 text-silver/40 border border-border hover:text-silver/60"
+              : "bg-secondary/50 text-muted-foreground border border-border hover:text-muted-foreground"
           }`}
         >
           <TestTube2 className="h-3 w-3" />
@@ -94,10 +94,10 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
             title={t.tooltip}
             className={`flex flex-col items-center justify-center gap-1 py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
               t.disabled
-                ? "text-silver/20 cursor-not-allowed"
+                ? "text-muted-foreground cursor-not-allowed"
                 : tab === t.id
                 ? "bg-primary text-primary-foreground"
-                : "text-silver/50 hover:text-silver"
+                : "text-muted-foreground hover:text-muted-foreground"
             }`}
           >
             {t.icon}
@@ -108,7 +108,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
 
       {/* Disabled card notice */}
       {!cardEligible && tab !== "card" && (
-        <p className="text-xs text-silver/30 text-center">
+        <p className="text-xs text-muted-foreground text-center">
           💳 {t.transaction?.cardMaxLimit || "Credit card payment is only available for vehicles priced at €10,000 or below."}
         </p>
       )}
@@ -118,17 +118,17 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
           <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6">
             <Send className="h-10 w-10 text-primary mx-auto mb-3" />
-            <h3 className="font-display font-bold text-white text-xl text-center mb-1">
+            <h3 className="font-display font-bold text-foreground text-xl text-center mb-1">
               {t.transaction?.wireTitle || "Bank Wire Transfer"}
             </h3>
             <p className="text-3xl font-display font-black text-primary text-center mb-2">€{agreedPrice.toLocaleString()}</p>
-            <p className="text-silver/50 text-sm text-center mb-5">
+            <p className="text-muted-foreground text-sm text-center mb-5">
               {t.transaction?.wireDesc || "Transfer funds directly to the seller's bank account. No additional fees."}
             </p>
 
             {/* How it works */}
             <div className="bg-secondary/50 rounded-xl p-4 space-y-4">
-              <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+              <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-primary" />
                 {t.transaction?.howItWorks || "How It Works"}
               </h4>
@@ -136,28 +136,28 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
                 <div className="flex gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center">1</span>
                   <div>
-                    <p className="text-silver/80 font-medium">{t.transaction?.wireStep1Title || "Contract Signed"}</p>
-                    <p className="text-silver/50">{t.transaction?.wireStep1Desc || "After both parties sign the digital contract, the seller's bank details are securely shared with you."}</p>
+                    <p className="text-muted-foreground font-medium">{t.transaction?.wireStep1Title || "Contract Signed"}</p>
+                    <p className="text-muted-foreground">{t.transaction?.wireStep1Desc || "After both parties sign the digital contract, the seller's bank details are securely shared with you."}</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center">2</span>
                   <div>
-                    <p className="text-silver/80 font-medium">{t.transaction?.wireStep2Title || "Transfer Funds"}</p>
-                    <p className="text-silver/50">{t.transaction?.wireStep2Desc || "Use your bank's online transfer. Include the transaction reference. SEPA transfers typically arrive within 1-2 business days."}</p>
+                    <p className="text-muted-foreground font-medium">{t.transaction?.wireStep2Title || "Transfer Funds"}</p>
+                    <p className="text-muted-foreground">{t.transaction?.wireStep2Desc || "Use your bank's online transfer. Include the transaction reference. SEPA transfers typically arrive within 1-2 business days."}</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center">3</span>
                   <div>
-                    <p className="text-silver/80 font-medium">{t.transaction?.wireStep3Title || "Payment Confirmed"}</p>
-                    <p className="text-silver/50">{t.transaction?.wireStep3Desc || "The seller confirms receipt. Vehicle handover is scheduled. Both parties are notified."}</p>
+                    <p className="text-muted-foreground font-medium">{t.transaction?.wireStep3Title || "Payment Confirmed"}</p>
+                    <p className="text-muted-foreground">{t.transaction?.wireStep3Desc || "The seller confirms receipt. Vehicle handover is scheduled. Both parties are notified."}</p>
                   </div>
                 </div>
               </div>
 
               <div className="mt-3 p-3 bg-primary/5 border border-primary/10 rounded-lg">
-                <p className="text-xs text-silver/60">
+                <p className="text-xs text-muted-foreground">
                   <strong className="text-primary">💡 {t.transaction?.noFees || "No additional fees"}</strong> — {t.transaction?.wireNoFeesDesc || "Wire transfer has zero platform fees. You pay exactly the agreed price. Your bank may charge a small transfer fee (typically free for SEPA)."}
                 </p>
               </div>
@@ -180,31 +180,31 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
           <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6">
             <CreditCard className="h-10 w-10 text-primary mx-auto mb-3" />
-            <h3 className="font-display font-bold text-white text-xl text-center mb-1">
+            <h3 className="font-display font-bold text-foreground text-xl text-center mb-1">
               {t.transaction?.cardTitle || "Credit Card Payment"}
             </h3>
-            <p className="text-silver/50 text-sm text-center mb-5">
+            <p className="text-muted-foreground text-sm text-center mb-5">
               {t.transaction?.cardDesc || "Pay instantly with your credit or debit card via our secure payment partner Stripe."}
             </p>
 
             {/* Fee breakdown */}
             <div className="bg-secondary/50 rounded-xl p-4 space-y-3 mb-4">
-              <h4 className="text-sm font-semibold text-white">{t.transaction?.feeBreakdown || "Fee Breakdown"}</h4>
+              <h4 className="text-sm font-semibold text-foreground">{t.transaction?.feeBreakdown || "Fee Breakdown"}</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-silver/60">{t.transaction?.carPrice || "Car Price"}</span>
-                  <span className="text-white font-semibold">€{agreedPrice.toLocaleString()}</span>
+                  <span className="text-muted-foreground">{t.transaction?.carPrice || "Car Price"}</span>
+                  <span className="text-foreground font-semibold">€{agreedPrice.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-silver/60">{t.transaction?.processingFee || "Processing Fee"} (2.9% + €0.25)</span>
-                  <span className="text-silver/60">€{stripeFee.toLocaleString()}</span>
+                  <span className="text-muted-foreground">{t.transaction?.processingFee || "Processing Fee"} (2.9% + €0.25)</span>
+                  <span className="text-muted-foreground">€{stripeFee.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-silver/60">{t.transaction?.platformFee || "Platform Fee"} (2%)</span>
-                  <span className="text-silver/60">€{platformFee.toLocaleString()}</span>
+                  <span className="text-muted-foreground">{t.transaction?.platformFee || "Platform Fee"} (2%)</span>
+                  <span className="text-muted-foreground">€{platformFee.toLocaleString()}</span>
                 </div>
                 <div className="border-t border-border pt-2 flex justify-between">
-                  <span className="text-white font-semibold">{t.transaction?.youPay || "You Pay"}</span>
+                  <span className="text-foreground font-semibold">{t.transaction?.youPay || "You Pay"}</span>
                   <span className="text-primary font-bold text-lg">€{totalCardCost.toLocaleString()}</span>
                 </div>
               </div>
@@ -212,7 +212,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
 
             {/* How it works for both parties */}
             <div className="bg-secondary/50 rounded-xl p-4 space-y-4">
-              <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+              <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-primary" />
                 {t.transaction?.howItWorks || "How It Works"}
               </h4>
@@ -222,7 +222,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
                 <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
                   👤 {t.transaction?.forBuyer || "For You (Buyer)"}
                 </p>
-                <div className="space-y-2 text-sm text-silver/60">
+                <div className="space-y-2 text-sm text-muted-foreground">
                   <p>• {t.transaction?.cardBuyer1 || "You'll be redirected to a secure Stripe checkout page"}</p>
                   <p>• {t.transaction?.cardBuyer2 || "Enter your card details — Visa, Mastercard, or AMEX accepted"}</p>
                   <p>• {t.transaction?.cardBuyer3 || "Payment is processed instantly and you'll be redirected back"}</p>
@@ -235,7 +235,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
                 <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
                   🏪 {t.transaction?.forSeller || "For the Seller"}
                 </p>
-                <div className="space-y-2 text-sm text-silver/60">
+                <div className="space-y-2 text-sm text-muted-foreground">
                   <p>• {t.transaction?.cardSeller1 || "The seller receives the full agreed price (€" + agreedPrice.toLocaleString() + ") — no deductions"}</p>
                   <p>• {t.transaction?.cardSeller2 || "Funds are transferred to the seller's bank account within 2-5 business days"}</p>
                   <p>• {t.transaction?.cardSeller3 || "All processing and platform fees are covered by the buyer"}</p>
@@ -243,7 +243,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
               </div>
 
               <div className="mt-3 p-3 bg-yellow-500/5 border border-yellow-500/20 rounded-lg">
-                <p className="text-xs text-silver/60 flex items-start gap-2">
+                <p className="text-xs text-muted-foreground flex items-start gap-2">
                   <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0 mt-0.5" />
                   <span>
                     <strong className="text-yellow-400">{t.transaction?.cardNote || "Important"}</strong> — {t.transaction?.cardNoteDesc || "Credit card payment is only available for vehicles priced at €10,000 or below. For higher amounts, please use wire transfer or financing options."}
@@ -254,7 +254,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
           </div>
 
           <div className="bg-secondary/30 border border-border rounded-xl p-3 text-center">
-            <p className="text-xs text-silver/40">
+            <p className="text-xs text-muted-foreground">
               🔒 {t.transaction?.cardSecure || "Payments are processed by Stripe, a PCI Level 1 certified payment processor. Autozon never sees your card details."}
             </p>
           </div>
@@ -274,19 +274,19 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
       {tab === "credit" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
           <div className="bg-secondary/50 border border-border rounded-2xl p-5">
-            <h3 className="font-display font-bold text-white mb-4">{t.acquisition.yourParams}</h3>
+            <h3 className="font-display font-bold text-foreground mb-4">{t.acquisition.yourParams}</h3>
             <div className="space-y-5">
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-silver/60">{t.acquisition.downPayment}</span>
-                  <span className="text-white font-semibold">€{downPayment.toLocaleString()}</span>
+                  <span className="text-muted-foreground">{t.acquisition.downPayment}</span>
+                  <span className="text-foreground font-semibold">€{downPayment.toLocaleString()}</span>
                 </div>
                 <Slider value={[downPayment]} onValueChange={([v]) => setDownPayment(v)} min={0} max={Math.round(agreedPrice * 0.5)} step={500} />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-silver/60">{t.acquisition.loanTerm}</span>
-                  <span className="text-white font-semibold">{loanTerm} {t.acquisition.months}</span>
+                  <span className="text-muted-foreground">{t.acquisition.loanTerm}</span>
+                  <span className="text-foreground font-semibold">{loanTerm} {t.acquisition.months}</span>
                 </div>
                 <Slider value={[loanTerm]} onValueChange={([v]) => setLoanTerm(v)} min={12} max={84} step={6} />
               </div>
@@ -313,15 +313,15 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
                   <div className="flex items-center gap-2">
                     <Building2 className="h-5 w-5 text-primary" />
                     <div>
-                      <h4 className="font-display font-bold text-white">{bank.name}</h4>
-                      <p className="text-xs text-silver/40">{bank.description}</p>
+                      <h4 className="font-display font-bold text-foreground">{bank.name}</h4>
+                      <p className="text-xs text-muted-foreground">{bank.description}</p>
                     </div>
                   </div>
                   <span className="text-lg font-display font-bold text-primary">{bank.base_rate}%</span>
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-sm mb-3">
-                  <div><p className="text-silver/50">{t.acquisition.monthly}</p><p className="text-white font-semibold">€{Math.round(monthly).toLocaleString()}/mo</p></div>
-                  <div><p className="text-silver/50">{t.acquisition.totalCost}</p><p className="text-white font-semibold">€{Math.round(totalCost).toLocaleString()}</p></div>
+                  <div><p className="text-muted-foreground">{t.acquisition.monthly}</p><p className="text-foreground font-semibold">€{Math.round(monthly).toLocaleString()}/mo</p></div>
+                  <div><p className="text-muted-foreground">{t.acquisition.totalCost}</p><p className="text-foreground font-semibold">€{Math.round(totalCost).toLocaleString()}</p></div>
                 </div>
                 <Button
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
@@ -334,9 +334,9 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
             );
           })}
           {banks.length === 0 && (
-            <p className="text-silver/40 text-sm text-center py-6">{t.transaction.noPartnersYet}</p>
+            <p className="text-muted-foreground text-sm text-center py-6">{t.transaction.noPartnersYet}</p>
           )}
-          <p className="text-xs text-silver/30 text-center">{t.acquisition.ratesDisclaimer}</p>
+          <p className="text-xs text-muted-foreground text-center">{t.acquisition.ratesDisclaimer}</p>
         </motion.div>
       )}
 
@@ -344,19 +344,19 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
       {tab === "leasing" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
           <div className="bg-secondary/50 border border-border rounded-2xl p-5">
-            <h3 className="font-display font-bold text-white mb-4">{t.acquisition.leaseParams}</h3>
+            <h3 className="font-display font-bold text-foreground mb-4">{t.acquisition.leaseParams}</h3>
             <div className="space-y-5">
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-silver/60">{t.acquisition.contractLength}</span>
-                  <span className="text-white font-semibold">{leaseTerm} {t.acquisition.months}</span>
+                  <span className="text-muted-foreground">{t.acquisition.contractLength}</span>
+                  <span className="text-foreground font-semibold">{leaseTerm} {t.acquisition.months}</span>
                 </div>
                 <Slider value={[leaseTerm]} onValueChange={([v]) => setLeaseTerm(v)} min={12} max={60} step={6} />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-silver/60">{t.acquisition.downPayment}</span>
-                  <span className="text-white font-semibold">€{leaseDown.toLocaleString()}</span>
+                  <span className="text-muted-foreground">{t.acquisition.downPayment}</span>
+                  <span className="text-foreground font-semibold">€{leaseDown.toLocaleString()}</span>
                 </div>
                 <Slider value={[leaseDown]} onValueChange={([v]) => setLeaseDown(v)} min={0} max={Math.round(agreedPrice * 0.3)} step={500} />
               </div>
@@ -376,12 +376,12 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <FileText className="h-5 w-5 text-primary" />
-                    <h4 className="font-display font-bold text-white">{co.name}</h4>
+                    <h4 className="font-display font-bold text-foreground">{co.name}</h4>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-sm mb-3">
-                  <div><p className="text-silver/50">{t.acquisition.monthly}</p><p className="text-white font-semibold">€{Math.round(monthly).toLocaleString()}/mo</p></div>
-                  <div><p className="text-silver/50">{t.acquisition.residualValue}</p><p className="text-white font-semibold">€{residual.toLocaleString()}</p></div>
+                  <div><p className="text-muted-foreground">{t.acquisition.monthly}</p><p className="text-foreground font-semibold">€{Math.round(monthly).toLocaleString()}/mo</p></div>
+                  <div><p className="text-muted-foreground">{t.acquisition.residualValue}</p><p className="text-foreground font-semibold">€{residual.toLocaleString()}</p></div>
                 </div>
                 <Button
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
@@ -394,7 +394,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
             );
           })}
           {leasingCos.length === 0 && (
-            <p className="text-silver/40 text-sm text-center py-6">{t.transaction.noPartnersYet}</p>
+            <p className="text-muted-foreground text-sm text-center py-6">{t.transaction.noPartnersYet}</p>
           )}
         </motion.div>
       )}
@@ -402,7 +402,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
       {/* Back button */}
       {onBack && (
         <div className="text-center pt-2">
-          <Button variant="ghost" className="text-silver/50" onClick={onBack}>
+          <Button variant="ghost" className="text-muted-foreground" onClick={onBack}>
             <ArrowLeft className="mr-2 h-4 w-4" /> {t.transaction?.backToContract || "Back to Contract"}
           </Button>
         </div>

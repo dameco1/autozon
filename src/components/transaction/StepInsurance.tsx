@@ -32,7 +32,7 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
 
   return (
     <div className="space-y-6">
-      <p className="text-silver/60 text-sm text-center">{t.transaction.insuranceSubtitle}</p>
+      <p className="text-muted-foreground text-sm text-center">{t.transaction.insuranceSubtitle}</p>
 
       {/* Tier selection */}
       <div className="space-y-3">
@@ -56,7 +56,7 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
                   <div className="w-5 h-5 rounded-full border-2 border-silver/20" />
                 )}
                 <div>
-                  <span className="text-sm font-bold text-white">{tier.label}</span>
+                  <span className="text-sm font-bold text-foreground">{tier.label}</span>
                   {tier.recommended && (
                     <span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
                       <Star className="h-2.5 w-2.5 inline mr-0.5" />{t.acquisition.recommended}
@@ -64,9 +64,9 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
                   )}
                 </div>
               </div>
-              <span className="text-sm text-silver/60">{t.acquisition.from} €{tier.baseMonthly}/mo</span>
+              <span className="text-sm text-muted-foreground">{t.acquisition.from} €{tier.baseMonthly}/mo</span>
             </div>
-            <p className="text-xs text-silver/40 ml-8">{tier.desc}</p>
+            <p className="text-xs text-muted-foreground ml-8">{tier.desc}</p>
           </motion.button>
         ))}
       </div>
@@ -89,11 +89,11 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-primary" />
-                    <h4 className="font-display font-bold text-white">{ins.name}</h4>
+                    <h4 className="font-display font-bold text-foreground">{ins.name}</h4>
                   </div>
                   <span className="text-lg font-display font-bold text-primary">€{monthly}/mo</span>
                 </div>
-                <p className="text-sm text-silver/50 mb-3">{t.acquisition.deductible}: €{deductible}</p>
+                <p className="text-sm text-muted-foreground mb-3">{t.acquisition.deductible}: €{deductible}</p>
                 <Button
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
                   onClick={() => onContinue(selectedTier, ins.id)}
@@ -108,7 +108,7 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
 
       {selectedTier && insurers.length === 0 && (
         <div className="text-center py-4">
-          <p className="text-silver/40 text-sm mb-3">{t.transaction.noInsurersYet}</p>
+          <p className="text-muted-foreground text-sm mb-3">{t.transaction.noInsurersYet}</p>
           <Button
             className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold"
             onClick={() => onContinue(selectedTier)}
@@ -120,7 +120,7 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
 
       {/* Skip option */}
       <div className="text-center">
-        <button onClick={onSkip} className="text-silver/40 hover:text-silver text-sm underline underline-offset-4">
+        <button onClick={onSkip} className="text-muted-foreground hover:text-muted-foreground text-sm underline underline-offset-4">
           {t.transaction.skipInsurance}
         </button>
       </div>
