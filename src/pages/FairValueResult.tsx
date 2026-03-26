@@ -310,11 +310,11 @@ const FairValueResult: React.FC = () => {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(240 4% 20%)" />
-                <XAxis dataKey="month" stroke="hsl(0 0% 85% / 0.4)" fontSize={12} />
-                <YAxis stroke="hsl(0 0% 85% / 0.4)" fontSize={12} tickFormatter={(v) => `€${(v / 1000).toFixed(0)}k`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={(v) => `€${(v / 1000).toFixed(0)}k`} />
                 <Tooltip
-                  contentStyle={{ background: "hsl(240 6% 11%)", border: "1px solid hsl(240 4% 20%)", borderRadius: "12px", color: "white" }}
+                  contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", color: "hsl(var(--foreground))" }}
                   formatter={(value: number, name: string) => [
                     `€${value.toLocaleString()}`,
                     name === "value" ? `${car.make} ${car.model}` : `${car.body_type} Avg`,
