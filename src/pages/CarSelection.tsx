@@ -278,7 +278,7 @@ const CarSelection: React.FC = () => {
                             src={
                               (car.photos && car.photos.length > 0 && car.photos[0])
                                 ? car.photos[0]
-                                : car.image_url || carPlaceholder
+                                : carPlaceholder
                             }
                             alt={`${car.make} ${car.model}`}
                             className="w-full h-full object-cover"
