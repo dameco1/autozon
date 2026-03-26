@@ -26,6 +26,7 @@ type CarRow = {
   condition_score: number | null;
   demand_score: number | null;
   image_url: string | null;
+  photos: string[] | null;
   detected_damages: unknown;
 };
 
