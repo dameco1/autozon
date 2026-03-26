@@ -65,14 +65,65 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
 
 ---
 
-## 2. Buyer Matching
+## 2. Lifestyle-Aware Buyer Matching Algorithm
 
-Buyers are matched to cars based on:
-- Budget range overlap with fair value
-- Preferred makes, fuel types, body types
-- Location proximity
-- Intent level (active vs browsing)
-- Match score calculated and stored in `matches` table
+**Location**: `src/lib/lifestyleMatch.ts`
+
+The matching engine uses a **4-dimensional weighted scoring model** that combines lifestyle signals, financial fit, explicit preferences, and car quality into a single 0-100 match score.
+
+### Score Weights
+
+| Dimension | Weight | Source |
+|---|---|---|
+| **Lifestyle** | 30% | Profile: relationship, kids, purpose, current car |
+| **Financial** | 30% | Preferences: budget range; fallback: profile budget |
+| **Preference Match** | 25% | Preferences: makes, fuel, body, transmission, commute, parking |
+| **Condition/Demand** | 15% | Car: condition_score + demand_score averaged |
+
+### Lifestyle Scoring Rules
+
+#### Relationship Status → Body Type Affinity
+
+| Status | Boosted Body Types | Penalized | Brand Affinity | Power Bonus |
+|---|---|---|---|---|
+| **Single** | Coupe, Convertible, Roadster (+25); Hatchback, Sedan (+15) | Van, Pickup (-10) | Sporty brands +8 | ≥200 HP +5 |
+| **Married** | SUV, Wagon, Sedan, Hatchback (+20) | Coupe, Convertible (-5) | Practical brands +5 | Year ≥2020 +5 |
+| **Divorced** | Coupe, Convertible (+20); SUV (+10) | Van (-15) | Sporty/premium brands +12 | ≥180 HP +8 |
+
+#### Number of Kids → Seating Requirements
+
+| Kids | Logic | Boosted Types | Penalized Types |
+|---|---|---|---|
+| **0** | Any body type fine | Compact cars +5 | — |
+| **1-2** | Need 4-5 doors | Sedan, SUV, Wagon, Hatch +15 | Coupe, Convertible -15 |
+| **3+** | Need 6/7 seaters | Van, large SUV +30; Wagon +15 | Coupe, Convertible, Hatch -20 |
+
+#### Car Purpose
+
+| Purpose | Boosted | Logic |
+|---|---|---|
+| **Daily** | Practical brands, Diesel/Hybrid/Electric, newer cars | Reliability & efficiency |
+| **Work** | Sedan/SUV/Wagon, Diesel/Hybrid, Automatic | Commute comfort |
+| **Pleasure** | Sporty bodies & brands, high power (≥200 HP) | Fun factor |
+| **Summer** | Convertible/Roadster (+30), Coupe (+15) | Open-top driving |
+| **Winter** | SUV/Wagon (+20), Diesel | AWD-friendly, practical |
+
+#### Current Car Intelligence
+
+- **Brand loyalty**: If current car mentions the same make → +10
+- **Upgrade path**: Budget brand owner viewing a premium brand → +8 (e.g. Dacia owner sees BMW)
+- **Segment continuity**: SUV keywords in current car + SUV/Wagon candidate → +10
+
+### Preference Scoring (from Onboarding)
+
+| Signal | Logic |
+|---|---|
+| Preferred makes/fuel/body | Explicit match +15-20; mismatch -5-10 |
+| Family size (≥5) | People-carrier bodies +10 |
+| Commute distance (long) | Diesel/Hybrid +8, Automatic +3 |
+| Commute distance (short) | Electric/Hybrid +10 |
+| Parking (street/underground) | Compact +5; Van/Pickup -5 |
+| Insurance tolerance (low) | High power -8; sporty brands -5 |
 
 ---
 
@@ -111,7 +162,7 @@ When a transaction completes (digital or manual), `cars.status` is set to `sold`
 
 ---
 
-## 4. Placement (Premium Listings)
+## 5. Placement (Premium Listings)
 
 Sellers can pay for premium placement via Stripe:
 1. Click "Boost Listing" on dashboard
@@ -122,7 +173,7 @@ Sellers can pay for premium placement via Stripe:
 
 ---
 
-## 5. AI Concierge
+## 6. AI Concierge
 
 Dashboard includes an AI chat assistant that:
 - Answers questions about the selling/buying process

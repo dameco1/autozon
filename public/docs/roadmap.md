@@ -40,8 +40,11 @@
 - [x] 100% attribute-based fair value (removed asking price influence)
 - [x] Segment-specific mileage expectations (sports 8K, SUV 18K, van 25K km/yr)
 - [x] Itemized damage cost deductions (brand-specific EUR repair costs replace flat penalty)
+- [x] Lifestyle-aware matching algorithm (relationship, kids, purpose, current car → 4D scoring)
+- [x] Registration lifestyle profiling (relationship, kids, purpose, current car, budget)
+- [x] Warm light theme migration (cream/amber design system, semantic HSL tokens)
+- [x] Full dark-mode class cleanup (replaced all hardcoded bg-charcoal, bg-navy, text-silver)
 - [ ] Dealer network integration
-- [ ] Enhanced buyer onboarding questionnaire
 - [ ] Car comparison tool (side-by-side)
 
 ## V1.5 (Planned)
