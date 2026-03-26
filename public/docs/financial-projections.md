@@ -250,4 +250,4 @@ All projections are based on:
 
 ---
 
-*Document status: V3 — Updated to align with pitch deck projections (Y1 3,000 listings/€467K, Y2 15,000/€2.5M, Y3 75,000/€12M+). Projections are forward-looking estimates based on market research and comparable platform benchmarks. Actual results may vary.*
+*Document status: V4 — Updated with V1.5 milestones (lifestyle-aware matching, brand-specific damage costs, light theme redesign). Projections unchanged — aligned with pitch deck (Y1 3,000 listings/€467K, Y2 15,000/€2.5M, Y3 75,000/€12M+). Projections are forward-looking estimates based on market research and comparable platform benchmarks. Actual results may vary.*

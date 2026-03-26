@@ -34,7 +34,7 @@ Autozon operates an **asymmetric marketplace model**: buyers use the platform fo
 
 ## Revenue Streams (Current & Planned)
 
-### Active (V1)
+### Active (V1 + V1.5)
 
 | Stream | Model | Status |
 |---|---|---|
@@ -44,7 +44,16 @@ Autozon operates an **asymmetric marketplace model**: buyers use the platform fo
 | Financing Referrals | Commission on funded deals | ✅ Live |
 | **Advertising & Sponsored Content** | Display ads, sponsored listings, partner promotions | ✅ Live |
 
-### Planned (V1.5 – V3)
+### Recently Shipped (V1.5)
+
+| Feature | Impact on Revenue |
+|---|---|
+| Lifestyle-aware buyer matching (4D algorithm) | Higher match quality → faster sales → improved seller NPS → more referrals |
+| Brand-specific damage costing | More accurate fair values → increased seller trust → higher Premium uptake |
+| Current car intelligence | Upgrade path recommendations → cross-sell to existing car owners |
+| Warm light theme redesign | Premium brand perception → higher conversion rates |
+
+### Planned (V2 – V3)
 
 | Stream | Model | Target Phase |
 |---|---|---|
@@ -261,4 +270,4 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 
 ---
 
-*Document status: V3 — Updated to align with pitch deck projections (Y1 3,000 listings/€467K). For investor data room. Subject to refinement based on actual market performance.*
+*Document status: V4 — Updated with V1.5 features (lifestyle matching, brand-specific damage costs) and their revenue impact. Aligned with pitch deck projections (Y1 3,000 listings/€467K). For investor data room. Subject to refinement based on actual market performance.*
