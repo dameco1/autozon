@@ -4,6 +4,17 @@ import { CheckCircle2, Lock, Zap, CreditCard } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import heroCar1 from "@/assets/hero-car-1.png";
 import heroCar2 from "@/assets/hero-car-2.png";
+import heroCar3 from "@/assets/hero-car-3.png";
+import heroCar4 from "@/assets/hero-car-4.png";
+import heroCar5 from "@/assets/hero-car-5.png";
+
+const heroCars = [
+  { src: heroCar1, className: "bottom-[5%] left-[2%] w-[220px] lg:w-[300px]", from: { x: -50, y: 20 } },
+  { src: heroCar2, className: "bottom-[5%] right-[2%] w-[200px] lg:w-[280px]", from: { x: 50, y: 20 } },
+  { src: heroCar3, className: "top-[10%] left-[5%] w-[180px] lg:w-[240px]", from: { x: -40, y: -20 } },
+  { src: heroCar4, className: "top-[8%] right-[5%] w-[170px] lg:w-[230px]", from: { x: 40, y: -20 } },
+  { src: heroCar5, className: "bottom-[30%] left-[50%] -translate-x-1/2 w-[160px] lg:w-[220px] hidden sm:block", from: { x: 0, y: 30 } },
+];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -29,27 +40,20 @@ const HeroSection: React.FC = () => {
       {/* Warm radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
-      {/* Transparent car images */}
-      <motion.img
-        src={heroCar1}
-        alt=""
-        className="absolute bottom-0 left-[-5%] w-[320px] lg:w-[420px] opacity-[0.07] pointer-events-none select-none"
-        initial={{ opacity: 0, x: -40 }}
-        animate={{ opacity: 0.07, x: 0 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        width={800}
-        height={512}
-      />
-      <motion.img
-        src={heroCar2}
-        alt=""
-        className="absolute bottom-0 right-[-5%] w-[300px] lg:w-[400px] opacity-[0.07] pointer-events-none select-none"
-        initial={{ opacity: 0, x: 40 }}
-        animate={{ opacity: 0.07, x: 0 }}
-        transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-        width={800}
-        height={512}
-      />
+      {/* Scattered transparent car images */}
+      {heroCars.map((car, i) => (
+        <motion.img
+          key={i}
+          src={car.src}
+          alt=""
+          className={`absolute opacity-[0.06] pointer-events-none select-none ${car.className}`}
+          initial={{ opacity: 0, x: car.from.x, y: car.from.y }}
+          animate={{ opacity: 0.06, x: 0, y: 0 }}
+          transition={{ duration: 1.4, ease: "easeOut", delay: i * 0.15 }}
+          width={800}
+          height={512}
+        />
+      ))}
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full text-center">
         {/* Headline */}
