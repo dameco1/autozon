@@ -142,28 +142,13 @@ const Signup: React.FC = () => {
                   <SelectValue placeholder={ls.selectPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="no">{ls.noKids}</SelectItem>
-                  <SelectItem value="yes">{ls.hasKids}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {hasKids === "yes" && (
-            <div className="space-y-2">
-              <Label className="text-silver/80 text-sm">{ls.howManyKids}</Label>
-              <Select value={numKids} onValueChange={setNumKids}>
-                <SelectTrigger className="bg-navy border-border text-white">
-                  <SelectValue placeholder="1" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <SelectItem key={n} value={String(n)}>{n}</SelectItem>
+                  {["0", "1", "2", "3", "3+"].map((k) => (
+                    <SelectItem key={k} value={k}>{k} {k === "0" ? ls.noKids : ""}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-          )}
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             {/* Purpose */}

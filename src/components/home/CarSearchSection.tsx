@@ -145,8 +145,9 @@ const CarSearchSection: React.FC = () => {
                   <SelectValue placeholder={ls.kids} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="no">{ls.noKids}</SelectItem>
-                  <SelectItem value="yes">{ls.hasKids}</SelectItem>
+                  {["0", "1", "2", "3", "3+"].map((k) => (
+                    <SelectItem key={k} value={k}>{k} {k === "0" ? ls.noKids : ""}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
