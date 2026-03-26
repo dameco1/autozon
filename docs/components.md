@@ -2,24 +2,37 @@
 
 ## Design System
 
+### Theme: Warm & Premium Light
+
+Autozon uses a light-mode-first design with warm cream tones and amber/orange accents. All colors are defined as HSL-based semantic tokens in `index.css` and `tailwind.config.ts`.
+
 ### Colors (HSL-based tokens in `index.css`)
 
-| Token | Usage |
-|---|---|
-| `--background` (charcoal) | Main app background `#19191F` |
-| `--primary` (electric green) | CTAs, accents `#00D97E` |
-| `--secondary` | Cards, panels |
-| `--silver` | Body text |
-| `--muted` | Subtle backgrounds, borders |
-| `--destructive` | Error states, delete actions |
+| Token | Usage | Value |
+|---|---|---|
+| `--background` (warm cream) | Main app background | `#FAF8F5` |
+| `--foreground` (warm black) | Primary text | `#2C2924` |
+| `--primary` / `--orange` | CTAs, accents, brand orange | `hsl(24, 95%, 53%)` |
+| `--secondary` (warm beige) | Cards, panels | `#F0ECE6` |
+| `--muted` | Subtle backgrounds | warm beige tones |
+| `--accent` | Hover states, highlights | warm amber tones |
+| `--card` | Card backgrounds | `#FFFFFF` |
+| `--border` | Borders, dividers | `#E8E2D9` |
+| `--destructive` | Error states, delete actions | red tones |
+
+**Design rules:**
+- **Never use hardcoded color classes** in components (no `bg-charcoal`, `bg-navy`, `text-silver`)
+- Always use semantic tokens: `bg-background`, `text-foreground`, `bg-secondary`, `text-muted-foreground`, etc.
+- Charts and data visualizations use `hsl(var(--border))`, `hsl(var(--muted-foreground))` for theme-aware rendering
+- The only intentional dark sections are the **Investor Pitch slides** (`/pitch`) which use a dark presentation theme
 
 ### Typography
 - **Display font**: Montserrat (headings, logo, brand)
 - **Body font**: System stack via Tailwind defaults
-- **Logo**: "auto**zon**" — white with green "zon" suffix
+- **Logo**: "auto**zon**" — dark text with orange "zon" suffix
 
 ### Component Primitives (shadcn/ui)
-All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
+All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 - `Button`, `Card`, `Dialog`, `Sheet`, `Tabs`, `Accordion`
 - `Select`, `Input`, `Textarea`, `Slider`, `Checkbox`, `Switch`
 - `Toast` (sonner), `Tooltip`, `Popover`, `DropdownMenu`
@@ -33,10 +46,19 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 | Component | Purpose |
 |---|---|
 | `HeroSection` | Animated hero with seller/buyer split CTA |
+| `HeroCarShowcase` | Featured car display with animations |
+| `HeroProcessCircle` | Visual process indicator |
 | `CarTicker` | Scrolling car image carousel |
 | `ProblemSection` | Pain points of traditional car trading |
 | `SolutionSection` | How Autozon solves each pain point |
 | `HowItWorksSection` | 3-step process explanation |
+| `AiEngineSection` | AI capabilities showcase |
+| `AiInspectionSection` | AI inspection feature highlight |
+| `CarSearchSection` | Dual-mode search (lifestyle profile OR traditional filters) |
+| `ComparisonSection` | Platform comparison |
+| `WhyAutozonSection` | Value proposition |
+| `PricingSection` | Pricing tiers |
+| `StatsBar` | Platform statistics banner |
 | `TrustSection` | Social proof and trust signals |
 | `CtaSection` | Final conversion call-to-action |
 | `FooterSection` | Links, legal, language toggle |
@@ -48,6 +70,7 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 | `StepPhotos` | 7 mandatory photo slots with compression |
 | `StepEquipment` | Categorized equipment checklist |
 | `StepCondition` | Interior/exterior sliders + accident history |
+| `StepInspection` | 20-point inspection checklist (transparent disclosure) |
 | `StepDamageReview` | AI damage detection results |
 | `AppraisalDisclaimer` | Legal disclaimer before appraisal |
 | `calculateFairValue` | Pure function — fair value algorithm |
@@ -62,6 +85,7 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 | `NotificationBell` | Real-time notification indicator |
 | `SEO` | Dynamic meta tags, OG, JSON-LD |
 | `CookieConsent` | GDPR cookie consent banner |
+| `MfaGuard` | Enforces TOTP 2FA on all protected routes |
 
 ### Admin Command Center (`src/components/admin/`)
 | Component | Purpose |
@@ -72,6 +96,7 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 | `AdminNegotiations` | All offers with amount, counter, round, status tracking |
 | `AdminActivityFeed` | Merged feed of notifications, car views, and shortlists |
 | `AdminMatches` | All car-to-buyer matches with scores and status |
+| `AdminTransactions` | All transaction monitoring |
 
 ### Auth & Admin Hooks (`src/hooks/`)
 | Hook | Purpose |
@@ -79,6 +104,7 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 | `useAdminAuth` | Checks `user_roles` table for admin role; redirects non-admins |
 | `useIsAdmin` | Lightweight boolean check for conditional UI (e.g. navbar admin link) |
 | `useMfaStatus` | Checks user's MFA enrollment/verification status |
+| `useCarModels` | Paginated car model data fetching (handles 2,500+ entries) |
 
 ### MFA & Auth Components
 | Component | Purpose |
@@ -90,13 +116,27 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to dark theme:
 
 ---
 
+## Registration & Lifestyle Profiling
+
+The **Signup page** (`/signup`) collects lifestyle data alongside account credentials:
+- Full name, email, password
+- Relationship status (single, married, divorced)
+- Number of kids (0, 1, 2, 3, 3+)
+- Car purpose (daily, work, pleasure, summer, winter)
+- Budget range
+- **Current car** (free text, e.g. "BMW 3 Series 2019") — used for brand loyalty and upgrade path recommendations
+
+This data is stored in the `profiles` table and feeds directly into the **lifestyle-aware matching algorithm**.
+
+---
+
 ## Internationalization (i18n)
 
 - **Languages**: English (EN), German (DE)
 - **Implementation**: React Context (`LanguageContext.tsx`)
-- **Translation file**: `src/i18n/translations.ts` (~1650 lines)
+- **Translation file**: `src/i18n/translations.ts` (~1950+ lines)
 - **Toggle**: Globe icon in Navbar
-- **Coverage**: All user-facing strings, including form labels, error messages, legal pages, dashboard tabs (Selling/Buying), SOLD labels, transaction summaries, and buyer tab content
+- **Coverage**: All user-facing strings, including form labels, error messages, legal pages, dashboard tabs (Selling/Buying), SOLD labels, transaction summaries, buyer tab content, and lifestyle questions
 
 ## Dashboard
 
