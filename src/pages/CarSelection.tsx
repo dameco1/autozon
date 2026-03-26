@@ -97,9 +97,9 @@ const CarSelection: React.FC = () => {
       // Apply broad budget filters to narrow the pool
       if (prefs.min_budget) query = query.gte("price", prefs.min_budget);
       if (prefs.max_budget) query = query.lte("price", prefs.max_budget);
-      if (prefs.min_year) query = query.gte("year", (prefs as any).min_year);
-      if (prefs.max_year) query = query.lte("year", (prefs as any).max_year);
-      if ((prefs as any).max_mileage) query = query.lte("mileage", (prefs as any).max_mileage);
+      if (prefs.min_year) query = query.gte("year", prefs.min_year);
+      if (prefs.max_year) query = query.lte("year", prefs.max_year);
+      if (prefs.max_mileage) query = query.lte("mileage", prefs.max_mileage);
     }
 
     const { data, error } = await query;
