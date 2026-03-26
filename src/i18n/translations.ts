@@ -996,7 +996,7 @@ export const translations = {
     },
     hero: {
       headline: "Der einfachste Weg,",
-      headlineAccent: "Autos zu verkaufen und zu kaufen.",
+      headlineAccent: "Autos zu (ver)kaufen.",
       subheadline: "KI-gestützte faire Preise. Kein Händleraufschlag, kein Rätselraten — einfach ehrlicher Autohandel.",
       primaryCta: "🚘 Auto verkaufen",
       secondaryCta: "Autos durchsuchen",
