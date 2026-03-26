@@ -59,9 +59,9 @@ const HeroSection: React.FC = () => {
           key={i}
           src={car.src}
           alt=""
-          className={`absolute opacity-[0.06] pointer-events-none select-none ${car.className}`}
+          className={`absolute opacity-[0.12] pointer-events-none select-none ${car.className}`}
           initial={{ opacity: 0, x: car.from.x, y: car.from.y }}
-          animate={{ opacity: 0.06, x: 0, y: 0 }}
+          animate={{ opacity: 0.12, x: 0, y: 0 }}
           transition={{ duration: 1.4, ease: "easeOut", delay: i * 0.15 }}
           width={800}
           height={512}
