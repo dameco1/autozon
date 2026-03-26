@@ -17,7 +17,7 @@ const pulseRing = {
   visible: (i: number) => ({
     scale: 1,
     opacity: 1,
-    transition: { delay: 0.6 + i * 0.18, duration: 0.5, ease: "easeOut" },
+    transition: { delay: 0.6 + i * 0.18, duration: 0.5, ease: "easeOut" as const },
   }),
 };
 
