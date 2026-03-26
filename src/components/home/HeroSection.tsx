@@ -14,16 +14,19 @@ import heroCar9 from "@/assets/hero-car-9.png";
 import heroCar10 from "@/assets/hero-car-10.png";
 
 const heroCars = [
-  { src: heroCar1, className: "bottom-[2%] left-[1%] w-[200px] lg:w-[260px]", from: { x: -50, y: 20 } },
-  { src: heroCar2, className: "bottom-[2%] right-[1%] w-[190px] lg:w-[250px]", from: { x: 50, y: 20 } },
-  { src: heroCar3, className: "top-[6%] left-[3%] w-[160px] lg:w-[210px]", from: { x: -40, y: -20 } },
-  { src: heroCar4, className: "top-[5%] right-[3%] w-[155px] lg:w-[200px]", from: { x: 40, y: -20 } },
-  { src: heroCar5, className: "top-[40%] left-[1%] w-[150px] lg:w-[200px] hidden sm:block", from: { x: -30, y: 0 } },
-  { src: heroCar6, className: "top-[38%] right-[1%] w-[155px] lg:w-[205px] hidden sm:block", from: { x: 30, y: 0 } },
-  { src: heroCar7, className: "bottom-[30%] left-[8%] w-[140px] lg:w-[180px] hidden md:block", from: { x: -25, y: 15 } },
-  { src: heroCar8, className: "bottom-[28%] right-[8%] w-[145px] lg:w-[185px] hidden md:block", from: { x: 25, y: 15 } },
-  { src: heroCar9, className: "top-[18%] left-[15%] w-[130px] lg:w-[170px] hidden lg:block", from: { x: -20, y: -10 } },
-  { src: heroCar10, className: "top-[16%] right-[15%] w-[135px] lg:w-[175px] hidden lg:block", from: { x: 20, y: -10 } },
+  // Top row – spread across full width
+  { src: heroCar3, className: "top-[4%] left-[2%] w-[140px] lg:w-[180px]", from: { x: -40, y: -20 } },
+  { src: heroCar9, className: "top-[6%] left-[22%] w-[120px] lg:w-[160px] hidden lg:block", from: { x: -20, y: -15 } },
+  { src: heroCar4, className: "top-[3%] right-[22%] w-[125px] lg:w-[165px] hidden lg:block", from: { x: 20, y: -15 } },
+  { src: heroCar7, className: "top-[5%] right-[2%] w-[135px] lg:w-[175px]", from: { x: 40, y: -20 } },
+  // Middle row – sides only (text is in the center)
+  { src: heroCar5, className: "top-[35%] left-[0%] w-[150px] lg:w-[200px] hidden sm:block", from: { x: -35, y: 0 } },
+  { src: heroCar6, className: "top-[33%] right-[0%] w-[145px] lg:w-[195px] hidden sm:block", from: { x: 35, y: 0 } },
+  // Bottom row – spread across full width
+  { src: heroCar1, className: "bottom-[2%] left-[1%] w-[170px] lg:w-[220px]", from: { x: -50, y: 20 } },
+  { src: heroCar8, className: "bottom-[5%] left-[25%] w-[130px] lg:w-[170px] hidden md:block", from: { x: -15, y: 25 } },
+  { src: heroCar10, className: "bottom-[4%] right-[25%] w-[125px] lg:w-[165px] hidden md:block", from: { x: 15, y: 25 } },
+  { src: heroCar2, className: "bottom-[2%] right-[1%] w-[165px] lg:w-[215px]", from: { x: 50, y: 20 } },
 ];
 
 const fadeUp = {
