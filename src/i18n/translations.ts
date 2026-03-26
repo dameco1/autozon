@@ -27,9 +27,10 @@ export const translations = {
       primaryCta: "🚘 Sell My Car",
       secondaryCta: "Browse Cars",
       trustBadges: [
-        { icon: "check", text: "🤖 AI prices your car in 60 seconds" },
-        { icon: "lock", text: "📅 Your ad stays live — forever" },
-        { icon: "zap", text: "💳 Buyers pay by card up to €10K" },
+        { icon: "zap", text: "AI prices your car in 60 seconds" },
+        { icon: "lock", text: "Your ad stays live — until sold" },
+        { icon: "card", text: "Pay for the car with credit card" },
+        { icon: "check", text: "Negotiate & close in one place" },
       ],
       // legacy keys kept for other pages
       badge: "AI-Powered Car Trading",
@@ -1003,9 +1004,10 @@ export const translations = {
       primaryCta: "🚘 Auto verkaufen",
       secondaryCta: "Autos durchsuchen",
       trustBadges: [
-        { icon: "check", text: "🤖 KI bewertet dein Auto in 60 Sekunden" },
-        { icon: "lock", text: "📅 Dein Inserat bleibt — für immer" },
-        { icon: "zap", text: "💳 Käufer zahlen per Karte bis €10K" },
+        { icon: "zap", text: "KI bewertet dein Auto in 60 Sekunden" },
+        { icon: "lock", text: "Dein Inserat bleibt — bis es verkauft ist" },
+        { icon: "card", text: "Auto per Kreditkarte bezahlen" },
+        { icon: "check", text: "Verhandeln & abschließen an einem Ort" },
       ],
       badge: "KI-gesteuerter Autohandel",
       title: "Schluss mit Einstellen & Hoffen.",
