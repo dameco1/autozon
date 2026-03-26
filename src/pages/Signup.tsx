@@ -27,6 +27,7 @@ const Signup: React.FC = () => {
   const [numKids, setNumKids] = useState("");
   const [purpose, setPurpose] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
+  const [currentCar, setCurrentCar] = useState("");
   const [loading, setLoading] = useState(false);
 
   const ls = t.lifestyle;
@@ -56,6 +57,7 @@ const Signup: React.FC = () => {
         num_kids: hasKids === "yes" && numKids ? Number(numKids) : null,
         car_purpose: purpose || null,
         budget_max: budgetMax ? Number(budgetMax) : null,
+        current_car: currentCar || null,
       }).eq("user_id", data.user.id);
     }
 
@@ -180,6 +182,18 @@ const Signup: React.FC = () => {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          {/* Current Car */}
+          <div className="space-y-2">
+            <Label className="text-muted-foreground text-sm">{ls.currentCar}</Label>
+            <Input
+              type="text"
+              value={currentCar}
+              onChange={(e) => setCurrentCar(e.target.value)}
+              className="bg-background border-border text-foreground placeholder:text-muted-foreground/50"
+              placeholder={ls.currentCarPlaceholder}
+            />
           </div>
 
           <Button type="submit" disabled={loading} className="w-full bg-orange text-orange-foreground hover:bg-orange/90 font-bold py-6 rounded-xl">

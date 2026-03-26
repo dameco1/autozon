@@ -591,6 +591,7 @@ export type Database = {
           city: string | null
           country: string | null
           created_at: string
+          current_car: string | null
           full_name: string
           has_kids: boolean | null
           id: string
@@ -611,6 +612,7 @@ export type Database = {
           city?: string | null
           country?: string | null
           created_at?: string
+          current_car?: string | null
           full_name?: string
           has_kids?: boolean | null
           id?: string
@@ -631,6 +633,7 @@ export type Database = {
           city?: string | null
           country?: string | null
           created_at?: string
+          current_car?: string | null
           full_name?: string
           has_kids?: boolean | null
           id?: string

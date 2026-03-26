@@ -970,6 +970,8 @@ export const translations = {
         winter: "Winter Car",
       },
       budget: "Budget",
+      currentCar: "Current Car",
+      currentCarPlaceholder: "e.g. BMW 3 Series 2019",
       selectPlaceholder: "Select...",
     },
     notFound: {
@@ -1938,6 +1940,8 @@ export const translations = {
         winter: "Winterauto",
       },
       budget: "Budget",
+      currentCar: "Aktuelles Auto",
+      currentCarPlaceholder: "z.B. BMW 3er 2019",
       selectPlaceholder: "Wählen...",
     },
     notFound: {
