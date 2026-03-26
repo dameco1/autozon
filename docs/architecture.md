@@ -7,6 +7,7 @@
 | **Frontend** | React 18 + TypeScript | SPA with component-based UI |
 | **Build** | Vite | Fast dev server and optimized production builds |
 | **Styling** | Tailwind CSS + shadcn/ui | Utility-first CSS with accessible component library |
+| **Theme** | Warm light mode (cream/amber) | Premium, warm aesthetic with semantic HSL tokens |
 | **Animation** | Framer Motion | Page transitions, micro-interactions |
 | **Routing** | React Router v6 | Client-side routing with nested layouts |
 | **State** | TanStack Query + React state | Server-state caching and local UI state |
@@ -57,27 +58,37 @@
 src/
 ├── assets/              # Images, logos, pitch deck photos
 ├── components/
-│   ├── home/            # Landing page sections (Hero, CTA, HowItWorks, etc.)
-│   ├── car-upload/      # Multi-step car listing wizard (5 steps)
-│   ├── pitch/           # Investor pitch slide components
+│   ├── home/            # Landing page sections (Hero, CTA, HowItWorks, Search, etc.)
+│   ├── car-upload/      # Multi-step car listing wizard (6 steps)
+│   ├── pitch/           # Investor pitch slide components (dark theme)
+│   ├── transaction/     # Transaction step components (Method, Contract, Payment, Insurance, Complete)
+│   ├── dashboard/       # Dashboard tab components (DashboardBuyerTab)
 │   ├── admin/           # Admin Command Center components
 │   │   ├── AdminOverview.tsx      # KPI cards + signup chart
 │   │   ├── AdminCarsTable.tsx     # All-cars table with actions
 │   │   ├── AdminUsersTable.tsx    # All-users table
 │   │   ├── AdminNegotiations.tsx  # All-offers monitor
+│   │   ├── AdminTransactions.tsx  # All-transactions monitor
+│   │   ├── AdminMatches.tsx       # All car-to-buyer matches
 │   │   └── AdminActivityFeed.tsx  # Platform activity stream
 │   ├── ui/              # shadcn/ui primitives (button, card, dialog, etc.)
 │   ├── Navbar.tsx       # Global navigation with auth state + admin link
 │   ├── ConciergeChat.tsx # AI-powered chat widget
 │   ├── AppraisalBreakdown.tsx
 │   ├── MarketComparison.tsx
+│   ├── CookieConsent.tsx
 │   └── SEO.tsx          # Dynamic meta/OG/JSON-LD
 │   ├── MfaGuard.tsx     # Enforces TOTP 2FA on all protected routes
 ├── hooks/               # Custom hooks (useMobile, useCarModels, useMfaStatus, useToast, useAdminAuth)
 ├── i18n/                # Translations (EN/DE) and LanguageContext
 ├── integrations/        # Auto-generated Supabase client + types
-├── lib/                 # Utilities (chatStream, generateNegotiationPdf, utils)
-├── pages/               # Route-level page components (20+ pages incl. AdminDashboard, MfaEnroll, MfaVerify)
+├── lib/                 # Utilities
+│   ├── lifestyleMatch.ts          # Lifestyle-aware car matching algorithm (4D scoring)
+│   ├── chatStream.ts              # SSE streaming for AI concierge
+│   ├── generateNegotiationPdf.ts  # PDF agreement generation
+│   ├── exportPitchPdf.ts          # Pitch deck PDF export
+│   └── utils.ts                   # General utilities
+├── pages/               # Route-level page components (25+ pages)
 └── main.tsx             # App entry point
 
 supabase/
@@ -90,18 +101,22 @@ supabase/
 │   ├── create-placement-checkout/ # Stripe checkout session
 │   ├── stripe-webhook/         # Stripe payment confirmation
 │   ├── verify-placement/       # Payment verification
+│   ├── get-placement-receipts/ # Stripe receipt retrieval
+│   ├── admin-actions/          # Admin API (user suspension, etc.)
 │   ├── seed-car-models/        # Static database seeder
 │   ├── seed-car-models-ai/     # AI-powered model seeder with MSRP (Gemini)
-│   └── vin-decode/             # AI-powered VIN decoder (auto-fill make/model/year/equipment)
+│   ├── vin-decode/             # AI-powered VIN decoder
+│   └── verify-docs-password/   # Investor data room auth
 └── migrations/          # SQL migration files (auto-managed)
 
-docs/                    # This documentation folder
+docs/                    # Investor data room documentation
+public/docs/             # Public-facing copies of documentation
 public/                  # Static assets (favicon, OG image, sitemap, robots.txt)
 ```
 
 ## Authentication Flow
 
-1. User signs up via `/signup` (email + password)
+1. User signs up via `/signup` (email + password + lifestyle questions)
 2. Auto-confirm is currently enabled (no email verification) — will be disabled before marketing launch
 3. **Mandatory TOTP-based 2FA (MFA)** for all users:
    - After first login, users are redirected to `/mfa-enroll` to set up an authenticator app (QR code)
@@ -118,16 +133,30 @@ public/                  # Static assets (favicon, OG image, sitemap, robots.txt
 
 ```
 User → /intent (choose "Sell")
-     → /car-upload (5-step wizard)
+     → /car-upload (6-step wizard)
        Step 1: Basic Info (make, model, year, mileage, price) + VIN decode (AI auto-fill)
        Step 2: Photos (6 mandatory + 1 optional angles, client-side compression)
        Step 3: Equipment selection
-       Step 4: Condition sliders + accident history + AI damage scan (brand-specific repair costs)
-       Step 5: Review + AI description generator
+       Step 4: Inspection checklist (20-point transparent disclosure)
+       Step 5: Condition sliders + accident history + AI damage scan (brand-specific repair costs)
+       Step 6: Review + AI description generator
      → calculateFairValue() runs client-side (100% attribute-based, model-specific MSRP when available)
      → Car saved to `cars` table with fair_value_price
      → /fair-value/:id (appraisal result + market comparison, 40/60 blend if market data available)
      → /buyer-matches/:carId (matched buyers)
      → /negotiate/:offerId (structured negotiation)
+     → /acquire/:offerId (financing/acquisition options)
+```
+
+## Data Flow: Buying a Car
+
+```
+User → /signup (lifestyle data: relationship, kids, purpose, current car, budget)
+     → /onboarding (detailed preferences: commute, parking, family size, ownership, insurance)
+     → /cars (lifestyle-scored car selection — algorithm ranks by 4D match score)
+       Cars ranked by: 30% lifestyle fit + 30% financial fit + 25% preference match + 15% condition
+     → Swipe-style like/dislike → narrow down → /compare (side-by-side)
+     → /car/:id (detailed view + shortlist)
+     → /negotiate/:offerId (make offer → negotiation rounds)
      → /acquire/:offerId (financing/acquisition options)
 ```
