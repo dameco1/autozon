@@ -41,7 +41,7 @@ const Index: React.FC = () => {
       <ComparisonSection />
       <AiEngineSection />
       <WhyAutozonSection />
-      <StatsBar />
+      
       <HowItWorksSection />
       <CtaSection />
       <FooterSection />
