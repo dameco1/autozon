@@ -2,6 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Lock, Zap, CreditCard } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
+import heroCar1 from "@/assets/hero-car-1.png";
+import heroCar2 from "@/assets/hero-car-2.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
