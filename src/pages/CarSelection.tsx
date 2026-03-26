@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import carPlaceholder from "@/assets/car-placeholder.jpg";
 
 type CarRow = {
   id: string;
@@ -270,8 +271,34 @@ const CarSelection: React.FC = () => {
                       }`}
                       onClick={() => toggleLike(car.id)}
                     >
-                      <CardContent className="p-5">
-                        <div className="flex justify-between items-start mb-3">
+                      <CardContent className="p-0">
+                        {/* Car Image */}
+                        <div className="relative w-full h-40 overflow-hidden rounded-t-lg">
+                          <img
+                            src={
+                              (car.photos && car.photos.length > 0 && car.photos[0])
+                                ? car.photos[0]
+                                : car.image_url || carPlaceholder
+                            }
+                            alt={`${car.make} ${car.model}`}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            onError={(e) => { (e.target as HTMLImageElement).src = carPlaceholder; }}
+                          />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLike(car.id);
+                            }}
+                            className={`absolute top-2 right-2 p-2 rounded-full transition-colors backdrop-blur-sm ${
+                              liked.has(car.id) ? "bg-primary/80 text-white" : "bg-charcoal/60 text-silver/60"
+                            }`}
+                          >
+                            {liked.has(car.id) ? <Heart className="h-4 w-4 fill-current" /> : <Heart className="h-4 w-4" />}
+                          </button>
+                        </div>
+
+                        <div className="p-5">
                           <div>
                             <h3 className="text-white font-display font-bold text-lg">
                               {car.make} {car.model}
