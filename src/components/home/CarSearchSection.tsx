@@ -8,7 +8,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
 
-const PRICE_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000];
+const PRICE_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000, 200000, -1];
 const MILEAGE_OPTIONS = [25000, 50000, 100000, 150000, 200000];
 const FUEL_OPTIONS = ["Petrol", "Diesel", "Electric", "Hybrid"];
 const PURPOSES = ["daily", "work", "pleasure", "summer", "winter"] as const;
@@ -73,7 +73,7 @@ const CarSearchSection: React.FC = () => {
 
       if (make) query = query.eq("make", make);
       if (model) query = query.eq("model", model);
-      if (effectiveMaxPrice) query = query.lte("price", Number(effectiveMaxPrice));
+      if (effectiveMaxPrice && Number(effectiveMaxPrice) > 0) query = query.lte("price", Number(effectiveMaxPrice));
       if (yearFrom) query = query.gte("year", Number(yearFrom));
       if (fuelType) query = query.eq("fuel_type", fuelType);
       if (maxMileage) query = query.lte("mileage", Number(maxMileage));
@@ -88,7 +88,7 @@ const CarSearchSection: React.FC = () => {
     const params = new URLSearchParams();
     if (make) params.set("make", make);
     if (model) params.set("model", model);
-    if (effectiveMaxPrice) params.set("maxPrice", effectiveMaxPrice);
+    if (effectiveMaxPrice && Number(effectiveMaxPrice) > 0) params.set("maxPrice", effectiveMaxPrice);
     if (yearFrom) params.set("yearFrom", yearFrom);
     if (fuelType) params.set("fuelType", fuelType);
     if (maxMileage) params.set("maxMileage", maxMileage);
@@ -165,7 +165,7 @@ const CarSearchSection: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   {PRICE_OPTIONS.map((p) => (
-                    <SelectItem key={p} value={String(p)}>€{p.toLocaleString()}</SelectItem>
+                    <SelectItem key={p} value={String(p)}>{p === -1 ? "Unlimited" : `€${p.toLocaleString()}`}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
