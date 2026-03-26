@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import carPlaceholder from "@/assets/car-placeholder.jpg";
 
 type CarRow = {
   id: string;
@@ -26,6 +27,7 @@ type CarRow = {
   condition_score: number | null;
   demand_score: number | null;
   image_url: string | null;
+  photos: string[] | null;
   detected_damages: unknown;
 };
 
@@ -65,7 +67,7 @@ const CarSelection: React.FC = () => {
 
     let query = supabase
       .from("cars")
-      .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, detected_damages")
+      .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, photos, detected_damages")
       .eq("status", "available")
       .limit(10);
 
@@ -169,7 +171,7 @@ const CarSelection: React.FC = () => {
 
     let query = supabase
       .from("cars")
-      .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, detected_damages")
+      .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, photos, detected_damages")
       .eq("status", "available")
       .limit(10);
 
@@ -269,9 +271,35 @@ const CarSelection: React.FC = () => {
                       }`}
                       onClick={() => toggleLike(car.id)}
                     >
-                      <CardContent className="p-5">
-                        <div className="flex justify-between items-start mb-3">
-                          <div>
+                      <CardContent className="p-0">
+                        {/* Car Image */}
+                        <div className="relative w-full h-40 overflow-hidden rounded-t-lg">
+                          <img
+                            src={
+                              (car.photos && car.photos.length > 0 && car.photos[0])
+                                ? car.photos[0]
+                                : car.image_url || carPlaceholder
+                            }
+                            alt={`${car.make} ${car.model}`}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            onError={(e) => { (e.target as HTMLImageElement).src = carPlaceholder; }}
+                          />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLike(car.id);
+                            }}
+                            className={`absolute top-2 right-2 p-2 rounded-full transition-colors backdrop-blur-sm ${
+                              liked.has(car.id) ? "bg-primary/80 text-white" : "bg-charcoal/60 text-silver/60"
+                            }`}
+                          >
+                            {liked.has(car.id) ? <Heart className="h-4 w-4 fill-current" /> : <Heart className="h-4 w-4" />}
+                          </button>
+                        </div>
+
+                        <div className="p-5">
+                          <div className="mb-3">
                             <h3 className="text-white font-display font-bold text-lg">
                               {car.make} {car.model}
                             </h3>
@@ -282,47 +310,36 @@ const CarSelection: React.FC = () => {
                               </span>
                             )}
                           </div>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleLike(car.id);
-                            }}
-                            className={`p-2 rounded-full transition-colors ${
-                              liked.has(car.id) ? "bg-primary/20 text-primary" : "bg-charcoal/50 text-silver/40"
-                            }`}
-                          >
-                            {liked.has(car.id) ? <Heart className="h-5 w-5 fill-current" /> : <Heart className="h-5 w-5" />}
-                          </button>
-                        </div>
 
-                        <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-silver/60">
-                          <div className="flex items-center gap-1">
-                            <Gauge className="h-3 w-3" /> {car.mileage.toLocaleString()} km
+                          <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-silver/60">
+                            <div className="flex items-center gap-1">
+                              <Gauge className="h-3 w-3" /> {car.mileage.toLocaleString()} km
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Fuel className="h-3 w-3" /> {car.fuel_type}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" /> {car.year}
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <Fuel className="h-3 w-3" /> {car.fuel_type}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" /> {car.year}
-                          </div>
-                        </div>
 
-                        {car.power_hp && (
-                          <p className="text-silver/40 text-xs mb-3">{car.power_hp} HP · {car.transmission}{car.color ? ` · ${car.color}` : ""}</p>
-                        )}
+                          {car.power_hp && (
+                            <p className="text-silver/40 text-xs mb-3">{car.power_hp} HP · {car.transmission}{car.color ? ` · ${car.color}` : ""}</p>
+                          )}
 
-                        <div className="flex justify-between items-end">
-                          <div>
-                            <p className="text-primary font-bold text-xl">€{car.price.toLocaleString()}</p>
-                            {car.fair_value_price && car.fair_value_price !== car.price && (
-                              <p className="text-silver/40 text-xs">{t.carSelection.fairValue}: €{car.fair_value_price.toLocaleString()}</p>
+                          <div className="flex justify-between items-end">
+                            <div>
+                              <p className="text-primary font-bold text-xl">€{car.price.toLocaleString()}</p>
+                              {car.fair_value_price && car.fair_value_price !== car.price && (
+                                <p className="text-silver/40 text-xs">{t.carSelection.fairValue}: €{car.fair_value_price.toLocaleString()}</p>
+                              )}
+                            </div>
+                            {car.condition_score && (
+                              <Badge variant="secondary" className="text-xs">
+                                {t.carSelection.condition}: {car.condition_score}/100
+                              </Badge>
                             )}
                           </div>
-                          {car.condition_score && (
-                            <Badge variant="secondary" className="text-xs">
-                              {t.carSelection.condition}: {car.condition_score}/100
-                            </Badge>
-                          )}
                         </div>
                       </CardContent>
                     </Card>
