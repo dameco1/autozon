@@ -42,33 +42,33 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-navy flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <SEO title="Log In" description="Log in to your Autozon account to manage your cars, track valuations, and connect with buyers." path="/login" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
             <Car className="h-8 w-8 text-orange" />
-            <span className="text-2xl font-display font-bold text-white">auto<span className="text-orange">zon</span></span>
+            <span className="text-2xl font-display font-bold text-foreground">auto<span className="text-orange">zon</span></span>
           </Link>
-          <h1 className="text-3xl font-display font-bold text-white">{t.auth.loginTitle}</h1>
-          <p className="text-silver/60 mt-2">{t.auth.loginSubtitle}</p>
+          <h1 className="text-3xl font-display font-bold text-foreground">{t.auth.loginTitle}</h1>
+          <p className="text-muted-foreground mt-2">{t.auth.loginSubtitle}</p>
         </div>
 
-        <form onSubmit={handleLogin} className="bg-charcoal/60 border border-border rounded-2xl p-8 space-y-5">
+        <form onSubmit={handleLogin} className="bg-card border border-border rounded-2xl p-8 space-y-5 shadow-sm">
           <div className="space-y-2">
-            <Label className="text-silver/80">{t.auth.email}</Label>
+            <Label className="text-muted-foreground">{t.auth.email}</Label>
             <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-navy border-border text-white placeholder:text-silver/30"
+              className="bg-background border-border text-foreground placeholder:text-muted-foreground/50"
               placeholder="you@example.com"
             />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-silver/80">{t.auth.password}</Label>
+              <Label className="text-muted-foreground">{t.auth.password}</Label>
               <Link to="/reset-password" className="text-xs text-orange hover:underline">{t.auth.forgotPassword}</Link>
             </div>
             <Input
@@ -76,21 +76,21 @@ const Login: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-navy border-border text-white placeholder:text-silver/30"
+              className="bg-background border-border text-foreground placeholder:text-muted-foreground/50"
               placeholder="••••••••"
             />
           </div>
           <Button type="submit" disabled={loading} className="w-full bg-orange text-orange-foreground hover:bg-orange/90 font-bold py-6 rounded-xl">
             {loading ? "..." : t.auth.login}
           </Button>
-          <p className="text-center text-silver/60 text-sm">
+          <p className="text-center text-muted-foreground text-sm">
             {t.auth.noAccount}{" "}
             <Link to="/signup" className="text-orange hover:underline font-medium">{t.auth.signupLink}</Link>
           </p>
         </form>
 
         <div className="mt-6 text-center">
-          <Link to="/" className="text-silver/40 text-sm hover:text-silver/60 inline-flex items-center gap-1">
+          <Link to="/" className="text-muted-foreground/60 text-sm hover:text-muted-foreground inline-flex items-center gap-1">
             <ArrowLeft className="h-3 w-3" /> {t.auth.back}
           </Link>
         </div>
