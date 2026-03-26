@@ -73,7 +73,7 @@ const CarSearchSection: React.FC = () => {
 
       if (make) query = query.eq("make", make);
       if (model) query = query.eq("model", model);
-      if (effectiveMaxPrice) query = query.lte("price", Number(effectiveMaxPrice));
+      if (effectiveMaxPrice && Number(effectiveMaxPrice) > 0) query = query.lte("price", Number(effectiveMaxPrice));
       if (yearFrom) query = query.gte("year", Number(yearFrom));
       if (fuelType) query = query.eq("fuel_type", fuelType);
       if (maxMileage) query = query.lte("mileage", Number(maxMileage));
