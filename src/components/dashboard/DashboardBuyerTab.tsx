@@ -328,7 +328,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                       className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
                         (editPrefs?.preferred_body_types || []).includes(bt)
                           ? "bg-primary/10 border-primary/30 text-primary"
-                          : "bg-muted/60 border-border text-muted-foreground hover:border-silver/30"
+                           : "bg-muted/60 border-border text-muted-foreground hover:border-primary/30"
                       }`}>{bt}</button>
                   ))}
                 </div>
@@ -342,7 +342,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                       className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
                         (editPrefs?.preferred_fuel_types || []).includes(ft)
                           ? "bg-primary/10 border-primary/30 text-primary"
-                          : "bg-muted/60 border-border text-muted-foreground hover:border-silver/30"
+                           : "bg-muted/60 border-border text-muted-foreground hover:border-primary/30"
                       }`}>{ft}</button>
                   ))}
                 </div>
@@ -356,7 +356,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                       className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                         editPrefs?.preferred_transmission === tr
                           ? "bg-primary/10 border-primary/30 text-primary"
-                          : "bg-muted/60 border-border text-muted-foreground hover:border-silver/30"
+                          : "bg-muted/60 border-border text-muted-foreground hover:border-primary/30"
                       }`}>{tr}</button>
                   ))}
                 </div>

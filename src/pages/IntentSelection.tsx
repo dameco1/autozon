@@ -137,7 +137,7 @@ const IntentSelection: React.FC = () => {
               <button
                 onClick={handleStartFresh}
                 disabled={loading}
-                className="w-full group bg-secondary/50 border-2 border-border hover:border-silver/30 rounded-2xl p-6 text-left transition-all duration-300 flex items-center gap-4"
+                className="w-full group bg-secondary/50 border-2 border-border hover:border-primary/30 rounded-2xl p-6 text-left transition-all duration-300 flex items-center gap-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center shrink-0">
                   <RotateCcw className="h-6 w-6 text-muted-foreground" />

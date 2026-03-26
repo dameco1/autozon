@@ -304,7 +304,7 @@ const FairValueResult: React.FC = () => {
               <span className="w-3 h-0.5 rounded bg-primary inline-block" /> {car.make} {car.model}
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-3 h-0.5 rounded bg-silver/30 inline-block border border-dashed border-silver/30" /> {car.body_type} segment avg
+              <span className="w-3 h-0.5 rounded bg-muted-foreground/30 inline-block border border-dashed border-muted-foreground/30" /> {car.body_type} segment avg
             </span>
           </div>
           <div className="h-64">
@@ -381,7 +381,7 @@ const FairValueResult: React.FC = () => {
           <Button
             size="lg"
             variant="outline"
-            className="border-silver/20 text-muted-foreground hover:bg-silver/5 font-semibold py-6 rounded-xl"
+            className="border-border text-muted-foreground hover:bg-muted font-semibold py-6 rounded-xl"
             onClick={() => navigate("/car-upload")}
           >
             <Plus className="mr-2 h-5 w-5" /> {t.fairValue.uploadAnother}

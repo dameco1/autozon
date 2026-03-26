@@ -196,7 +196,7 @@ const QA = () => {
   const searchPlaceholder = language === "de" ? "Fragen durchsuchen…" : "Search questions…";
 
   return (
-    <div className="min-h-screen bg-navy text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <SEO
         title="Q&A"
         description="Frequently asked questions about Autozon — how it works, what makes it different, and why it's the smarter way to buy and sell cars."
@@ -228,7 +228,7 @@ const QA = () => {
             <AccordionItem
               key={i}
               value={`q-${i}`}
-              className="border border-border rounded-lg px-5 bg-charcoal/40"
+              className="border border-border rounded-lg px-5 bg-muted/40"
             >
               <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline">
                 {item.q}

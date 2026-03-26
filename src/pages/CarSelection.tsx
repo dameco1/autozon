@@ -267,7 +267,7 @@ const CarSelection: React.FC = () => {
                   >
                     <Card
                       className={`bg-secondary/50 border-2 transition-all cursor-pointer ${
-                        liked.has(car.id) ? "border-primary bg-primary/5" : "border-border hover:border-silver/30"
+                        liked.has(car.id) ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
                       }`}
                       onClick={() => toggleLike(car.id)}
                     >
