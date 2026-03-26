@@ -945,6 +945,8 @@ export const translations = {
       mileageUpTo: "Mileage up to",
       searchBtn: "Search Cars",
       reset: "Reset filters",
+      or: "OR",
+      vehicleType: "Vehicle Type",
     },
     lifestyle: {
       sectionTitle: "Your Lifestyle",
