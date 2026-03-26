@@ -93,11 +93,11 @@ const CookieConsent: React.FC = () => {
                     <Shield className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-base font-display font-bold text-white">{c.title}</h3>
-                    <p className="text-xs text-silver/50">{c.gdpr}</p>
+                    <h3 className="text-base font-display font-bold text-foreground">{c.title}</h3>
+                    <p className="text-xs text-muted-foreground">{c.gdpr}</p>
                   </div>
                 </div>
-                <p className="text-sm text-silver/60 leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {c.description}{" "}
                   <Link to="/privacy-policy" className="text-primary hover:underline">{c.privacyLink}</Link>.{" "}
                   {c.customizeText}
@@ -126,18 +126,18 @@ const CookieConsent: React.FC = () => {
                         {cookieCategories.map((category) => (
                           <div
                             key={category.key}
-                            className="flex items-start justify-between gap-4 bg-charcoal/50 rounded-xl p-4 border border-border"
+                            className="flex items-start justify-between gap-4 bg-muted rounded-xl p-4 border border-border"
                           >
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
-                                <span className="text-sm font-semibold text-white">{category.label}</span>
+                                <span className="text-sm font-semibold text-foreground">{category.label}</span>
                                 {category.locked && (
                                   <span className="text-[10px] uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full font-semibold">
                                     {c.required}
                                   </span>
                                 )}
                               </div>
-                              <p className="text-xs text-silver/50 mt-1 leading-relaxed">{category.description}</p>
+                              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{category.description}</p>
                             </div>
                             <Switch
                               checked={category.locked ? true : preferences[category.key]}
@@ -175,7 +175,7 @@ const CookieConsent: React.FC = () => {
                 )}
                 <Link
                   to="/privacy-policy"
-                  className="text-xs text-silver/40 hover:text-primary transition-colors self-center ml-auto"
+                  className="text-xs text-muted-foreground hover:text-primary transition-colors self-center ml-auto"
                 >
                   {c.privacyLink}
                 </Link>

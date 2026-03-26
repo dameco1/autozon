@@ -144,7 +144,7 @@ const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-charcoal text-silver">
+      <div className="min-h-screen bg-background text-muted-foreground">
         <Navbar />
         <div className="flex items-center justify-center pt-32">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -154,7 +154,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-charcoal text-silver">
+    <div className="min-h-screen bg-background text-muted-foreground">
       <SEO title="Dashboard" description="Manage your car listings, track valuations, view buyer matches, and monitor your portfolio." path="/dashboard" noIndex />
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 pt-24 pb-16">
@@ -164,8 +164,8 @@ const Dashboard: React.FC = () => {
           initial="hidden" animate="visible" variants={fadeUp} custom={0}
         >
           <div>
-            <h1 className="text-3xl font-display font-black text-white">{t.dashboard.title}</h1>
-            <p className="text-silver/50 text-sm mt-1">{t.dashboard.subtitle}</p>
+            <h1 className="text-3xl font-display font-black text-foreground">{t.dashboard.title}</h1>
+            <p className="text-muted-foreground text-sm mt-1">{t.dashboard.subtitle}</p>
           </div>
           <Button
             className="mt-4 sm:mt-0 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
@@ -194,12 +194,12 @@ const Dashboard: React.FC = () => {
             <motion.div key={i} initial="hidden" animate="visible" variants={fadeUp} custom={i + 1}>
               <Card className="bg-secondary/50 border-border p-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-charcoal/50 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center">
                     <stat.icon className={`h-5 w-5 ${stat.color}`} />
                   </div>
                   <div>
-                    <p className="text-2xl font-display font-bold text-white">{stat.value}</p>
-                    <p className="text-xs text-silver/50">{stat.label}</p>
+                    <p className="text-2xl font-display font-bold text-foreground">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.label}</p>
                   </div>
                 </div>
               </Card>
@@ -217,7 +217,7 @@ const Dashboard: React.FC = () => {
               <BadgeCheck className="h-5 w-5 text-emerald-400 shrink-0" />
               <div className="flex-1">
                 <p className="text-sm font-display font-bold text-emerald-400">{t.dashboard.placementActive}</p>
-                <p className="text-xs text-silver/50 mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {cars.filter(c => c.placement_paid).map(c => `${c.year} ${c.make} ${c.model}`).join(", ")}
                   {" — "}{cars.filter(c => c.placement_paid).length === 1 ? t.dashboard.placementDesc : t.dashboard.placementDescPlural}
                 </p>
@@ -231,7 +231,7 @@ const Dashboard: React.FC = () => {
           <motion.div className="lg:col-span-2" initial="hidden" animate="visible" variants={fadeUp} custom={5}>
             <Card className="bg-secondary/50 border-border">
               <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-                 <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                 <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
                   <Car className="h-5 w-5 text-primary" /> {t.dashboard.myCars}
                 </h2>
                 <Button variant="ghost" size="sm" className="text-primary text-xs" onClick={() => navigate("/car-upload")}>
@@ -241,8 +241,8 @@ const Dashboard: React.FC = () => {
 
               {cars.length === 0 ? (
                 <div className="p-8 text-center">
-                  <Car className="h-12 w-12 text-silver/20 mx-auto mb-3" />
-                  <p className="text-silver/50 text-sm mb-4">{t.dashboard.noCarsYet}</p>
+                  <Car className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                  <p className="text-muted-foreground text-sm mb-4">{t.dashboard.noCarsYet}</p>
                   <Button className="bg-primary text-primary-foreground" onClick={() => navigate("/car-upload")}>
                     <Plus className="h-4 w-4 mr-2" /> {t.dashboard.uploadYourCar}
                   </Button>
@@ -250,18 +250,18 @@ const Dashboard: React.FC = () => {
               ) : (
                 <div className="divide-y divide-border">
                   {cars.map((car) => (
-                    <div key={car.id} className="flex items-center gap-4 px-6 py-4 hover:bg-charcoal/20 transition-colors">
-                      <div className="w-16 h-12 rounded-lg bg-charcoal/50 overflow-hidden shrink-0">
+                    <div key={car.id} className="flex items-center gap-4 px-6 py-4 hover:bg-muted/40 transition-colors">
+                      <div className="w-16 h-12 rounded-lg bg-muted overflow-hidden shrink-0">
                         {car.image_url ? (
                           <img src={car.image_url} alt={`${car.make} ${car.model}`} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <Car className="h-5 w-5 text-silver/20" />
+                            <Car className="h-5 w-5 text-muted-foreground" />
                           </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-white truncate">
+                        <p className="text-sm font-semibold text-foreground truncate">
                           {car.year} {car.make} {car.model}
                         </p>
                          <div className="flex items-center gap-3 mt-0.5">
@@ -284,19 +284,19 @@ const Dashboard: React.FC = () => {
                         </div>
                         {/* Engagement Stats */}
                         <div className="flex items-center gap-3 mt-1.5">
-                          <span className="flex items-center gap-1 text-[11px] text-silver/40">
+                          <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
                             <Eye className="h-3 w-3" /> {carStats[car.id]?.views ?? 0}
                           </span>
-                          <span className="flex items-center gap-1 text-[11px] text-silver/40">
+                          <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
                             <Bookmark className="h-3 w-3" /> {carStats[car.id]?.shortlists ?? 0}
                           </span>
-                          <span className="flex items-center gap-1 text-[11px] text-silver/40">
+                          <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
                             <Handshake className="h-3 w-3" /> {carStats[car.id]?.negotiations ?? 0}
                           </span>
                         </div>
                       </div>
                       <div className="flex gap-1 shrink-0">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" title={t.dashboard.viewAd} onClick={() => navigate(`/car/${car.id}`)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" title={t.dashboard.viewAd} onClick={() => navigate(`/car/${car.id}`)}>
                           <ExternalLink className="h-4 w-4" />
                         </Button>
                         {car.status === "sold" ? (
@@ -314,14 +314,14 @@ const Dashboard: React.FC = () => {
                           </>
                         ) : (
                           <>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
                               <BarChart3 className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
                               <Pencil className="h-4 w-4" />
                             </Button>
                             {car.placement_paid ? (
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-silver/50" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
                                 <Users className="h-4 w-4" />
                               </Button>
                             ) : (
@@ -358,11 +358,11 @@ const Dashboard: React.FC = () => {
                               </AlertDialogTrigger>
                               <AlertDialogContent className="bg-secondary border-border">
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle className="text-white">{t.dashboard.deleteCar} {car.year} {car.make} {car.model}?</AlertDialogTitle>
+                                  <AlertDialogTitle className="text-foreground">{t.dashboard.deleteCar} {car.year} {car.make} {car.model}?</AlertDialogTitle>
                                   <AlertDialogDescription>{t.dashboard.deleteConfirm}</AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                                  <AlertDialogCancel className="border-border text-silver">{t.dashboard.cancel}</AlertDialogCancel>
+                                  <AlertDialogCancel className="border-border text-muted-foreground">{t.dashboard.cancel}</AlertDialogCancel>
                                   <AlertDialogAction
                                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                     onClick={async () => {
@@ -394,7 +394,7 @@ const Dashboard: React.FC = () => {
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={5.5}>
                 <Card className="bg-secondary/50 border-border">
                   <div className="px-6 py-4 border-b border-border">
-                    <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                    <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
                       <Handshake className="h-5 w-5 text-primary" /> {(t.dashboard as any).activeNegotiations}
                     </h2>
                   </div>
@@ -404,15 +404,15 @@ const Dashboard: React.FC = () => {
                       return (
                         <div
                           key={offer.id}
-                          className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-charcoal/20 transition-colors"
+                          className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-muted/40 transition-colors"
                           onClick={() => navigate(`/negotiate/${offer.id}`)}
                         >
                           <div>
-                            <p className="text-sm text-white font-semibold">
+                            <p className="text-sm text-foreground font-semibold">
                               {offerCar ? `${offerCar.year} ${offerCar.make} ${offerCar.model}` : "Car"}
                             </p>
                             <div className="flex items-center gap-2 mt-0.5">
-                              <span className="text-xs text-silver/40">€{offer.amount.toLocaleString()}</span>
+                              <span className="text-xs text-muted-foreground">€{offer.amount.toLocaleString()}</span>
                               <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${
                                 offer.status === "accepted" ? "bg-emerald-500/10 text-emerald-400" :
                                 offer.status === "rejected" ? "bg-destructive/10 text-destructive" :
@@ -423,7 +423,7 @@ const Dashboard: React.FC = () => {
                               </span>
                             </div>
                           </div>
-                          <ArrowRight className="h-4 w-4 text-silver/30" />
+                          <ArrowRight className="h-4 w-4 text-muted-foreground" />
                         </div>
                       );
                     })}
@@ -436,7 +436,7 @@ const Dashboard: React.FC = () => {
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6}>
               <Card className="bg-secondary/50 border-border">
                 <div className="px-6 py-4 border-b border-border">
-                  <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                  <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
                     <Users className="h-5 w-5 text-amber-400" /> {t.dashboard.recentMatches}
                     {recentShortlists.length > 0 && (
                       <span className="ml-1 inline-flex items-center justify-center h-6 min-w-[24px] px-1.5 rounded-full bg-amber-400/20 text-amber-400 text-xs font-bold">
@@ -446,7 +446,7 @@ const Dashboard: React.FC = () => {
                   </h2>
                 </div>
                 {recentShortlists.length === 0 ? (
-                  <p className="p-6 text-sm text-silver/50 text-center">{t.dashboard.noMatchesYet}</p>
+                  <p className="p-6 text-sm text-muted-foreground text-center">{t.dashboard.noMatchesYet}</p>
                 ) : (
                   <div className="divide-y divide-border">
                     {recentShortlists.slice(0, 5).map((sl) => {
@@ -454,21 +454,21 @@ const Dashboard: React.FC = () => {
                       return (
                         <div
                           key={sl.id}
-                          className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-charcoal/20 transition-colors"
+                          className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-muted/40 transition-colors"
                           onClick={() => slCar && navigate(`/buyer-matches/${slCar.id}`)}
                         >
                           <div>
                             <div className="flex items-center gap-2">
                               <Bookmark className="h-3.5 w-3.5 text-amber-400" />
-                              <span className="text-sm text-white font-semibold">
+                              <span className="text-sm text-foreground font-semibold">
                                 {slCar ? `${slCar.year} ${slCar.make} ${slCar.model}` : "Car"}
                               </span>
                             </div>
-                            <p className="text-[10px] text-silver/40 mt-0.5 ml-5">
+                            <p className="text-[10px] text-muted-foreground mt-0.5 ml-5">
                               Interested buyer · {new Date(sl.created_at).toLocaleDateString()}
                             </p>
                           </div>
-                          <ArrowRight className="h-4 w-4 text-silver/30" />
+                          <ArrowRight className="h-4 w-4 text-muted-foreground" />
                         </div>
                       );
                     })}
@@ -482,7 +482,7 @@ const Dashboard: React.FC = () => {
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6.5}>
                 <Card className="bg-secondary/50 border-border">
                   <div className="px-6 py-4 border-b border-border">
-                    <h2 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                    <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
                       <Receipt className="h-5 w-5 text-primary" /> {(t.dashboard as any).paymentHistory}
                     </h2>
                   </div>
@@ -493,7 +493,7 @@ const Dashboard: React.FC = () => {
                         <div key={receipt.id} className="px-6 py-3">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm font-semibold text-white">
+                              <p className="text-sm font-semibold text-foreground">
                                 {(t.dashboard as any).placementFee}
                                 {car ? ` — ${car.year} ${car.make} ${car.model}` : ""}
                               </p>
@@ -542,25 +542,25 @@ const Dashboard: React.FC = () => {
             {/* Quick Actions */}
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={7}>
               <Card className="bg-secondary/50 border-border p-6">
-                <h2 className="text-lg font-display font-bold text-white mb-4">{t.dashboard.quickActions}</h2>
+                <h2 className="text-lg font-display font-bold text-foreground mb-4">{t.dashboard.quickActions}</h2>
                 <div className="space-y-2">
                   <Button
                     variant="ghost"
-                    className="w-full justify-start text-silver/70 hover:text-white"
+                    className="w-full justify-start text-muted-foreground hover:text-foreground"
                     onClick={() => navigate("/car-upload")}
                   >
                     <Plus className="h-4 w-4 mr-3 text-primary" /> {t.dashboard.uploadACar}
                   </Button>
                   <Button
                     variant="ghost"
-                    className="w-full justify-start text-silver/70 hover:text-white"
+                    className="w-full justify-start text-muted-foreground hover:text-foreground"
                     onClick={() => navigate("/intent")}
                   >
                     <Car className="h-4 w-4 mr-3 text-primary" /> {t.dashboard.buyOrSell}
                   </Button>
                   <Button
                     variant="ghost"
-                    className="w-full justify-start text-silver/70 hover:text-white"
+                    className="w-full justify-start text-muted-foreground hover:text-foreground"
                     onClick={() => navigate("/recommendations")}
                   >
                     <BarChart3 className="h-4 w-4 mr-3 text-primary" /> {t.dashboard.myRecommendations}

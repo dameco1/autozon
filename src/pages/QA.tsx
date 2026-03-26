@@ -196,7 +196,7 @@ const QA = () => {
   const searchPlaceholder = language === "de" ? "Fragen durchsuchen…" : "Search questions…";
 
   return (
-    <div className="min-h-screen bg-navy text-white">
+    <div className="min-h-screen bg-navy text-foreground">
       <SEO
         title="Q&A"
         description="Frequently asked questions about Autozon — how it works, what makes it different, and why it's the smarter way to buy and sell cars."
@@ -204,22 +204,22 @@ const QA = () => {
       />
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 pt-28 pb-20">
-        <Link to="/" className="inline-flex items-center gap-1 text-sm text-silver/50 hover:text-orange mb-8">
+        <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-orange mb-8">
           <ArrowLeft className="h-4 w-4" />
           {backLabel}
         </Link>
 
-        <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-3">{title}</h1>
-        <p className="text-silver/50 mb-6">{subtitle}</p>
+        <h1 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-3">{title}</h1>
+        <p className="text-muted-foreground mb-6">{subtitle}</p>
 
         <div className="relative mb-8">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-silver/40" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={searchPlaceholder}
-            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-charcoal/60 text-white placeholder:text-silver/40 text-sm focus:outline-none focus:ring-2 focus:ring-orange/50"
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-muted/80 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-orange/50"
           />
         </div>
 
@@ -230,10 +230,10 @@ const QA = () => {
               value={`q-${i}`}
               className="border border-border rounded-lg px-5 bg-charcoal/40"
             >
-              <AccordionTrigger className="text-left text-base font-semibold text-white hover:no-underline">
+              <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline">
                 {item.q}
               </AccordionTrigger>
-              <AccordionContent className="text-silver/50 whitespace-pre-line leading-relaxed">
+              <AccordionContent className="text-muted-foreground whitespace-pre-line leading-relaxed">
                 {item.a}
               </AccordionContent>
             </AccordionItem>

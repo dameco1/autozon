@@ -26,14 +26,14 @@ const TransactionStepIndicator: React.FC<Props> = ({ steps, currentStep }) => (
                   ? "bg-primary text-primary-foreground"
                   : active
                   ? "bg-primary/20 border-2 border-primary text-primary"
-                  : "bg-secondary border border-border text-silver/40"
+                  : "bg-secondary border border-border text-muted-foreground"
               }`}
             >
               {done ? <CheckCircle2 className="h-5 w-5" /> : step.icon}
             </div>
             <span
               className={`text-[11px] font-medium text-center truncate max-w-[80px] ${
-                active ? "text-primary" : done ? "text-silver/70" : "text-silver/30"
+                active ? "text-primary" : done ? "text-muted-foreground" : "text-muted-foreground"
               }`}
             >
               {step.label}

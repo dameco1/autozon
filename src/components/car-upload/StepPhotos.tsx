@@ -120,8 +120,8 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
   return (
     <div className="space-y-6">
       <div>
-        <Label className="text-silver/80 text-sm">{t.carUpload.photos.title}</Label>
-        <p className="text-silver/40 text-xs mt-1">
+        <Label className="text-muted-foreground text-sm">{t.carUpload.photos.title}</Label>
+        <p className="text-muted-foreground text-xs mt-1">
           {t.carUpload.photos.hint} ({filledRequired}/{requiredSlots.length} {(t.carUpload.photos as any).required?.toLowerCase?.() || "required"})
         </p>
       </div>
@@ -133,7 +133,7 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
           const isUploading = uploading === slot.id;
           return (
             <div key={slot.id} className="flex flex-col gap-1.5">
-              <span className="text-xs font-medium text-silver/70 flex items-center gap-1">
+              <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
                 {slotLabels[slot.id] || slot.id}
                 {slot.required && !url && (
                   <span className="text-destructive text-[10px]">*</span>
@@ -142,7 +142,7 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                 <TooltipProvider delayDuration={200}>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 text-silver/40 cursor-help shrink-0" />
+                      <Info className="h-3 w-3 text-muted-foreground cursor-help shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-[200px] text-xs">
                       {SLOT_TOOLTIPS[slot.id] || "Upload a clear photo"}
@@ -150,7 +150,7 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                   </Tooltip>
                 </TooltipProvider>
               </span>
-              <div className={`relative group aspect-[4/3] rounded-xl overflow-hidden bg-charcoal/50 ${slot.required ? 'border border-border' : 'border-2 border-dashed border-border/60'}`}>
+              <div className={`relative group aspect-[4/3] rounded-xl overflow-hidden bg-muted ${slot.required ? 'border border-border' : 'border-2 border-dashed border-border/60'}`}>
                 {url ? (
                   <>
                     <img src={url} alt={slotLabels[slot.id]} className="w-full h-full object-cover" />
@@ -167,7 +167,7 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                       onClick={() => { setActiveSlot(slot.id); slotInputRef.current?.click(); }}
                       className="absolute inset-0 bg-black/0 group-hover:bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
                     >
-                      <Camera className="h-5 w-5 text-white" />
+                      <Camera className="h-5 w-5 text-foreground" />
                     </button>
                   </>
                 ) : (
@@ -182,8 +182,8 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                       <Loader2 className="h-6 w-6 text-primary animate-spin relative z-10" />
                     ) : (
                       <>
-                        <Camera className="h-5 w-5 text-silver/40 relative z-10" />
-                        <span className="text-[10px] text-silver/40 relative z-10">{(t.carUpload.photos as any).tapToUpload}</span>
+                        <Camera className="h-5 w-5 text-muted-foreground relative z-10" />
+                        <span className="text-[10px] text-muted-foreground relative z-10">{(t.carUpload.photos as any).tapToUpload}</span>
                       </>
                     )}
                   </button>
@@ -196,10 +196,10 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
 
       {/* Extra photos */}
       <div className="space-y-2">
-        <Label className="text-silver/60 text-xs">{(t.carUpload.photos as any).extraPhotos} ({extraPhotos.length}/{MAX_EXTRA_PHOTOS})</Label>
+        <Label className="text-muted-foreground text-xs">{(t.carUpload.photos as any).extraPhotos} ({extraPhotos.length}/{MAX_EXTRA_PHOTOS})</Label>
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
           {extraPhotos.map((url) => (
-            <div key={url} className="relative group aspect-square rounded-xl overflow-hidden border border-border bg-charcoal/50">
+            <div key={url} className="relative group aspect-square rounded-xl overflow-hidden border border-border bg-muted">
               <img src={url} alt="" className="w-full h-full object-cover" />
               <button
                 type="button"
@@ -215,14 +215,14 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
               type="button"
               onClick={() => extraInputRef.current?.click()}
               disabled={uploading === "extra"}
-              className="aspect-square rounded-xl border-2 border-dashed border-border hover:border-primary/50 bg-charcoal/30 flex flex-col items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-50"
+              className="aspect-square rounded-xl border-2 border-dashed border-border hover:border-primary/50 bg-muted/60 flex flex-col items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-50"
             >
               {uploading === "extra" ? (
                 <Loader2 className="h-6 w-6 text-primary animate-spin" />
               ) : (
                 <>
-                  <ImagePlus className="h-6 w-6 text-silver/40" />
-                  <span className="text-xs text-silver/40">{t.carUpload.photos.add}</span>
+                  <ImagePlus className="h-6 w-6 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">{t.carUpload.photos.add}</span>
                 </>
               )}
             </button>

@@ -116,26 +116,26 @@ const CarComparison: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-charcoal flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <Car className="h-12 w-12 text-primary animate-pulse" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-charcoal px-4 py-12">
+    <div className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10">
           <Trophy className="h-10 w-10 text-primary mx-auto mb-4" />
-          <h1 className="text-3xl font-display font-bold text-white mb-2">{t.compare.title}</h1>
-          <p className="text-silver/60">{t.compare.subtitle}</p>
+          <h1 className="text-3xl font-display font-bold text-foreground mb-2">{t.compare.title}</h1>
+          <p className="text-muted-foreground">{t.compare.subtitle}</p>
         </div>
 
         <div className="flex items-center justify-between mb-6">
-          <Button variant="ghost" className="text-silver/40" onClick={() => navigate("/car-selection")}>
+          <Button variant="ghost" className="text-muted-foreground" onClick={() => navigate("/car-selection")}>
             <ArrowLeft className="mr-2 h-4 w-4" /> {t.compare.backToSelection}
           </Button>
-          <Button variant="ghost" className="text-silver/50 hover:text-white" onClick={() => navigate("/dashboard")}>
+          <Button variant="ghost" className="text-muted-foreground hover:text-foreground" onClick={() => navigate("/dashboard")}>
             <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
           </Button>
         </div>
@@ -147,10 +147,10 @@ const CarComparison: React.FC = () => {
             <div className="p-4 border-b border-border" />
             {cars.map((car) => (
               <div key={car.id} className="p-4 border-b border-border text-center">
-                <h3 className="text-white font-display font-bold text-lg">{car.make} {car.model}</h3>
+                <h3 className="text-foreground font-display font-bold text-lg">{car.make} {car.model}</h3>
                 <p className="text-primary font-bold text-2xl mt-1">€{car.price.toLocaleString()}</p>
                 {car.fair_value_price && (
-                  <p className="text-silver/40 text-sm">{t.compare.fairValue}: €{car.fair_value_price.toLocaleString()}</p>
+                  <p className="text-muted-foreground text-sm">{t.compare.fairValue}: €{car.fair_value_price.toLocaleString()}</p>
                 )}
               </div>
             ))}
@@ -158,13 +158,13 @@ const CarComparison: React.FC = () => {
             {/* Spec Rows */}
             {specRows.map((spec, idx) => (
               <React.Fragment key={spec.key}>
-                <div className={`p-3 text-sm text-silver/60 ${idx % 2 === 0 ? "bg-charcoal/30" : ""}`}>
+                <div className={`p-3 text-sm text-muted-foreground ${idx % 2 === 0 ? "bg-muted/60" : ""}`}>
                   {spec.label}
                 </div>
                 {cars.map((car) => {
                   const val = (car as any)[spec.key];
                   return (
-                    <div key={car.id} className={`p-3 text-sm text-white text-center ${idx % 2 === 0 ? "bg-charcoal/30" : ""}`}>
+                    <div key={car.id} className={`p-3 text-sm text-foreground text-center ${idx % 2 === 0 ? "bg-muted/60" : ""}`}>
                       {val != null ? (spec.fmt ? spec.fmt(val) : String(val)) : "—"}
                     </div>
                   );
@@ -173,15 +173,15 @@ const CarComparison: React.FC = () => {
             ))}
 
             {/* Equipment Row */}
-            <div className="p-3 text-sm text-silver/60 bg-charcoal/30">{t.compare.equipment}</div>
+            <div className="p-3 text-sm text-muted-foreground bg-muted/60">{t.compare.equipment}</div>
             {cars.map((car) => (
-              <div key={car.id} className="p-3 bg-charcoal/30">
+              <div key={car.id} className="p-3 bg-muted/60">
                 <div className="flex flex-wrap gap-1 justify-center">
                   {(car.equipment || []).slice(0, 6).map((eq) => (
                     <Badge key={eq} variant="secondary" className="text-xs">{eq}</Badge>
                   ))}
                   {(car.equipment || []).length > 6 && (
-                    <Badge variant="outline" className="text-xs text-silver/40">+{(car.equipment || []).length - 6}</Badge>
+                    <Badge variant="outline" className="text-xs text-muted-foreground">+{(car.equipment || []).length - 6}</Badge>
                   )}
                 </div>
               </div>
@@ -190,14 +190,14 @@ const CarComparison: React.FC = () => {
         </div>
 
         {/* Acquisition Options */}
-        <h2 className="text-2xl font-display font-bold text-white mb-6">{t.compare.acquisitionTitle}</h2>
+        <h2 className="text-2xl font-display font-bold text-foreground mb-6">{t.compare.acquisitionTitle}</h2>
 
         <div className="grid md:grid-cols-2 gap-6">
           {cars.map((car) => (
             <motion.div key={car.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <Card className="bg-secondary/50 border-border">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-white text-lg">{car.make} {car.model}</CardTitle>
+                  <CardTitle className="text-foreground text-lg">{car.make} {car.model}</CardTitle>
                   {/* Tabs */}
                   <div className="flex gap-1 mt-3">
                     {tabs.map((tab) => (
@@ -207,7 +207,7 @@ const CarComparison: React.FC = () => {
                         className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                           activeTab[car.id] === tab.key
                             ? "bg-primary/10 text-primary border border-primary"
-                            : "bg-charcoal/50 text-silver/40 border border-transparent"
+                            : "bg-muted text-muted-foreground border border-transparent"
                         }`}
                       >
                         <tab.icon className="h-3 w-3" /> {tab.label}
@@ -219,10 +219,10 @@ const CarComparison: React.FC = () => {
                   {activeTab[car.id] === "purchase" && (
                     <div className="space-y-3">
                       <div className="text-center py-6">
-                        <p className="text-silver/60 text-sm">{t.compare.fullPrice}</p>
+                        <p className="text-muted-foreground text-sm">{t.compare.fullPrice}</p>
                         <p className="text-primary font-bold text-3xl">€{car.price.toLocaleString()}</p>
                         {car.fair_value_price && car.fair_value_price < car.price && (
-                          <p className="text-silver/40 text-sm mt-2">
+                          <p className="text-muted-foreground text-sm mt-2">
                             {t.compare.negotiationTip}: €{car.fair_value_price.toLocaleString()}
                           </p>
                         )}
@@ -233,7 +233,7 @@ const CarComparison: React.FC = () => {
                   {activeTab[car.id] === "credit" && financing[car.id] && (
                     <div className="space-y-4">
                       <div>
-                        <Label className="text-silver/80 text-xs">{t.compare.downPayment}</Label>
+                        <Label className="text-muted-foreground text-xs">{t.compare.downPayment}</Label>
                         <Slider
                           value={[financing[car.id].downPayment]}
                           onValueChange={([v]) => setFinancing((p) => ({ ...p, [car.id]: { ...p[car.id], downPayment: v } }))}
@@ -245,7 +245,7 @@ const CarComparison: React.FC = () => {
                         <p className="text-primary text-sm mt-1">€{financing[car.id].downPayment.toLocaleString()}</p>
                       </div>
                       <div>
-                        <Label className="text-silver/80 text-xs">{t.compare.loanTerm}</Label>
+                        <Label className="text-muted-foreground text-xs">{t.compare.loanTerm}</Label>
                         <Slider
                           value={[financing[car.id].term]}
                           onValueChange={([v]) => setFinancing((p) => ({ ...p, [car.id]: { ...p[car.id], term: v } }))}
@@ -257,7 +257,7 @@ const CarComparison: React.FC = () => {
                         <p className="text-primary text-sm mt-1">{financing[car.id].term} {t.compare.months}</p>
                       </div>
                       <div>
-                        <Label className="text-silver/80 text-xs">{t.compare.interestRate}</Label>
+                        <Label className="text-muted-foreground text-xs">{t.compare.interestRate}</Label>
                         <Slider
                           value={[financing[car.id].rate * 10]}
                           onValueChange={([v]) => setFinancing((p) => ({ ...p, [car.id]: { ...p[car.id], rate: v / 10 } }))}
@@ -268,10 +268,10 @@ const CarComparison: React.FC = () => {
                         />
                         <p className="text-primary text-sm mt-1">{financing[car.id].rate.toFixed(1)}%</p>
                       </div>
-                      <div className="bg-charcoal/50 rounded-xl p-4 text-center">
-                        <p className="text-silver/60 text-sm">{t.compare.monthlyPayment}</p>
+                      <div className="bg-muted rounded-xl p-4 text-center">
+                        <p className="text-muted-foreground text-sm">{t.compare.monthlyPayment}</p>
                         <p className="text-primary font-bold text-2xl">€{Math.round(calcMonthly(car.id, car.price)).toLocaleString()}/mo</p>
-                        <p className="text-silver/40 text-xs mt-1">
+                        <p className="text-muted-foreground text-xs mt-1">
                           {t.compare.totalCost}: €{Math.round(calcMonthly(car.id, car.price) * financing[car.id].term + financing[car.id].downPayment).toLocaleString()}
                         </p>
                       </div>
@@ -281,7 +281,7 @@ const CarComparison: React.FC = () => {
                   {activeTab[car.id] === "leasing" && leasing[car.id] && (
                     <div className="space-y-4">
                       <div>
-                        <Label className="text-silver/80 text-xs">{t.compare.leaseTerm}</Label>
+                        <Label className="text-muted-foreground text-xs">{t.compare.leaseTerm}</Label>
                         <Slider
                           value={[leasing[car.id].term]}
                           onValueChange={([v]) => setLeasing((p) => ({ ...p, [car.id]: { ...p[car.id], term: v } }))}
@@ -293,7 +293,7 @@ const CarComparison: React.FC = () => {
                         <p className="text-primary text-sm mt-1">{leasing[car.id].term} {t.compare.months}</p>
                       </div>
                       <div>
-                        <Label className="text-silver/80 text-xs">{t.compare.residualValue}</Label>
+                        <Label className="text-muted-foreground text-xs">{t.compare.residualValue}</Label>
                         <Slider
                           value={[leasing[car.id].residualPct]}
                           onValueChange={([v]) => setLeasing((p) => ({ ...p, [car.id]: { ...p[car.id], residualPct: v } }))}
@@ -304,8 +304,8 @@ const CarComparison: React.FC = () => {
                         />
                         <p className="text-primary text-sm mt-1">{leasing[car.id].residualPct}% (€{Math.round(car.price * leasing[car.id].residualPct / 100).toLocaleString()})</p>
                       </div>
-                      <div className="bg-charcoal/50 rounded-xl p-4 text-center">
-                        <p className="text-silver/60 text-sm">{t.compare.monthlyLease}</p>
+                      <div className="bg-muted rounded-xl p-4 text-center">
+                        <p className="text-muted-foreground text-sm">{t.compare.monthlyLease}</p>
                         <p className="text-primary font-bold text-2xl">€{Math.round(calcLease(car.id, car.price)).toLocaleString()}/mo</p>
                       </div>
                     </div>
@@ -314,7 +314,7 @@ const CarComparison: React.FC = () => {
                   {activeTab[car.id] === "tradein" && (
                     <div className="space-y-4 text-center py-6">
                       <ArrowLeftRight className="h-10 w-10 text-primary mx-auto" />
-                      <p className="text-silver/60 text-sm">{t.compare.tradeInDesc}</p>
+                      <p className="text-muted-foreground text-sm">{t.compare.tradeInDesc}</p>
                       <Button variant="outline" className="border-primary text-primary" onClick={() => navigate("/car-upload")}>
                         {t.compare.listYourCar}
                       </Button>
@@ -323,10 +323,10 @@ const CarComparison: React.FC = () => {
 
                   {/* Partner Buttons */}
                   <div className="mt-4 pt-4 border-t border-border space-y-2">
-                    <Button variant="outline" className="w-full text-silver/60 border-border text-xs" disabled>
+                    <Button variant="outline" className="w-full text-muted-foreground border-border text-xs" disabled>
                       <Building className="mr-2 h-3 w-3" /> {t.compare.connectBank}
                     </Button>
-                    <Button variant="outline" className="w-full text-silver/60 border-border text-xs" disabled>
+                    <Button variant="outline" className="w-full text-muted-foreground border-border text-xs" disabled>
                       <CreditCard className="mr-2 h-3 w-3" /> {t.compare.getInsurance}
                     </Button>
                   </div>

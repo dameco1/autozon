@@ -333,12 +333,12 @@ const CarUpload: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl">
         {/* Back to dashboard button */}
         <Button
           variant="ghost"
-          className="text-silver/60 mb-4 -ml-2 hover:text-white"
+          className="text-muted-foreground mb-4 -ml-2 hover:text-foreground"
           onClick={() => navigate(-1)}
         >
           <ChevronLeft className="mr-1 h-4 w-4" /> {(t as any).aboutUs?.back || t.auth.back}
@@ -346,10 +346,10 @@ const CarUpload: React.FC = () => {
 
         <div className="text-center mb-8">
           <Car className="h-10 w-10 text-primary mx-auto mb-4" />
-          <h1 className="text-3xl font-display font-bold text-white">
+          <h1 className="text-3xl font-display font-bold text-foreground">
             {editId ? t.carUpload.editTitle : t.carUpload.title}
           </h1>
-          <p className="text-silver/60 mt-2">
+          <p className="text-muted-foreground mt-2">
             {editId ? t.carUpload.editSubtitle : t.carUpload.subtitle}
           </p>
         </div>
@@ -366,11 +366,11 @@ const CarUpload: React.FC = () => {
                 return (
                   <div key={s} className="flex items-center gap-2">
                     <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                      s === step ? "bg-primary text-primary-foreground" : s < step ? "bg-primary/20 text-primary" : "bg-secondary text-silver/40"
+                      s === step ? "bg-primary text-primary-foreground" : s < step ? "bg-primary/20 text-primary" : "bg-secondary text-muted-foreground"
                     }`}>
                       {s < step ? <Check className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
                     </div>
-                    <span className={`text-xs hidden sm:block ${s === step ? "text-white font-medium" : "text-silver/40"}`}>
+                    <span className={`text-xs hidden sm:block ${s === step ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                       {stepLabels[s - 1]}
                     </span>
                     {s < STEPS && <div className={`w-6 h-0.5 ${s < step ? "bg-primary" : "bg-border"}`} />}
@@ -421,7 +421,7 @@ const CarUpload: React.FC = () => {
 
               <div className="flex justify-between mt-8">
                 {step > 1 ? (
-                  <Button variant="ghost" className="text-silver/60" onClick={() => setStep(step - 1)}>
+                  <Button variant="ghost" className="text-muted-foreground" onClick={() => setStep(step - 1)}>
                     <ArrowLeft className="mr-2 h-4 w-4" /> {t.carUpload.back}
                   </Button>
                 ) : <div />}

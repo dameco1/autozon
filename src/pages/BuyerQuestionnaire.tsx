@@ -91,11 +91,11 @@ const BuyerQuestionnaire: React.FC = () => {
         <label
           key={item}
           className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all ${
-            selected.includes(item) ? "bg-primary/10 border-primary" : "bg-charcoal/50 border-border hover:border-silver/30"
+            selected.includes(item) ? "bg-primary/10 border-primary" : "bg-muted border-border hover:border-silver/30"
           }`}
         >
           <Checkbox checked={selected.includes(item)} onCheckedChange={() => toggleArray(selected, item, setter)} />
-          <span className={`text-sm ${selected.includes(item) ? "text-primary" : "text-silver/60"}`}>{item}</span>
+          <span className={`text-sm ${selected.includes(item) ? "text-primary" : "text-muted-foreground"}`}>{item}</span>
         </label>
       ))}
     </div>
@@ -104,7 +104,7 @@ const BuyerQuestionnaire: React.FC = () => {
   const renderSlider = (label: string, value: number, onChange: (v: number) => void, min: number, max: number, suffix = "") => (
     <div>
       <div className="flex justify-between mb-2">
-        <span className="text-silver/80 text-sm">{label}</span>
+        <span className="text-muted-foreground text-sm">{label}</span>
         <span className="text-primary font-bold text-sm">{value.toLocaleString()}{suffix}</span>
       </div>
       <input
@@ -123,11 +123,11 @@ const BuyerQuestionnaire: React.FC = () => {
       case 1:
         return (
           <div>
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q1}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q1}</h2>
             <button
               onClick={() => { setBrands([]); setStep(2); }}
               className={`w-full mb-4 flex items-center justify-center gap-2 px-6 py-4 rounded-xl border-2 border-dashed transition-all ${
-                brands.length === 0 ? "border-primary bg-primary/5 text-primary" : "border-border text-silver/50 hover:border-primary/50 hover:text-primary"
+                brands.length === 0 ? "border-primary bg-primary/5 text-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-primary"
               }`}
             >
               <Sparkles className="h-4 w-4" />
@@ -139,28 +139,28 @@ const BuyerQuestionnaire: React.FC = () => {
       case 2:
         return (
           <div>
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q2}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q2}</h2>
             {renderMultiSelect(BODY_TYPES, bodyTypes, setBodyTypes, 2)}
           </div>
         );
       case 3:
         return (
           <div>
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q3}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q3}</h2>
             {renderMultiSelect(FUEL_TYPES, fuelTypes, setFuelTypes, 2)}
           </div>
         );
       case 4:
         return (
           <div>
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q4}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q4}</h2>
             <div className="flex gap-3">
               {TRANSMISSIONS.map((tr) => (
                 <button
                   key={tr}
                   onClick={() => setTransmission(tr)}
                   className={`flex-1 px-6 py-4 rounded-xl border text-sm font-medium transition-all ${
-                    transmission === tr ? "bg-primary/10 border-primary text-primary" : "bg-charcoal/50 border-border text-silver/60"
+                    transmission === tr ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground"
                   }`}
                 >
                   {tr}
@@ -172,7 +172,7 @@ const BuyerQuestionnaire: React.FC = () => {
       case 5:
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q5}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q5}</h2>
             {renderSlider(t.buyerQ.minBudget, budgetMin, setBudgetMin, 0, 200000, " €")}
             {renderSlider(t.buyerQ.maxBudget, budgetMax, setBudgetMax, 0, 300000, " €")}
           </div>
@@ -180,7 +180,7 @@ const BuyerQuestionnaire: React.FC = () => {
       case 6:
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q6}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q6}</h2>
             {renderSlider(t.buyerQ.minYear, yearMin, setYearMin, 2000, 2026)}
             {renderSlider(t.buyerQ.maxYear, yearMax, setYearMax, 2000, 2026)}
           </div>
@@ -188,35 +188,35 @@ const BuyerQuestionnaire: React.FC = () => {
       case 7:
         return (
           <div>
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q7}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q7}</h2>
             {renderSlider(t.buyerQ.maxMileage, maxMileage, setMaxMileage, 0, 300000, " km")}
           </div>
         );
       case 8:
         return (
           <div>
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q8}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q8}</h2>
             {renderMultiSelect(FEATURES, features, setFeatures, 2)}
           </div>
         );
       case 9:
         return (
           <div>
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q9}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q9}</h2>
             {renderMultiSelect(COLORS, colors, setColors, 3)}
           </div>
         );
       case 10:
         return (
           <div>
-            <h2 className="text-xl font-display font-bold text-white mb-4">{t.buyerQ.q10}</h2>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q10}</h2>
             <div className="space-y-3">
               {TIMING_OPTIONS.map((opt) => (
                 <button
                   key={opt}
                   onClick={() => setTiming(opt)}
                   className={`w-full px-6 py-4 rounded-xl border text-left text-sm font-medium transition-all ${
-                    timing === opt ? "bg-primary/10 border-primary text-primary" : "bg-charcoal/50 border-border text-silver/60"
+                    timing === opt ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground"
                   }`}
                 >
                   {t.buyerQ.timingOptions[opt as keyof typeof t.buyerQ.timingOptions]}
@@ -231,21 +231,21 @@ const BuyerQuestionnaire: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl">
         <div className="flex justify-end mb-4">
-          <Button variant="ghost" className="text-silver/50 hover:text-white" onClick={() => navigate("/dashboard")}>
+          <Button variant="ghost" className="text-muted-foreground hover:text-foreground" onClick={() => navigate("/dashboard")}>
             <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
           </Button>
         </div>
         <div className="text-center mb-6">
           <Car className="h-10 w-10 text-primary mx-auto mb-4" />
-          <h1 className="text-3xl font-display font-bold text-white">{t.buyerQ.title}</h1>
-          <p className="text-silver/60 mt-2">{t.buyerQ.subtitle}</p>
+          <h1 className="text-3xl font-display font-bold text-foreground">{t.buyerQ.title}</h1>
+          <p className="text-muted-foreground mt-2">{t.buyerQ.subtitle}</p>
         </div>
 
         <div className="mb-8">
-          <div className="flex justify-between text-xs text-silver/40 mb-2">
+          <div className="flex justify-between text-xs text-muted-foreground mb-2">
             <span>{t.buyerQ.step} {step}/{TOTAL_STEPS}</span>
             <span>{Math.round((step / TOTAL_STEPS) * 100)}%</span>
           </div>
@@ -267,7 +267,7 @@ const BuyerQuestionnaire: React.FC = () => {
 
           <div className="flex justify-between mt-8">
             {step > 1 ? (
-              <Button variant="ghost" className="text-silver/60" onClick={() => setStep(step - 1)}>
+              <Button variant="ghost" className="text-muted-foreground" onClick={() => setStep(step - 1)}>
                 <ArrowLeft className="mr-2 h-4 w-4" /> {t.buyerQ.back}
               </Button>
             ) : (

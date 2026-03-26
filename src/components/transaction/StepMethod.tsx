@@ -12,7 +12,7 @@ const StepMethod: React.FC<Props> = ({ onSelect }) => {
 
   return (
     <div className="space-y-4">
-      <p className="text-silver/60 text-sm text-center mb-6">{t.transaction.methodSubtitle}</p>
+      <p className="text-muted-foreground text-sm text-center mb-6">{t.transaction.methodSubtitle}</p>
 
       <motion.button
         className="w-full text-left bg-primary/5 border-2 border-primary/30 hover:border-primary rounded-2xl p-6 transition-all group"
@@ -26,12 +26,12 @@ const StepMethod: React.FC<Props> = ({ onSelect }) => {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-display font-bold text-white text-lg">{t.transaction.digitalTitle}</h3>
+              <h3 className="font-display font-bold text-foreground text-lg">{t.transaction.digitalTitle}</h3>
               <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
                 {t.transaction.digitalBadge}
               </span>
             </div>
-            <p className="text-silver/50 text-sm mb-3">{t.transaction.digitalDesc}</p>
+            <p className="text-muted-foreground text-sm mb-3">{t.transaction.digitalDesc}</p>
             <div className="flex flex-wrap gap-2">
               {[t.transaction.featureContract, t.transaction.featurePayment, t.transaction.featureInsurance].map((f) => (
                 <span key={f} className="inline-flex items-center gap-1 text-[11px] text-primary/80 bg-primary/5 px-2 py-0.5 rounded-full">
@@ -53,13 +53,13 @@ const StepMethod: React.FC<Props> = ({ onSelect }) => {
       >
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
-            <Users className="h-6 w-6 text-silver/60" />
+            <Users className="h-6 w-6 text-muted-foreground" />
           </div>
           <div className="flex-1">
-            <h3 className="font-display font-bold text-white text-lg">{t.transaction.manualTitle}</h3>
-            <p className="text-silver/50 text-sm">{t.transaction.manualDesc}</p>
+            <h3 className="font-display font-bold text-foreground text-lg">{t.transaction.manualTitle}</h3>
+            <p className="text-muted-foreground text-sm">{t.transaction.manualDesc}</p>
           </div>
-          <ArrowRight className="h-5 w-5 text-silver/30 opacity-0 group-hover:opacity-100 transition-opacity mt-3" />
+          <ArrowRight className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity mt-3" />
         </div>
       </motion.button>
     </div>

@@ -37,7 +37,7 @@ const MarketComparison: React.FC<Props> = ({ data, loading, error, askingPrice, 
       >
         <div className="flex items-center gap-2 mb-6">
           <Globe className="h-5 w-5 text-primary" />
-          <h3 className="text-lg font-display font-bold text-white">Market Comparison</h3>
+          <h3 className="text-lg font-display font-bold text-foreground">Market Comparison</h3>
         </div>
         <div className="space-y-4">
           <Skeleton className="h-6 w-48 bg-secondary" />
@@ -82,25 +82,25 @@ const MarketComparison: React.FC<Props> = ({ data, loading, error, askingPrice, 
     >
       <div className="flex items-center gap-2 mb-6">
         <Globe className="h-5 w-5 text-primary" />
-        <h3 className="text-lg font-display font-bold text-white">Market Comparison</h3>
+        <h3 className="text-lg font-display font-bold text-foreground">Market Comparison</h3>
       </div>
 
       {/* Blended fair value callout */}
       {blendedFairValue && (
         <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6 text-center">
-          <div className="text-xs text-silver/50 mb-1">Market-Adjusted Fair Value</div>
+          <div className="text-xs text-muted-foreground mb-1">Market-Adjusted Fair Value</div>
           <div className="text-2xl font-display font-black text-primary">
             €{blendedFairValue.toLocaleString()}
           </div>
-          <div className="text-[11px] text-silver/40 mt-1">60% algorithm + 40% market average</div>
+          <div className="text-[11px] text-muted-foreground mt-1">60% algorithm + 40% market average</div>
         </div>
       )}
 
       {/* Price range bar */}
       <div className="mb-6">
-        <div className="flex justify-between text-xs text-silver/50 mb-2">
+        <div className="flex justify-between text-xs text-muted-foreground mb-2">
           <span>€{data.min_price.toLocaleString()}</span>
-          <span className="text-silver/40">avg €{data.avg_price.toLocaleString()}</span>
+          <span className="text-muted-foreground">avg €{data.avg_price.toLocaleString()}</span>
           <span>€{data.max_price.toLocaleString()}</span>
         </div>
         <div className="relative h-4 bg-charcoal/80 rounded-full overflow-hidden">
@@ -123,21 +123,21 @@ const MarketComparison: React.FC<Props> = ({ data, loading, error, askingPrice, 
 
       {/* Stats grid */}
       <div className="grid grid-cols-3 gap-3 mb-4">
-        <div className="bg-charcoal/60 rounded-xl p-3 text-center">
-          <div className="text-[10px] text-silver/40 mb-1">Lowest</div>
-          <div className="text-sm font-bold text-white">€{data.min_price.toLocaleString()}</div>
+        <div className="bg-muted/80 rounded-xl p-3 text-center">
+          <div className="text-[10px] text-muted-foreground mb-1">Lowest</div>
+          <div className="text-sm font-bold text-foreground">€{data.min_price.toLocaleString()}</div>
         </div>
-        <div className="bg-charcoal/60 rounded-xl p-3 text-center">
-          <div className="text-[10px] text-silver/40 mb-1">Your Price</div>
+        <div className="bg-muted/80 rounded-xl p-3 text-center">
+          <div className="text-[10px] text-muted-foreground mb-1">Your Price</div>
           <div className={`text-sm font-bold ${positionColor}`}>€{askingPrice.toLocaleString()}</div>
         </div>
-        <div className="bg-charcoal/60 rounded-xl p-3 text-center">
-          <div className="text-[10px] text-silver/40 mb-1">Highest</div>
-          <div className="text-sm font-bold text-white">€{data.max_price.toLocaleString()}</div>
+        <div className="bg-muted/80 rounded-xl p-3 text-center">
+          <div className="text-[10px] text-muted-foreground mb-1">Highest</div>
+          <div className="text-sm font-bold text-foreground">€{data.max_price.toLocaleString()}</div>
         </div>
       </div>
 
-      <p className="text-[11px] text-silver/30 text-center">
+      <p className="text-[11px] text-muted-foreground text-center">
         AI-estimated from {data.sources_note} • Confidence: {data.confidence}
       </p>
     </motion.div>

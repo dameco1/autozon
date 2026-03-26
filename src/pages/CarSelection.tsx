@@ -220,26 +220,26 @@ const CarSelection: React.FC = () => {
 
   if (loading && cars.length === 0) {
     return (
-      <div className="min-h-screen bg-charcoal flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <Car className="h-12 w-12 text-primary mx-auto mb-4 animate-pulse" />
-          <p className="text-silver/60">{t.carSelection.loading}</p>
+          <p className="text-muted-foreground">{t.carSelection.loading}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-charcoal px-4 py-12">
+    <div className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-end mb-4">
-          <Button variant="ghost" className="text-silver/50 hover:text-white" onClick={() => navigate("/dashboard")}>
+          <Button variant="ghost" className="text-muted-foreground hover:text-foreground" onClick={() => navigate("/dashboard")}>
             <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
           </Button>
         </div>
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-display font-bold text-white mb-2">{t.carSelection.title}</h1>
-          <p className="text-silver/60">
+          <h1 className="text-3xl font-display font-bold text-foreground mb-2">{t.carSelection.title}</h1>
+          <p className="text-muted-foreground">
             {t.carSelection.round} {round} — {cars.length} {t.carSelection.carsShown}
             {liked.size > 0 && ` · ${liked.size} ${t.carSelection.selected}`}
           </p>
@@ -247,7 +247,7 @@ const CarSelection: React.FC = () => {
 
         {cars.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-silver/60 text-lg">{t.carSelection.noCars}</p>
+            <p className="text-muted-foreground text-lg">{t.carSelection.noCars}</p>
             <Button className="mt-4" onClick={() => navigate("/buyer-questionnaire")}>
               {t.carSelection.adjustCriteria}
             </Button>
@@ -291,7 +291,7 @@ const CarSelection: React.FC = () => {
                               toggleLike(car.id);
                             }}
                             className={`absolute top-2 right-2 p-2 rounded-full transition-colors backdrop-blur-sm ${
-                              liked.has(car.id) ? "bg-primary/80 text-white" : "bg-charcoal/60 text-silver/60"
+                              liked.has(car.id) ? "bg-primary/80 text-foreground" : "bg-muted/80 text-muted-foreground"
                             }`}
                           >
                             {liked.has(car.id) ? <Heart className="h-4 w-4 fill-current" /> : <Heart className="h-4 w-4" />}
@@ -300,10 +300,10 @@ const CarSelection: React.FC = () => {
 
                         <div className="p-5">
                           <div className="mb-3">
-                            <h3 className="text-white font-display font-bold text-lg">
+                            <h3 className="text-foreground font-display font-bold text-lg">
                               {car.make} {car.model}
                             </h3>
-                            <p className="text-silver/40 text-sm">{car.year} · {car.body_type}</p>
+                            <p className="text-muted-foreground text-sm">{car.year} · {car.body_type}</p>
                             {Array.isArray(car.detected_damages) && (
                               <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-medium">
                                 <ShieldCheck className="h-3 w-3" /> {t.carSelection.aiVerified}
@@ -311,7 +311,7 @@ const CarSelection: React.FC = () => {
                             )}
                           </div>
 
-                          <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-silver/60">
+                          <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-muted-foreground">
                             <div className="flex items-center gap-1">
                               <Gauge className="h-3 w-3" /> {car.mileage.toLocaleString()} km
                             </div>
@@ -324,14 +324,14 @@ const CarSelection: React.FC = () => {
                           </div>
 
                           {car.power_hp && (
-                            <p className="text-silver/40 text-xs mb-3">{car.power_hp} HP · {car.transmission}{car.color ? ` · ${car.color}` : ""}</p>
+                            <p className="text-muted-foreground text-xs mb-3">{car.power_hp} HP · {car.transmission}{car.color ? ` · ${car.color}` : ""}</p>
                           )}
 
                           <div className="flex justify-between items-end">
                             <div>
                               <p className="text-primary font-bold text-xl">€{car.price.toLocaleString()}</p>
                               {car.fair_value_price && car.fair_value_price !== car.price && (
-                                <p className="text-silver/40 text-xs">{t.carSelection.fairValue}: €{car.fair_value_price.toLocaleString()}</p>
+                                <p className="text-muted-foreground text-xs">{t.carSelection.fairValue}: €{car.fair_value_price.toLocaleString()}</p>
                               )}
                             </div>
                             {car.condition_score && (
@@ -351,7 +351,7 @@ const CarSelection: React.FC = () => {
             <div className="flex justify-center gap-4">
               <Button
                 variant="outline"
-                className="border-border text-silver/60 hover:text-white"
+                className="border-border text-muted-foreground hover:text-foreground"
                 onClick={handleShowMore}
                 disabled={loading}
               >

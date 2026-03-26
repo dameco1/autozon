@@ -62,7 +62,7 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
   return (
     <div className="space-y-6">
       <div>
-        <Label className="text-silver/80 text-sm mb-3 block">
+        <Label className="text-muted-foreground text-sm mb-3 block">
           {t.carUpload.conditionExterior}: <span className="text-primary font-bold">{data.conditionExterior}/100</span> — {conditionLabel(data.conditionExterior)}
         </Label>
         <input
@@ -75,7 +75,7 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
         />
       </div>
       <div>
-        <Label className="text-silver/80 text-sm mb-3 block">
+        <Label className="text-muted-foreground text-sm mb-3 block">
           {t.carUpload.conditionInterior}: <span className="text-primary font-bold">{data.conditionInterior}/100</span> — {conditionLabel(data.conditionInterior)}
         </Label>
         <input
@@ -88,13 +88,13 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
         />
       </div>
       <div>
-        <Label className="text-silver/80 text-sm mb-3 block">{t.carUpload.accidentHistory}</Label>
+        <Label className="text-muted-foreground text-sm mb-3 block">{t.carUpload.accidentHistory}</Label>
         <div className="flex gap-3">
           <button
             type="button"
             onClick={() => onChange({ accidentHistory: true })}
             className={`px-6 py-3 rounded-xl border text-sm font-medium transition-all ${
-              data.accidentHistory ? "bg-destructive/10 border-destructive text-destructive" : "bg-charcoal/50 border-border text-silver/60"
+              data.accidentHistory ? "bg-destructive/10 border-destructive text-destructive" : "bg-muted border-border text-muted-foreground"
             }`}
           >
             {t.carUpload.accidentYes}
@@ -103,7 +103,7 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
             type="button"
             onClick={() => onChange({ accidentHistory: false, accidentDetails: "" })}
             className={`px-6 py-3 rounded-xl border text-sm font-medium transition-all ${
-              !data.accidentHistory ? "bg-primary/10 border-primary text-primary" : "bg-charcoal/50 border-border text-silver/60"
+              !data.accidentHistory ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground"
             }`}
           >
             {t.carUpload.accidentNo}
@@ -112,11 +112,11 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
       </div>
       {data.accidentHistory && (
         <div>
-          <Label className="text-silver/80 text-sm">{t.carUpload.accidentDetails}</Label>
+          <Label className="text-muted-foreground text-sm">{t.carUpload.accidentDetails}</Label>
           <Textarea
             value={data.accidentDetails}
             onChange={(e) => onChange({ accidentDetails: e.target.value })}
-            className="bg-charcoal border-border text-white mt-1"
+            className="bg-background border-border text-foreground mt-1"
             rows={3}
           />
         </div>
@@ -124,47 +124,47 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
 
       {/* Documentation & Condition Questions */}
       <div className="border-t border-border pt-6 space-y-4">
-        <Label className="text-silver/80 text-sm block mb-2">{t.carUpload.documentation.title}</Label>
+        <Label className="text-muted-foreground text-sm block mb-2">{t.carUpload.documentation.title}</Label>
 
-        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
-            <Cigarette className="h-4 w-4 text-silver/50" />
+            <Cigarette className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-sm text-white font-medium">{t.carUpload.documentation.smokerCar}</p>
-              <p className="text-[11px] text-silver/40">{t.carUpload.documentation.smokerCarHint}</p>
+              <p className="text-sm text-foreground font-medium">{t.carUpload.documentation.smokerCar}</p>
+              <p className="text-[11px] text-muted-foreground">{t.carUpload.documentation.smokerCarHint}</p>
             </div>
           </div>
           <Switch checked={data.smokerCar} onCheckedChange={(v) => onChange({ smokerCar: v })} />
         </div>
 
-        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
-            <BookOpen className="h-4 w-4 text-silver/50" />
+            <BookOpen className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-sm text-white font-medium">{t.carUpload.documentation.serviceBook}</p>
-              <p className="text-[11px] text-silver/40">{t.carUpload.documentation.serviceBookHint}</p>
+              <p className="text-sm text-foreground font-medium">{t.carUpload.documentation.serviceBook}</p>
+              <p className="text-[11px] text-muted-foreground">{t.carUpload.documentation.serviceBookHint}</p>
             </div>
           </div>
           <Switch checked={data.serviceBookUpdated} onCheckedChange={(v) => onChange({ serviceBookUpdated: v })} />
         </div>
 
-        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
-            <FileCheck className="h-4 w-4 text-silver/50" />
+            <FileCheck className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-sm text-white font-medium">{t.carUpload.documentation.originalDocs}</p>
-              <p className="text-[11px] text-silver/40">{t.carUpload.documentation.originalDocsHint}</p>
+              <p className="text-sm text-foreground font-medium">{t.carUpload.documentation.originalDocs}</p>
+              <p className="text-[11px] text-muted-foreground">{t.carUpload.documentation.originalDocsHint}</p>
             </div>
           </div>
           <Switch checked={data.originalDocsAvailable} onCheckedChange={(v) => onChange({ originalDocsAvailable: v })} />
         </div>
 
-        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
-            <Receipt className="h-4 w-4 text-silver/50" />
+            <Receipt className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-sm text-white font-medium">{t.carUpload.documentation.maintenanceReceipts}</p>
-              <p className="text-[11px] text-silver/40">{t.carUpload.documentation.maintenanceReceiptsHint}</p>
+              <p className="text-sm text-foreground font-medium">{t.carUpload.documentation.maintenanceReceipts}</p>
+              <p className="text-[11px] text-muted-foreground">{t.carUpload.documentation.maintenanceReceiptsHint}</p>
             </div>
           </div>
           <Switch checked={data.maintenanceReceipts} onCheckedChange={(v) => onChange({ maintenanceReceipts: v })} />
@@ -173,36 +173,36 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
 
       {/* Accessories */}
       <div className="border-t border-border pt-6 space-y-4">
-        <Label className="text-silver/80 text-sm block mb-2">{t.carUpload.accessories.title}</Label>
+        <Label className="text-muted-foreground text-sm block mb-2">{t.carUpload.accessories.title}</Label>
 
-        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
-            <CircleDot className="h-4 w-4 text-silver/50" />
+            <CircleDot className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-sm text-white font-medium">{t.carUpload.accessories.secondWheelSet}</p>
-              <p className="text-[11px] text-silver/40">{t.carUpload.accessories.secondWheelSetHint}</p>
+              <p className="text-sm text-foreground font-medium">{t.carUpload.accessories.secondWheelSet}</p>
+              <p className="text-[11px] text-muted-foreground">{t.carUpload.accessories.secondWheelSetHint}</p>
             </div>
           </div>
           <Switch checked={data.secondWheelSet} onCheckedChange={(v) => onChange({ secondWheelSet: v })} />
         </div>
 
-        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
-            <Luggage className="h-4 w-4 text-silver/50" />
+            <Luggage className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-sm text-white font-medium">{t.carUpload.accessories.roofRack}</p>
-              <p className="text-[11px] text-silver/40">{t.carUpload.accessories.roofRackHint}</p>
+              <p className="text-sm text-foreground font-medium">{t.carUpload.accessories.roofRack}</p>
+              <p className="text-[11px] text-muted-foreground">{t.carUpload.accessories.roofRackHint}</p>
             </div>
           </div>
           <Switch checked={data.hasRoofRack} onCheckedChange={(v) => onChange({ hasRoofRack: v })} />
         </div>
 
-        <div className="flex items-center justify-between rounded-xl border border-border bg-charcoal/50 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
-            <Package className="h-4 w-4 text-silver/50" />
+            <Package className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-sm text-white font-medium">{t.carUpload.accessories.roofBox}</p>
-              <p className="text-[11px] text-silver/40">{t.carUpload.accessories.roofBoxHint}</p>
+              <p className="text-sm text-foreground font-medium">{t.carUpload.accessories.roofBox}</p>
+              <p className="text-[11px] text-muted-foreground">{t.carUpload.accessories.roofBoxHint}</p>
             </div>
           </div>
           <Switch checked={data.hasRoofBox} onCheckedChange={(v) => onChange({ hasRoofBox: v })} />
@@ -210,7 +210,7 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
       </div>
       <div>
         <div className="flex items-center justify-between mb-1">
-          <Label className="text-silver/80 text-sm">{t.carUpload.description}</Label>
+          <Label className="text-muted-foreground text-sm">{t.carUpload.description}</Label>
           <Button
             type="button"
             variant="ghost"
@@ -229,7 +229,7 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
         <Textarea
           value={data.description}
           onChange={(e) => onChange({ description: e.target.value })}
-          className="bg-charcoal border-border text-white mt-1"
+          className="bg-background border-border text-foreground mt-1"
           rows={5}
           placeholder={language === "de" ? "Beschreiben Sie Ihr Fahrzeug oder lassen Sie KI eine Beschreibung generieren..." : "Describe your vehicle or let AI generate a description..."}
         />

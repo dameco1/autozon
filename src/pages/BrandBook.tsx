@@ -18,15 +18,15 @@ const Swatch = ({ name, hsl, hex, token, dark = false }: { name: string; hsl: st
       style={{ backgroundColor: hex }}
       onClick={() => copyToClipboard(hex)}
     >
-      <span className={`text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity ${dark ? "text-white" : "text-charcoal"}`}>
+      <span className={`text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity ${dark ? "text-foreground" : "text-charcoal"}`}>
         Click to copy
       </span>
     </div>
     <div>
-      <p className="font-display font-bold text-white text-sm">{name}</p>
-      <p className="text-silver/60 text-xs font-mono">{hex}</p>
-      <p className="text-silver/40 text-xs font-mono">HSL {hsl}</p>
-      <p className="text-silver/40 text-xs font-mono">var(--{token})</p>
+      <p className="font-display font-bold text-foreground text-sm">{name}</p>
+      <p className="text-muted-foreground text-xs font-mono">{hex}</p>
+      <p className="text-muted-foreground text-xs font-mono">HSL {hsl}</p>
+      <p className="text-muted-foreground text-xs font-mono">var(--{token})</p>
     </div>
   </div>
 );
@@ -34,12 +34,12 @@ const Swatch = ({ name, hsl, hex, token, dark = false }: { name: string; hsl: st
 /* ───── Typography Sample ───── */
 const TypeSample = ({ family, weights, sample }: { family: string; weights: { weight: string; className: string }[]; sample: string }) => (
   <div className="space-y-4">
-    <h3 className="font-display font-bold text-white text-lg">{family}</h3>
+    <h3 className="font-display font-bold text-foreground text-lg">{family}</h3>
     <div className="space-y-3">
       {weights.map(({ weight, className }) => (
         <div key={weight} className="flex items-baseline gap-4">
-          <span className="text-silver/40 text-xs font-mono w-20 shrink-0">{weight}</span>
-          <p className={`${className} text-white text-2xl`}>{sample}</p>
+          <span className="text-muted-foreground text-xs font-mono w-20 shrink-0">{weight}</span>
+          <p className={`${className} text-foreground text-2xl`}>{sample}</p>
         </div>
       ))}
     </div>
@@ -49,23 +49,23 @@ const TypeSample = ({ family, weights, sample }: { family: string; weights: { we
 /* ───── Section Wrapper ───── */
 const Section = ({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) => (
   <section className="py-16 border-t border-white/10">
-    <h2 className="font-display font-black text-3xl md:text-4xl text-white mb-2">{title}</h2>
-    {subtitle && <p className="text-silver/60 text-base mb-10 max-w-2xl">{subtitle}</p>}
+    <h2 className="font-display font-black text-3xl md:text-4xl text-foreground mb-2">{title}</h2>
+    {subtitle && <p className="text-muted-foreground text-base mb-10 max-w-2xl">{subtitle}</p>}
     <div className="mt-8">{children}</div>
   </section>
 );
 
 const BrandBook = () => {
   return (
-    <div className="min-h-screen bg-charcoal text-silver">
+    <div className="min-h-screen bg-background text-muted-foreground">
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-charcoal/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-          <Link to="/" className="text-silver/60 hover:text-white transition-colors">
+          <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <span className="font-display font-bold text-white text-lg">autozon</span>
-          <span className="text-silver/40 text-sm">Brand Book</span>
+          <span className="font-display font-bold text-foreground text-lg">autozon</span>
+          <span className="text-muted-foreground text-sm">Brand Book</span>
         </div>
       </nav>
 
@@ -73,16 +73,16 @@ const BrandBook = () => {
         {/* Hero */}
         <header className="py-24 md:py-32">
           <p className="text-primary font-display font-bold text-sm tracking-widest uppercase mb-4">Brand Guidelines</p>
-          <h1 className="font-display font-black text-5xl md:text-7xl text-white leading-[1.1] mb-6">
+          <h1 className="font-display font-black text-5xl md:text-7xl text-foreground leading-[1.1] mb-6">
             auto<span className="text-primary">zon</span>
           </h1>
-          <p className="text-silver/60 text-xl max-w-xl leading-relaxed">
+          <p className="text-muted-foreground text-xl max-w-xl leading-relaxed">
             Fair Value. Best Prices. Zero Friction.
           </p>
           <p className="font-display font-black text-2xl md:text-3xl text-primary tracking-widest mt-4">
             BUY.SELL.CARS.
           </p>
-          <p className="text-silver/40 text-sm mt-6 max-w-lg">
+          <p className="text-muted-foreground text-sm mt-6 max-w-lg">
             This brand book defines the visual identity, tone, and design language of Autozon — the AI-powered car marketplace built on transparency and trust.
           </p>
         </header>
@@ -97,7 +97,7 @@ const BrandBook = () => {
             ].map(({ trait, desc }) => (
               <div key={trait} className="bg-secondary/50 rounded-2xl p-6 border border-white/5">
                 <h3 className="font-display font-bold text-primary text-xl mb-2">{trait}</h3>
-                <p className="text-silver/60 text-sm leading-relaxed">{desc}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -107,14 +107,14 @@ const BrandBook = () => {
         <Section title="Logo" subtitle="The autozon wordmark is set in Montserrat Extra Bold. The 'zon' is highlighted in Electric Green to signal the value-driven part of the brand.">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Dark bg */}
-            <div className="bg-charcoal rounded-2xl border border-white/10 p-12 flex flex-col items-center justify-center gap-6">
+            <div className="bg-background rounded-2xl border border-white/10 p-12 flex flex-col items-center justify-center gap-6">
               <div className="flex flex-col items-center">
-                <span className="font-display font-black text-5xl text-white">
+                <span className="font-display font-black text-5xl text-foreground">
                   auto<span className="text-primary">zon</span>
                 </span>
-                <span className="text-[9px] font-display font-bold text-silver/50 tracking-[0.3em] uppercase leading-none mt-1">BUY.SELL.CARS.</span>
+                <span className="text-[9px] font-display font-bold text-muted-foreground tracking-[0.3em] uppercase leading-none mt-1">BUY.SELL.CARS.</span>
               </div>
-              <span className="text-silver/40 text-xs">Primary — on dark background</span>
+              <span className="text-muted-foreground text-xs">Primary — on dark background</span>
             </div>
             {/* Light bg */}
             <div className="bg-white rounded-2xl border border-white/10 p-12 flex flex-col items-center justify-center gap-6">
@@ -143,7 +143,7 @@ const BrandBook = () => {
                 a.href = url; a.download = "autozon-logo-dark.svg"; a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="bg-secondary text-silver text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
+              className="bg-secondary text-muted-foreground text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
             >
               ↓ SVG (white on transparent)
             </button>
@@ -160,15 +160,15 @@ const BrandBook = () => {
                 a.href = url; a.download = "autozon-logo-light.svg"; a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="bg-secondary text-silver text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
+              className="bg-secondary text-muted-foreground text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
             >
               ↓ SVG (dark on transparent)
             </button>
           </div>
 
           <div className="mt-8 bg-secondary/50 rounded-2xl p-6 border border-white/5">
-            <h4 className="font-display font-bold text-white text-sm mb-3">Logo Clear Space</h4>
-            <p className="text-silver/50 text-sm leading-relaxed">
+            <h4 className="font-display font-bold text-foreground text-sm mb-3">Logo Clear Space</h4>
+            <p className="text-muted-foreground text-sm leading-relaxed">
               Maintain a minimum clear space equal to the height of the letter "a" around all sides of the wordmark. Never stretch, rotate, or apply effects to the logo.
             </p>
           </div>
@@ -178,11 +178,11 @@ const BrandBook = () => {
         <Section title="Banner" subtitle="A ready-to-use 1080×450 banner built from the brand logo and tagline. Suitable for social headers, event backdrops, and email headers.">
           <div className="space-y-6">
             <div className="rounded-2xl border border-white/10 overflow-hidden shadow-lg" style={{ aspectRatio: "1080/450" }}>
-              <div className="w-full h-full bg-charcoal flex flex-col items-center justify-center gap-2">
-                <span className="font-display font-black text-5xl md:text-7xl text-white">
+              <div className="w-full h-full bg-background flex flex-col items-center justify-center gap-2">
+                <span className="font-display font-black text-5xl md:text-7xl text-foreground">
                   auto<span className="text-primary">zon</span>
                 </span>
-                <span className="text-[10px] md:text-xs font-display font-bold text-silver/50 tracking-[0.3em] uppercase leading-none">BUY.SELL.CARS.</span>
+                <span className="text-[10px] md:text-xs font-display font-bold text-muted-foreground tracking-[0.3em] uppercase leading-none">BUY.SELL.CARS.</span>
               </div>
             </div>
             <button
@@ -199,7 +199,7 @@ const BrandBook = () => {
                 a.href = url; a.download = "autozon-banner-1080x450.svg"; a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="bg-secondary text-silver text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
+              className="bg-secondary text-muted-foreground text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:bg-secondary/80 transition-colors"
             >
               ↓ Download Banner SVG (1080×450)
             </button>
@@ -210,7 +210,7 @@ const BrandBook = () => {
         <Section title="Color Palette" subtitle="Our palette is built on three core colors: deep charcoal for authority, electric green for energy and trust, and silver for clarity.">
           <div className="space-y-10">
             <div>
-              <p className="text-silver/40 text-xs font-mono uppercase tracking-wider mb-4">Primary Colors</p>
+              <p className="text-muted-foreground text-xs font-mono uppercase tracking-wider mb-4">Primary Colors</p>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 <Swatch name="Deep Charcoal" hsl="240 6% 11%" hex="#19191F" token="charcoal" dark />
                 <Swatch name="Electric Green" hsl="155 100% 42%" hex="#00D97E" token="green" />
@@ -218,7 +218,7 @@ const BrandBook = () => {
               </div>
             </div>
             <div>
-              <p className="text-silver/40 text-xs font-mono uppercase tracking-wider mb-4">Semantic Colors</p>
+              <p className="text-muted-foreground text-xs font-mono uppercase tracking-wider mb-4">Semantic Colors</p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <Swatch name="Background (Dark)" hsl="240 6% 7%" hex="#101014" token="background" dark />
                 <Swatch name="Card" hsl="240 6% 11%" hex="#19191F" token="card" dark />
@@ -227,9 +227,9 @@ const BrandBook = () => {
               </div>
             </div>
             <div>
-              <p className="text-silver/40 text-xs font-mono uppercase tracking-wider mb-4">Gradient</p>
+              <p className="text-muted-foreground text-xs font-mono uppercase tracking-wider mb-4">Gradient</p>
               <div className="h-24 rounded-2xl border border-white/10 overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(155, 100%, 42%), hsl(155, 80%, 55%))" }} />
-              <p className="text-silver/40 text-xs font-mono mt-2">text-gradient · 135deg from Electric Green to hsl(155 80% 55%)</p>
+              <p className="text-muted-foreground text-xs font-mono mt-2">text-gradient · 135deg from Electric Green to hsl(155 80% 55%)</p>
             </div>
           </div>
         </Section>
@@ -261,18 +261,18 @@ const BrandBook = () => {
           </div>
 
           <div className="mt-12 space-y-4">
-            <p className="text-silver/40 text-xs font-mono uppercase tracking-wider">Type Scale</p>
+            <p className="text-muted-foreground text-xs font-mono uppercase tracking-wider">Type Scale</p>
             {[
-              { label: "H1", size: "text-5xl md:text-7xl", className: "font-display font-black text-5xl md:text-7xl text-white" },
-              { label: "H2", size: "text-3xl md:text-4xl", className: "font-display font-black text-3xl md:text-4xl text-white" },
-              { label: "H3", size: "text-xl md:text-2xl", className: "font-display font-bold text-xl md:text-2xl text-white" },
-              { label: "Body", size: "text-base", className: "font-sans text-base text-silver" },
-              { label: "Small", size: "text-sm", className: "font-sans text-sm text-silver/60" },
-              { label: "Caption", size: "text-xs", className: "font-sans text-xs text-silver/40" },
+              { label: "H1", size: "text-5xl md:text-7xl", className: "font-display font-black text-5xl md:text-7xl text-foreground" },
+              { label: "H2", size: "text-3xl md:text-4xl", className: "font-display font-black text-3xl md:text-4xl text-foreground" },
+              { label: "H3", size: "text-xl md:text-2xl", className: "font-display font-bold text-xl md:text-2xl text-foreground" },
+              { label: "Body", size: "text-base", className: "font-sans text-base text-muted-foreground" },
+              { label: "Small", size: "text-sm", className: "font-sans text-sm text-muted-foreground" },
+              { label: "Caption", size: "text-xs", className: "font-sans text-xs text-muted-foreground" },
             ].map(({ label, size, className }) => (
               <div key={label} className="flex items-baseline gap-6">
-                <span className="text-silver/30 text-xs font-mono w-16 shrink-0">{label}</span>
-                <span className="text-silver/30 text-xs font-mono w-40 shrink-0 hidden md:block">{size}</span>
+                <span className="text-muted-foreground text-xs font-mono w-16 shrink-0">{label}</span>
+                <span className="text-muted-foreground text-xs font-mono w-40 shrink-0 hidden md:block">{size}</span>
                 <span className={className}>The future of car trading</span>
               </div>
             ))}
@@ -283,7 +283,7 @@ const BrandBook = () => {
         <Section title="Spacing & Radius" subtitle="Consistent spacing and generous border radius create a modern, approachable feel.">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
-              <p className="text-silver/40 text-xs font-mono uppercase tracking-wider mb-4">Border Radius</p>
+              <p className="text-muted-foreground text-xs font-mono uppercase tracking-wider mb-4">Border Radius</p>
               <div className="flex items-end gap-4">
                 {[
                   { label: "sm", radius: "calc(0.75rem - 4px)", size: "h-16 w-16" },
@@ -293,13 +293,13 @@ const BrandBook = () => {
                 ].map(({ label, radius, size }) => (
                   <div key={label} className="flex flex-col items-center gap-2">
                     <div className={`${size} bg-primary/20 border-2 border-primary/50`} style={{ borderRadius: radius }} />
-                    <span className="text-silver/40 text-xs font-mono">{label}</span>
+                    <span className="text-muted-foreground text-xs font-mono">{label}</span>
                   </div>
                 ))}
               </div>
             </div>
             <div>
-              <p className="text-silver/40 text-xs font-mono uppercase tracking-wider mb-4">Component Examples</p>
+              <p className="text-muted-foreground text-xs font-mono uppercase tracking-wider mb-4">Component Examples</p>
               <div className="space-y-3">
                 <button className="bg-primary text-primary-foreground font-display font-bold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity">
                   Primary Button
@@ -308,8 +308,8 @@ const BrandBook = () => {
                   Secondary Button
                 </button>
                 <div className="bg-card rounded-2xl border border-border p-6">
-                  <p className="font-display font-bold text-white text-sm">Card Component</p>
-                  <p className="text-silver/50 text-xs mt-1">With border and card background</p>
+                  <p className="font-display font-bold text-foreground text-sm">Card Component</p>
+                  <p className="text-muted-foreground text-xs mt-1">With border and card background</p>
                 </div>
               </div>
             </div>
@@ -321,22 +321,22 @@ const BrandBook = () => {
           <div className="space-y-8">
             <div className="bg-secondary/50 rounded-2xl p-8 border border-white/5">
               <p className="text-primary font-display font-bold text-sm uppercase tracking-wider mb-3">Tagline</p>
-              <p className="font-display font-black text-3xl md:text-4xl text-white">
+              <p className="font-display font-black text-3xl md:text-4xl text-foreground">
                 Fair Value. Best Prices. Zero Friction.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <h4 className="font-display font-bold text-primary text-sm">✓ Do</h4>
-                <ul className="space-y-2 text-silver/60 text-sm">
-                  <li>"Your BMW X3 is worth <span className="text-white font-medium">€33,500</span> based on market data."</li>
-                  <li>"We found <span className="text-white font-medium">3 interested buyers</span> in your area."</li>
+                <ul className="space-y-2 text-muted-foreground text-sm">
+                  <li>"Your BMW X3 is worth <span className="text-foreground font-medium">€33,500</span> based on market data."</li>
+                  <li>"We found <span className="text-foreground font-medium">3 interested buyers</span> in your area."</li>
                   <li>"Here's your fair value — backed by real market intelligence."</li>
                 </ul>
               </div>
               <div className="space-y-4">
                 <h4 className="font-display font-bold text-destructive text-sm">✗ Don't</h4>
-                <ul className="space-y-2 text-silver/60 text-sm">
+                <ul className="space-y-2 text-muted-foreground text-sm">
                   <li className="line-through opacity-60">"BEST DEAL EVER!! Don't miss out!!!"</li>
                   <li className="line-through opacity-60">"Our proprietary AI algorithm leverages synergistic..."</li>
                   <li className="line-through opacity-60">"Trust us, this is the right price."</li>
@@ -356,19 +356,19 @@ const BrandBook = () => {
                     <circle cx="12" cy="12" r="10" />
                   </svg>
                 </div>
-                <span className="text-silver/40 text-[10px] font-mono">{name}</span>
+                <span className="text-muted-foreground text-[10px] font-mono">{name}</span>
               </div>
             ))}
           </div>
-          <p className="text-silver/40 text-xs mt-4">Library: <span className="text-silver/60">lucide-react</span> · Stroke: <span className="text-silver/60">1.5px</span> · Size: <span className="text-silver/60">20–24px</span></p>
+          <p className="text-muted-foreground text-xs mt-4">Library: <span className="text-muted-foreground">lucide-react</span> · Stroke: <span className="text-muted-foreground">1.5px</span> · Size: <span className="text-muted-foreground">20–24px</span></p>
         </Section>
 
         {/* Footer */}
         <footer className="py-16 border-t border-white/10 text-center">
-          <p className="font-display font-black text-2xl text-white mb-2">
+          <p className="font-display font-black text-2xl text-foreground mb-2">
             auto<span className="text-primary">zon</span>
           </p>
-          <p className="text-silver/40 text-sm">Brand Book v1.0 · 2026</p>
+          <p className="text-muted-foreground text-sm">Brand Book v1.0 · 2026</p>
         </footer>
       </div>
     </div>

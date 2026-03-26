@@ -27,14 +27,14 @@ const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, 
       animate={{ opacity: 1, scale: 1 }}
     >
       <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4">
-        <Users className="h-8 w-8 text-silver/60" />
+        <Users className="h-8 w-8 text-muted-foreground" />
       </div>
-      <h2 className="text-2xl font-display font-black text-white mb-2">{t.transaction.manualCompleteTitle}</h2>
-      <p className="text-silver/60 text-sm mb-6">{t.transaction.manualCompleteSubtitle}</p>
+      <h2 className="text-2xl font-display font-black text-foreground mb-2">{t.transaction.manualCompleteTitle}</h2>
+      <p className="text-muted-foreground text-sm mb-6">{t.transaction.manualCompleteSubtitle}</p>
 
       {/* Checklist */}
       <div className="bg-secondary/50 border border-border rounded-2xl p-6 text-left mb-6">
-        <h3 className="font-display font-bold text-white mb-4 text-sm">{t.transaction.manualChecklist}</h3>
+        <h3 className="font-display font-bold text-foreground mb-4 text-sm">{t.transaction.manualChecklist}</h3>
         <div className="space-y-3">
           {[
             t.transaction.manualStep1,
@@ -46,7 +46,7 @@ const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, 
           ].map((step, i) => (
             <div key={i} className="flex items-start gap-3">
               <div className="w-5 h-5 rounded-full border-2 border-silver/20 flex-shrink-0 mt-0.5" />
-              <span className="text-sm text-silver/60">{step}</span>
+              <span className="text-sm text-muted-foreground">{step}</span>
             </div>
           ))}
         </div>
@@ -54,7 +54,7 @@ const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, 
 
       {/* Download official contract */}
       <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6">
-        <p className="text-sm text-silver/60 mb-2">{t.transaction.downloadOfficialContract}</p>
+        <p className="text-sm text-muted-foreground mb-2">{t.transaction.downloadOfficialContract}</p>
         <a
           href={contractUrl}
           target="_blank"
@@ -68,7 +68,7 @@ const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, 
       <div className="flex flex-col sm:flex-row gap-3">
         <Button
           variant="outline"
-          className="flex-1 border-border text-silver hover:bg-secondary font-semibold py-6 rounded-xl"
+          className="flex-1 border-border text-muted-foreground hover:bg-secondary font-semibold py-6 rounded-xl"
           onClick={onDownload}
         >
           <Download className="mr-2 h-5 w-5" /> {t.transaction.downloadSummary}

@@ -60,7 +60,7 @@ const InvestorPitch = () => {
   const SlideComponent = allSlides[current];
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-charcoal select-none">
+    <div className="relative w-full h-screen overflow-hidden bg-background select-none">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -80,20 +80,20 @@ const InvestorPitch = () => {
       {exporting && (
         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-[100] flex flex-col items-center justify-center gap-4">
           <Loader2 size={48} className="text-green animate-spin" />
-          <p className="text-white text-xl font-display">{exportProgress}</p>
-          <p className="text-silver text-sm">This may take a moment…</p>
+          <p className="text-foreground text-xl font-display">{exportProgress}</p>
+          <p className="text-muted-foreground text-sm">This may take a moment…</p>
         </div>
       )}
 
       {/* Controls overlay */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-black/40 backdrop-blur-sm rounded-full px-6 py-3 z-50">
-        <button onClick={prev} disabled={current === 0} className="text-white/60 hover:text-white disabled:opacity-30 transition-colors">
+        <button onClick={prev} disabled={current === 0} className="text-foreground/60 hover:text-foreground disabled:opacity-30 transition-colors">
           <ChevronLeft size={24} />
         </button>
         <span className="text-white/80 text-sm font-mono min-w-[60px] text-center">
           {current + 1} / {total}
         </span>
-        <button onClick={next} disabled={current === total - 1} className="text-white/60 hover:text-white disabled:opacity-30 transition-colors">
+        <button onClick={next} disabled={current === total - 1} className="text-foreground/60 hover:text-foreground disabled:opacity-30 transition-colors">
           <ChevronRight size={24} />
         </button>
       </div>
@@ -101,7 +101,7 @@ const InvestorPitch = () => {
       {/* Top-left: back */}
       <button
         onClick={() => navigate("/")}
-        className="absolute top-4 left-4 z-50 text-white/40 hover:text-white transition-colors flex items-center gap-2 text-sm"
+        className="absolute top-4 left-4 z-50 text-foreground/40 hover:text-foreground transition-colors flex items-center gap-2 text-sm"
       >
         <ArrowLeft size={18} />
         Back
@@ -112,14 +112,14 @@ const InvestorPitch = () => {
         <button
           onClick={handleExportPdf}
           disabled={exporting}
-          className="text-white/40 hover:text-white transition-colors flex items-center gap-2 text-sm disabled:opacity-30"
+          className="text-foreground/40 hover:text-foreground transition-colors flex items-center gap-2 text-sm disabled:opacity-30"
         >
           <Download size={20} />
           <span className="hidden sm:inline">PDF</span>
         </button>
         <button
           onClick={toggleFullscreen}
-          className="text-white/40 hover:text-white transition-colors"
+          className="text-foreground/40 hover:text-foreground transition-colors"
         >
           {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
         </button>

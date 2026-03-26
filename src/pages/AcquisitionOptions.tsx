@@ -145,7 +145,7 @@ const AcquisitionOptions: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-charcoal flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -153,9 +153,9 @@ const AcquisitionOptions: React.FC = () => {
 
   if (!offer || !car) {
     return (
-      <div className="min-h-screen bg-charcoal text-silver">
+      <div className="min-h-screen bg-background text-muted-foreground">
         <Navbar />
-        <div className="flex items-center justify-center pt-32 text-silver/50">Deal not found</div>
+        <div className="flex items-center justify-center pt-32 text-muted-foreground">Deal not found</div>
       </div>
     );
   }
@@ -260,7 +260,7 @@ const AcquisitionOptions: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal text-silver">
+    <div className="min-h-screen bg-background text-muted-foreground">
       <SEO title={`${t.transaction.title} — ${car.year} ${car.make} ${car.model}`} description="Complete your vehicle transaction" path={`/acquire/${offerId}`} noIndex />
       <Navbar />
 
@@ -270,7 +270,7 @@ const AcquisitionOptions: React.FC = () => {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
             <Package className="h-4 w-4" /> {t.transaction.title}
           </span>
-          <h1 className="text-3xl sm:text-4xl font-display font-black text-white">
+          <h1 className="text-3xl sm:text-4xl font-display font-black text-foreground">
             {car.year} {car.make} {car.model}
           </h1>
         </motion.div>
@@ -281,15 +281,15 @@ const AcquisitionOptions: React.FC = () => {
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
         >
           <div>
-            <p className="text-xs text-silver/50">{t.acquisition.askingPrice}</p>
-            <p className="text-lg font-display font-bold text-silver/60 line-through">€{car.price.toLocaleString()}</p>
+            <p className="text-xs text-muted-foreground">{t.acquisition.askingPrice}</p>
+            <p className="text-lg font-display font-bold text-muted-foreground line-through">€{car.price.toLocaleString()}</p>
           </div>
           <div>
-            <p className="text-xs text-silver/50">{t.acquisition.agreedPrice}</p>
+            <p className="text-xs text-muted-foreground">{t.acquisition.agreedPrice}</p>
             <p className="text-2xl font-display font-black text-primary">€{agreedPrice.toLocaleString()}</p>
           </div>
           <div>
-            <p className="text-xs text-silver/50">{t.acquisition.saved}</p>
+            <p className="text-xs text-muted-foreground">{t.acquisition.saved}</p>
             <p className="text-lg font-display font-bold text-primary">€{(car.price - agreedPrice).toLocaleString()}</p>
           </div>
         </motion.div>
@@ -361,7 +361,7 @@ const AcquisitionOptions: React.FC = () => {
         {/* Back */}
         {step === 1 && (
           <div className="mt-8 text-center">
-            <Button variant="ghost" className="text-silver/50" onClick={() => navigate(`/negotiate/${offerId}`)}>
+            <Button variant="ghost" className="text-muted-foreground" onClick={() => navigate(`/negotiate/${offerId}`)}>
               <ArrowLeft className="mr-2 h-4 w-4" /> {t.acquisition.backToNegotiation}
             </Button>
           </div>
