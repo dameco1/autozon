@@ -54,30 +54,6 @@ const HeroSection: React.FC = () => {
           {t.hero.subheadline}
         </motion.p>
 
-        {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
-          initial="hidden" animate="visible" variants={fadeUp} custom={1.5}
-        >
-          <Button
-            size="lg"
-            className="w-full sm:w-auto bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-6 rounded-lg shadow-[0_4px_24px_hsl(24_95%_53%/0.35)] hover:shadow-[0_6px_32px_hsl(24_95%_53%/0.45)] hover:translate-y-[-1px] transition-all"
-            onClick={() => navigate("/intent")}
-          >
-            {t.hero.primaryCta}
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="w-full sm:w-auto border-silver/30 text-white hover:bg-white/5 font-semibold text-base px-8 py-6 rounded-lg"
-            onClick={() => {
-              document.getElementById("car-search")?.scrollIntoView({ behavior: "smooth" });
-            }}
-          >
-            {t.hero.secondaryCta}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </motion.div>
 
         {/* Trust Badges */}
         <motion.div
