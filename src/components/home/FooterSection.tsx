@@ -6,7 +6,7 @@ const FooterSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <footer className="py-9 bg-navy border-t border-white/10">
+    <footer className="py-9 bg-foreground border-t border-foreground/10">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-2">
@@ -14,9 +14,9 @@ const FooterSection: React.FC = () => {
               auto<span className="text-orange">zon</span>
             </span>
           </div>
-          <p className="text-silver/40 text-sm">{t.footer.copyright}</p>
+          <p className="text-white/40 text-sm">{t.footer.copyright}</p>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-silver/40">
+        <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/40">
           <Link to="/privacy-policy" className="hover:text-orange transition-colors">Privacy Policy</Link>
           <span>·</span>
           <Link to="/terms" className="hover:text-orange transition-colors">Terms & Conditions</Link>

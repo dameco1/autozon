@@ -1,8 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Lock, Zap, CreditCard } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { CheckCircle2, Lock, Zap, CreditCard } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const fadeUp = {
@@ -23,18 +21,16 @@ const badgeIcons: Record<string, React.ReactNode> = {
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
-  const navigate = useNavigate();
 
   return (
-    <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-navy" style={{ minHeight: "60vh" }}>
-      {/* Subtle radial glows */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_95%_53%/0.06),transparent)]" />
+    <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-background" style={{ minHeight: "60vh" }}>
+      {/* Warm radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full text-center">
         {/* Headline */}
         <motion.h1
-          className="text-4xl sm:text-5xl lg:text-[56px] font-display font-black text-white leading-[1.08] tracking-tight mb-2"
+          className="text-4xl sm:text-5xl lg:text-[56px] font-display font-black text-foreground leading-[1.08] tracking-tight mb-2"
           initial="hidden" animate="visible" variants={fadeUp} custom={0}
         >
           {t.hero.headline}
@@ -48,12 +44,11 @@ const HeroSection: React.FC = () => {
 
         {/* Subheadline */}
         <motion.p
-          className="text-silver/70 text-base sm:text-lg lg:text-xl max-w-[560px] mx-auto leading-relaxed mb-10"
+          className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-[560px] mx-auto leading-relaxed mb-10"
           initial="hidden" animate="visible" variants={fadeUp} custom={1}
         >
           {t.hero.subheadline}
         </motion.p>
-
 
         {/* Trust Badges */}
         <motion.div
@@ -63,10 +58,10 @@ const HeroSection: React.FC = () => {
           {t.hero.trustBadges.map((badge, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2.5 backdrop-blur-sm hover:border-orange/20 transition-colors"
+              className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm hover:border-orange/30 transition-colors"
             >
               {badgeIcons[badge.icon]}
-              <span className="text-white text-xs font-semibold leading-tight">{badge.text}</span>
+              <span className="text-foreground text-xs font-semibold leading-tight">{badge.text}</span>
             </div>
           ))}
         </motion.div>

@@ -32,51 +32,11 @@ interface DamagePin {
 }
 
 const damagePins: DamagePin[] = [
-  {
-    id: "scratch",
-    label: "Scratch Detected",
-    severity: "low",
-    detail: "Minor surface scratch — €80 repair estimate",
-    top: "28%",
-    left: "18%",
-    anchorSide: "left",
-  },
-  {
-    id: "dent",
-    label: "Dent Detected",
-    severity: "medium",
-    detail: "Door panel dent — €320 repair estimate",
-    top: "52%",
-    left: "35%",
-    anchorSide: "left",
-  },
-  {
-    id: "crack",
-    label: "Windshield Crack",
-    severity: "high",
-    detail: "12cm crack — €450 replacement estimate",
-    top: "22%",
-    left: "55%",
-    anchorSide: "right",
-  },
-  {
-    id: "paint",
-    label: "Paint Chip",
-    severity: "low",
-    detail: "Small paint chip on bumper — €60 touch-up",
-    top: "62%",
-    left: "72%",
-    anchorSide: "right",
-  },
-  {
-    id: "tire",
-    label: "Tire Wear",
-    severity: "medium",
-    detail: "Uneven tread wear — replacement advised",
-    top: "75%",
-    left: "25%",
-    anchorSide: "left",
-  },
+  { id: "scratch", label: "Scratch Detected", severity: "low", detail: "Minor surface scratch — €80 repair estimate", top: "28%", left: "18%", anchorSide: "left" },
+  { id: "dent", label: "Dent Detected", severity: "medium", detail: "Door panel dent — €320 repair estimate", top: "52%", left: "35%", anchorSide: "left" },
+  { id: "crack", label: "Windshield Crack", severity: "high", detail: "12cm crack — €450 replacement estimate", top: "22%", left: "55%", anchorSide: "right" },
+  { id: "paint", label: "Paint Chip", severity: "low", detail: "Small paint chip on bumper — €60 touch-up", top: "62%", left: "72%", anchorSide: "right" },
+  { id: "tire", label: "Tire Wear", severity: "medium", detail: "Uneven tread wear — replacement advised", top: "75%", left: "25%", anchorSide: "left" },
 ];
 
 const severityColor: Record<string, string> = {
@@ -97,7 +57,6 @@ const AiInspectionSection: React.FC = () => {
   const [activePin, setActivePin] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Close tooltip when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -112,10 +71,6 @@ const AiInspectionSection: React.FC = () => {
     };
   }, []);
 
-  const title = language === "de"
-    ? "KI-Inspektion für faire Bewertung"
-    : "AI Inspection for Fair Valuation";
-
   const subtitle = language === "de"
     ? "Unsere KI scannt jedes Foto auf Kratzer, Dellen, Risse und Verschleiß — und berechnet den Reparaturkostenfaktor direkt in den fairen Preis ein."
     : "Our AI scans every photo for scratches, dents, cracks, and wear — then factors repair costs directly into the fair price.";
@@ -123,32 +78,27 @@ const AiInspectionSection: React.FC = () => {
   const badge = language === "de" ? "KI-Schadenserkennung" : "AI Damage Detection";
 
   return (
-    <section className="py-20 bg-charcoal relative overflow-hidden">
-      {/* Subtle background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,hsl(var(--orange)/0.04),transparent)]" />
+    <section className="py-20 bg-background relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,hsl(var(--orange)/0.05),transparent)]" />
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         {/* Header */}
         <motion.div
           className="text-center mb-14"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-          custom={0}
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
         >
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase text-orange/80 mb-4">
             <Crosshair className="h-3.5 w-3.5" />
             {badge}
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-foreground leading-tight">
             {language === "de" ? "KI-Inspektion für" : "AI Inspection for"}
             <br />
             <span className="text-orange">
               {language === "de" ? "Faire Bewertung" : "Fair Valuation"}
             </span>
           </h2>
-          <p className="text-silver/50 text-base sm:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
             {subtitle}
           </p>
         </motion.div>
@@ -156,23 +106,18 @@ const AiInspectionSection: React.FC = () => {
         {/* Car with annotations */}
         <motion.div
           className="relative max-w-4xl mx-auto"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-          custom={1}
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
         >
-          {/* Car image container */}
-          <div ref={containerRef} className="relative rounded-2xl overflow-hidden border border-border bg-navy/50">
+          <div ref={containerRef} className="relative rounded-2xl overflow-hidden border border-border bg-foreground/5 shadow-lg">
             <img
               src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80"
               alt="BMW vehicle undergoing AI inspection"
-              className="w-full h-auto object-cover opacity-80"
+              className="w-full h-auto object-cover"
               loading="lazy"
             />
 
             {/* Scan overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
 
             {/* Scan line animation */}
             <motion.div
@@ -190,41 +135,29 @@ const AiInspectionSection: React.FC = () => {
                   key={pin.id}
                   className="absolute group"
                   style={{ top: pin.top, left: pin.left }}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={pulseRing}
-                  custom={i}
+                  initial="hidden" whileInView="visible" viewport={{ once: true }} variants={pulseRing} custom={i}
                 >
-                  {/* Pulsing ring */}
                   <span className={`absolute inset-0 w-6 h-6 -ml-3 -mt-3 rounded-full ${severityDot[pin.severity]} opacity-30 animate-ping`} />
-                  {/* Dot — tap or hover */}
                   <button
                     type="button"
-                    className={`relative block w-5 h-5 -ml-2.5 -mt-2.5 rounded-full ${severityDot[pin.severity]} border-2 border-white/30 shadow-lg cursor-pointer focus:outline-none`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActivePin(isActive ? null : pin.id);
-                    }}
+                    className={`relative block w-5 h-5 -ml-2.5 -mt-2.5 rounded-full ${severityDot[pin.severity]} border-2 border-white/50 shadow-lg cursor-pointer focus:outline-none`}
+                    onClick={(e) => { e.stopPropagation(); setActivePin(isActive ? null : pin.id); }}
                     aria-label={pin.label}
                   />
 
-                  {/* Tooltip card — visible on hover (desktop) or when active (mobile tap) */}
                   <div
                     className={`absolute z-20 w-56 transition-opacity duration-200 ${
                       isActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto"
-                    } ${
-                      pin.anchorSide === "left" ? "left-5 top-1/2 -translate-y-1/2" : "right-5 top-1/2 -translate-y-1/2"
-                    }`}
+                    } ${pin.anchorSide === "left" ? "left-5 top-1/2 -translate-y-1/2" : "right-5 top-1/2 -translate-y-1/2"}`}
                   >
-                    <div className={`rounded-xl border p-3 backdrop-blur-md bg-navy/90 ${severityColor[pin.severity].split(" ")[0]}`}>
+                    <div className={`rounded-xl border p-3 backdrop-blur-md bg-card/95 shadow-lg ${severityColor[pin.severity].split(" ")[0]}`}>
                       <div className="flex items-center gap-2 mb-1">
                         <AlertTriangle className={`h-3.5 w-3.5 ${
                           pin.severity === "high" ? "text-destructive" : pin.severity === "medium" ? "text-orange" : "text-green"
                         }`} />
-                        <span className="text-xs font-bold text-white">{pin.label}</span>
+                        <span className="text-xs font-bold text-foreground">{pin.label}</span>
                       </div>
-                      <p className="text-[11px] text-silver/60 leading-snug">{pin.detail}</p>
+                      <p className="text-[11px] text-muted-foreground leading-snug">{pin.detail}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -235,11 +168,11 @@ const AiInspectionSection: React.FC = () => {
             <div className="absolute bottom-0 left-0 right-0 p-5 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg bg-orange/15 flex items-center justify-center">
-                  <Search className="h-4.5 w-4.5 text-orange" />
+                  <Search className="h-4 w-4 text-orange" />
                 </div>
                 <div>
                   <p className="text-xs font-bold text-white">5 {language === "de" ? "Befunde erkannt" : "Issues Detected"}</p>
-                  <p className="text-[11px] text-silver/50">
+                  <p className="text-[11px] text-white/60">
                     {language === "de" ? "Geschätzte Reparaturkosten" : "Est. repair cost"}: <span className="text-orange font-semibold">€910</span>
                   </p>
                 </div>
@@ -256,39 +189,23 @@ const AiInspectionSection: React.FC = () => {
           {/* Feature pills below the image */}
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={3}
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
           >
             {[
-              {
-                icon: Search,
-                title: language === "de" ? "Foto-Analyse" : "Photo Analysis",
-                desc: language === "de" ? "KI scannt jedes hochgeladene Bild" : "AI scans every uploaded image",
-              },
-              {
-                icon: AlertTriangle,
-                title: language === "de" ? "Schadensbericht" : "Damage Report",
-                desc: language === "de" ? "Kratzer, Dellen und Risse erkannt" : "Scratches, dents & cracks detected",
-              },
-              {
-                icon: Sparkles,
-                title: language === "de" ? "Fairer Preis" : "Fair Price Impact",
-                desc: language === "de" ? "Reparaturkosten fließen in den Preis ein" : "Repair costs factored into valuation",
-              },
+              { icon: Search, title: language === "de" ? "Foto-Analyse" : "Photo Analysis", desc: language === "de" ? "KI scannt jedes hochgeladene Bild" : "AI scans every uploaded image" },
+              { icon: AlertTriangle, title: language === "de" ? "Schadensbericht" : "Damage Report", desc: language === "de" ? "Kratzer, Dellen und Risse erkannt" : "Scratches, dents & cracks detected" },
+              { icon: Sparkles, title: language === "de" ? "Fairer Preis" : "Fair Price Impact", desc: language === "de" ? "Reparaturkosten fließen in den Preis ein" : "Repair costs factored into valuation" },
             ].map((item, i) => (
               <div
                 key={i}
-                className="flex items-start gap-3 bg-navy/60 border border-border rounded-xl p-4 hover:border-orange/20 transition-colors"
+                className="flex items-start gap-3 bg-card border border-border rounded-xl p-4 shadow-sm hover:border-orange/20 transition-colors"
               >
                 <div className="w-9 h-9 rounded-lg bg-orange/10 flex items-center justify-center shrink-0">
                   <item.icon className="h-4 w-4 text-orange" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-white">{item.title}</p>
-                  <p className="text-xs text-silver/50 mt-0.5">{item.desc}</p>
+                  <p className="text-sm font-bold text-foreground">{item.title}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
                 </div>
               </div>
             ))}

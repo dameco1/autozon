@@ -18,10 +18,10 @@ const WhyAutozonSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-12 sm:py-16 bg-charcoal">
+    <section className="py-12 sm:py-16 bg-background">
       <div className="max-w-6xl mx-auto px-4">
         <motion.h2
-          className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white text-center mb-12"
+          className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-foreground text-center mb-12"
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
         >
           {t.whyAutozon.title}
@@ -33,14 +33,14 @@ const WhyAutozonSection: React.FC = () => {
             return (
               <motion.div
                 key={i}
-                className="bg-navy rounded-2xl p-8 border border-border hover:border-orange/30 transition-all duration-500"
+                className="bg-card rounded-2xl p-8 border border-border shadow-sm hover:border-orange/30 hover:shadow-md transition-all duration-500"
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
               >
                 <div className="w-12 h-12 rounded-xl bg-orange/10 flex items-center justify-center mb-5">
                   <Icon className="h-6 w-6 text-orange" />
                 </div>
-                <h3 className="text-lg font-display font-bold text-white mb-2">{card.title}</h3>
-                <p className="text-silver/50 text-sm leading-relaxed">{card.description}</p>
+                <h3 className="text-lg font-display font-bold text-foreground mb-2">{card.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{card.description}</p>
               </motion.div>
             );
           })}

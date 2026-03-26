@@ -18,23 +18,23 @@ const PricingSection: React.FC = () => {
   if (!pricing) return null;
 
   return (
-    <section className="py-12 sm:py-16 bg-navy">
+    <section className="py-12 sm:py-16 bg-background">
       <div className="max-w-3xl mx-auto px-4">
         <motion.div className="text-center mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white mb-3">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-foreground mb-3">
             {pricing.title}
           </h2>
-          <p className="text-silver/60 text-base sm:text-lg">{pricing.subtitle}</p>
+          <p className="text-muted-foreground text-base sm:text-lg">{pricing.subtitle}</p>
         </motion.div>
 
         <motion.div
-          className="bg-charcoal rounded-2xl border border-border p-8 sm:p-10"
+          className="bg-card rounded-2xl border border-border p-8 sm:p-10 shadow-sm"
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
         >
           {/* Price */}
           <div className="text-center mb-8">
             <div className="text-5xl sm:text-6xl font-display font-black text-orange mb-2">{pricing.price}</div>
-            <div className="text-xs font-semibold tracking-[0.15em] uppercase text-silver/50">{pricing.label}</div>
+            <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground">{pricing.label}</div>
           </div>
 
           {/* Features */}
@@ -42,20 +42,20 @@ const PricingSection: React.FC = () => {
             {pricing.features.map((feature: string, i: number) => (
               <div key={i} className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-orange shrink-0 mt-0.5" />
-                <span className="text-silver/70 text-sm leading-relaxed">{feature}</span>
+                <span className="text-muted-foreground text-sm leading-relaxed">{feature}</span>
               </div>
             ))}
           </div>
 
           {/* Callout */}
-          <div className="bg-orange/[0.08] border border-orange/20 rounded-xl p-5 mb-6">
-            <p className="text-silver/80 text-sm leading-relaxed">{pricing.callout}</p>
+          <div className="bg-orange/[0.06] border border-orange/20 rounded-xl p-5 mb-6">
+            <p className="text-foreground/80 text-sm leading-relaxed">{pricing.callout}</p>
           </div>
         </motion.div>
 
         {/* Buyer line */}
         <motion.p
-          className="text-center text-silver/50 text-sm mt-6"
+          className="text-center text-muted-foreground text-sm mt-6"
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
         >
           {pricing.buyerLine}

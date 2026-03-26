@@ -16,26 +16,26 @@ const ComparisonSection: React.FC = () => {
 
   if (!isMobile) {
     return (
-      <section className="py-12 sm:py-16 bg-charcoal">
+      <section className="py-12 sm:py-16 bg-muted">
         <div className="max-w-5xl mx-auto px-4">
           <motion.h2
-            className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white text-center mb-12"
+            className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-foreground text-center mb-12"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
           >
             {t.comparison.title}
           </motion.h2>
 
           <motion.div
-            className="bg-navy rounded-2xl border border-border overflow-hidden"
+            className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
           >
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left p-4 font-display font-bold text-silver/70">Feature</th>
+                  <th className="text-left p-4 font-display font-bold text-muted-foreground">Feature</th>
                   <th className="p-4 font-display font-bold text-orange text-center">Autozon ✅</th>
                   {t.comparison.competitors.map((c, i) => (
-                    <th key={i} className="p-4 font-display font-semibold text-silver/40 text-center">{c}</th>
+                    <th key={i} className="p-4 font-display font-semibold text-muted-foreground text-center">{c}</th>
                   ))}
                 </tr>
               </thead>
@@ -44,17 +44,17 @@ const ComparisonSection: React.FC = () => {
                   const highlightRows = (t.comparison as any).highlightRows || [];
                   const isHighlighted = highlightRows.includes(fi);
                   return (
-                    <tr key={fi} className={`border-b border-border/30 last:border-0 ${isHighlighted ? "bg-orange/[0.10]" : ""}`}>
-                      <td className={`p-4 ${isHighlighted ? "text-white font-semibold" : "text-silver/70"}`}>{feature}</td>
-                      <td className={`p-4 text-center ${isHighlighted ? "bg-orange/[0.12]" : ""}`}>
-                        <CheckCircle2 className={`h-5 w-5 mx-auto ${isHighlighted ? "text-orange font-bold" : "text-orange"}`} />
+                    <tr key={fi} className={`border-b border-border/50 last:border-0 ${isHighlighted ? "bg-orange/[0.06]" : ""}`}>
+                      <td className={`p-4 ${isHighlighted ? "text-foreground font-semibold" : "text-muted-foreground"}`}>{feature}</td>
+                      <td className={`p-4 text-center ${isHighlighted ? "bg-orange/[0.08]" : ""}`}>
+                        <CheckCircle2 className="h-5 w-5 mx-auto text-orange" />
                       </td>
                       {t.comparison.competitorData[fi].map((has, ci) => (
                         <td key={ci} className="p-4 text-center">
                           {has ? (
-                            <CheckCircle2 className="h-5 w-5 text-silver/30 mx-auto" />
+                            <CheckCircle2 className="h-5 w-5 text-muted-foreground/40 mx-auto" />
                           ) : (
-                            <XCircle className="h-5 w-5 text-silver/20 mx-auto" />
+                            <XCircle className="h-5 w-5 text-muted-foreground/25 mx-auto" />
                           )}
                         </td>
                       ))}
@@ -70,9 +70,9 @@ const ComparisonSection: React.FC = () => {
   }
 
   return (
-    <section className="py-9 bg-charcoal">
+    <section className="py-9 bg-muted">
       <div className="max-w-lg mx-auto px-4">
-        <h2 className="text-2xl font-display font-black text-white text-center mb-8">
+        <h2 className="text-2xl font-display font-black text-foreground text-center mb-8">
           {t.comparison.title}
         </h2>
 
@@ -100,14 +100,14 @@ const ComparisonAccordionItem: React.FC<{
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full bg-navy rounded-xl p-4 border border-border text-left">
+      <CollapsibleTrigger className="flex items-center justify-between w-full bg-card rounded-xl p-4 border border-border text-left shadow-sm">
         <div className="flex items-center gap-3">
           <CheckCircle2 className="h-5 w-5 text-orange shrink-0" />
-          <span className="text-sm font-medium text-white">{feature}</span>
+          <span className="text-sm font-medium text-foreground">{feature}</span>
         </div>
-        <ChevronDown className={`h-4 w-4 text-silver/40 transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </CollapsibleTrigger>
-      <CollapsibleContent className="bg-navy rounded-b-xl border-x border-b border-border px-4 pb-3">
+      <CollapsibleContent className="bg-card rounded-b-xl border-x border-b border-border px-4 pb-3">
         <div className="space-y-2 pt-2">
           <div className="flex items-center justify-between text-sm">
             <span className="font-bold text-orange">Autozon</span>
@@ -115,11 +115,11 @@ const ComparisonAccordionItem: React.FC<{
           </div>
           {competitors.map((c, ci) => (
             <div key={ci} className="flex items-center justify-between text-sm">
-              <span className="text-silver/50">{c}</span>
+              <span className="text-muted-foreground">{c}</span>
               {competitorData[ci] ? (
-                <CheckCircle2 className="h-4 w-4 text-silver/30" />
+                <CheckCircle2 className="h-4 w-4 text-muted-foreground/40" />
               ) : (
-                <XCircle className="h-4 w-4 text-silver/20" />
+                <XCircle className="h-4 w-4 text-muted-foreground/25" />
               )}
             </div>
           ))}
