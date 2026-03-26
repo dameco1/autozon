@@ -71,41 +71,41 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <SEO title="Reset Password" description="Reset your Autozon account password." path="/reset-password" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
             <Car className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-display font-bold text-white">auto<span className="text-primary">zon</span></span>
+            <span className="text-2xl font-display font-bold text-foreground">auto<span className="text-primary">zon</span></span>
           </Link>
-          <h1 className="text-3xl font-display font-bold text-white">{t.auth.resetTitle}</h1>
-          <p className="text-silver/60 mt-2">{isUpdate ? "" : t.auth.resetSubtitle}</p>
+          <h1 className="text-3xl font-display font-bold text-foreground">{t.auth.resetTitle}</h1>
+          <p className="text-muted-foreground mt-2">{isUpdate ? "" : t.auth.resetSubtitle}</p>
         </div>
 
         {isUpdate ? (
-          <form onSubmit={handleUpdatePassword} className="bg-secondary/50 border border-border rounded-2xl p-8 space-y-5">
+          <form onSubmit={handleUpdatePassword} className="bg-card border border-border rounded-2xl p-8 space-y-5 shadow-sm">
             <div className="space-y-2">
-              <Label className="text-silver/80">{t.auth.newPassword}</Label>
+              <Label className="text-muted-foreground">{t.auth.newPassword}</Label>
               <Input
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
                 minLength={6}
-                className="bg-charcoal border-border text-white placeholder:text-silver/30"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground/50"
                 placeholder="••••••••"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-silver/80">{t.auth.confirmNewPassword}</Label>
+              <Label className="text-muted-foreground">{t.auth.confirmNewPassword}</Label>
               <Input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={6}
-                className="bg-charcoal border-border text-white placeholder:text-silver/30"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground/50"
                 placeholder="••••••••"
               />
             </div>
@@ -114,20 +114,20 @@ const ResetPassword: React.FC = () => {
             </Button>
           </form>
         ) : sent ? (
-          <div className="bg-secondary/50 border border-border rounded-2xl p-8 text-center space-y-4">
-            <p className="text-silver/80">{t.auth.resetSent}</p>
+          <div className="bg-card border border-border rounded-2xl p-8 text-center space-y-4 shadow-sm">
+            <p className="text-muted-foreground">{t.auth.resetSent}</p>
             <Link to="/login" className="text-primary hover:underline font-medium text-sm">{t.auth.loginLink}</Link>
           </div>
         ) : (
-          <form onSubmit={handleSendReset} className="bg-secondary/50 border border-border rounded-2xl p-8 space-y-5">
+          <form onSubmit={handleSendReset} className="bg-card border border-border rounded-2xl p-8 space-y-5 shadow-sm">
             <div className="space-y-2">
-              <Label className="text-silver/80">{t.auth.email}</Label>
+              <Label className="text-muted-foreground">{t.auth.email}</Label>
               <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-charcoal border-border text-white placeholder:text-silver/30"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground/50"
                 placeholder="you@example.com"
                 autoFocus
               />
@@ -135,14 +135,14 @@ const ResetPassword: React.FC = () => {
             <Button type="submit" disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl">
               {loading ? "..." : t.auth.sendReset}
             </Button>
-            <p className="text-center text-silver/60 text-sm">
+            <p className="text-center text-muted-foreground text-sm">
               <Link to="/login" className="text-primary hover:underline font-medium">{t.auth.loginLink}</Link>
             </p>
           </form>
         )}
 
         <div className="mt-6 text-center">
-          <Link to="/login" className="text-silver/40 text-sm hover:text-silver/60 inline-flex items-center gap-1">
+          <Link to="/login" className="text-muted-foreground/60 text-sm hover:text-muted-foreground inline-flex items-center gap-1">
             <ArrowLeft className="h-3 w-3" /> {t.auth.back}
           </Link>
         </div>
