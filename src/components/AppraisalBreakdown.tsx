@@ -518,17 +518,17 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
         <p className="text-muted-foreground text-sm mb-5">{a.subtitle}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-          <div className="bg-charcoal/80 rounded-xl p-4 text-center">
+          <div className="bg-muted rounded-xl p-4 text-center">
             <div className="text-xs text-muted-foreground mb-1">{a.askingPrice}</div>
             <div className="text-xl font-bold text-foreground">€{car.price.toLocaleString()}</div>
           </div>
-          <div className="bg-charcoal/80 rounded-xl p-4 text-center">
+          <div className="bg-muted rounded-xl p-4 text-center">
             <div className="text-xs text-primary/70 mb-1 flex items-center justify-center gap-1">
               <ArrowUpRight className="h-3 w-3" /> {a.totalBoost}
             </div>
             <div className="text-xl font-bold text-primary">{boosters.length} {a.factors}</div>
           </div>
-          <div className="bg-charcoal/80 rounded-xl p-4 text-center">
+          <div className="bg-muted rounded-xl p-4 text-center">
             <div className="text-xs text-destructive/70 mb-1 flex items-center justify-center gap-1">
               <TrendingDown className="h-3 w-3" /> {a.totalReduction}
             </div>
