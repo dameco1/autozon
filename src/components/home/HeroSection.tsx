@@ -102,7 +102,9 @@ const HeroSection: React.FC = () => {
               className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm hover:border-orange/30 transition-colors"
             >
               {badgeIcons[badge.icon]}
-              <span className="text-foreground text-xs font-semibold leading-tight">{badge.text}</span>
+              <span className="text-foreground text-xs font-semibold leading-tight">
+                {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
+              </span>
             </div>
           ))}
         </motion.div>
