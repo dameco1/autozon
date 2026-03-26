@@ -230,7 +230,6 @@ const AiInspectionSection: React.FC = () => {
                 </motion.div>
               );
             })}
-            ))}
 
             {/* Bottom overlay stats bar */}
             <div className="absolute bottom-0 left-0 right-0 p-5 flex items-center justify-between">
