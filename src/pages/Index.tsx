@@ -36,6 +36,7 @@ const Index: React.FC = () => {
       <Navbar />
       <HeroSection />
       <CarSearchSection />
+      <AiInspectionSection />
       <PricingSection />
       <ComparisonSection />
       <AiEngineSection />
