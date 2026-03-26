@@ -109,10 +109,12 @@ The European used car market is valued at approximately **€350 billion annuall
 | Feature | autozon | willhaben | AutoScout24 | mobile.de | wirkaufendeinauto |
 |---|---|---|---|---|---|
 | **AI Fair Value Pricing** | ✅ | ❌ | ❌ | ❌ | ❌ (lowball algo) |
-| **AI Damage Detection** | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **AI Damage Detection** | ✅ (brand-specific repair costs) | ❌ | ❌ | ❌ | ❌ |
+| **Lifestyle-Aware Matching** | ✅ (4D algorithm: relationship, kids, purpose, current car) | ❌ | ❌ | ❌ | ❌ |
 | **Structured Negotiation** | ✅ (3-round) | ❌ | ❌ | ❌ | ❌ |
-| **Buyer-Seller Matching** | ✅ (AI) | ❌ | Basic filters | Basic filters | ❌ (B2C only) |
-| **Condition Scoring** | ✅ (AI) | ❌ | ❌ | ❌ | Manual inspection |
+| **Buyer-Seller Matching** | ✅ (AI lifestyle + preference scoring) | ❌ | Basic filters | Basic filters | ❌ (B2C only) |
+| **Condition Scoring** | ✅ (AI + itemized damage costs) | ❌ | ❌ | ❌ | Manual inspection |
+| **Current Car Intelligence** | ✅ (brand loyalty, upgrade path, segment continuity) | ❌ | ❌ | ❌ | ❌ |
 | **Integrated Financing** | ✅ (planned) | ❌ | Dealer-side | Dealer-side | ❌ |
 | **MFA Security** | ✅ (TOTP) | Basic | Basic | Basic | Basic |
 | **Concierge Support** | ✅ (AI chat) | ❌ | ❌ | ❌ | Phone support |
@@ -128,29 +130,40 @@ The European used car market is valued at approximately **€350 billion annuall
 
 ### 1. AI-Powered Fair Value Engine
 
-No competitor offers an AI-driven fair market value calculation that serves as a transparent anchor price for both buyer and seller. This eliminates the information asymmetry that defines the traditional used car market.
+No competitor offers an AI-driven fair market value calculation that serves as a transparent anchor price for both buyer and seller. This eliminates the information asymmetry that defines the traditional used car market. Brand-specific damage costing (e.g., a scratch on a Porsche vs. a Dacia) adds further precision.
 
 **Moat depth:** Medium-High — requires proprietary algorithm + market data integration + continuous training.
 
-### 2. Structured Negotiation Protocol
+### 2. Lifestyle-Aware Buyer Matching
+
+Autozon's 4-dimensional matching algorithm scores every car against a buyer's lifestyle profile — relationship status, number of kids, car purpose, current car ownership, commute distance, and explicit preferences. No competitor uses lifestyle data for car recommendations.
+
+- **Singles** → coupes, convertibles, sporty brands
+- **Married** → SUVs, wagons, practical brands
+- **3+ kids** → 6/7-seaters, vans, people carriers
+- **Current car intelligence** → brand loyalty, upgrade path, segment continuity
+
+**Moat depth:** High — requires deep profiling, proprietary scoring, and continuous data refinement.
+
+### 3. Structured Negotiation Protocol
 
 The 3-round negotiation system with AI-suggested counter-offers is unique in the market. It replaces the adversarial, unstructured haggling that frustrates both parties.
 
 **Moat depth:** Medium — conceptually replicable but requires deep UX investment.
 
-### 3. AI Damage Detection
+### 4. AI Damage Detection with Brand-Specific Costing
 
-Computer vision-based damage scanning from uploaded photos provides objective condition reporting. No competitor offers this for private sellers.
+Computer vision-based damage scanning from uploaded photos provides objective condition reporting with itemized repair cost estimates calibrated per brand tier (iconic, premium, volume). No competitor offers this for private sellers.
 
 **Moat depth:** High — requires ML infrastructure, training data, and continuous improvement.
 
-### 4. Seller-First Business Model
+### 5. Seller-First Business Model
 
-At 2.5% success fee, autozon charges a fraction of what dealers extract (15–30% margin). The model aligns platform incentives with seller outcomes — autozon earns more when sellers get fair prices.
+At €49 flat fee, autozon charges a fraction of what dealers extract (15–30% margin). The model aligns platform incentives with seller outcomes — simple, transparent pricing regardless of car value.
 
 **Moat depth:** Low-Medium — pricing is replicable, but the full-stack experience is not.
 
-### 5. Trust Architecture
+### 6. Trust Architecture
 
 MFA-enforced security, transparent condition scoring, and structured processes create trust that classified platforms cannot match. Trust is the #1 barrier in P2P car sales.
 
@@ -211,4 +224,4 @@ MFA-enforced security, transparent condition scoring, and structured processes c
 
 ---
 
-*Document status: V1 — For investor data room. Updated quarterly based on market intelligence.*
+*Document status: V2 — Updated with lifestyle-aware matching algorithm, brand-specific damage detection, and V1.5 feature completions. For investor data room. Updated quarterly based on market intelligence.*
