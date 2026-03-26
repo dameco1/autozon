@@ -184,6 +184,18 @@ const Signup: React.FC = () => {
             </div>
           </div>
 
+          {/* Current Car */}
+          <div className="space-y-2">
+            <Label className="text-muted-foreground text-sm">{ls.currentCar}</Label>
+            <Input
+              type="text"
+              value={currentCar}
+              onChange={(e) => setCurrentCar(e.target.value)}
+              className="bg-background border-border text-foreground placeholder:text-muted-foreground/50"
+              placeholder={ls.currentCarPlaceholder}
+            />
+          </div>
+
           <Button type="submit" disabled={loading} className="w-full bg-orange text-orange-foreground hover:bg-orange/90 font-bold py-6 rounded-xl">
             {loading ? "..." : t.auth.signup}
           </Button>
