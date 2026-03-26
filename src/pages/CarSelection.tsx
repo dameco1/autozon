@@ -66,11 +66,24 @@ const CarSelection: React.FC = () => {
 
     const hasUrlFilters = urlMake || urlModel || urlMaxPrice || urlYearFrom || urlFuelType || urlMaxMileage;
 
+    // Fetch profile & preferences in parallel for lifestyle scoring
+    let prefs: PreferenceSignals | null = null;
+    let profile: ProfileSignals | null = null;
+
+    if (uid) {
+      const [prefsRes, profileRes] = await Promise.all([
+        supabase.from("user_preferences").select("*").eq("user_id", uid).maybeSingle(),
+        supabase.from("profiles").select("relationship_status, has_kids, num_kids, car_purpose, current_car, budget_max").eq("user_id", uid).maybeSingle(),
+      ]);
+      prefs = prefsRes.data as PreferenceSignals | null;
+      profile = profileRes.data as ProfileSignals | null;
+    }
+
     let query = supabase
       .from("cars")
       .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, photos, detected_damages")
       .eq("status", "available")
-      .limit(10);
+      .limit(30); // Fetch more so we can score & rank
 
     if (hasUrlFilters) {
       // Apply URL-based filters from homepage search
@@ -80,33 +93,13 @@ const CarSelection: React.FC = () => {
       if (urlYearFrom) query = query.gte("year", Number(urlYearFrom));
       if (urlFuelType) query = query.eq("fuel_type", urlFuelType);
       if (urlMaxMileage) query = query.lte("mileage", Number(urlMaxMileage));
-    } else if (uid) {
-      // Fall back to user preferences if logged in and no URL filters
-      const { data: prefs } = await supabase
-        .from("user_preferences")
-        .select("*")
-        .eq("user_id", uid)
-        .maybeSingle();
-
-      if (prefs) {
-        if (prefs.min_budget) query = query.gte("price", prefs.min_budget);
-        if (prefs.max_budget) query = query.lte("price", prefs.max_budget);
-        if (prefs.min_year) query = query.gte("year", prefs.min_year);
-        if (prefs.max_year) query = query.lte("year", prefs.max_year);
-        if (prefs.max_mileage) query = query.lte("mileage", prefs.max_mileage);
-        if (prefs.preferred_makes && prefs.preferred_makes.length > 0) {
-          query = query.in("make", prefs.preferred_makes);
-        }
-        if (prefs.preferred_fuel_types && prefs.preferred_fuel_types.length > 0) {
-          query = query.in("fuel_type", prefs.preferred_fuel_types);
-        }
-        if (prefs.preferred_body_types && prefs.preferred_body_types.length > 0) {
-          query = query.in("body_type", prefs.preferred_body_types);
-        }
-        if (prefs.preferred_transmission) {
-          query = query.eq("transmission", prefs.preferred_transmission);
-        }
-      }
+    } else if (prefs) {
+      // Apply broad budget filters to narrow the pool
+      if (prefs.min_budget) query = query.gte("price", prefs.min_budget);
+      if (prefs.max_budget) query = query.lte("price", prefs.max_budget);
+      if (prefs.min_year) query = query.gte("year", (prefs as any).min_year);
+      if (prefs.max_year) query = query.lte("year", (prefs as any).max_year);
+      if ((prefs as any).max_mileage) query = query.lte("mileage", (prefs as any).max_mileage);
     }
 
     const { data, error } = await query;
@@ -117,7 +110,25 @@ const CarSelection: React.FC = () => {
       return;
     }
 
-    setCars(data || []);
+    if (!data) {
+      setCars([]);
+      return;
+    }
+
+    // Score and rank by lifestyle match, then take top 10
+    if (uid && (profile || prefs)) {
+      const scored = data
+        .map((car) => ({
+          ...car,
+          _matchScore: computeMatchScore(car as any, profile, prefs),
+        }))
+        .sort((a, b) => b._matchScore - a._matchScore)
+        .slice(0, 10)
+        .map(({ _matchScore, ...car }) => car);
+      setCars(scored as CarRow[]);
+    } else {
+      setCars((data as CarRow[]).slice(0, 10));
+    }
   };
 
   const toggleLike = (carId: string) => {
