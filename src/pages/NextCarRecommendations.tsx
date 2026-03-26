@@ -105,7 +105,7 @@ const NextCarRecommendations: React.FC = () => {
                 onClick={() => navigate(`/car/${car.id}`)}
               >
                 {/* Color banner */}
-                <div className="h-32 bg-gradient-to-br from-secondary to-charcoal flex items-center justify-center">
+                <div className="h-32 bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
                   <div className="text-center">
                     <span className="text-4xl font-display font-black text-foreground/10">{car.make}</span>
                   </div>

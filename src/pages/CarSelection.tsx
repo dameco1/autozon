@@ -9,6 +9,7 @@ import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldChec
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import carPlaceholder from "@/assets/car-placeholder.jpg";
+import { computeMatchScore, type ProfileSignals, type PreferenceSignals } from "@/lib/lifestyleMatch";
 
 type CarRow = {
   id: string;
