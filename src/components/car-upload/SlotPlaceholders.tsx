@@ -1,6 +1,6 @@
 import React from "react";
 
-const commonClass = "w-full h-full text-silver/15";
+const commonClass = "w-full h-full text-muted-foreground/15";
 
 const FrontView: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg" className={commonClass} {...props}>

@@ -6,7 +6,7 @@ const StatsBar: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-7 bg-navy">
+    <section className="py-7 bg-secondary">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {t.statsBar.items.map((item, i) => (
@@ -17,10 +17,10 @@ const StatsBar: React.FC = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
             >
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white mb-1">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-foreground mb-1">
                 {item.value}
               </div>
-              <div className="text-silver/50 text-xs sm:text-sm">{item.label}</div>
+              <div className="text-muted-foreground text-xs sm:text-sm">{item.label}</div>
             </motion.div>
           ))}
         </div>

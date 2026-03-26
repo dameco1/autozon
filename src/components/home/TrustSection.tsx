@@ -16,23 +16,23 @@ const TrustSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="why-autozon" className="py-14 sm:py-18 bg-charcoal">
+    <section id="why-autozon" className="py-14 sm:py-18 bg-muted">
       <div className="max-w-6xl mx-auto px-4">
         <motion.div className="mb-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <span className="text-xs font-semibold tracking-widest uppercase text-primary/80 mb-4 block">{t.trust.badge}</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white">{t.trust.title}</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-foreground">{t.trust.title}</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {t.trust.pillars.map((pillar, i) => (
             <motion.div
               key={i}
-              className="group bg-secondary/40 border border-border rounded-2xl p-6 hover:border-primary/20 transition-all duration-500 relative overflow-hidden"
+              className="group bg-card border border-border rounded-2xl p-6 hover:border-primary/20 transition-all duration-500 relative overflow-hidden"
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
             >
               <CheckCircle2 className="h-7 w-7 text-primary mb-4 group-hover:scale-110 transition-transform" />
-              <h3 className="text-base font-display font-bold text-white mb-2">{pillar.title}</h3>
-              <p className="text-silver/50 text-xs leading-relaxed">{pillar.description}</p>
+              <h3 className="text-base font-display font-bold text-foreground mb-2">{pillar.title}</h3>
+              <p className="text-muted-foreground text-xs leading-relaxed">{pillar.description}</p>
             </motion.div>
           ))}
         </div>
