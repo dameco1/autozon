@@ -88,7 +88,7 @@ const CarSearchSection: React.FC = () => {
     const params = new URLSearchParams();
     if (make) params.set("make", make);
     if (model) params.set("model", model);
-    if (effectiveMaxPrice) params.set("maxPrice", effectiveMaxPrice);
+    if (effectiveMaxPrice && Number(effectiveMaxPrice) > 0) params.set("maxPrice", effectiveMaxPrice);
     if (yearFrom) params.set("yearFrom", yearFrom);
     if (fuelType) params.set("fuelType", fuelType);
     if (maxMileage) params.set("maxMileage", maxMileage);
