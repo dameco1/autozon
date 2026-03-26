@@ -9,6 +9,7 @@ import WhyAutozonSection from "@/components/home/WhyAutozonSection";
 import StatsBar from "@/components/home/StatsBar";
 import HowItWorksSection from "@/components/home/HowItWorksSection";
 import PricingSection from "@/components/home/PricingSection";
+import AiInspectionSection from "@/components/home/AiInspectionSection";
 import ComparisonSection from "@/components/home/ComparisonSection";
 import CtaSection from "@/components/home/CtaSection";
 import FooterSection from "@/components/home/FooterSection";
@@ -35,6 +36,7 @@ const Index: React.FC = () => {
       <Navbar />
       <HeroSection />
       <CarSearchSection />
+      <AiInspectionSection />
       <PricingSection />
       <ComparisonSection />
       <AiEngineSection />

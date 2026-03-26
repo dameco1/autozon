@@ -1,0 +1,271 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { AlertTriangle, Search, ShieldCheck, Sparkles, Crosshair } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  }),
+};
+
+const pulseRing = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: (i: number) => ({
+    scale: 1,
+    opacity: 1,
+    transition: { delay: 0.6 + i * 0.18, duration: 0.5, ease: "easeOut" as const },
+  }),
+};
+
+interface DamagePin {
+  id: string;
+  label: string;
+  severity: "low" | "medium" | "high";
+  detail: string;
+  top: string;
+  left: string;
+  anchorSide: "left" | "right";
+}
+
+const damagePins: DamagePin[] = [
+  {
+    id: "scratch",
+    label: "Scratch Detected",
+    severity: "low",
+    detail: "Minor surface scratch — €80 repair estimate",
+    top: "28%",
+    left: "18%",
+    anchorSide: "left",
+  },
+  {
+    id: "dent",
+    label: "Dent Detected",
+    severity: "medium",
+    detail: "Door panel dent — €320 repair estimate",
+    top: "52%",
+    left: "35%",
+    anchorSide: "left",
+  },
+  {
+    id: "crack",
+    label: "Windshield Crack",
+    severity: "high",
+    detail: "12cm crack — €450 replacement estimate",
+    top: "22%",
+    left: "55%",
+    anchorSide: "right",
+  },
+  {
+    id: "paint",
+    label: "Paint Chip",
+    severity: "low",
+    detail: "Small paint chip on bumper — €60 touch-up",
+    top: "62%",
+    left: "72%",
+    anchorSide: "right",
+  },
+  {
+    id: "tire",
+    label: "Tire Wear",
+    severity: "medium",
+    detail: "Uneven tread wear — replacement advised",
+    top: "75%",
+    left: "25%",
+    anchorSide: "left",
+  },
+];
+
+const severityColor: Record<string, string> = {
+  low: "border-green bg-green/10 text-green",
+  medium: "border-orange bg-orange/10 text-orange",
+  high: "border-destructive bg-destructive/10 text-destructive",
+};
+
+const severityDot: Record<string, string> = {
+  low: "bg-green",
+  medium: "bg-orange",
+  high: "bg-destructive",
+};
+
+const AiInspectionSection: React.FC = () => {
+  const { language } = useLanguage();
+
+  const title = language === "de"
+    ? "KI-Inspektion für faire Bewertung"
+    : "AI Inspection for Fair Valuation";
+
+  const subtitle = language === "de"
+    ? "Unsere KI scannt jedes Foto auf Kratzer, Dellen, Risse und Verschleiß — und berechnet den Reparaturkostenfaktor direkt in den fairen Preis ein."
+    : "Our AI scans every photo for scratches, dents, cracks, and wear — then factors repair costs directly into the fair price.";
+
+  const badge = language === "de" ? "KI-Schadenserkennung" : "AI Damage Detection";
+
+  return (
+    <section className="py-20 bg-charcoal relative overflow-hidden">
+      {/* Subtle background glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,hsl(var(--orange)/0.04),transparent)]" />
+
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-14"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          custom={0}
+        >
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase text-orange/80 mb-4">
+            <Crosshair className="h-3.5 w-3.5" />
+            {badge}
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight">
+            {language === "de" ? "KI-Inspektion für" : "AI Inspection for"}
+            <br />
+            <span className="text-orange">
+              {language === "de" ? "Faire Bewertung" : "Fair Valuation"}
+            </span>
+          </h2>
+          <p className="text-silver/50 text-base sm:text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
+            {subtitle}
+          </p>
+        </motion.div>
+
+        {/* Car with annotations */}
+        <motion.div
+          className="relative max-w-4xl mx-auto"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          custom={1}
+        >
+          {/* Car image container */}
+          <div className="relative rounded-2xl overflow-hidden border border-border bg-navy/50">
+            <img
+              src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80"
+              alt="BMW vehicle undergoing AI inspection"
+              className="w-full h-auto object-cover opacity-80"
+              loading="lazy"
+            />
+
+            {/* Scan overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
+
+            {/* Scan line animation */}
+            <motion.div
+              className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/60 to-transparent"
+              initial={{ top: "0%" }}
+              animate={{ top: ["0%", "100%", "0%"] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+            />
+
+            {/* Damage pins */}
+            {damagePins.map((pin, i) => (
+              <motion.div
+                key={pin.id}
+                className="absolute group"
+                style={{ top: pin.top, left: pin.left }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={pulseRing}
+                custom={i}
+              >
+                {/* Pulsing ring */}
+                <span className={`absolute inset-0 w-6 h-6 -ml-3 -mt-3 rounded-full ${severityDot[pin.severity]} opacity-30 animate-ping`} />
+                {/* Dot */}
+                <span className={`relative block w-4 h-4 -ml-2 -mt-2 rounded-full ${severityDot[pin.severity]} border-2 border-white/30 shadow-lg cursor-pointer`} />
+
+                {/* Tooltip card */}
+                <div
+                  className={`absolute z-20 hidden group-hover:block w-56 ${
+                    pin.anchorSide === "left" ? "left-5 top-1/2 -translate-y-1/2" : "right-5 top-1/2 -translate-y-1/2"
+                  }`}
+                >
+                  <div className={`rounded-xl border p-3 backdrop-blur-md bg-navy/90 ${severityColor[pin.severity].split(" ")[0]}`}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <AlertTriangle className={`h-3.5 w-3.5 ${
+                        pin.severity === "high" ? "text-destructive" : pin.severity === "medium" ? "text-orange" : "text-green"
+                      }`} />
+                      <span className="text-xs font-bold text-white">{pin.label}</span>
+                    </div>
+                    <p className="text-[11px] text-silver/60 leading-snug">{pin.detail}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Bottom overlay stats bar */}
+            <div className="absolute bottom-0 left-0 right-0 p-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-orange/15 flex items-center justify-center">
+                  <Search className="h-4.5 w-4.5 text-orange" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white">5 {language === "de" ? "Befunde erkannt" : "Issues Detected"}</p>
+                  <p className="text-[11px] text-silver/50">
+                    {language === "de" ? "Geschätzte Reparaturkosten" : "Est. repair cost"}: <span className="text-orange font-semibold">€910</span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 bg-green/10 border border-green/20 rounded-full px-3 py-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-green" />
+                <span className="text-[11px] font-bold text-green">
+                  {language === "de" ? "KI-Verifiziert" : "AI Verified"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Feature pills below the image */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={3}
+          >
+            {[
+              {
+                icon: Search,
+                title: language === "de" ? "Foto-Analyse" : "Photo Analysis",
+                desc: language === "de" ? "KI scannt jedes hochgeladene Bild" : "AI scans every uploaded image",
+              },
+              {
+                icon: AlertTriangle,
+                title: language === "de" ? "Schadensbericht" : "Damage Report",
+                desc: language === "de" ? "Kratzer, Dellen und Risse erkannt" : "Scratches, dents & cracks detected",
+              },
+              {
+                icon: Sparkles,
+                title: language === "de" ? "Fairer Preis" : "Fair Price Impact",
+                desc: language === "de" ? "Reparaturkosten fließen in den Preis ein" : "Repair costs factored into valuation",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-3 bg-navy/60 border border-border rounded-xl p-4 hover:border-orange/20 transition-colors"
+              >
+                <div className="w-9 h-9 rounded-lg bg-orange/10 flex items-center justify-center shrink-0">
+                  <item.icon className="h-4 w-4 text-orange" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">{item.title}</p>
+                  <p className="text-xs text-silver/50 mt-0.5">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default AiInspectionSection;
