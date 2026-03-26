@@ -18,13 +18,10 @@ const RELATIONSHIPS = ["single", "married", "divorced"] as const;
 const currentYear = new Date().getFullYear();
 const YEAR_OPTIONS = Array.from({ length: 30 }, (_, i) => currentYear - i);
 
-type CarMakeModel = { make: string; model: string };
-
 const CarSearchSection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
-  const [makeModelData, setMakeModelData] = useState<CarMakeModel[]>([]);
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
   const [make, setMake] = useState("");
@@ -39,29 +36,9 @@ const CarSearchSection: React.FC = () => {
   const [purpose, setPurpose] = useState("");
   const [budget, setBudget] = useState("");
 
-  useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase
-        .from("cars")
-        .select("make, model")
-        .eq("status", "available");
-      if (data) setMakeModelData(data as CarMakeModel[]);
-    };
-    load();
-  }, []);
-
-  const makes = useMemo(
-    () => [...new Set(makeModelData.map((c) => c.make))].sort(),
-    [makeModelData]
-  );
-
-  const models = useMemo(
-    () =>
-      make
-        ? [...new Set(makeModelData.filter((c) => c.make === make).map((c) => c.model))].sort()
-        : [],
-    [makeModelData, make]
-  );
+  // Pull makes & models from car_models table (same source as car-upload)
+  const { data: makes = [], isLoading: makesLoading } = useCarMakes();
+  const { data: models = [], isLoading: modelsLoading } = useCarModels(make);
 
   const effectiveMaxPrice = budget || maxPrice;
 
