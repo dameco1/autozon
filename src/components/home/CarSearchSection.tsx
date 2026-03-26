@@ -165,7 +165,7 @@ const CarSearchSection: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   {PRICE_OPTIONS.map((p) => (
-                    <SelectItem key={p} value={String(p)}>€{p.toLocaleString()}</SelectItem>
+                    <SelectItem key={p} value={String(p)}>{p === -1 ? "Unlimited" : `€${p.toLocaleString()}`}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
