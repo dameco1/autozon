@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, Heart, Users, Baby, Briefcase, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
@@ -11,6 +11,8 @@ import { useLanguage } from "@/i18n/LanguageContext";
 const PRICE_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000];
 const MILEAGE_OPTIONS = [25000, 50000, 100000, 150000, 200000];
 const FUEL_OPTIONS = ["Petrol", "Diesel", "Electric", "Hybrid"];
+const PURPOSES = ["daily", "work", "pleasure", "summer", "winter"] as const;
+const RELATIONSHIPS = ["single", "married", "divorced"] as const;
 
 const currentYear = new Date().getFullYear();
 const YEAR_OPTIONS = Array.from({ length: 30 }, (_, i) => currentYear - i);
@@ -24,6 +26,7 @@ const CarSearchSection: React.FC = () => {
   const [makeModelData, setMakeModelData] = useState<CarMakeModel[]>([]);
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
+  // Car filters
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -31,7 +34,12 @@ const CarSearchSection: React.FC = () => {
   const [fuelType, setFuelType] = useState("");
   const [maxMileage, setMaxMileage] = useState("");
 
-  // Load distinct makes + models from available cars
+  // Lifestyle filters
+  const [relationship, setRelationship] = useState("");
+  const [hasKids, setHasKids] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [budget, setBudget] = useState("");
+
   useEffect(() => {
     const load = async () => {
       const { data } = await supabase
@@ -43,13 +51,11 @@ const CarSearchSection: React.FC = () => {
     load();
   }, []);
 
-  // Derive unique makes
   const makes = useMemo(
     () => [...new Set(makeModelData.map((c) => c.make))].sort(),
     [makeModelData]
   );
 
-  // Derive models for selected make
   const models = useMemo(
     () =>
       make
@@ -58,7 +64,9 @@ const CarSearchSection: React.FC = () => {
     [makeModelData, make]
   );
 
-  // Live result count
+  // Use budget as maxPrice if set, otherwise use maxPrice
+  const effectiveMaxPrice = budget || maxPrice;
+
   useEffect(() => {
     const fetchCount = async () => {
       let query = supabase
@@ -68,7 +76,7 @@ const CarSearchSection: React.FC = () => {
 
       if (make) query = query.eq("make", make);
       if (model) query = query.eq("model", model);
-      if (maxPrice) query = query.lte("price", Number(maxPrice));
+      if (effectiveMaxPrice) query = query.lte("price", Number(effectiveMaxPrice));
       if (yearFrom) query = query.gte("year", Number(yearFrom));
       if (fuelType) query = query.eq("fuel_type", fuelType);
       if (maxMileage) query = query.lte("mileage", Number(maxMileage));
@@ -77,31 +85,104 @@ const CarSearchSection: React.FC = () => {
       setTotalCount(count ?? 0);
     };
     fetchCount();
-  }, [make, model, maxPrice, yearFrom, fuelType, maxMileage]);
+  }, [make, model, effectiveMaxPrice, yearFrom, fuelType, maxMileage]);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (make) params.set("make", make);
     if (model) params.set("model", model);
-    if (maxPrice) params.set("maxPrice", maxPrice);
+    if (effectiveMaxPrice) params.set("maxPrice", effectiveMaxPrice);
     if (yearFrom) params.set("yearFrom", yearFrom);
     if (fuelType) params.set("fuelType", fuelType);
     if (maxMileage) params.set("maxMileage", maxMileage);
+    if (relationship) params.set("relationship", relationship);
+    if (hasKids) params.set("kids", hasKids);
+    if (purpose) params.set("purpose", purpose);
     navigate(`/car-selection?${params.toString()}`);
   };
 
+  const resetAll = () => {
+    setMake(""); setModel(""); setMaxPrice(""); setYearFrom("");
+    setFuelType(""); setMaxMileage(""); setRelationship("");
+    setHasKids(""); setPurpose(""); setBudget("");
+  };
+
   const cs = t.carSearch;
+  const ls = t.lifestyle;
 
   return (
     <section id="car-search" className="bg-charcoal py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-display font-bold text-white text-center mb-8">
+        <h2 className="text-2xl sm:text-3xl font-display font-bold text-white text-center mb-2">
           {cs.title}
         </h2>
+        <p className="text-silver/50 text-center text-sm mb-8">{cs.subtitle}</p>
 
         <div className="bg-secondary/50 border border-border rounded-2xl p-6 sm:p-8">
+          {/* Lifestyle filters row */}
+          <div className="mb-6">
+            <p className="text-silver/40 text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <Users className="h-3.5 w-3.5" /> {ls.sectionTitle}
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {/* Relationship */}
+              <Select value={relationship} onValueChange={setRelationship}>
+                <SelectTrigger className="bg-background border-border text-foreground text-sm">
+                  <Heart className="h-3.5 w-3.5 mr-1 text-silver/40 shrink-0" />
+                  <SelectValue placeholder={ls.relationship} />
+                </SelectTrigger>
+                <SelectContent>
+                  {RELATIONSHIPS.map((r) => (
+                    <SelectItem key={r} value={r}>{ls.relationships[r]}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Kids */}
+              <Select value={hasKids} onValueChange={setHasKids}>
+                <SelectTrigger className="bg-background border-border text-foreground text-sm">
+                  <Baby className="h-3.5 w-3.5 mr-1 text-silver/40 shrink-0" />
+                  <SelectValue placeholder={ls.kids} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="no">{ls.noKids}</SelectItem>
+                  <SelectItem value="yes">{ls.hasKids}</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Purpose */}
+              <Select value={purpose} onValueChange={setPurpose}>
+                <SelectTrigger className="bg-background border-border text-foreground text-sm">
+                  <Briefcase className="h-3.5 w-3.5 mr-1 text-silver/40 shrink-0" />
+                  <SelectValue placeholder={ls.purpose} />
+                </SelectTrigger>
+                <SelectContent>
+                  {PURPOSES.map((p) => (
+                    <SelectItem key={p} value={p}>{ls.purposes[p]}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Budget */}
+              <Select value={budget} onValueChange={setBudget}>
+                <SelectTrigger className="bg-background border-border text-foreground text-sm">
+                  <Wallet className="h-3.5 w-3.5 mr-1 text-silver/40 shrink-0" />
+                  <SelectValue placeholder={ls.budget} />
+                </SelectTrigger>
+                <SelectContent>
+                  {PRICE_OPTIONS.map((p) => (
+                    <SelectItem key={p} value={String(p)}>€{p.toLocaleString()}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-border/50 mb-6" />
+
+          {/* Car spec filters */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-            {/* Make */}
             <Select value={make} onValueChange={(v) => { setMake(v); setModel(""); }}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder={cs.make} />
@@ -113,7 +194,6 @@ const CarSearchSection: React.FC = () => {
               </SelectContent>
             </Select>
 
-            {/* Model */}
             <Select value={model} onValueChange={setModel} disabled={!make}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder={cs.model} />
@@ -125,7 +205,6 @@ const CarSearchSection: React.FC = () => {
               </SelectContent>
             </Select>
 
-            {/* Price up to */}
             <Select value={maxPrice} onValueChange={setMaxPrice}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder={cs.priceUpTo} />
@@ -137,7 +216,6 @@ const CarSearchSection: React.FC = () => {
               </SelectContent>
             </Select>
 
-            {/* Year from */}
             <Select value={yearFrom} onValueChange={setYearFrom}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder={cs.yearFrom} />
@@ -149,7 +227,6 @@ const CarSearchSection: React.FC = () => {
               </SelectContent>
             </Select>
 
-            {/* Fuel type */}
             <Select value={fuelType} onValueChange={setFuelType}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder={cs.fuel} />
@@ -161,7 +238,6 @@ const CarSearchSection: React.FC = () => {
               </SelectContent>
             </Select>
 
-            {/* Mileage up to */}
             <Select value={maxMileage} onValueChange={setMaxMileage}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder={cs.mileageUpTo} />
@@ -176,7 +252,7 @@ const CarSearchSection: React.FC = () => {
 
           <div className="flex items-center justify-between">
             <button
-              onClick={() => { setMake(""); setModel(""); setMaxPrice(""); setYearFrom(""); setFuelType(""); setMaxMileage(""); }}
+              onClick={resetAll}
               className="text-sm text-silver/50 hover:text-silver transition-colors"
             >
               {cs.reset}
