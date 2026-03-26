@@ -344,7 +344,7 @@ const Negotiation: React.FC = () => {
             {/* Waiting state */}
             {!isFinished && (
               <div className="px-6 py-4 flex items-center gap-2 text-muted-foreground text-sm">
-                <div className="w-4 h-4 border-2 border-silver/20 border-t-primary rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-border border-t-primary rounded-full animate-spin" />
                 {waitingForSeller ? t.negotiation.waitingSeller : t.negotiation.waitingBuyer}
                 {roundsLeft > 0 && ` · ${roundsLeft} ${t.negotiation.roundsLeft}`}
               </div>

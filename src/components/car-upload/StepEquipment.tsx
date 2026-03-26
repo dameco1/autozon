@@ -41,7 +41,7 @@ const StepEquipment: React.FC<Props> = ({ equipment, onToggle }) => {
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all text-xs ${
                   equipment.includes(item)
                     ? "bg-primary/10 border-primary"
-                    : "bg-muted border-border hover:border-silver/30"
+                    : "bg-muted border-border hover:border-primary/30"
                 }`}
               >
                 <Checkbox

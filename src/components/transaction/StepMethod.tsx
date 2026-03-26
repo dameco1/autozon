@@ -45,7 +45,7 @@ const StepMethod: React.FC<Props> = ({ onSelect }) => {
       </motion.button>
 
       <motion.button
-        className="w-full text-left bg-secondary/50 border border-border hover:border-silver/30 rounded-2xl p-6 transition-all group"
+        className="w-full text-left bg-secondary/50 border border-border hover:border-primary/30 rounded-2xl p-6 transition-all group"
         onClick={() => onSelect("manual")}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
