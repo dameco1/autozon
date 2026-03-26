@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { Zap, Gauge, Fuel, Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { computeMatchScore, type ProfileSignals, type PreferenceSignals } from "@/lib/lifestyleMatch";
 
 interface CarRec {
   id: string;
@@ -37,18 +38,18 @@ const NextCarRecommendations: React.FC = () => {
       const { data: session } = await supabase.auth.getSession();
       const userId = session?.session?.user?.id;
 
-      // Get user preferences if available
-      let prefs: any = null;
+      let prefs: PreferenceSignals | null = null;
+      let profile: ProfileSignals | null = null;
+
       if (userId) {
-        const { data } = await supabase
-          .from("user_preferences")
-          .select("*")
-          .eq("user_id", userId)
-          .maybeSingle();
-        prefs = data;
+        const [prefsRes, profileRes] = await Promise.all([
+          supabase.from("user_preferences").select("*").eq("user_id", userId).maybeSingle(),
+          supabase.from("profiles").select("relationship_status, has_kids, num_kids, car_purpose, current_car, budget_max").eq("user_id", userId).maybeSingle(),
+        ]);
+        prefs = prefsRes.data as PreferenceSignals | null;
+        profile = profileRes.data as ProfileSignals | null;
       }
 
-      // Get seed cars
       const { data: carsData } = await supabase
         .from("cars")
         .select("id, make, model, year, mileage, fuel_type, transmission, body_type, price, fair_value_price, condition_score, demand_score, power_hp, color, description")
@@ -56,32 +57,8 @@ const NextCarRecommendations: React.FC = () => {
         .eq("status", "available");
 
       if (carsData) {
-        // Calculate match scores
         const scored = (carsData as any[]).map((car) => {
-          let lifestyleScore = 50;
-          let financialScore = 50;
-          let conditionScore = ((car.condition_score || 50) + (car.demand_score || 50)) / 2;
-
-          if (prefs) {
-            // Financial fit
-            if (car.price >= (prefs.min_budget || 0) && car.price <= (prefs.max_budget || 999999)) {
-              financialScore = 95;
-            } else {
-              const diff = Math.min(Math.abs(car.price - (prefs.min_budget || 0)), Math.abs(car.price - (prefs.max_budget || 999999)));
-              financialScore = Math.max(20, 95 - diff / 500);
-            }
-
-            // Lifestyle fit based on family size and usage
-            if (prefs.family_size >= 4 && ["SUV", "Wagon", "Van"].includes(car.body_type)) lifestyleScore = 90;
-            else if (prefs.family_size <= 2 && ["Sedan", "Coupe", "Hatchback"].includes(car.body_type)) lifestyleScore = 85;
-            else lifestyleScore = 60;
-
-            if (prefs.usage_pattern === "daily" && car.fuel_type === "Diesel") lifestyleScore += 5;
-            if (prefs.commute_distance === "long" && car.fuel_type === "Diesel") lifestyleScore += 5;
-            if (prefs.commute_distance === "short" && car.fuel_type === "Electric") lifestyleScore += 10;
-          }
-
-          const matchScore = Math.min(100, Math.round(0.4 * lifestyleScore + 0.4 * financialScore + 0.2 * conditionScore));
+          const matchScore = computeMatchScore(car, profile, prefs);
           return { ...car, matchScore } as CarRec;
         }).sort((a, b) => b.matchScore - a.matchScore).slice(0, 7);
 
@@ -128,7 +105,7 @@ const NextCarRecommendations: React.FC = () => {
                 onClick={() => navigate(`/car/${car.id}`)}
               >
                 {/* Color banner */}
-                <div className="h-32 bg-gradient-to-br from-secondary to-charcoal flex items-center justify-center">
+                <div className="h-32 bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
                   <div className="text-center">
                     <span className="text-4xl font-display font-black text-foreground/10">{car.make}</span>
                   </div>
