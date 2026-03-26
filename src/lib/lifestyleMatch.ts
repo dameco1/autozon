@@ -31,6 +31,10 @@ export interface PreferenceSignals {
   insurance_tolerance?: string | null;
   min_budget?: number | null;
   max_budget?: number | null;
+  min_year?: number | null;
+  max_year?: number | null;
+  max_mileage?: number | null;
+  min_power_hp?: number | null;
   preferred_makes?: string[] | null;
   preferred_fuel_types?: string[] | null;
   preferred_body_types?: string[] | null;
