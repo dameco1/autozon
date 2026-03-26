@@ -60,7 +60,7 @@ const InvestorPitch = () => {
   const SlideComponent = allSlides[current];
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-background select-none">
+    <div className="relative w-full h-screen overflow-hidden bg-background select-none" data-theme="light">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}

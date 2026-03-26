@@ -32,7 +32,7 @@ const SlideLayout = ({ children }: SlideLayoutProps) => {
         <p className="text-white text-xl font-display font-semibold">
           Rotate your phone to landscape
         </p>
-        <p className="text-silver text-sm">
+        <p className="text-muted-foreground text-sm">
           This presentation is best viewed horizontally
         </p>
       </div>
@@ -40,7 +40,7 @@ const SlideLayout = ({ children }: SlideLayoutProps) => {
   }
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-charcoal">
+    <div className="relative w-full h-screen overflow-hidden bg-background">
       <div
         className="absolute slide-content"
         style={{
