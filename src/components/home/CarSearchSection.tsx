@@ -179,10 +179,20 @@ const CarSearchSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="border-t border-border/50 mb-6" />
+          {/* OR Divider */}
+          <div className="relative my-6">
+            <div className="border-t border-border/50" />
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-secondary px-4 py-1 rounded-full text-xs font-bold text-orange uppercase tracking-widest">
+              {cs.or}
+            </span>
+          </div>
 
           {/* Car spec filters */}
+          <div className="mb-3">
+            <p className="text-silver/40 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <Car className="h-3.5 w-3.5" /> {cs.vehicleType}
+            </p>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
             <Select value={make} onValueChange={(v) => { setMake(v); setModel(""); }}>
               <SelectTrigger className="bg-background border-border text-foreground">
