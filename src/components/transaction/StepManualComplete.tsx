@@ -45,7 +45,7 @@ const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, 
             t.transaction.manualStep6,
           ].map((step, i) => (
             <div key={i} className="flex items-start gap-3">
-              <div className="w-5 h-5 rounded-full border-2 border-silver/20 flex-shrink-0 mt-0.5" />
+              <div className="w-5 h-5 rounded-full border-2 border-border flex-shrink-0 mt-0.5" />
               <span className="text-sm text-muted-foreground">{step}</span>
             </div>
           ))}

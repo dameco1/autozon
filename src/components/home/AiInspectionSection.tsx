@@ -171,9 +171,9 @@ const AiInspectionSection: React.FC = () => {
                   <Search className="h-4 w-4 text-orange" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-white">5 {language === "de" ? "Befunde erkannt" : "Issues Detected"}</p>
-                  <p className="text-[11px] text-white/60">
-                    {language === "de" ? "Geschätzte Reparaturkosten" : "Est. repair cost"}: <span className="text-orange font-semibold">€910</span>
+                  <p className="text-xs font-bold text-foreground">5 {language === "de" ? "Befunde erkannt" : "Issues Detected"}</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    {language === "de" ? "Geschätzte Reparaturkosten" : "Est. repair cost"}: <span className="text-primary font-semibold">€910</span>
                   </p>
                 </div>
               </div>

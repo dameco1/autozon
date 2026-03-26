@@ -98,7 +98,7 @@ const Onboarding: React.FC = () => {
       className={`px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
         current === value
           ? "bg-primary/10 border-primary text-primary"
-          : "bg-muted border-border text-muted-foreground hover:border-silver/30"
+           : "bg-muted border-border text-muted-foreground hover:border-primary/30"
       }`}
     >
       {label}
@@ -231,7 +231,7 @@ const Onboarding: React.FC = () => {
                           className={`w-full px-5 py-4 rounded-xl border text-left transition-all ${
                             timingPref === val
                               ? "bg-primary/10 border-primary text-primary"
-                              : "bg-muted border-border text-muted-foreground hover:border-silver/30"
+                              : "bg-muted border-border text-muted-foreground hover:border-primary/30"
                           }`}
                         >
                           <span className="font-medium">{t.onboarding.timingOptions[val]}</span>

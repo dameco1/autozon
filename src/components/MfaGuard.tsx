@@ -44,7 +44,7 @@ const MfaGuard: React.FC<MfaGuardProps> = ({ children }) => {
 
   if (!ready) {
     return (
-      <div className="min-h-screen bg-charcoal flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-muted-foreground">Verifying security…</div>
       </div>
     );

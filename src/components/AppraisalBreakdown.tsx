@@ -613,7 +613,7 @@ const AppraisalBreakdown: React.FC<Props> = ({ car }) => {
         const severityColors: Record<string, string> = {
           high: "text-destructive bg-destructive/10 border-destructive/20",
           medium: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
-          low: "text-muted-foreground bg-silver/5 border-silver/10",
+          low: "text-muted-foreground bg-muted/50 border-border",
         };
         const severityLabels: Record<string, string> = {
           high: ad.severityHigh,

@@ -59,7 +59,7 @@ const BrandBook = () => {
   return (
     <div className="min-h-screen bg-background text-muted-foreground">
       {/* Nav */}
-      <nav className="sticky top-0 z-50 bg-charcoal/90 backdrop-blur-md border-b border-white/10">
+      <nav className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
           <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-5 w-5" />

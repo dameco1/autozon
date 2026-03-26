@@ -60,7 +60,7 @@ const StepInspection: React.FC<Props> = ({ checklist, onChange }) => {
                   <div className="flex gap-2 shrink-0">
                     {(["yes", "no", "unknown"] as ChecklistAnswer[]).map((ans) => {
                       const active = current === ans;
-                      let btnClass = "bg-secondary/50 border-border text-muted-foreground hover:border-silver/40";
+                      let btnClass = "bg-secondary/50 border-border text-muted-foreground hover:border-primary/30";
                       if (active && ans === "yes") btnClass = "bg-primary/15 border-primary text-primary";
                       if (active && ans === "no") btnClass = "bg-destructive/15 border-destructive text-destructive";
                       if (active && ans === "unknown") btnClass = "bg-amber-500/15 border-amber-500 text-amber-400";

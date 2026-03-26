@@ -177,7 +177,7 @@ const StepPhotos: React.FC<Props> = ({ photoSlots, extraPhotos, userId, onSlotsC
                     disabled={isUploading}
                     className="w-full h-full flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-primary/50 transition-colors relative"
                   >
-                    {(() => { const Placeholder = SLOT_PLACEHOLDERS[slot.id]; return Placeholder ? <Placeholder className="absolute inset-0 w-full h-full p-3 text-silver/15" /> : null; })()}
+                    {(() => { const Placeholder = SLOT_PLACEHOLDERS[slot.id]; return Placeholder ? <Placeholder className="absolute inset-0 w-full h-full p-3 text-muted-foreground/15" /> : null; })()}
                     {isUploading ? (
                       <Loader2 className="h-6 w-6 text-primary animate-spin relative z-10" />
                     ) : (

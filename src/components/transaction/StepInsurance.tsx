@@ -43,7 +43,7 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
             className={`w-full text-left p-5 rounded-xl border transition-all ${
               selectedTier === tier.id
                 ? "border-primary bg-primary/5"
-                : "border-border hover:border-silver/30 bg-secondary/50"
+                : "border-border hover:border-primary/30 bg-secondary/50"
             }`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
                 {selectedTier === tier.id ? (
                   <CheckCircle2 className="h-5 w-5 text-primary" />
                 ) : (
-                  <div className="w-5 h-5 rounded-full border-2 border-silver/20" />
+                  <div className="w-5 h-5 rounded-full border-2 border-border" />
                 )}
                 <div>
                   <span className="text-sm font-bold text-foreground">{tier.label}</span>

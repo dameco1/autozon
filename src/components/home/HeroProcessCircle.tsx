@@ -74,7 +74,7 @@ const HeroProcessCircle: React.FC = () => {
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
           <div className="text-3xl font-display font-black text-primary">5</div>
-          <div className="text-xs text-silver/50 font-medium uppercase tracking-widest">Steps</div>
+          <div className="text-xs text-muted-foreground font-medium uppercase tracking-widest">Steps</div>
         </div>
       </div>
 
@@ -107,7 +107,7 @@ const HeroProcessCircle: React.FC = () => {
             >
               <Icon className="h-5 w-5 text-primary" />
             </motion.div>
-            <span className="text-[11px] font-display font-bold text-white whitespace-nowrap">
+            <span className="text-[11px] font-display font-bold text-foreground whitespace-nowrap">
               {stepData.title}
             </span>
           </motion.div>

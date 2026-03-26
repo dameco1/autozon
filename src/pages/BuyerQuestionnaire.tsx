@@ -91,7 +91,7 @@ const BuyerQuestionnaire: React.FC = () => {
         <label
           key={item}
           className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all ${
-            selected.includes(item) ? "bg-primary/10 border-primary" : "bg-muted border-border hover:border-silver/30"
+            selected.includes(item) ? "bg-primary/10 border-primary" : "bg-muted border-border hover:border-primary/30"
           }`}
         >
           <Checkbox checked={selected.includes(item)} onCheckedChange={() => toggleArray(selected, item, setter)} />
