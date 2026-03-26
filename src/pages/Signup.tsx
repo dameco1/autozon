@@ -57,6 +57,7 @@ const Signup: React.FC = () => {
         num_kids: hasKids === "yes" && numKids ? Number(numKids) : null,
         car_purpose: purpose || null,
         budget_max: budgetMax ? Number(budgetMax) : null,
+        current_car: currentCar || null,
       }).eq("user_id", data.user.id);
     }
 
