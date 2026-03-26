@@ -5,9 +5,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 import { Car, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import SEO from "@/components/SEO";
+
+const PURPOSES = ["daily", "work", "pleasure", "summer", "winter"] as const;
+const RELATIONSHIPS = ["single", "married", "divorced"] as const;
+const BUDGET_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000];
 
 const Signup: React.FC = () => {
   const { t } = useLanguage();
@@ -15,12 +22,19 @@ const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [relationship, setRelationship] = useState("");
+  const [hasKids, setHasKids] = useState("");
+  const [numKids, setNumKids] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [budgetMax, setBudgetMax] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const ls = t.lifestyle;
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -28,16 +42,29 @@ const Signup: React.FC = () => {
         data: { full_name: fullName },
       },
     });
-    setLoading(false);
     if (error) {
+      setLoading(false);
       toast.error(error.message);
-    } else {
-      toast.success(t.auth.checkEmail);
+      return;
     }
+
+    // Save lifestyle data to profile after signup
+    if (data.user) {
+      await supabase.from("profiles").update({
+        relationship_status: relationship || null,
+        has_kids: hasKids === "yes" ? true : hasKids === "no" ? false : null,
+        num_kids: hasKids === "yes" && numKids ? Number(numKids) : null,
+        car_purpose: purpose || null,
+        budget_max: budgetMax ? Number(budgetMax) : null,
+      }).eq("user_id", data.user.id);
+    }
+
+    setLoading(false);
+    toast.success(t.auth.checkEmail);
   };
 
   return (
-    <div className="min-h-screen bg-navy flex items-center justify-center px-4">
+    <div className="min-h-screen bg-navy flex items-center justify-center px-4 py-8">
       <SEO title="Sign Up" description="Create your free Autozon account. Start selling your car at fair value or find your perfect next ride." path="/signup" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
@@ -50,6 +77,7 @@ const Signup: React.FC = () => {
         </div>
 
         <form onSubmit={handleSignup} className="bg-charcoal/60 border border-border rounded-2xl p-8 space-y-5">
+          {/* Account fields */}
           <div className="space-y-2">
             <Label className="text-silver/80">{t.auth.fullName}</Label>
             <Input
@@ -84,6 +112,91 @@ const Signup: React.FC = () => {
               placeholder="••••••••"
             />
           </div>
+
+          {/* Lifestyle questions divider */}
+          <div className="border-t border-border pt-4">
+            <p className="text-silver/50 text-xs uppercase tracking-wider mb-4">{ls.sectionTitle}</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Relationship */}
+            <div className="space-y-2">
+              <Label className="text-silver/80 text-sm">{ls.relationship}</Label>
+              <Select value={relationship} onValueChange={setRelationship}>
+                <SelectTrigger className="bg-navy border-border text-white">
+                  <SelectValue placeholder={ls.selectPlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {RELATIONSHIPS.map((r) => (
+                    <SelectItem key={r} value={r}>{ls.relationships[r]}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Kids */}
+            <div className="space-y-2">
+              <Label className="text-silver/80 text-sm">{ls.kids}</Label>
+              <Select value={hasKids} onValueChange={setHasKids}>
+                <SelectTrigger className="bg-navy border-border text-white">
+                  <SelectValue placeholder={ls.selectPlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="no">{ls.noKids}</SelectItem>
+                  <SelectItem value="yes">{ls.hasKids}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {hasKids === "yes" && (
+            <div className="space-y-2">
+              <Label className="text-silver/80 text-sm">{ls.howManyKids}</Label>
+              <Select value={numKids} onValueChange={setNumKids}>
+                <SelectTrigger className="bg-navy border-border text-white">
+                  <SelectValue placeholder="1" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <SelectItem key={n} value={String(n)}>{n}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Purpose */}
+            <div className="space-y-2">
+              <Label className="text-silver/80 text-sm">{ls.purpose}</Label>
+              <Select value={purpose} onValueChange={setPurpose}>
+                <SelectTrigger className="bg-navy border-border text-white">
+                  <SelectValue placeholder={ls.selectPlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {PURPOSES.map((p) => (
+                    <SelectItem key={p} value={p}>{ls.purposes[p]}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Budget */}
+            <div className="space-y-2">
+              <Label className="text-silver/80 text-sm">{ls.budget}</Label>
+              <Select value={budgetMax} onValueChange={setBudgetMax}>
+                <SelectTrigger className="bg-navy border-border text-white">
+                  <SelectValue placeholder={ls.selectPlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {BUDGET_OPTIONS.map((b) => (
+                    <SelectItem key={b} value={String(b)}>€{b.toLocaleString()}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
           <Button type="submit" disabled={loading} className="w-full bg-orange text-orange-foreground hover:bg-orange/90 font-bold py-6 rounded-xl">
             {loading ? "..." : t.auth.signup}
           </Button>
