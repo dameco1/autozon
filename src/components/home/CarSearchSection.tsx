@@ -8,7 +8,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
 
-const PRICE_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000];
+const PRICE_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000, 200000, -1];
 const MILEAGE_OPTIONS = [25000, 50000, 100000, 150000, 200000];
 const FUEL_OPTIONS = ["Petrol", "Diesel", "Electric", "Hybrid"];
 const PURPOSES = ["daily", "work", "pleasure", "summer", "winter"] as const;
