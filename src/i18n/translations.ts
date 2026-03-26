@@ -1912,6 +1912,8 @@ export const translations = {
       mileageUpTo: "Km bis",
       searchBtn: "Autos suchen",
       reset: "Filter zurücksetzen",
+      or: "ODER",
+      vehicleType: "Fahrzeugtyp",
     },
     lifestyle: {
       sectionTitle: "Dein Lebensstil",
