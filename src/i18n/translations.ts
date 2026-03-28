@@ -693,6 +693,17 @@ export const translations = {
       manualStep5: "Report the ownership change to the registration authority",
       manualStep6: "Arrange vehicle insurance before driving",
       downloadOfficialContract: "Download the official contract template:",
+      valuationFeedback: {
+        title: "Was our valuation accurate?",
+        subtitle: "Your feedback helps us improve future car valuations.",
+        accurate: "Spot on",
+        tooHigh: "Too high",
+        tooLow: "Too low",
+        commentPlaceholder: "Any additional thoughts? (optional)",
+        submit: "Submit Feedback",
+        thanks: "Thank you for your feedback!",
+        thanksDetail: "This helps us calibrate future valuations for similar cars.",
+      },
       // Step labels
       stepMethod: "Method",
       stepContract: "Contract",
