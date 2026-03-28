@@ -909,15 +909,15 @@ export const SlideClosing = () => (
   <div className="flex flex-col items-center justify-center h-full px-40 text-center">
     <Heart className={accent} size={64} />
     <h2 className="font-display text-[48px] font-bold text-foreground mt-12 max-w-[1200px] leading-tight">
-      Your car has a fair price.
+      Autozon — the easiest way to sell and buy cars.
     </h2>
     <h2 className={`font-display text-[48px] font-bold ${accent} mt-4`}>
-      We'll find it.
+      Fair to sellers. Smart for buyers.
     </h2>
-    <p className="text-[28px] text-muted-foreground mt-4">AI-powered valuation. Real market data. You keep the margin.</p>
+    <p className="text-[28px] text-muted-foreground mt-4">AI-driven smart platform. Real market data. Structured negotiations.</p>
     <div className="w-32 h-1 bg-primary mt-16 rounded-full" />
     <p className="text-[24px] text-muted-foreground/60 mt-8 italic max-w-[1000px]">
-      "Autozon is an AI fair-value engine for the €300B used-car market."
+      "Autozon is an AI-driven smart platform for the €300B used-car market — fair to sellers, smart for buyers."
     </p>
     <p className="font-display text-[36px] font-black text-foreground mt-16">
       auto<span className="text-primary">zon</span>
