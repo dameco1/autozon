@@ -206,6 +206,22 @@ export function calculateFairValue(data: CarFormData, modelMsrpEur?: number | nu
   // ** SMOKER CAR PENALTY (-3% to -5%) **
   const smokerFactor = data.smokerCar ? 0.95 : 1.0;
 
+  // ** INSPECTION CHECKLIST PENALTY **
+  // All questions are phrased so YES = good. Each "no" = -1.5%, each "unknown" = -0.75%
+  const totalChecklistItems = INSPECTION_CATEGORIES.reduce((sum, cat) => sum + cat.items.length, 0);
+  let inspectionPenaltyPct = 0;
+  if (totalChecklistItems > 0) {
+    for (const cat of INSPECTION_CATEGORIES) {
+      for (const item of cat.items) {
+        const answer = data.inspectionChecklist[item.id];
+        if (answer === "no") inspectionPenaltyPct += 1.5;
+        else if (answer === "unknown") inspectionPenaltyPct += 0.75;
+      }
+    }
+  }
+  // Cap at 30% max penalty
+  const inspectionFactor = Math.max(0.70, 1 - inspectionPenaltyPct / 100);
+
   // Compute 100% attribute-based fair value (NO asking price influence)
   const attributeValue = Math.round(
     referenceMSRP
