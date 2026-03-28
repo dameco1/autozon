@@ -253,7 +253,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: condInt < 85,
     actionLabel: a.interior.action,
     actionStep: 3,
-    formulaTooltip: `Score: ${condInt}/100 · Factor: 0.85 + (${condInt}/100)×0.17 = ${condIntFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
+    formulaTooltip: `Score: ${condInt}/100 · Factor: 0.70 + (${condInt}/100)×0.32 = ${condIntFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
   });
 
   // 5. ACCIDENT / DAMAGE HISTORY — now uses itemized damage costs when available
