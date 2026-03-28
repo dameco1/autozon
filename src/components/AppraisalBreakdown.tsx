@@ -256,17 +256,35 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     formulaTooltip: `Score: ${condInt}/100 · Factor: 0.70 + (${condInt}/100)×0.32 = ${condIntFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
   });
 
-  // 5. ACCIDENT / DAMAGE HISTORY — now uses itemized damage costs when available
+  // 5. ACCIDENT / DAMAGE HISTORY — combined: itemized costs + accident stigma
   const totalDamageCost = damages.reduce((sum, d) => sum + (d.estimated_repair_cost_eur ?? 0), 0);
   const hasDamageCosts = totalDamageCost > 0;
-  const accidentPenalty = hasDamageCosts ? 1 : (car.accident_history ? 0.82 : 1);
-  const accEuro = hasDamageCosts ? -totalDamageCost : Math.round(basePrice * depreciationFactor * (accidentPenalty - 1));
-  const accPct = hasDamageCosts ? -(totalDamageCost / Math.max(basePrice, 1)) * 100 : (accidentPenalty - 1) * 100;
+  const flatPenaltyRate = isIconic ? 0.20 : isPremium ? 0.15 : 0.10;
+
+  let accEuro = 0;
+  let accTooltip = "";
+
+  if (hasDamageCosts && car.accident_history) {
+    // Combined: itemized costs + 50% accident stigma
+    const stigma = Math.round(basePrice * depreciationFactor * flatPenaltyRate * 0.50);
+    accEuro = -(totalDamageCost + stigma);
+    accTooltip = `${damages.length} damages: -€${totalDamageCost.toLocaleString()} + accident stigma (50%×${(flatPenaltyRate*100).toFixed(0)}%): -€${stigma.toLocaleString()}`;
+  } else if (hasDamageCosts) {
+    accEuro = -totalDamageCost;
+    accTooltip = `${damages.length} damages · Total repair cost: -€${totalDamageCost.toLocaleString()}`;
+  } else if (car.accident_history) {
+    accEuro = Math.round(basePrice * depreciationFactor * -flatPenaltyRate);
+    accTooltip = `Accident: yes → -${(flatPenaltyRate*100).toFixed(0)}% stigma penalty`;
+  } else {
+    accTooltip = "No accident history → no penalty";
+  }
+
+  const accPct = (accEuro / Math.max(basePrice, 1)) * 100;
   factors.push({
     id: "damage",
     label: a.damage.label,
     explanation: hasDamageCosts
-      ? `${damages.length} confirmed damage(s) with estimated repair cost of €${totalDamageCost.toLocaleString()}. This is deducted directly from the fair value.`
+      ? `${damages.length} confirmed damage(s) with repair cost €${totalDamageCost.toLocaleString()}${car.accident_history ? " plus accident history stigma" : ""}. Deducted from fair value.`
       : car.accident_history
         ? (car.accident_details && car.accident_details.length > 20
             ? a.damage.explainYesDetailed
@@ -280,9 +298,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: car.accident_history === true || hasDamageCosts,
     actionLabel: a.damage.action,
     actionStep: 3,
-    formulaTooltip: hasDamageCosts
-      ? `${damages.length} damages · Total repair cost: €${totalDamageCost.toLocaleString()} (deducted from value)`
-      : `Accident: ${car.accident_history ? "yes → ×0.82 penalty" : "none → ×1.0 (no penalty)"}`,
+    formulaTooltip: accTooltip,
   });
 
   // 6. EQUIPMENT VALUE (actionable — add more features)
