@@ -265,6 +265,7 @@ const AcquisitionOptions: React.FC = () => {
       _insurance_partner_id: null,
       _insurance_confirmed: false,
     });
+    if (offer) recordAppraisalFeedback(offer.car_id, agreedPrice);
     setStep(5);
   };
 
