@@ -926,7 +926,7 @@ export const SlideClosing = () => (
 );
 
 export const allSlides = [
-  SlideCover, SlideTitle, SlideProblem, SlideInsight, SlideSolution,
+  SlideCover, SlideTitle, SlideProblem, SlideInsight, SlideSolution, SlideVincario,
   SlideHowItWorksSeller, SlideHowItWorksBuyer, SlideSavingsExample, SlideProductDemo,
   SlideWhyNow, SlideBusinessModel, SlideRevenueStreams, SlideFlywheel,
   SlidePricing, SlideMarketSize, SlideFinancials, SlideCompetition,
