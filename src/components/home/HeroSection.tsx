@@ -122,7 +122,7 @@ const HeroSection: React.FC = () => {
           {canInstall && (
             <Button onClick={promptInstall} size="lg" className="gap-2 text-base px-6">
               <Download className="h-5 w-5" />
-              Install App
+              {t.hero.installApp}
             </Button>
           )}
           <Button
@@ -131,7 +131,7 @@ const HeroSection: React.FC = () => {
             className="gap-2 text-base px-6"
             onClick={() => navigate("/onboarding")}
           >
-            Get Started
+            {t.hero.getStarted}
             <ArrowRight className="h-5 w-5" />
           </Button>
         </motion.div>
