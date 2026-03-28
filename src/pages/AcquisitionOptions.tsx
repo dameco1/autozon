@@ -65,6 +65,30 @@ const AcquisitionOptions: React.FC = () => {
   const [insurancePartnerId, setInsurancePartnerId] = useState<string | null>(null);
   const [transactionId, setTransactionId] = useState<string | null>(null);
 
+  // Record appraisal feedback for future calibration
+  const recordAppraisalFeedback = useCallback(async (carId: string, agreedSalePrice: number) => {
+    try {
+      const { data: existing } = await supabase
+        .from("appraisal_feedback" as any)
+        .select("id, blended_value")
+        .eq("car_id", carId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (existing) {
+        const blended = (existing as any).blended_value ?? 0;
+        const deviation = blended > 0 ? Math.round(((agreedSalePrice - blended) / blended) * 100) : null;
+        await supabase
+          .from("appraisal_feedback" as any)
+          .update({ agreed_sale_price: agreedSalePrice, deviation_pct: deviation } as any)
+          .eq("id", (existing as any).id);
+      }
+    } catch (e) {
+      console.error("Failed to record appraisal feedback:", e);
+    }
+  }, []);
+
   useEffect(() => {
     const init = async () => {
       const { data: { session } } = await supabase.auth.getSession();
