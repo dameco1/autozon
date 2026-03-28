@@ -43,15 +43,15 @@ export const SlideCover = () => (
     </div>
 
     <p className={`${body} max-w-[1400px] leading-[1.7]`}>
-      I'm building <span className="text-foreground font-bold">Autozon</span>, the first AI-powered fair‑value car platform that eliminates dealer‑engineered depreciation. Sellers lose <span className={`${accent} font-bold`}>up to 30%</span> because the system is opaque and designed against them. Autozon fixes this with AI photo analysis, live market comparison, and structured negotiations — so sellers keep the full margin.
+      I'm building <span className="text-foreground font-bold">Autozon</span>, the first AI-driven smart platform that makes selling cars fair and buying cars smart. Sellers lose <span className={`${accent} font-bold`}>up to 30%</span> because the system is opaque and designed against them. Autozon fixes this with AI photo analysis, live market comparison, and structured negotiations — so sellers keep the full margin.
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      The platform is <span className="text-foreground font-bold">free for buyers</span>. Sellers pay a flat listing fee — <span className={`${accent} font-bold`}>€49 Basic</span> or <span className={`${accent} font-bold`}>€99 Premium</span>. The European used‑car market is <span className={`${accent} font-bold`}>€300B+</span>, and no dominant fair‑value car platform exists.
+      The platform is <span className="text-foreground font-bold">free for buyers</span>. Sellers pay a flat listing fee — <span className={`${accent} font-bold`}>€49 Basic</span> or <span className={`${accent} font-bold`}>€99 Premium</span>. The European used‑car market is <span className={`${accent} font-bold`}>€300B+</span>, and no dominant AI-driven car platform exists.
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      We've built a <span className="text-foreground font-bold">complete end‑to‑end platform</span> — AI fair‑value engine, photo-based damage detection, lifestyle-aware buyer matching, market comparison, structured negotiation, <span className={`${accent} font-bold`}>full transaction pipeline</span> (contract generation, payment, insurance), AI concierge, <span className={`${accent} font-bold`}>VINCARIO VIN decoding</span> with stolen-vehicle check, 20-point inspection checklist, MFA security, admin dashboard, and bilingual DE/EN support — all live.
+      We've built a <span className="text-foreground font-bold">complete end‑to‑end AI-driven platform</span> — smart valuation engine, photo-based damage detection, lifestyle-aware buyer matching, market comparison, structured negotiation, <span className={`${accent} font-bold`}>full transaction pipeline</span> (contract generation, payment, insurance), AI concierge, <span className={`${accent} font-bold`}>VINCARIO VIN decoding</span> with stolen-vehicle check, 20-point inspection checklist, MFA security, admin dashboard, and bilingual DE/EN support — all live.
     </p>
 
     <p className={`text-[26px] ${accent} font-semibold mt-10`}>
