@@ -29,8 +29,11 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
    - Below average: up to +5% bonus
    - Above average: penalty up to -45%
 
-4. **Condition Factor** — Based on exterior/interior sliders (0-100):
-   - Range: 0.85 to 1.02
+4. **Condition Factor** — Based on a 1–4 grade scale:
+   - Grade 1 (Heavy Wear): score 35 → factor ~0.80
+   - Grade 2 (Normal/Fair): score 60 → factor ~0.89
+   - Grade 3 (Like New/Good): score 82 → factor ~0.96
+   - Grade 4 (New/Excellent): score 96 → factor ~1.01
 
 5. **Damage Cost Deduction** — Replaces flat accident penalty with itemized costs:
    - AI damage detection provides `estimated_repair_cost_eur` per damage (brand-specific)
