@@ -13,6 +13,7 @@
 | [Core Business Logic](./business-logic.md) | Fair value algorithm, matching, negotiation |
 | [Component Library](./components.md) | Key UI components and design system |
 | [Admin Command Center](./admin.md) | RBAC, admin dashboard, platform monitoring |
+| [SEO & Social Sharing](./seo.md) | Meta tags, JSON-LD, Open Graph, sitemap |
 | [Roadmap](./roadmap.md) | Product phases and geographic expansion |
 
 ---
