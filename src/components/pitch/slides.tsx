@@ -3,7 +3,8 @@ import {
   Users, RefreshCw, Tag, Globe, BarChart3, Swords, Database,
   Rocket, Heart, ChevronRight, Zap, Search, Handshake, FileText,
   CreditCard, Truck, Crown, PieChart, Target, ArrowRight, Check,
-  XCircle, Star, Layers, Map, User, Monitor, MessageSquare, CheckCircle
+  XCircle, Star, Layers, Map, User, Monitor, MessageSquare, CheckCircle,
+  ScanSearch, ShieldAlert, ClipboardCheck
 } from "lucide-react";
 
 import damirPhoto from "@/assets/pitch/damir-profile.jpg";
@@ -50,7 +51,7 @@ export const SlideCover = () => (
     </p>
 
     <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      We've built a <span className="text-foreground font-bold">complete end‑to‑end platform</span> — AI fair‑value engine, photo-based damage detection, lifestyle-aware buyer matching, market comparison, structured negotiation, <span className={`${accent} font-bold`}>full transaction pipeline</span> (contract generation, payment, insurance), AI concierge, VIN decoding, MFA security, admin dashboard, and bilingual DE/EN support — all live.
+      We've built a <span className="text-foreground font-bold">complete end‑to‑end platform</span> — AI fair‑value engine, photo-based damage detection, lifestyle-aware buyer matching, market comparison, structured negotiation, <span className={`${accent} font-bold`}>full transaction pipeline</span> (contract generation, payment, insurance), AI concierge, <span className={`${accent} font-bold`}>VINCARIO VIN decoding</span> with stolen-vehicle check, 20-point inspection checklist, MFA security, admin dashboard, and bilingual DE/EN support — all live.
     </p>
 
     <p className={`text-[26px] ${accent} font-semibold mt-10`}>
@@ -143,10 +144,10 @@ export const SlideSolution = () => (
     </p>
     <div className="grid grid-cols-2 gap-8">
       {[
-        { icon: Brain, title: "AI Fair-Value Engine", desc: "Photo analysis + condition scoring + live market comparison — your car's true worth in seconds" },
+        { icon: Brain, title: "AI Fair-Value Engine", desc: "Photo analysis + condition scoring + 20-point inspection + live market comparison — your car's true worth in seconds" },
+        { icon: ScanSearch, title: "VINCARIO VIN Intelligence", desc: "Commercial vehicle database: 4-endpoint decode (info + specs + OEM + stolen check) auto-fills specs, equipment, and blocks stolen vehicles" },
         { icon: Users, title: "Lifestyle-Aware Matching", desc: "Relationship, kids, purpose, current car, budget — 4D scoring algorithm finds the perfect car for every buyer" },
-        { icon: Handshake, title: "Structured Negotiation", desc: "Max 3 rounds of offer/counter — with AI concierge assistance and PDF deal summary" },
-        { icon: FileText, title: "End-to-End Transactions", desc: "Contract generation, payment (wire/card/leasing), insurance, completion — fully digital or manual" },
+        { icon: Handshake, title: "End-to-End Transactions", desc: "Contract generation, payment (wire/card/leasing), insurance, structured negotiation — fully digital or manual" },
       ].map(({ icon: Icon, title, desc }) => (
         <div key={title} className={`${cardBg} flex items-start gap-6`}>
           <Icon className={accent} size={36} />
@@ -172,10 +173,10 @@ export const SlideHowItWorksSeller = () => (
     </p>
     <div className="grid grid-cols-4 gap-6">
       {[
-        { step: "1", icon: Car, title: "Upload Vehicle", desc: "5-step guided form: specs, photos, 4-grade condition scale, equipment checklist, inspection" },
+        { step: "1", icon: ScanSearch, title: "VIN Decode", desc: "Enter VIN → VINCARIO auto-fills make, model, specs, equipment + stolen-vehicle check blocks fraud" },
         { step: "2", icon: Search, title: "AI Photo Scan", desc: "AI analyzes your photos for damage, scratches, dents — brand-specific repair cost estimates" },
-        { step: "3", icon: Brain, title: "Fair Value Engine", desc: "Cross-references your data against thousands of live market listings — returns true market value" },
-        { step: "4", icon: BarChart3, title: "Market Comparison", desc: "Real-time scan of comparable listings — avg price, range, depreciation forecast, market position" },
+        { step: "3", icon: ClipboardCheck, title: "Inspection + Condition", desc: "20-point checklist + 4-grade condition scale — every No/Unknown answer reduces fair value" },
+        { step: "4", icon: Brain, title: "Fair Value Engine", desc: "Multi-factor formula + live market data → true market value with price override option" },
       ].map(({ step, icon: Icon, title, desc }) => (
         <div key={title} className={cardBg}>
           <div className="flex items-center gap-3 mb-4">
@@ -643,9 +644,9 @@ export const SlideMoatRoadmap = () => (
         <h3 className={subheading + " mb-6"}>Roadmap</h3>
         {[
           { phase: "MVP", desc: "Valuation + matching + negotiation ✅" },
-          { phase: "V1", desc: "Transactions, concierge, VIN decode, MFA, i18n, admin ✅" },
-          { phase: "V1.5", desc: "Lifestyle matching, light theme, brand-specific damage costs ✅" },
-          { phase: "V2", desc: "1-4 condition grades, signup buyer prefs, edit & resubmit, KYC ✅" },
+          { phase: "V1", desc: "Transactions, concierge, MFA, i18n, admin ✅" },
+          { phase: "V1.5", desc: "Lifestyle matching, brand-specific damage costs ✅" },
+          { phase: "V2", desc: "VINCARIO VIN decode + stolen check, 20-pt inspection scoring ✅" },
           { phase: "V3", desc: "Dealer network, logistics, fleet tools, lifecycle platform" },
         ].map(({ phase, desc }) => (
           <div key={phase} className="flex items-center gap-4 mb-4">
