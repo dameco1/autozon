@@ -111,6 +111,22 @@ const FairValueResult: React.FC = () => {
       // Update the car record with the blended fair value
       await supabase.from("cars").update({ fair_value_price: blended, market_blended: true } as any).eq("id", carData.id);
       setCar((prev) => prev ? { ...prev, fair_value_price: blended } : prev);
+
+      // Record appraisal feedback for future calibration
+      await supabase.from("appraisal_feedback" as any).insert({
+        car_id: carData.id,
+        make: carData.make,
+        model: carData.model,
+        year: carData.year,
+        body_type: carData.body_type,
+        fuel_type: carData.fuel_type,
+        mileage: carData.mileage,
+        formula_value: formulaVal,
+        market_avg_value: marketAvg,
+        market_max_value: md.max_price ?? null,
+        blended_value: blended,
+        deviation_pct: Math.round(deviation * 100),
+      } as any);
     } catch (e) {
       console.error("Market comparison error:", e);
       setMarketError(true);
