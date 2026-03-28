@@ -34,6 +34,7 @@ const CarUpload: React.FC = () => {
   const [formData, setFormData] = useState<CarFormData>(defaultCarFormData);
   const [damageReport, setDamageReport] = useState<DamageReport | null>(null);
   const [analyzingDamage, setAnalyzingDamage] = useState(false);
+  const [vinSuggestedEquipment, setVinSuggestedEquipment] = useState<string[]>([]);
 
   const updateForm = useCallback((updates: Partial<CarFormData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
@@ -426,7 +427,7 @@ const CarUpload: React.FC = () => {
                       onChange={(c) => updateForm({ inspectionChecklist: c })}
                     />
                   )}
-                  {step === 5 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} />}
+                  {step === 5 && <StepEquipment equipment={formData.equipment} onToggle={toggleEquipment} vinSuggestedEquipment={vinSuggestedEquipment} />}
                   {step === 6 && <StepCondition data={formData} onChange={updateForm} />}
                 </motion.div>
               </AnimatePresence>
