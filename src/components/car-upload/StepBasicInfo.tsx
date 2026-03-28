@@ -5,26 +5,29 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { COLORS } from "./constants";
 import { useCarMakes, useCarModels, useCarVariants } from "@/hooks/useCarModels";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ScanSearch, Loader2, CheckCircle2 } from "lucide-react";
+import { ScanSearch, Loader2, CheckCircle2, ShieldAlert } from "lucide-react";
 import type { CarFormData } from "./types";
 
 interface Props {
   data: CarFormData;
   onChange: (updates: Partial<CarFormData>) => void;
   onVinEquipmentSuggested?: (equipment: string[]) => void;
+  onStolenDetected?: (stolen: boolean) => void;
 }
 
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 1999 }, (_, i) => currentYear - i);
 
-const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested }) => {
+const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested, onStolenDetected }) => {
   const { t } = useLanguage();
   const [vinDecoding, setVinDecoding] = useState(false);
   const [vinDecoded, setVinDecoded] = useState(false);
+  const [stolenWarning, setStolenWarning] = useState<{ stolen: boolean; details?: string | null }>({ stolen: false });
 
   const { data: makes = [], isLoading: makesLoading } = useCarMakes();
   const { data: models = [], isLoading: modelsLoading } = useCarModels(data.make);
