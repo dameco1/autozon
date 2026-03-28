@@ -86,7 +86,7 @@
 | `car_views` | Per view | View tracking for analytics |
 | `notifications` | Per event | In-app notification system (with trigger on offer status changes) |
 | `chat_messages` | Per chat | Concierge AI conversation history |
-| `user_preferences` | 1 per user | Buyer onboarding preferences (budget, body types, fuel, transmission, commute, parking, family size, insurance tolerance) |
+| `user_preferences` | 1 per user | Buyer onboarding preferences (budget, body types, fuel, transmission, commute, parking, family size, insurance tolerance, **preferred colors, timing**) — also populated optionally at signup |
 | `acquisition_quotes` | Per quote | Financing/leasing quote from partners |
 | `financing_partners` | Seed | Bank/leasing partner profiles |
 | `user_roles` | Per role assignment | Role-based access control (admin, moderator, user) — separate from profiles for security |

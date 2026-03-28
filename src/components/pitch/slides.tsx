@@ -172,7 +172,7 @@ export const SlideHowItWorksSeller = () => (
     </p>
     <div className="grid grid-cols-4 gap-6">
       {[
-        { step: "1", icon: Car, title: "Upload Vehicle", desc: "5-step guided form: specs, photos, condition sliders, equipment checklist" },
+        { step: "1", icon: Car, title: "Upload Vehicle", desc: "5-step guided form: specs, photos, 4-grade condition scale, equipment checklist, inspection" },
         { step: "2", icon: Search, title: "AI Photo Scan", desc: "AI analyzes your photos for damage, scratches, dents — brand-specific repair cost estimates" },
         { step: "3", icon: Brain, title: "Fair Value Engine", desc: "Cross-references your data against thousands of live market listings — returns true market value" },
         { step: "4", icon: BarChart3, title: "Market Comparison", desc: "Real-time scan of comparable listings — avg price, range, depreciation forecast, market position" },
@@ -202,7 +202,7 @@ export const SlideHowItWorksBuyer = () => (
         <h3 className={subheading + " mb-6"}>Lifestyle-Aware Discovery</h3>
         <div className="space-y-4">
           {[
-            "Registration collects lifestyle: relationship, kids, car purpose, current car, budget",
+            "Registration collects lifestyle + optional buyer preferences: brands, body type, fuel, budget, features, colors, timing",
             "10-step onboarding: body type, fuel, brand, mileage, power, commute, parking, insurance",
             "4D algorithm scores every car: 30% lifestyle + 30% financial + 25% preference + 15% condition",
             "Round 1: 10 best matches → swipe like/dislike → Round 2: 5 → 3 → final 2 finalists",
@@ -645,8 +645,8 @@ export const SlideMoatRoadmap = () => (
           { phase: "MVP", desc: "Valuation + matching + negotiation ✅" },
           { phase: "V1", desc: "Transactions, concierge, VIN decode, MFA, i18n, admin ✅" },
           { phase: "V1.5", desc: "Lifestyle matching, light theme, brand-specific damage costs ✅" },
-          { phase: "V2", desc: "Seller KYC, dealer network, logistics, fleet tools" },
-          { phase: "V3", desc: "Lifecycle platform + data intelligence for OEMs & insurers" },
+          { phase: "V2", desc: "1-4 condition grades, signup buyer prefs, edit & resubmit, KYC ✅" },
+          { phase: "V3", desc: "Dealer network, logistics, fleet tools, lifecycle platform" },
         ].map(({ phase, desc }) => (
           <div key={phase} className="flex items-center gap-4 mb-4">
             <span className={`text-[24px] ${accent} font-bold w-16`}>{phase}</span>
