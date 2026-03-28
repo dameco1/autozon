@@ -1,5 +1,5 @@
 import type { CarFormData } from "./types";
-
+import { INSPECTION_CATEGORIES } from "./inspectionChecklist";
 interface FairValueResult {
   fairValue: number;
   condScore: number;
