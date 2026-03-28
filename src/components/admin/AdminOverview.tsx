@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Car, Handshake, CreditCard, TrendingUp, DollarSign } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import AdminAppraisalAccuracy from "./AdminAppraisalAccuracy";
 
 const StatCard = ({ title, value, icon: Icon, sub }: { title: string; value: string | number; icon: React.ElementType; sub?: string }) => (
   <Card className="bg-card border-border">
@@ -121,6 +122,9 @@ const AdminOverview: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Appraisal Accuracy */}
+      <AdminAppraisalAccuracy />
     </div>
   );
 };
