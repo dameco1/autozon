@@ -459,7 +459,7 @@ const CarUpload: React.FC = () => {
                   <Button
                     className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
                     onClick={handleNext}
-                    disabled={step === 3 && analyzingDamage}
+                    disabled={(step === 3 && analyzingDamage) || (step === 1 && vinStolenBlocked)}
                   >
                     {t.carUpload.next} <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
