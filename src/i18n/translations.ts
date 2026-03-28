@@ -286,7 +286,18 @@ export const translations = {
       description: "Additional description",
       generateDescription: "Generate with AI",
       generatingDescription: "Generating...",
-      conditionScale: { poor: "Poor", fair: "Fair", good: "Good", excellent: "Excellent" },
+      conditionScale: {
+        poor: "Heavy Wear",
+        fair: "Normal Used",
+        good: "Like New",
+        excellent: "New / Excellent",
+      },
+      conditionGradeHint: {
+        poor: "Visible scratches, dents, stains, or significant wear",
+        fair: "Normal signs of use, minor cosmetic imperfections",
+        good: "Minimal wear, looks almost new",
+        excellent: "Factory-fresh, no signs of use whatsoever",
+      },
       documentation: {
         title: "Vehicle Documentation & History",
         smokerCar: "Smoker car?",
