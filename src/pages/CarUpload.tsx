@@ -35,6 +35,7 @@ const CarUpload: React.FC = () => {
   const [damageReport, setDamageReport] = useState<DamageReport | null>(null);
   const [analyzingDamage, setAnalyzingDamage] = useState(false);
   const [vinSuggestedEquipment, setVinSuggestedEquipment] = useState<string[]>([]);
+  const [vinStolenBlocked, setVinStolenBlocked] = useState(false);
 
   const updateForm = useCallback((updates: Partial<CarFormData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
@@ -417,7 +418,7 @@ const CarUpload: React.FC = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} onVinEquipmentSuggested={setVinSuggestedEquipment} />}
+                  {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} onVinEquipmentSuggested={setVinSuggestedEquipment} onStolenDetected={setVinStolenBlocked} />}
                   {step === 2 && (
                     <StepPhotos
                       photoSlots={formData.photoSlots}
@@ -458,7 +459,7 @@ const CarUpload: React.FC = () => {
                   <Button
                     className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
                     onClick={handleNext}
-                    disabled={step === 3 && analyzingDamage}
+                    disabled={(step === 3 && analyzingDamage) || (step === 1 && vinStolenBlocked)}
                   >
                     {t.carUpload.next} <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

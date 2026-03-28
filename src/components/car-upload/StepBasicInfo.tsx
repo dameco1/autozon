@@ -5,26 +5,29 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { COLORS } from "./constants";
 import { useCarMakes, useCarModels, useCarVariants } from "@/hooks/useCarModels";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ScanSearch, Loader2, CheckCircle2 } from "lucide-react";
+import { ScanSearch, Loader2, CheckCircle2, ShieldAlert } from "lucide-react";
 import type { CarFormData } from "./types";
 
 interface Props {
   data: CarFormData;
   onChange: (updates: Partial<CarFormData>) => void;
   onVinEquipmentSuggested?: (equipment: string[]) => void;
+  onStolenDetected?: (stolen: boolean) => void;
 }
 
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 1999 }, (_, i) => currentYear - i);
 
-const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested }) => {
+const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested, onStolenDetected }) => {
   const { t } = useLanguage();
   const [vinDecoding, setVinDecoding] = useState(false);
   const [vinDecoded, setVinDecoded] = useState(false);
+  const [stolenWarning, setStolenWarning] = useState<{ stolen: boolean; details?: string | null }>({ stolen: false });
 
   const { data: makes = [], isLoading: makesLoading } = useCarMakes();
   const { data: models = [], isLoading: modelsLoading } = useCarModels(data.make);
@@ -90,6 +93,20 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
       onChange(updates);
       setVinDecoded(true);
 
+      // Handle stolen check
+      if (result.stolen) {
+        setStolenWarning({ stolen: true, details: result.stolen_details });
+        onStolenDetected?.(true);
+        toast.error("⚠️ Stolen Vehicle Alert", {
+          description: result.stolen_details || "This VIN has been flagged in a stolen vehicle database.",
+          duration: 10000,
+        });
+        return; // Don't show success toast
+      } else {
+        setStolenWarning({ stolen: false });
+        onStolenDetected?.(false);
+      }
+
       const confidenceMsg = result.confidence === "high"
         ? "High confidence decode"
         : result.confidence === "medium"
@@ -142,6 +159,18 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
           Enter your 17-character VIN to auto-fill make, model, year, specs, and suggested equipment
         </p>
       </div>
+
+      {/* Stolen vehicle warning */}
+      {stolenWarning.stolen && (
+        <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+          <ShieldAlert className="h-5 w-5" />
+          <AlertTitle className="font-bold">Stolen Vehicle Alert</AlertTitle>
+          <AlertDescription>
+            {stolenWarning.details || "This VIN has been flagged in a stolen vehicle database."}
+            <span className="block mt-1 text-xs font-medium">This vehicle cannot be listed on Autozon. If you believe this is an error, please contact support.</span>
+          </AlertDescription>
+        </Alert>
+      )}
 
       {/* Make → Model → Variant cascade */}
       <div className="grid grid-cols-3 gap-4">

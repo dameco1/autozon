@@ -147,7 +147,40 @@ serve(async (req) => {
       console.warn("VINCARIO OEM request error:", oemErr);
     }
 
-    // --- 4. Merge & normalize into our schema ---
+    // --- 4. Stolen check ---
+    let stolenCheck: { stolen: boolean; details?: string } = { stolen: false };
+    try {
+      const stolenCs = await controlSum(upperVin, "stolen-check", VINCARIO_API_KEY, VINCARIO_SECRET_KEY);
+      const stolenUrl = `https://api.vincario.com/3.2/${VINCARIO_API_KEY}/${stolenCs}/stolen-check/${upperVin}.json`;
+
+      console.log("VINCARIO stolen-check URL:", stolenUrl);
+      const stolenRes = await fetch(stolenUrl);
+      const stolenText = await stolenRes.text();
+
+      if (stolenRes.ok) {
+        try {
+          const stolenData = JSON.parse(stolenText);
+          // VINCARIO returns { stolen: true/false } or a list of records
+          const records = stolenData?.list || stolenData?.records || [];
+          if (stolenData?.stolen === true || (Array.isArray(records) && records.length > 0)) {
+            stolenCheck = {
+              stolen: true,
+              details: Array.isArray(records) && records.length > 0
+                ? records.map((r: Record<string, unknown>) => `${r.status || "Stolen"} — ${r.country || "Unknown country"}`).join("; ")
+                : "This VIN has been flagged in a stolen vehicle database.",
+            };
+          }
+        } catch {
+          console.warn("VINCARIO stolen-check parse error");
+        }
+      } else {
+        console.warn("VINCARIO stolen-check failed:", stolenRes.status, stolenText.substring(0, 300));
+      }
+    } catch (stolenErr) {
+      console.warn("VINCARIO stolen-check request error:", stolenErr);
+    }
+
+    // --- 5. Merge & normalize into our schema ---
     // VINCARIO returns data as array of {label, value} or flat object depending on version
     // Handle both formats — merge order: info (base) → decode (override) → OEM (fill gaps)
     let merged: Record<string, unknown> = {};
@@ -235,6 +268,8 @@ serve(async (req) => {
       confidence: (make && model && year) ? "high" : "medium",
       notes: `Data sourced from VINCARIO (${sources.join(" + ")}).`,
       source: "vincario",
+      stolen: stolenCheck.stolen,
+      stolen_details: stolenCheck.details || null,
       // Additional specs for fair value enrichment
       engine_displacement_ccm: engineDisplacementCcm || undefined,
       max_speed_kmh: maxSpeedKmh || undefined,
