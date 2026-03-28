@@ -57,7 +57,7 @@ const CarUpload: React.FC = () => {
 
   useEffect(() => {
     if (!editId) return;
-    supabase.from("cars").select("id, make, model, year, vin, mileage, fuel_type, transmission, body_type, color, power_hp, price, equipment, condition_exterior, condition_interior, accident_history, accident_details, description, photos, detected_damages").eq("id", editId).maybeSingle().then(({ data }) => {
+    supabase.from("cars").select("id, make, model, year, vin, mileage, fuel_type, transmission, body_type, color, power_hp, price, equipment, condition_exterior, condition_interior, accident_history, accident_details, description, photos, detected_damages, smoker_car, service_book_updated, original_docs_available, maintenance_receipts, second_wheel_set, has_roof_rack, has_roof_box, inspection_checklist").eq("id", editId).maybeSingle().then(({ data }) => {
       if (!data) return;
       // Map saved photos back into named slots, remainder goes to extras
       const savedPhotos: string[] = (data as any).photos ?? [];
@@ -71,7 +71,21 @@ const CarUpload: React.FC = () => {
           remainingPhotos.push(url);
         }
       });
-      setFormData({
+
+      // Restore detected damages
+      const savedDamages = (data as any).detected_damages as any[] | null;
+      if (savedDamages && savedDamages.length > 0) {
+        const totalCost = savedDamages.reduce((sum: number, d: any) => sum + (d.estimated_repair_cost_eur ?? 0), 0);
+        setDamageReport({
+          damages: savedDamages.map((d: any) => ({ ...d, confirmed: true })),
+          overallCondition: "fair",
+          summary: "Restored from previous submission",
+        });
+        setFormData(prev => ({ ...prev, damageScanned: true, totalDamageCostEur: totalCost }));
+      }
+
+      setFormData((prev) => ({
+        ...prev,
         make: data.make,
         model: data.model,
         variant: (data as any).variant ?? "",
@@ -92,8 +106,6 @@ const CarUpload: React.FC = () => {
         description: data.description ?? "",
         photos: remainingPhotos,
         photoSlots: restoredSlots,
-        damageScanned: false,
-        totalDamageCostEur: 0,
         smokerCar: (data as any).smoker_car ?? false,
         serviceBookUpdated: (data as any).service_book_updated ?? false,
         originalDocsAvailable: (data as any).original_docs_available ?? false,
@@ -102,7 +114,7 @@ const CarUpload: React.FC = () => {
         hasRoofRack: (data as any).has_roof_rack ?? false,
         hasRoofBox: (data as any).has_roof_box ?? false,
         inspectionChecklist: (data as any).inspection_checklist ?? {},
-      });
+      }));
     });
   }, [editId]);
 
