@@ -15,12 +15,13 @@ import type { CarFormData } from "./types";
 interface Props {
   data: CarFormData;
   onChange: (updates: Partial<CarFormData>) => void;
+  onVinEquipmentSuggested?: (equipment: string[]) => void;
 }
 
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 1999 }, (_, i) => currentYear - i);
 
-const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
+const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested }) => {
   const { t } = useLanguage();
   const [vinDecoding, setVinDecoding] = useState(false);
   const [vinDecoded, setVinDecoded] = useState(false);
@@ -83,6 +84,7 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange }) => {
       if (result.suggested_equipment?.length > 0) {
         const merged = [...new Set([...data.equipment, ...result.suggested_equipment])];
         updates.equipment = merged;
+        onVinEquipmentSuggested?.(result.suggested_equipment);
       }
 
       onChange(updates);
