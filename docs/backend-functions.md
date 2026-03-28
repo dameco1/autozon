@@ -68,12 +68,13 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Result**: 2,700+ variants across 48 European makes with original MSRP data
 
 ### 10. `vin-decode`
-- **Purpose**: AI-powered VIN decoder for auto-filling car details
-- **Model**: Lovable AI (Gemini 2.5 Flash)
+- **Purpose**: VIN decoder using VINCARIO commercial vehicle database for accurate auto-filling
+- **Integration**: VINCARIO API (info + decode endpoints)
 - **Auth**: Required (JWT)
 - **Input**: `{ vin: "WBAPH5C55BA..." }`
-- **Output**: `{ make, model, year, body_type, fuel_type, transmission, power_hp, suggested_equipment[], confidence, notes }`
+- **Output**: `{ make, model, year, body_type, fuel_type, transmission, power_hp, suggested_equipment[], confidence, notes, source }`
 - **Used in**: Car Upload Step 1 (Basic Info) — "Decode VIN" button
+- **Data source**: Manufacturer-backed EU vehicle database (replaces previous AI-guessing approach)
 
 ### 11. `verify-docs-password`
 - **Purpose**: Password-protects the documentation hub
