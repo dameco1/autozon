@@ -35,6 +35,7 @@ const CarUpload: React.FC = () => {
   const [damageReport, setDamageReport] = useState<DamageReport | null>(null);
   const [analyzingDamage, setAnalyzingDamage] = useState(false);
   const [vinSuggestedEquipment, setVinSuggestedEquipment] = useState<string[]>([]);
+  const [vinStolenBlocked, setVinStolenBlocked] = useState(false);
 
   const updateForm = useCallback((updates: Partial<CarFormData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
