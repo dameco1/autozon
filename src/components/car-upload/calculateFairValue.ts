@@ -233,6 +233,7 @@ export function calculateFairValue(data: CarFormData, modelMsrpEur?: number | nu
     * regionalDemandMultiplier
     * transparencyBonus
     * smokerFactor
+    * inspectionFactor
   );
 
   // Subtract itemized damage costs + accident stigma as EUR deduction
