@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen,
   Loader2, AlertTriangle, Rocket, Users, Building2, BarChart3, Scale,
-  Presentation, Globe, Landmark, FolderOpen, CheckCircle2, Clock
+  Presentation, Globe, Landmark, FolderOpen, CheckCircle2, Clock, Search
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
@@ -53,6 +53,7 @@ const sections: Section[] = [
       { title: "Core Business Logic", desc: "Fair value algorithm, matching engine, negotiation", icon: Brain, file: "business-logic.md", status: "ready" },
       { title: "Component Library", desc: "UI components, design system, and i18n", icon: Palette, file: "components.md", status: "ready" },
       { title: "Product Roadmap", desc: "Phase planning, revenue model, geographic expansion", icon: BookOpen, file: "roadmap.md", status: "ready" },
+      { title: "SEO & Social Sharing", desc: "Meta tags, JSON-LD, Open Graph, sitemap, robots.txt", icon: Search, file: "seo.md", status: "ready" },
     ],
   },
   {
