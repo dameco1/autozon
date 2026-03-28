@@ -3,16 +3,19 @@ import { motion } from "framer-motion";
 import { Users, CheckCircle2, ArrowRight, Download, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
+import ValuationFeedback from "./ValuationFeedback";
 
 interface Props {
   car: { make: string; model: string; year: number };
   agreedPrice: number;
   sellerCountry: string;
+  carId?: string;
+  fairValuePrice?: number | null;
   onDashboard: () => void;
   onDownload: () => void;
 }
 
-const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, onDashboard, onDownload }) => {
+const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, carId, fairValuePrice, onDashboard, onDownload }) => {
   const { t } = useLanguage();
   const isAustria = sellerCountry?.toLowerCase().includes("austria") || sellerCountry?.toLowerCase().includes("österreich");
 
@@ -64,6 +67,13 @@ const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, 
           {isAustria ? "ÖAMTC Kaufvertrag" : "ADAC Kaufvertrag"} <ExternalLink className="h-3.5 w-3.5" />
         </a>
       </div>
+
+      {/* Valuation feedback prompt */}
+      {carId && (
+        <div className="mb-6">
+          <ValuationFeedback carId={carId} agreedPrice={agreedPrice} fairValuePrice={fairValuePrice ?? null} />
+        </div>
+      )}
 
       <div className="flex flex-col sm:flex-row gap-3">
         <Button

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Download, ArrowRight, FileText, CreditCard, Shield, PartyPopper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
+import ValuationFeedback from "./ValuationFeedback";
 
 interface Props {
   car: { make: string; model: string; year: number };
@@ -11,12 +12,14 @@ interface Props {
   contractType: string | null;
   paymentMethod: string | null;
   insuranceTier: string | null;
+  carId?: string;
+  fairValuePrice?: number | null;
   onDashboard: () => void;
   onDownload: () => void;
 }
 
 const StepComplete: React.FC<Props> = ({
-  car, agreedPrice, completionMethod, contractType, paymentMethod, insuranceTier, onDashboard, onDownload,
+  car, agreedPrice, completionMethod, contractType, paymentMethod, insuranceTier, carId, fairValuePrice, onDashboard, onDownload,
 }) => {
   const { t } = useLanguage();
 
@@ -78,6 +81,13 @@ const StepComplete: React.FC<Props> = ({
           </div>
         </div>
       </div>
+
+      {/* Valuation feedback prompt */}
+      {carId && (
+        <div className="mb-6">
+          <ValuationFeedback carId={carId} agreedPrice={agreedPrice} fairValuePrice={fairValuePrice ?? null} />
+        </div>
+      )}
 
       {/* Next steps */}
       <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 text-left mb-6">
