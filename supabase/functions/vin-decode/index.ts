@@ -6,7 +6,10 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-/** VINCARIO control-sum = first 10 chars of SHA-1( VIN|id|apiKey|secretKey ) */
+/**
+ * VINCARIO control-sum = first 10 chars of SHA-1( VIN|id|apiKey|secretKey )
+ * VIN must be UPPER CASE. id = "info" | "decode" | "stolen-check" etc.
+ */
 async function controlSum(vin: string, id: string, apiKey: string, secretKey: string): Promise<string> {
   const raw = `${vin.toUpperCase()}|${id}|${apiKey}|${secretKey}`;
   const buf = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(raw));
@@ -67,15 +70,18 @@ serve(async (req) => {
       throw new Error("VINCARIO credentials are not configured");
     }
 
-    // --- 1. Call VINCARIO "info" endpoint (free, returns basic decoded attributes) ---
-    const infoId = "info";
-    const infoCs = await controlSum(vin, infoId, VINCARIO_API_KEY, VINCARIO_SECRET_KEY);
-    const infoUrl = `https://api.vincario.com/3.2/${infoId}/${VINCARIO_API_KEY}/${infoCs}/${vin.toUpperCase()}`;
+    const upperVin = vin.toUpperCase();
 
+    // --- 1. Call VINCARIO "decode/info" endpoint (free, basic decoded attributes) ---
+    const infoCs = await controlSum(upperVin, "info", VINCARIO_API_KEY, VINCARIO_SECRET_KEY);
+    const infoUrl = `https://api.vincario.com/3.2/${VINCARIO_API_KEY}/${infoCs}/decode/info/${upperVin}.json`;
+
+    console.log("VINCARIO info URL:", infoUrl);
     const infoRes = await fetch(infoUrl);
+    const infoText = await infoRes.text();
+
     if (!infoRes.ok) {
-      const errText = await infoRes.text();
-      console.error("VINCARIO info error:", infoRes.status, errText);
+      console.error("VINCARIO info error:", infoRes.status, infoText.substring(0, 500));
       if (infoRes.status === 403 || infoRes.status === 401) {
         return new Response(
           JSON.stringify({ error: "VINCARIO authentication failed. Check API credentials." }),
@@ -88,33 +94,76 @@ serve(async (req) => {
       );
     }
 
-    const infoData = await infoRes.json();
+    let infoData: Record<string, unknown>;
+    try {
+      infoData = JSON.parse(infoText);
+    } catch {
+      console.error("VINCARIO info parse error:", infoText.substring(0, 500));
+      return new Response(
+        JSON.stringify({ error: "Invalid response from VIN database" }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-    // --- 2. Call VINCARIO "decode" endpoint (paid, returns full specs + equipment) ---
-    const decodeId = "decode";
-    const decodeCs = await controlSum(vin, decodeId, VINCARIO_API_KEY, VINCARIO_SECRET_KEY);
-    const decodeUrl = `https://api.vincario.com/3.2/${decodeId}/${VINCARIO_API_KEY}/${decodeCs}/${vin.toUpperCase()}`;
+    // --- 2. Call VINCARIO "decode" endpoint (paid, full specs + equipment) ---
+    const decodeCs = await controlSum(upperVin, "decode", VINCARIO_API_KEY, VINCARIO_SECRET_KEY);
+    const decodeUrl = `https://api.vincario.com/3.2/${VINCARIO_API_KEY}/${decodeCs}/decode/${upperVin}.json`;
 
+    console.log("VINCARIO decode URL:", decodeUrl);
     const decodeRes = await fetch(decodeUrl);
+    const decodeText = await decodeRes.text();
+
     let decodeData: Record<string, unknown> | null = null;
     if (decodeRes.ok) {
-      decodeData = await decodeRes.json();
+      try {
+        decodeData = JSON.parse(decodeText);
+      } catch {
+        console.warn("VINCARIO decode parse error, using info-only");
+      }
     } else {
-      // Consume body to prevent leak, continue with info-only data
-      await decodeRes.text();
-      console.warn("VINCARIO decode call failed, using info-only data:", decodeRes.status);
+      console.warn("VINCARIO decode call failed:", decodeRes.status, decodeText.substring(0, 300));
     }
 
     // --- 3. Merge & normalize into our schema ---
-    const merged = { ...infoData, ...(decodeData || {}) };
+    // VINCARIO returns data as array of {label, value} or flat object depending on version
+    // Handle both formats
+    let merged: Record<string, unknown> = {};
 
-    const make = (merged.Make || merged.make || "") as string;
-    const model = (merged.Model || merged.model || "") as string;
-    const year = Number(merged["Model Year"] || merged.model_year || merged["Production Year"] || merged.year || 0);
-    const bodyType = normalizeBodyType((merged["Body Type"] || merged.body_type || merged["Body Style"] || "") as string);
-    const fuelType = normalizeFuelType((merged["Fuel Type"] || merged.fuel_type || merged["Fuel Type - Primary"] || "") as string);
-    const transmission = normalizeTransmission((merged["Transmission"] || merged.transmission || "") as string);
-    
+    // If infoData has a "decode" array, flatten it
+    const infoArr = (infoData as Record<string, unknown>)["decode"];
+    if (Array.isArray(infoArr)) {
+      for (const item of infoArr) {
+        if (item && typeof item === "object" && "label" in item && "value" in item) {
+          merged[(item as Record<string, unknown>).label as string] = (item as Record<string, unknown>).value;
+        }
+      }
+    } else {
+      merged = { ...infoData };
+    }
+
+    // Overlay decode data
+    if (decodeData) {
+      const decodeArr = (decodeData as Record<string, unknown>)["decode"];
+      if (Array.isArray(decodeArr)) {
+        for (const item of decodeArr) {
+          if (item && typeof item === "object" && "label" in item && "value" in item) {
+            merged[(item as Record<string, unknown>).label as string] = (item as Record<string, unknown>).value;
+          }
+        }
+      } else {
+        merged = { ...merged, ...decodeData };
+      }
+    }
+
+    console.log("VINCARIO merged keys:", Object.keys(merged).join(", "));
+
+    const make = String(merged["Make"] || merged["make"] || "");
+    const model = String(merged["Model"] || merged["model"] || "");
+    const year = Number(merged["Model Year"] || merged["model_year"] || merged["Production Year"] || merged["year"] || 0);
+    const bodyType = normalizeBodyType(String(merged["Body"] || merged["Body Type"] || merged["body_type"] || merged["Body Style"] || ""));
+    const fuelType = normalizeFuelType(String(merged["Fuel Type - Primary"] || merged["Fuel Type"] || merged["fuel_type"] || ""));
+    const transmission = normalizeTransmission(String(merged["Transmission"] || merged["transmission"] || ""));
+
     // Power: try multiple fields
     let powerHp = 0;
     const powerKw = Number(merged["Engine Power (kW)"] || merged["Power (kW)"] || 0);
@@ -127,14 +176,13 @@ serve(async (req) => {
 
     // Equipment: extract from decode data
     const suggestedEquipment: string[] = [];
-    if (decodeData) {
-      // VINCARIO returns equipment as an array or object
-      const equip = decodeData["Equipment"] || decodeData["equipment"] || decodeData["Standard Equipment"] || [];
-      if (Array.isArray(equip)) {
-        suggestedEquipment.push(...equip.map((e: unknown) => typeof e === "string" ? e : String(e)));
-      } else if (typeof equip === "object" && equip !== null) {
-        suggestedEquipment.push(...Object.values(equip).map((e) => String(e)));
-      }
+    const equip = merged["Equipment"] || merged["equipment"] || merged["Standard Equipment"] || [];
+    if (Array.isArray(equip)) {
+      suggestedEquipment.push(...equip.map((e: unknown) => typeof e === "string" ? e : String(e)));
+    } else if (typeof equip === "string" && equip.length > 0) {
+      suggestedEquipment.push(...equip.split(",").map((s: string) => s.trim()).filter(Boolean));
+    } else if (typeof equip === "object" && equip !== null) {
+      suggestedEquipment.push(...Object.values(equip as Record<string, unknown>).map((e) => String(e)));
     }
 
     const result = {
