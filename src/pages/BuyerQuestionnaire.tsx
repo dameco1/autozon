@@ -6,7 +6,7 @@ import { useCarMakes } from "@/hooks/useCarModels";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
-import { Car, ArrowRight, ArrowLeft, LayoutDashboard, Sparkles } from "lucide-react";
+import { Car, ArrowRight, ArrowLeft, LayoutDashboard, Sparkles, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
@@ -25,6 +25,7 @@ const BuyerQuestionnaire: React.FC = () => {
   const [step, setStep] = useState(1);
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [pickingForMe, setPickingForMe] = useState(false);
 
   // Answers
   const [brands, setBrands] = useState<string[]>([]);
@@ -46,6 +47,67 @@ const BuyerQuestionnaire: React.FC = () => {
       else setUserId(session.user.id);
     });
   }, [navigate]);
+
+  const handlePickForMe = async () => {
+    // Check auth
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast.info("Please create an account first so we can match cars to your profile.");
+      navigate("/signup");
+      return;
+    }
+
+    setPickingForMe(true);
+
+    // Fetch user profile data
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("relationship_status, has_kids, num_kids, car_purpose, budget_min, budget_max, current_car")
+      .eq("user_id", session.user.id)
+      .maybeSingle();
+
+    // Check if profile has meaningful lifestyle data
+    const hasProfileData = profile && (
+      profile.relationship_status ||
+      profile.car_purpose ||
+      profile.budget_min != null ||
+      profile.budget_max != null
+    );
+
+    if (!hasProfileData) {
+      setPickingForMe(false);
+      toast.info("We need your lifestyle data to pick cars for you. Please complete your profile during registration.", {
+        duration: 5000,
+      });
+      navigate("/signup");
+      return;
+    }
+
+    // Save preferences from profile and go straight to car selection
+    const { error } = await supabase
+      .from("user_preferences")
+      .upsert(
+        {
+          user_id: session.user.id,
+          user_intent: "buying",
+          min_budget: profile.budget_min ?? 0,
+          max_budget: profile.budget_max ?? 100000,
+          onboarding_completed: true,
+          timing_preference: "immediately",
+        } as any,
+        { onConflict: "user_id" }
+      );
+
+    setPickingForMe(false);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    toast.success("We've matched cars based on your profile!");
+    navigate("/car-selection");
+  };
 
   const toggleArray = (arr: string[], item: string, setter: (v: string[]) => void) => {
     setter(arr.includes(item) ? arr.filter((i) => i !== item) : [...arr, item]);
@@ -125,13 +187,14 @@ const BuyerQuestionnaire: React.FC = () => {
           <div>
             <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q1}</h2>
             <button
-              onClick={() => { setBrands([]); setStep(2); }}
+              onClick={handlePickForMe}
+              disabled={pickingForMe}
               className={`w-full mb-4 flex items-center justify-center gap-2 px-6 py-4 rounded-xl border-2 border-dashed transition-all ${
                 brands.length === 0 ? "border-primary bg-primary/5 text-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-primary"
-              }`}
+              } disabled:opacity-50`}
             >
-              <Sparkles className="h-4 w-4" />
-              <span className="font-semibold text-sm">{t.buyerQ.pickForMe}</span>
+              {pickingForMe ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+              <span className="font-semibold text-sm">{pickingForMe ? "Matching..." : t.buyerQ.pickForMe}</span>
             </button>
             {renderMultiSelect(dbMakes || [], brands, setBrands, 3)}
           </div>
