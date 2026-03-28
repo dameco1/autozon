@@ -184,27 +184,25 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     });
   }
 
-  // 3. EXTERIOR CONDITION (recentered: avg 75 = ~1.0)
-  // Cross-reference with AI damage scan to avoid contradictory messaging
-  const condExt = car.condition_exterior ?? 80;
+  // 3. EXTERIOR CONDITION — 1-4 grade scale mapped to 35/60/82/96
+  const condExt = car.condition_exterior ?? 60;
   const damages = car.detected_damages ?? [];
   const aiFoundNoDamages = Array.isArray(damages) && damages.length === 0;
   const condExtFactor = 0.70 + (condExt / 100) * 0.32;
   const extEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condExtFactor - 1) * 0.5);
 
-  // If AI scan passed clean but user rated low, nudge them to re-evaluate
+  const gradeLabel = (val: number) => {
+    if (val >= 90) return a.exterior.explainExcellent;
+    if (val >= 70) return a.exterior.explainGood;
+    if (val >= 50) return a.exterior.explainFair;
+    return a.exterior.explainPoor;
+  };
+
   let extExplanation: string;
-  if (condExt >= 90) {
-    extExplanation = a.exterior.explainExcellent;
-  } else if (condExt >= 70) {
-    extExplanation = a.exterior.explainGood;
-  } else if (aiFoundNoDamages && condExt < 70) {
-    // AI found no damage but user self-rated low — highlight mismatch
-    extExplanation = a.exterior.explainAiMismatch ?? `You rated the exterior at ${condExt}/100, but the AI damage scan found no visible defects. Consider re-evaluating your rating to better reflect the car's actual condition.`;
-  } else if (condExt >= 50) {
-    extExplanation = a.exterior.explainFair;
+  if (aiFoundNoDamages && condExt < 70) {
+    extExplanation = a.exterior.explainAiMismatch ?? `You rated the exterior at grade ${condExt >= 60 ? 2 : 1}, but the AI damage scan found no visible defects. Consider re-evaluating.`;
   } else {
-    extExplanation = a.exterior.explainPoor;
+    extExplanation = gradeLabel(condExt);
   }
 
   factors.push({
@@ -216,29 +214,29 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     barValue: condExt,
     type: condExt >= 70 ? "booster" : "reducer",
     icon: <Car className="h-5 w-5" />,
-    actionable: condExt < 85,
+    actionable: condExt < 82,
     actionLabel: a.exterior.action,
     actionStep: 3,
-    formulaTooltip: `Score: ${condExt}/100 · Factor: 0.70 + (${condExt}/100)×0.32 = ${condExtFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
+    formulaTooltip: `Score: ${condExt}/100 · Factor: ${condExtFactor.toFixed(3)}${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
   });
 
-  // 4. INTERIOR CONDITION (recentered: avg 75 = ~1.0)
-  // Cross-reference with AI damage scan (interior damages would show in scan too)
-  const condInt = car.condition_interior ?? 80;
+  // 4. INTERIOR CONDITION — 1-4 grade scale mapped to 35/60/82/96
+  const condInt = car.condition_interior ?? 60;
   const condIntFactor = 0.70 + (condInt / 100) * 0.32;
   const intEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condIntFactor - 1) * 0.5);
 
+  const intGradeLabel = (val: number) => {
+    if (val >= 90) return a.interior.explainExcellent;
+    if (val >= 70) return a.interior.explainGood;
+    if (val >= 50) return a.interior.explainFair;
+    return a.interior.explainPoor;
+  };
+
   let intExplanation: string;
-  if (condInt >= 90) {
-    intExplanation = a.interior.explainExcellent;
-  } else if (condInt >= 70) {
-    intExplanation = a.interior.explainGood;
-  } else if (aiFoundNoDamages && condInt < 70) {
-    intExplanation = a.interior.explainAiMismatch ?? `You rated the interior at ${condInt}/100, but the AI damage scan found no visible defects. Consider re-evaluating your rating to better reflect the car's actual condition.`;
-  } else if (condInt >= 50) {
-    intExplanation = a.interior.explainFair;
+  if (aiFoundNoDamages && condInt < 70) {
+    intExplanation = a.interior.explainAiMismatch ?? `You rated the interior at grade ${condInt >= 60 ? 2 : 1}, but the AI scan found no visible defects. Consider re-evaluating.`;
   } else {
-    intExplanation = a.interior.explainPoor;
+    intExplanation = intGradeLabel(condInt);
   }
 
   factors.push({
@@ -250,10 +248,10 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     barValue: condInt,
     type: condInt >= 70 ? "booster" : "reducer",
     icon: <Shield className="h-5 w-5" />,
-    actionable: condInt < 85,
+    actionable: condInt < 82,
     actionLabel: a.interior.action,
     actionStep: 3,
-    formulaTooltip: `Score: ${condInt}/100 · Factor: 0.70 + (${condInt}/100)×0.32 = ${condIntFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
+    formulaTooltip: `Score: ${condInt}/100 · Factor: ${condIntFactor.toFixed(3)}${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
   });
 
   // 5. ACCIDENT / DAMAGE HISTORY — combined: itemized costs + accident stigma

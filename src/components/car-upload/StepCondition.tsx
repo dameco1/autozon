@@ -14,79 +14,63 @@ interface Props {
   onChange: (updates: Partial<CarFormData>) => void;
 }
 
+const CONDITION_GRADES = [
+  { grade: 1, value: 35, key: "poor" as const },
+  { grade: 2, value: 60, key: "fair" as const },
+  { grade: 3, value: 82, key: "good" as const },
+  { grade: 4, value: 96, key: "excellent" as const },
+];
+
+const gradeFromValue = (val: number) => {
+  const match = CONDITION_GRADES.reduce((prev, curr) =>
+    Math.abs(curr.value - val) < Math.abs(prev.value - val) ? curr : prev
+  );
+  return match;
+};
+
 const StepCondition: React.FC<Props> = ({ data, onChange }) => {
   const { t, language } = useLanguage();
   const [generating, setGenerating] = useState(false);
 
-  const conditionLabel = (val: number) => {
-    if (val >= 90) return t.carUpload.conditionScale.excellent;
-    if (val >= 70) return t.carUpload.conditionScale.good;
-    if (val >= 50) return t.carUpload.conditionScale.fair;
-    return t.carUpload.conditionScale.poor;
-  };
-
-  const generateDescription = async () => {
-    setGenerating(true);
-    try {
-      const { data: result, error } = await supabase.functions.invoke("generate-description", {
-        body: {
-          make: data.make,
-          model: data.model,
-          year: data.year,
-          mileage: data.mileage,
-          fuelType: data.fuelType,
-          transmission: data.transmission,
-          bodyType: data.bodyType,
-          color: data.color,
-          powerHp: data.powerHp,
-          equipment: data.equipment,
-          conditionExterior: data.conditionExterior,
-          conditionInterior: data.conditionInterior,
-          accidentHistory: data.accidentHistory,
-          language,
-        },
-      });
-      if (error) throw error;
-      if (result?.error) throw new Error(result.error);
-      if (result?.description) {
-        onChange({ description: result.description });
-      }
-    } catch (err: any) {
-      console.error(err);
-      toast.error(err.message || "Failed to generate description");
-    } finally {
-      setGenerating(false);
-    }
-  };
-
-  return (
-    <div className="space-y-6">
+  const renderGradeSelector = (
+    label: string,
+    currentValue: number,
+    fieldKey: "conditionExterior" | "conditionInterior"
+  ) => {
+    const current = gradeFromValue(currentValue);
+    return (
       <div>
-        <Label className="text-muted-foreground text-sm mb-3 block">
-          {t.carUpload.conditionExterior}: <span className="text-primary font-bold">{data.conditionExterior}/100</span> — {conditionLabel(data.conditionExterior)}
-        </Label>
-        <input
-          type="range"
-          min={10}
-          max={100}
-          value={data.conditionExterior}
-          onChange={(e) => onChange({ conditionExterior: Number(e.target.value) })}
-          className="w-full accent-[hsl(155,100%,42%)]"
-        />
+        <Label className="text-muted-foreground text-sm mb-3 block">{label}</Label>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {CONDITION_GRADES.map(({ grade, value, key }) => {
+            const selected = current.grade === grade;
+            return (
+              <button
+                key={grade}
+                type="button"
+                onClick={() => onChange({ [fieldKey]: value })}
+                className={`relative rounded-xl border-2 p-3 text-left transition-all ${
+                  selected
+                    ? "border-primary bg-primary/10 ring-1 ring-primary/30"
+                    : "border-border bg-muted hover:border-primary/40"
+                }`}
+              >
+                <span className={`block text-lg font-bold mb-0.5 ${selected ? "text-primary" : "text-foreground"}`}>
+                  {grade}
+                </span>
+                <span className={`block text-xs font-semibold ${selected ? "text-primary" : "text-foreground"}`}>
+                  {(t.carUpload.conditionScale as any)[key]}
+                </span>
+                <span className="block text-[10px] text-muted-foreground mt-0.5 leading-tight">
+                  {(t.carUpload.conditionGradeHint as any)[key]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <div>
-        <Label className="text-muted-foreground text-sm mb-3 block">
-          {t.carUpload.conditionInterior}: <span className="text-primary font-bold">{data.conditionInterior}/100</span> — {conditionLabel(data.conditionInterior)}
-        </Label>
-        <input
-          type="range"
-          min={10}
-          max={100}
-          value={data.conditionInterior}
-          onChange={(e) => onChange({ conditionInterior: Number(e.target.value) })}
-          className="w-full accent-[hsl(155,100%,42%)]"
-        />
-      </div>
+    );
+  };
       <div>
         <Label className="text-muted-foreground text-sm mb-3 block">{t.carUpload.accidentHistory}</Label>
         <div className="flex gap-3">
