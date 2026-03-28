@@ -1,7 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, Lock, Zap, CreditCard } from "lucide-react";
+import { CheckCircle2, Lock, Zap, CreditCard, Download, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { usePwaInstall } from "@/hooks/usePwaInstall";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import heroCar1 from "@/assets/hero-car-1.png";
 import heroCar2 from "@/assets/hero-car-2.png";
 import heroCar3 from "@/assets/hero-car-3.png";
@@ -47,6 +50,8 @@ const badgeIcons: Record<string, React.ReactNode> = {
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
+  const { canInstall, promptInstall } = usePwaInstall();
+  const navigate = useNavigate();
 
   return (
     <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-background" style={{ minHeight: "60vh" }}>
@@ -107,6 +112,28 @@ const HeroSection: React.FC = () => {
               </span>
             </div>
           ))}
+        </motion.div>
+
+        {/* CTA Buttons */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8"
+          initial="hidden" animate="visible" variants={fadeUp} custom={3}
+        >
+          {canInstall && (
+            <Button onClick={promptInstall} size="lg" className="gap-2 text-base px-6">
+              <Download className="h-5 w-5" />
+              Install App
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="lg"
+            className="gap-2 text-base px-6"
+            onClick={() => navigate("/onboarding")}
+          >
+            Get Started
+            <ArrowRight className="h-5 w-5" />
+          </Button>
         </motion.div>
       </div>
     </section>
