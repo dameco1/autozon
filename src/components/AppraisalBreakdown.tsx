@@ -76,9 +76,14 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   const normalize = (factor: number, min: number, max: number) =>
     Math.round(Math.max(0, Math.min(100, ((factor - min) / (max - min)) * 100)));
 
-  // 1. DEPRECIATION (age-based, brand-tiered)
+  // 1. DEPRECIATION (age-based, brand-tiered + aging cliff)
   const depRate = isIconic ? 0.07 : isPremium ? 0.10 : 0.15;
-  const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75));
+  let depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75));
+  // Aging cliff for cars >10 years old
+  const agingCliffApplied = carAge > 10;
+  const agingCliffMultiplier = agingCliffApplied ? Math.max(0.60, 1 - (carAge - 10) * 0.04) : 1;
+  depreciationFactor *= agingCliffMultiplier;
+
   const depEuro = Math.round(basePrice * (depreciationFactor - 1));
   const depPct = (depreciationFactor - 1) * 100;
   factors.push({
@@ -91,12 +96,32 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
         : a.depreciation.explainOld.replace("{age}", String(carAge)),
     euroImpact: depEuro,
     percentImpact: depPct,
-    barValue: normalize(depreciationFactor, 0.25, 1),
+    barValue: normalize(depreciationFactor, 0.15, 1),
     type: "reducer",
     icon: <TrendingDown className="h-5 w-5" />,
     actionable: false,
-    formulaTooltip: `Age: ${carAge}y · Rate: ${(depRate * 100).toFixed(0)}%/y (${isIconic ? "iconic" : isPremium ? "premium" : "standard"}) · Factor: (1-${depRate})^(${carAge}×0.75) = ${depreciationFactor.toFixed(3)}`,
+    formulaTooltip: `Age: ${carAge}y · Rate: ${(depRate * 100).toFixed(0)}%/y (${isIconic ? "iconic" : isPremium ? "premium" : "standard"}) · Factor: ${depreciationFactor.toFixed(3)}${agingCliffApplied ? ` · Aging cliff: ×${agingCliffMultiplier.toFixed(2)}` : ""}`,
   });
+
+  // 1b. AGING CLIFF (shown as separate reducer when applicable)
+  if (agingCliffApplied) {
+    const cliffPenaltyPct = (agingCliffMultiplier - 1) * 100;
+    const cliffEuro = Math.round(basePrice * Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75)) * (agingCliffMultiplier - 1));
+    factors.push({
+      id: "agingCliff",
+      label: a.agingCliff?.label ?? "Age Cliff Penalty",
+      explanation: (a.agingCliff?.explain ?? "Cars older than 10 years experience accelerated value loss. At {age} years, an additional {pct}% reduction is applied.")
+        .replace("{age}", String(carAge))
+        .replace("{pct}", Math.abs(cliffPenaltyPct).toFixed(0)),
+      euroImpact: cliffEuro,
+      percentImpact: cliffPenaltyPct,
+      barValue: normalize(agingCliffMultiplier, 0.5, 1),
+      type: "reducer",
+      icon: <TrendingDown className="h-5 w-5" />,
+      actionable: false,
+      formulaTooltip: `Age >10y: extra decay = max(0.60, 1-(${carAge}-10)×0.04) = ×${agingCliffMultiplier.toFixed(2)}`,
+    });
+  }
 
   // 2. MILEAGE — segment-specific expected km/year
   const avgAnnualKm = (() => {
@@ -112,9 +137,16 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   })();
   const expectedKm = carAge * avgAnnualKm;
   const mileageRatio = car.mileage / Math.max(expectedKm, 1);
-  const mileageFactor = mileageRatio <= 1
+  let mileageFactor = mileageRatio <= 1
     ? 1 + (1 - mileageRatio) * 0.08
     : Math.max(0.55, 1 - Math.pow(mileageRatio - 1, 1.4) * 0.25);
+
+  // High-mileage absolute tiers
+  let highMileageTier = "";
+  if (car.mileage > 300000) { mileageFactor *= 0.75; highMileageTier = "300k+"; }
+  else if (car.mileage > 250000) { mileageFactor *= 0.82; highMileageTier = "250k+"; }
+  else if (car.mileage > 200000) { mileageFactor *= 0.90; highMileageTier = "200k+"; }
+
   const mileEuro = Math.round(basePrice * depreciationFactor * (mileageFactor - 1));
   const milePct = (mileageFactor - 1) * 100;
   factors.push({
@@ -125,19 +157,39 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
       : a.mileage.explainHigh.replace("{km}", car.mileage.toLocaleString()).replace("{expected}", expectedKm.toLocaleString()),
     euroImpact: mileEuro,
     percentImpact: milePct,
-    barValue: normalize(mileageFactor, 0.55, 1.08),
+    barValue: normalize(mileageFactor, 0.35, 1.08),
     type: milePct >= 0 ? "booster" : "reducer",
     icon: <Gauge className="h-5 w-5" />,
     actionable: false,
-    formulaTooltip: `${car.mileage.toLocaleString()} km vs expected ${expectedKm.toLocaleString()} km · Ratio: ${mileageRatio.toFixed(2)} · Factor: ${mileageFactor.toFixed(3)}`,
+    formulaTooltip: `${car.mileage.toLocaleString()} km vs expected ${expectedKm.toLocaleString()} km · Ratio: ${mileageRatio.toFixed(2)} · Factor: ${mileageFactor.toFixed(3)}${highMileageTier ? ` · High-mileage tier: ${highMileageTier}` : ""}`,
   });
+
+  // High-mileage tier as separate visible reducer
+  if (highMileageTier) {
+    const tierMultiplier = car.mileage > 300000 ? 0.75 : car.mileage > 250000 ? 0.82 : 0.90;
+    const tierPct = (tierMultiplier - 1) * 100;
+    factors.push({
+      id: "highMileage",
+      label: a.highMileage?.label ?? "High-Mileage Penalty",
+      explanation: (a.highMileage?.explain ?? "With {km} km, this car falls in the {tier} high-mileage tier. Extreme mileage significantly reduces reliability perception and resale value.")
+        .replace("{km}", car.mileage.toLocaleString())
+        .replace("{tier}", highMileageTier),
+      euroImpact: Math.round(basePrice * depreciationFactor * (tierMultiplier - 1)),
+      percentImpact: tierPct,
+      barValue: normalize(tierMultiplier, 0.5, 1),
+      type: "reducer",
+      icon: <Gauge className="h-5 w-5" />,
+      actionable: false,
+      formulaTooltip: `Tier ${highMileageTier}: ×${tierMultiplier} additional penalty`,
+    });
+  }
 
   // 3. EXTERIOR CONDITION (recentered: avg 75 = ~1.0)
   // Cross-reference with AI damage scan to avoid contradictory messaging
   const condExt = car.condition_exterior ?? 80;
   const damages = car.detected_damages ?? [];
   const aiFoundNoDamages = Array.isArray(damages) && damages.length === 0;
-  const condExtFactor = 0.85 + (condExt / 100) * 0.17;
+  const condExtFactor = 0.70 + (condExt / 100) * 0.32;
   const extEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condExtFactor - 1) * 0.5);
 
   // If AI scan passed clean but user rated low, nudge them to re-evaluate
@@ -173,7 +225,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
   // 4. INTERIOR CONDITION (recentered: avg 75 = ~1.0)
   // Cross-reference with AI damage scan (interior damages would show in scan too)
   const condInt = car.condition_interior ?? 80;
-  const condIntFactor = 0.85 + (condInt / 100) * 0.17;
+  const condIntFactor = 0.70 + (condInt / 100) * 0.32;
   const intEuro = Math.round(basePrice * depreciationFactor * mileageFactor * (condIntFactor - 1) * 0.5);
 
   let intExplanation: string;
