@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Brain, CalendarCheck, CreditCard } from "lucide-react";
+import { Brain, CalendarCheck, CreditCard, Handshake } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const fadeUp = {
@@ -12,7 +12,7 @@ const fadeUp = {
   }),
 };
 
-const icons = [Brain, CalendarCheck, CreditCard];
+const icons = [Brain, CalendarCheck, CreditCard, Handshake];
 
 const WhyAutozonSection: React.FC = () => {
   const { t } = useLanguage();
@@ -27,7 +27,7 @@ const WhyAutozonSection: React.FC = () => {
           {t.whyAutozon.title}
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {t.whyAutozon.cards.map((card, i) => {
             const Icon = icons[i];
             return (
