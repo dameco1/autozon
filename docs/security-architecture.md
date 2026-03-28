@@ -218,6 +218,7 @@ The signing-keys system requires in-code validation. Setting `verify_jwt = false
 | `detect-damage` | Yes (JWT) | Via AI provider | File size validation |
 | `generate-description` | Yes (JWT) | Via AI provider | Car ownership check |
 | `market-comparison` | Yes (JWT) | Via AI provider | — |
+| `vin-decode` | Yes (JWT) | Via VINCARIO API | VIN format validation, stolen vehicle check |
 | `admin-actions` | Yes (JWT + admin role) | Yes | `has_role()` verification |
 | `verify-docs-password` | No (public) | Yes (IP-based) | Password hashing comparison |
 | `stripe-webhook` | No (public) | Via Stripe | Signature verification |

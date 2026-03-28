@@ -57,9 +57,16 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
 8. **Transparency Bonus** — Rewards complete listings (up to +4%):
    - VIN provided, description quality, photo count, damage scan completed
 
-9. **Final Calculation**: `100% attribute-based` (no asking price influence)
-   - Fair value = attribute value − itemized damage costs (min €500)
-   - Market blending on FairValueResult page: 40% formula + 60% AI market (if available)
+9. **Inspection Checklist Penalty** — 20-point inspection where YES = good condition:
+   - Each "No" answer: −1.5% penalty
+   - Each "I don't know" answer: −0.75% penalty
+   - Capped at −30% maximum
+   - Categories: Exterior (5), Interior (6), Mechanical (5), Test Drive (4)
+
+10. **Final Calculation**: `100% attribute-based` (no asking price influence)
+    - Fair value = attribute value × inspection factor − itemized damage costs (min €500)
+    - Market blending on FairValueResult page: 40% formula + 60% AI market (if available)
+    - Seller can accept AI fair value OR override with custom listing price (deviation % displayed)
 
 ### Outputs
 - `fairValue` — Estimated market-fair price (EUR)

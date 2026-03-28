@@ -13,7 +13,8 @@
 | **State** | TanStack Query + React state | Server-state caching and local UI state |
 | **Backend** | Lovable Cloud (Supabase) | PostgreSQL, Auth, Edge Functions, Storage |
 | **Payments** | Stripe | Placement checkout, webhook verification |
-| **AI** | Lovable AI (Gemini) | Damage detection (brand-specific costing), VIN decoding, description generation, concierge chat, market comparison |
+| **AI** | Lovable AI (Gemini) | Damage detection (brand-specific costing), description generation, concierge chat, market comparison |
+| **Vehicle Data** | VINCARIO API | Commercial VIN decoding (4-endpoint merge: info + decode + OEM + stolen check), equipment auto-fill, fair value enrichment |
 | **i18n** | Custom context (EN/DE) | Bilingual support (English + German) |
 | **SEO** | react-helmet-async | Dynamic meta tags, JSON-LD structured data |
 | **PDF** | jsPDF | Client-side negotiation agreement generation |
@@ -45,11 +46,12 @@
            │  └───────────────────┘  │
            └────────────┬────────────┘
                         │
-              ┌─────────┴─────────┐
-              │  External APIs    │
-              │  • Stripe         │
-              │  • Lovable AI     │
-              └───────────────────┘
+               ┌─────────┴─────────┐
+               │  External APIs    │
+               │  • Stripe         │
+               │  • Lovable AI     │
+               │  • VINCARIO       │
+               └───────────────────┘
 ```
 
 ## Project Structure
@@ -105,7 +107,7 @@ supabase/
 │   ├── admin-actions/          # Admin API (user suspension, etc.)
 │   ├── seed-car-models/        # Static database seeder
 │   ├── seed-car-models-ai/     # AI-powered model seeder with MSRP (Gemini)
-│   ├── vin-decode/             # AI-powered VIN decoder
+│   ├── vin-decode/             # VINCARIO VIN decoder (4-endpoint: info + decode + OEM + stolen check)
 │   └── verify-docs-password/   # Investor data room auth
 └── migrations/          # SQL migration files (auto-managed)
 
@@ -134,15 +136,16 @@ public/                  # Static assets (favicon, OG image, sitemap, robots.txt
 ```
 User → /intent (choose "Sell")
      → /car-upload (6-step wizard)
-       Step 1: Basic Info (make, model, year, mileage, price) + VIN decode (AI auto-fill)
+       Step 1: Basic Info (make, model, year, mileage, price) + VINCARIO VIN decode (auto-fill specs + equipment + stolen check)
        Step 2: Photos (6 mandatory + 1 optional angles, client-side compression)
-       Step 3: Equipment selection
-       Step 4: Inspection checklist (20-point transparent disclosure)
+       Step 3: Equipment selection (VIN-detected items pre-selected, user can add/remove)
+       Step 4: Inspection checklist (20-point transparent disclosure — No/Unknown answers penalize fair value)
        Step 5: Condition sliders + accident history + AI damage scan (brand-specific repair costs)
        Step 6: Review + AI description generator
-     → calculateFairValue() runs client-side (100% attribute-based, model-specific MSRP when available)
+     → calculateFairValue() runs client-side (100% attribute-based, model-specific MSRP when available, inspection scoring)
      → Car saved to `cars` table with fair_value_price
      → /fair-value/:id (appraisal result + market comparison, 40/60 blend if market data available)
+       → Seller can accept AI fair value OR set custom listing price (with deviation % feedback)
      → /buyer-matches/:carId (matched buyers)
      → /negotiate/:offerId (structured negotiation)
      → /acquire/:offerId (financing/acquisition options)
