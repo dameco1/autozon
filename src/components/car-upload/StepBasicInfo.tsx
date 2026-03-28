@@ -160,6 +160,18 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
         </p>
       </div>
 
+      {/* Stolen vehicle warning */}
+      {stolenWarning.stolen && (
+        <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+          <ShieldAlert className="h-5 w-5" />
+          <AlertTitle className="font-bold">Stolen Vehicle Alert</AlertTitle>
+          <AlertDescription>
+            {stolenWarning.details || "This VIN has been flagged in a stolen vehicle database."}
+            <span className="block mt-1 text-xs font-medium">This vehicle cannot be listed on Autozon. If you believe this is an error, please contact support.</span>
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Make → Model → Variant cascade */}
       <div className="grid grid-cols-3 gap-4">
         <div>
