@@ -369,6 +369,8 @@ const AcquisitionOptions: React.FC = () => {
               contractType={contractType}
               paymentMethod={paymentMethod}
               insuranceTier={insuranceTier}
+              carId={offer?.car_id}
+              fairValuePrice={car?.fair_value_price}
               onDashboard={() => navigate("/dashboard")}
               onDownload={handleDownload}
             />
@@ -379,6 +381,8 @@ const AcquisitionOptions: React.FC = () => {
               car={car}
               agreedPrice={agreedPrice}
               sellerCountry={sellerCountry}
+              carId={offer?.car_id}
+              fairValuePrice={car?.fair_value_price}
               onDashboard={() => navigate("/dashboard")}
               onDownload={handleDownload}
             />
