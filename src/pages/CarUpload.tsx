@@ -191,19 +191,35 @@ const CarUpload: React.FC = () => {
     if (!userId || !formData.make || !formData.model) return;
     setLoading(true);
 
-    // Look up model-specific MSRP from car_models table
+    // Look up model-specific MSRP from car_models table (try variant-level first, then model-level)
     let modelMsrp: number | null = null;
     if (formData.make && formData.model) {
-      const { data: msrpData } = await supabase
-        .from("car_models")
-        .select("msrp_eur")
-        .eq("make", formData.make)
-        .eq("model", formData.model)
-        .not("msrp_eur", "is", null)
-        .order("msrp_eur", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (msrpData?.msrp_eur) modelMsrp = Number(msrpData.msrp_eur);
+      // Try exact variant match first for best MSRP accuracy
+      if (formData.variant) {
+        const { data: variantData } = await supabase
+          .from("car_models")
+          .select("msrp_eur")
+          .eq("make", formData.make)
+          .eq("model", formData.model)
+          .eq("variant", formData.variant)
+          .not("msrp_eur", "is", null)
+          .limit(1)
+          .maybeSingle();
+        if (variantData?.msrp_eur) modelMsrp = Number(variantData.msrp_eur);
+      }
+      // Fall back to model-level MSRP (highest variant as proxy)
+      if (!modelMsrp) {
+        const { data: msrpData } = await supabase
+          .from("car_models")
+          .select("msrp_eur")
+          .eq("make", formData.make)
+          .eq("model", formData.model)
+          .not("msrp_eur", "is", null)
+          .order("msrp_eur", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (msrpData?.msrp_eur) modelMsrp = Number(msrpData.msrp_eur);
+      }
     }
 
     const { fairValue, condScore, demandScore } = calculateFairValue(formData, modelMsrp);
