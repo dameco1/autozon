@@ -161,7 +161,35 @@ export const SlideSolution = () => (
   </div>
 );
 
-// Slide 5: How It Works — Seller
+// Slide: VINCARIO Integration — Vehicle Intelligence
+export const SlideVincario = () => (
+  <div className="flex flex-col justify-center h-full px-40">
+    <div className="flex items-center gap-4 mb-10">
+      <ScanSearch className={accent} size={48} />
+      <h2 className={heading}>Vehicle Intelligence — VINCARIO</h2>
+    </div>
+    <p className={`${body} mb-12 max-w-[1200px]`}>
+      Every VIN entered on Autozon triggers a <span className="text-foreground font-bold">4-endpoint commercial database query</span> against VINCARIO's manufacturer-backed EU vehicle registry — delivering instant accuracy that no AI model can match.
+    </p>
+    <div className="grid grid-cols-2 gap-8">
+      {[
+        { icon: Database, title: "4-Layer Data Merge", desc: "Info (free base) → Decode (paid specs) → OEM (manufacturer data) → Stolen Check (theft database). Each layer fills gaps from the previous." },
+        { icon: Car, title: "Auto-Fill Specs & Equipment", desc: "Make, model, year, body type, fuel, transmission, power, displacement, drive type, CO₂ — plus full equipment list auto-preselected for user confirmation." },
+        { icon: ShieldAlert, title: "Stolen Vehicle Blocking", desc: "Real-time query against EU stolen vehicle databases. Flagged VINs are blocked from listing with a prominent alert — protecting buyers and platform integrity." },
+        { icon: Brain, title: "Fair Value Enrichment", desc: "VINCARIO data feeds directly into the appraisal formula: MSRP from exact variant match, engine specs for segment-specific mileage expectations, and inspection scoring." },
+      ].map(({ icon: Icon, title, desc }) => (
+        <div key={title} className={`${cardBg} flex items-start gap-6`}>
+          <Icon className={accent} size={36} />
+          <div>
+            <h3 className="text-[28px] text-foreground font-bold">{title}</h3>
+            <p className="text-[24px] text-muted-foreground mt-2">{desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <p className={sourceText}>VINCARIO — Commercial vehicle database covering 900M+ VINs across 44 European markets</p>
+  </div>
+);
 export const SlideHowItWorksSeller = () => (
   <div className="flex flex-col justify-center h-full px-40">
     <div className="flex items-center gap-4 mb-10">
