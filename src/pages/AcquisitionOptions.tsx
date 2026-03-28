@@ -207,6 +207,7 @@ const AcquisitionOptions: React.FC = () => {
       });
       // Car marked sold by the insurance function won't apply here, do it via RPC or direct
       await supabase.from("cars").update({ status: "sold" } as any).eq("id", offer!.car_id);
+      recordAppraisalFeedback(offer!.car_id, agreedPrice);
       setStep(99);
     } else {
       await supabase.rpc("transaction_set_method", {
@@ -252,6 +253,7 @@ const AcquisitionOptions: React.FC = () => {
       _insurance_confirmed: true,
     });
     // Car is marked sold inside the DB function
+    if (offer) recordAppraisalFeedback(offer.car_id, agreedPrice);
     setStep(5);
   };
 
