@@ -78,8 +78,8 @@ const CarUpload: React.FC = () => {
         const totalCost = savedDamages.reduce((sum: number, d: any) => sum + (d.estimated_repair_cost_eur ?? 0), 0);
         setDamageReport({
           damages: savedDamages.map((d: any) => ({ ...d, confirmed: true })),
-          overall_condition: "",
-          summary: "",
+          overallCondition: "fair",
+          summary: "Restored from previous submission",
         });
         setFormData(prev => ({ ...prev, damageScanned: true, totalDamageCostEur: totalCost }));
       }
