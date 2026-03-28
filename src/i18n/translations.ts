@@ -32,6 +32,8 @@ export const translations = {
         { icon: "card", text: "Pay for the car with credit card", note: 3 },
         { icon: "check", text: "Negotiate & close in one place", note: 4 },
       ],
+      installApp: "Install App",
+      getStarted: "Get Started",
       footnotes: [
         "¹ Fair market value is estimated using AI analysis of your photos, vehicle description, current market data, and the accuracy of the owner's disclosure. Actual sale price may vary.",
         "² Your listing remains active with no expiration date. Autozon reserves the right to remove inactive or non-compliant listings.",
@@ -1072,6 +1074,8 @@ export const translations = {
         { icon: "card", text: "Auto per Kreditkarte bezahlen", note: 3 },
         { icon: "check", text: "Verhandeln & abschließen an einem Ort", note: 4 },
       ],
+      installApp: "App installieren",
+      getStarted: "Jetzt starten",
       footnotes: [
         "¹ Der faire Marktwert wird mittels KI-Analyse Ihrer Fotos, Fahrzeugbeschreibung, aktueller Marktdaten und der Genauigkeit der Angaben des Eigentümers geschätzt. Der tatsächliche Verkaufspreis kann abweichen.",
         "² Ihr Inserat bleibt ohne Ablaufdatum aktiv. Autozon behält sich das Recht vor, inaktive oder nicht konforme Inserate zu entfernen.",
