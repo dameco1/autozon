@@ -45,7 +45,10 @@ const FairValueResult: React.FC = () => {
   const [car, setCar] = useState<CarData | null>(null);
   const [loading, setLoading] = useState(true);
   const [placementLoading, setPlacementLoading] = useState(false);
-
+  const [priceOverrideMode, setPriceOverrideMode] = useState(false);
+  const [customPrice, setCustomPrice] = useState<number>(0);
+  const [priceAccepted, setPriceAccepted] = useState(false);
+  const [savingPrice, setSavingPrice] = useState(false);
   // Market comparison state (lifted from MarketComparison)
   const [marketData, setMarketData] = useState<MarketData | null>(null);
   const [marketLoading, setMarketLoading] = useState(true);
