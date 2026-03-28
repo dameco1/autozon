@@ -69,12 +69,13 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 
 ### 10. `vin-decode`
 - **Purpose**: VIN decoder using VINCARIO commercial vehicle database for accurate auto-filling
-- **Integration**: VINCARIO API (info + decode endpoints)
+- **Integration**: VINCARIO API (info + decode + OEM endpoints, layered merge)
 - **Auth**: Required (JWT)
 - **Input**: `{ vin: "WBAPH5C55BA..." }`
 - **Output**: `{ make, model, year, body_type, fuel_type, transmission, power_hp, suggested_equipment[], confidence, notes, source }`
+- **Strategy**: Calls 3 VINCARIO endpoints in sequence — info (free base), decode (paid specs), OEM (manufacturer data as gap-filler) — and merges results for maximum coverage
 - **Used in**: Car Upload Step 1 (Basic Info) — "Decode VIN" button
-- **Data source**: Manufacturer-backed EU vehicle database (replaces previous AI-guessing approach)
+- **Data source**: Manufacturer-backed EU vehicle database
 
 ### 11. `verify-docs-password`
 - **Purpose**: Password-protects the documentation hub
