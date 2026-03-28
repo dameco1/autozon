@@ -65,6 +65,7 @@ export const translations = {
         { icon: "coin", title: "AI That Shows You the Real Number", description: "Our engine analyzes your photos, condition, mileage, and equipment — then compares it against live market data. You get your car's actual worth, not a dealer's estimate." },
         { icon: "zap", title: "Your Ad Doesn't Expire", description: "Unlike AutoScout24, willhaben and mobile.de — your listing stays live until your car is sold. Pay once. We work until the deal is done." },
         { icon: "refresh", title: "Pay by Card. Close Faster.", description: "Buyers can pay up to €10,000 by card — directly on Autozon. No bank transfers, no waiting, no friction. The easiest close in the car market." },
+        { icon: "handshake", title: "Live Online Negotiations", description: "No more back-and-forth emails. Buyer and seller negotiate directly on the platform with structured rounds, fair value as a neutral reference, and instant deal closing — all in one place." },
       ],
     },
     statsBar: {
@@ -1101,6 +1102,7 @@ export const translations = {
         { icon: "coin", title: "KI zeigt dir die echte Zahl", description: "Unsere Engine analysiert deine Fotos, Zustand, Kilometerstand und Ausstattung — und vergleicht es mit aktuellen Marktdaten. Du bekommst den echten Wert, nicht die Schätzung eines Händlers." },
         { icon: "zap", title: "Dein Inserat läuft nicht ab", description: "Anders als bei AutoScout24, willhaben und mobile.de — dein Inserat bleibt online, bis dein Auto verkauft ist. Einmal zahlen. Wir arbeiten, bis der Deal steht." },
         { icon: "refresh", title: "Per Karte zahlen. Schneller abschließen.", description: "Käufer können bis zu €10.000 per Karte zahlen — direkt auf Autozon. Keine Überweisungen, kein Warten, keine Reibung." },
+        { icon: "handshake", title: "Live-Verhandlungen online", description: "Keine endlosen E-Mails mehr. Käufer und Verkäufer verhandeln direkt auf der Plattform mit strukturierten Runden, dem Marktwert als neutraler Referenz und sofortigem Abschluss — alles an einem Ort." },
       ],
     },
     statsBar: {
