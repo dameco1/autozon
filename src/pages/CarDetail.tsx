@@ -186,7 +186,7 @@ const CarDetail: React.FC = () => {
           name: `${car.year} ${car.make} ${car.model}`,
           description: pageDescription,
           url: `https://autozon.lovable.app/car/${id}`,
-          image: car.photos?.[0] || car.image_url || undefined,
+          image: car.photos?.[0] || undefined,
           brand: { "@type": "Brand", name: car.make },
           vehicleModelDate: String(car.year),
           mileageFromOdometer: { "@type": "QuantitativeValue", value: car.mileage, unitCode: "KMT" },
@@ -197,7 +197,7 @@ const CarDetail: React.FC = () => {
             "@type": "Offer",
             price: car.fair_value_price || car.price,
             priceCurrency: "EUR",
-            availability: car.status === "available" ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
+            availability: "https://schema.org/InStock",
             url: `https://autozon.lovable.app/car/${id}`,
           },
         }}
