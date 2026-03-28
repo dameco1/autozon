@@ -215,6 +215,14 @@ serve(async (req) => {
     if (decodeData) sources.push("decode");
     if (oemData) sources.push("oem");
 
+    // Extract additional specs for fair value enrichment
+    const engineDisplacementCcm = Number(merged["Engine Displacement (ccm)"] || 0);
+    const maxSpeedKmh = Number(merged["Max Speed (km/h)"] || 0);
+    const fuelConsumption = Number(merged["Fuel Consumption Combined (l/100km)"] || merged["Fuel Consumption Combined (l/100km) (WLTP)"] || 0);
+    const co2 = Number(merged["CO2 Emission (g/km)"] || merged["CO2 Emission (g/km) (WLTP)"] || 0);
+    const engineFull = String(merged["Engine (full)"] || "");
+    const drive = String(merged["Drive"] || "");
+
     const result = {
       make,
       model,
@@ -227,6 +235,13 @@ serve(async (req) => {
       confidence: (make && model && year) ? "high" : "medium",
       notes: `Data sourced from VINCARIO (${sources.join(" + ")}).`,
       source: "vincario",
+      // Additional specs for fair value enrichment
+      engine_displacement_ccm: engineDisplacementCcm || undefined,
+      max_speed_kmh: maxSpeedKmh || undefined,
+      fuel_consumption_l100km: fuelConsumption || undefined,
+      co2_gkm: co2 || undefined,
+      engine_full: engineFull || undefined,
+      drive: drive || undefined,
     };
 
     return new Response(JSON.stringify(result), {
