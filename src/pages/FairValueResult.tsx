@@ -293,6 +293,151 @@ const FairValueResult: React.FC = () => {
         {/* Full Appraisal Breakdown — uses displayFairValue */}
         <AppraisalBreakdown car={{ ...car, fair_value_price: displayFairValue }} />
 
+        {/* Price Decision: Accept Fair Value or Override */}
+        <motion.div
+          className="bg-secondary/50 border border-border rounded-2xl p-8 mt-10 mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+        >
+          <h3 className="text-lg font-display font-bold text-foreground mb-1 flex items-center gap-2">
+            <Zap className="h-5 w-5 text-primary" /> Set Your Listing Price
+          </h3>
+          <p className="text-muted-foreground text-sm mb-6">
+            Accept our fair value estimate or set your own asking price. You're always in control.
+          </p>
+
+          {priceAccepted ? (
+            <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-xl p-4">
+              <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0" />
+              <div>
+                <p className="text-foreground font-semibold">
+                  Listing price set: €{car.price.toLocaleString()}
+                </p>
+                <p className="text-muted-foreground text-xs">
+                  {car.price === displayFairValue
+                    ? "Using AI-calculated fair market value"
+                    : `Custom price (fair value: €${displayFairValue.toLocaleString()})`}
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-auto text-muted-foreground"
+                onClick={() => { setPriceAccepted(false); setPriceOverrideMode(false); }}
+              >
+                Change
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Button
+                  size="lg"
+                  className={`py-6 rounded-xl font-bold transition-all ${
+                    !priceOverrideMode
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90 ring-2 ring-primary/30"
+                      : "bg-secondary text-foreground hover:bg-secondary/80 border border-border"
+                  }`}
+                  disabled={savingPrice}
+                  onClick={async () => {
+                    setPriceOverrideMode(false);
+                    setSavingPrice(true);
+                    const { error } = await supabase
+                      .from("cars")
+                      .update({ price: displayFairValue } as any)
+                      .eq("id", car.id);
+                    if (error) {
+                      toast.error("Failed to save price");
+                    } else {
+                      setCar((prev) => prev ? { ...prev, price: displayFairValue } : prev);
+                      setPriceAccepted(true);
+                      toast.success("Fair value accepted as listing price");
+                    }
+                    setSavingPrice(false);
+                  }}
+                >
+                  {savingPrice && !priceOverrideMode ? (
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  ) : (
+                    <CheckCircle2 className="mr-2 h-5 w-5" />
+                  )}
+                  Accept €{displayFairValue.toLocaleString()}
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className={`py-6 rounded-xl font-semibold transition-all ${
+                    priceOverrideMode
+                      ? "border-primary text-primary ring-2 ring-primary/30"
+                      : "border-border text-muted-foreground hover:border-primary/30"
+                  }`}
+                  onClick={() => {
+                    setPriceOverrideMode(true);
+                    setCustomPrice(car.price > 0 && car.price !== displayFairValue ? car.price : displayFairValue);
+                  }}
+                >
+                  <PenLine className="mr-2 h-5 w-5" /> Set My Own Price
+                </Button>
+              </div>
+
+              {priceOverrideMode && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="bg-muted/50 border border-border rounded-xl p-5 space-y-4"
+                >
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-1.5 block">Your asking price (€)</label>
+                    <Input
+                      type="number"
+                      value={customPrice}
+                      onChange={(e) => setCustomPrice(Number(e.target.value))}
+                      className="bg-background border-border text-foreground text-lg font-mono"
+                      min={100}
+                    />
+                  </div>
+                  {customPrice > 0 && customPrice !== displayFairValue && (
+                    <p className="text-xs text-muted-foreground">
+                      {customPrice > displayFairValue ? (
+                        <span className="text-yellow-500">
+                          ⚠ Your price is {Math.round((customPrice / displayFairValue - 1) * 100)}% above fair value — higher prices may take longer to attract buyers.
+                        </span>
+                      ) : (
+                        <span className="text-primary">
+                          ✓ Your price is {Math.round((1 - customPrice / displayFairValue) * 100)}% below fair value — this should attract buyers quickly.
+                        </span>
+                      )}
+                    </p>
+                  )}
+                  <Button
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold w-full"
+                    disabled={savingPrice || customPrice < 100}
+                    onClick={async () => {
+                      setSavingPrice(true);
+                      const { error } = await supabase
+                        .from("cars")
+                        .update({ price: customPrice } as any)
+                        .eq("id", car.id);
+                      if (error) {
+                        toast.error("Failed to save price");
+                      } else {
+                        setCar((prev) => prev ? { ...prev, price: customPrice } : prev);
+                        setPriceAccepted(true);
+                        toast.success(`Listing price set to €${customPrice.toLocaleString()}`);
+                      }
+                      setSavingPrice(false);
+                    }}
+                  >
+                    {savingPrice ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                    Confirm €{customPrice.toLocaleString()} as listing price
+                  </Button>
+                </motion.div>
+              )}
+            </div>
+          )}
+        </motion.div>
+
         {/* Market Comparison — with blended value */}
         <MarketComparison
           data={marketData}
