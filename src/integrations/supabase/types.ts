@@ -86,6 +86,60 @@ export type Database = {
           },
         ]
       }
+      appraisal_feedback: {
+        Row: {
+          agreed_sale_price: number | null
+          blended_value: number | null
+          body_type: string
+          car_id: string
+          created_at: string
+          deviation_pct: number | null
+          formula_value: number
+          fuel_type: string
+          id: string
+          make: string
+          market_avg_value: number | null
+          market_max_value: number | null
+          mileage: number
+          model: string
+          year: number
+        }
+        Insert: {
+          agreed_sale_price?: number | null
+          blended_value?: number | null
+          body_type?: string
+          car_id: string
+          created_at?: string
+          deviation_pct?: number | null
+          formula_value: number
+          fuel_type?: string
+          id?: string
+          make: string
+          market_avg_value?: number | null
+          market_max_value?: number | null
+          mileage?: number
+          model: string
+          year: number
+        }
+        Update: {
+          agreed_sale_price?: number | null
+          blended_value?: number | null
+          body_type?: string
+          car_id?: string
+          created_at?: string
+          deviation_pct?: number | null
+          formula_value?: number
+          fuel_type?: string
+          id?: string
+          make?: string
+          market_avg_value?: number | null
+          market_max_value?: number | null
+          mileage?: number
+          model?: string
+          year?: number
+        }
+        Relationships: []
+      }
       buyer_selections: {
         Row: {
           car_id: string
