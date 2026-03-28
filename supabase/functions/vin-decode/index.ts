@@ -211,6 +211,10 @@ serve(async (req) => {
       suggestedEquipment.push(...Object.values(equip as Record<string, unknown>).map((e) => String(e)));
     }
 
+    const sources = ["info"];
+    if (decodeData) sources.push("decode");
+    if (oemData) sources.push("oem");
+
     const result = {
       make,
       model,
@@ -221,9 +225,7 @@ serve(async (req) => {
       power_hp: powerHp,
       suggested_equipment: suggestedEquipment,
       confidence: (make && model && year) ? "high" : "medium",
-      notes: decodeData
-        ? "Data sourced from VINCARIO vehicle database."
-        : "Partial data from VINCARIO info endpoint. Full decode unavailable.",
+      notes: `Data sourced from VINCARIO (${sources.join(" + ")}).`,
       source: "vincario",
     };
 
