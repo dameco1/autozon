@@ -257,14 +257,19 @@ serve(async (req) => {
     const drive = String(merged["Drive"] || "");
     const color = String(merged["Color"] || merged["Exterior Color"] || merged["colour"] || "");
 
+    // Extract variant info
+    const variant = String(merged["Trim"] || merged["Series"] || merged["Version"] || merged["Variant"] || "");
+
     const result = {
       make,
       model,
+      variant,
       year,
       body_type: bodyType,
       fuel_type: fuelType,
       transmission,
       power_hp: powerHp,
+      color: color || undefined,
       suggested_equipment: suggestedEquipment,
       confidence: (make && model && year) ? "high" : "medium",
       notes: `Data sourced from VINCARIO (${sources.join(" + ")}).`,
