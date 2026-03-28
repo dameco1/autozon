@@ -468,6 +468,14 @@ export const translations = {
         penalty: "condition penalty",
         totalImpact: "Total Damage Impact",
       },
+      agingCliff: {
+        label: "Age Cliff Penalty",
+        explain: "Cars older than 10 years experience accelerated value loss. At {age} years, an additional {pct}% reduction is applied.",
+      },
+      highMileage: {
+        label: "High-Mileage Penalty",
+        explain: "With {km} km, this car falls in the {tier} high-mileage tier. Extreme mileage significantly reduces reliability perception and resale value.",
+      },
     },
     buyerMatches: {
       title: "Matched Buyers",
@@ -1451,6 +1459,14 @@ export const translations = {
         severityLow: "Gering",
         penalty: "Zustandsabzug",
         totalImpact: "Gesamter Schadenseinfluss",
+      },
+      agingCliff: {
+        label: "Altersabzug",
+        explain: "Fahrzeuge über 10 Jahre erfahren beschleunigten Wertverlust. Mit {age} Jahren wird ein zusätzlicher Abzug von {pct}% angewendet.",
+      },
+      highMileage: {
+        label: "Hochlaufleistungs-Abzug",
+        explain: "Mit {km} km fällt dieses Auto in die {tier}-Hochlaufleistungsstufe. Extreme Laufleistung reduziert den Wiederverkaufswert erheblich.",
       },
     },
     buyerMatches: {

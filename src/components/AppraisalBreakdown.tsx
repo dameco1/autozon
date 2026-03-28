@@ -219,7 +219,7 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
     actionable: condExt < 85,
     actionLabel: a.exterior.action,
     actionStep: 3,
-    formulaTooltip: `Score: ${condExt}/100 · Factor: 0.85 + (${condExt}/100)×0.17 = ${condExtFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
+    formulaTooltip: `Score: ${condExt}/100 · Factor: 0.70 + (${condExt}/100)×0.32 = ${condExtFactor.toFixed(3)} · Weight: 50%${aiFoundNoDamages ? " · AI scan: no damage" : ""}`,
   });
 
   // 4. INTERIOR CONDITION (recentered: avg 75 = ~1.0)
