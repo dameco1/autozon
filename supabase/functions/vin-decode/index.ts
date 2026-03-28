@@ -124,36 +124,62 @@ serve(async (req) => {
       console.warn("VINCARIO decode call failed:", decodeRes.status, decodeText.substring(0, 300));
     }
 
-    // --- 3. Merge & normalize into our schema ---
-    // VINCARIO returns data as array of {label, value} or flat object depending on version
-    // Handle both formats
-    let merged: Record<string, unknown> = {};
+    // --- 3. Call VINCARIO "oem" endpoint (OEM VIN Lookup — richer specs as fallback) ---
+    let oemData: Record<string, unknown> | null = null;
+    try {
+      const oemCs = await controlSum(upperVin, "oem", VINCARIO_API_KEY, VINCARIO_SECRET_KEY);
+      const oemUrl = `https://api.vincario.com/3.2/${VINCARIO_API_KEY}/${oemCs}/oem/${upperVin}.json`;
 
-    // If infoData has a "decode" array, flatten it
-    const infoArr = (infoData as Record<string, unknown>)["decode"];
-    if (Array.isArray(infoArr)) {
-      for (const item of infoArr) {
-        if (item && typeof item === "object" && "label" in item && "value" in item) {
-          merged[(item as Record<string, unknown>).label as string] = (item as Record<string, unknown>).value;
+      console.log("VINCARIO OEM URL:", oemUrl);
+      const oemRes = await fetch(oemUrl);
+      const oemText = await oemRes.text();
+
+      if (oemRes.ok) {
+        try {
+          oemData = JSON.parse(oemText);
+        } catch {
+          console.warn("VINCARIO OEM parse error");
         }
+      } else {
+        console.warn("VINCARIO OEM call failed:", oemRes.status, oemText.substring(0, 300));
       }
-    } else {
-      merged = { ...infoData };
+    } catch (oemErr) {
+      console.warn("VINCARIO OEM request error:", oemErr);
     }
 
-    // Overlay decode data
-    if (decodeData) {
-      const decodeArr = (decodeData as Record<string, unknown>)["decode"];
-      if (Array.isArray(decodeArr)) {
-        for (const item of decodeArr) {
+    // --- 4. Merge & normalize into our schema ---
+    // VINCARIO returns data as array of {label, value} or flat object depending on version
+    // Handle both formats — merge order: info (base) → decode (override) → OEM (fill gaps)
+    let merged: Record<string, unknown> = {};
+
+    /** Flatten a VINCARIO response (array of {label,value} or flat object) into merged */
+    function flattenInto(data: Record<string, unknown>, overwrite: boolean) {
+      const arr = data["decode"] || data["list"];
+      if (Array.isArray(arr)) {
+        for (const item of arr) {
           if (item && typeof item === "object" && "label" in item && "value" in item) {
-            merged[(item as Record<string, unknown>).label as string] = (item as Record<string, unknown>).value;
+            const key = (item as Record<string, unknown>).label as string;
+            const val = (item as Record<string, unknown>).value;
+            if (overwrite || !(key in merged)) {
+              merged[key] = val;
+            }
           }
         }
       } else {
-        merged = { ...merged, ...decodeData };
+        for (const [key, val] of Object.entries(data)) {
+          if (overwrite || !(key in merged)) {
+            merged[key] = val;
+          }
+        }
       }
     }
+
+    // Info = base layer
+    flattenInto(infoData, true);
+    // Decode = override (richer)
+    if (decodeData) flattenInto(decodeData, true);
+    // OEM = fill gaps only (don't overwrite existing values)
+    if (oemData) flattenInto(oemData, false);
 
     console.log("VINCARIO merged keys:", Object.keys(merged).join(", "));
 
