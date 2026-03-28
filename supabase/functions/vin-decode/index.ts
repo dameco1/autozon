@@ -255,6 +255,7 @@ serve(async (req) => {
     const co2 = Number(merged["CO2 Emission (g/km)"] || merged["CO2 Emission (g/km) (WLTP)"] || 0);
     const engineFull = String(merged["Engine (full)"] || "");
     const drive = String(merged["Drive"] || "");
+    const color = String(merged["Color"] || merged["Exterior Color"] || merged["colour"] || "");
 
     const result = {
       make,
