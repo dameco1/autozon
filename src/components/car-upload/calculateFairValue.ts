@@ -119,31 +119,46 @@ export function calculateFairValue(data: CarFormData, modelMsrpEur?: number | nu
   const isPremium = PREMIUM_BRANDS.includes(data.make);
   const isIconic = ICONIC_BRANDS.includes(data.make);
   const depRate = isIconic ? 0.07 : isPremium ? 0.10 : 0.15;
-  const depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75));
+  let depreciationFactor = Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75));
+
+  // ** AGING CLIFF: accelerated depreciation for cars >10 years old **
+  if (carAge > 10) {
+    depreciationFactor *= Math.max(0.60, 1 - (carAge - 10) * 0.04);
+  }
 
   // 2. Mileage Factor — segment-specific expected km/year
   const avgAnnualKm = getExpectedAnnualKm(data.bodyType, data.make);
   const expectedKm = carAge * avgAnnualKm;
   const mileageRatio = data.mileage / Math.max(expectedKm, 1);
-  const mileageFactor = mileageRatio <= 1
+  let mileageFactor = mileageRatio <= 1
     ? 1 + (1 - mileageRatio) * 0.05
     : Math.max(0.55, 1 - Math.pow(mileageRatio - 1, 1.4) * 0.25);
 
-  // 3. Condition Factor
-  const condAvg = (data.conditionExterior + data.conditionInterior) / 2;
-  const conditionFactor = 0.85 + (condAvg / 100) * 0.17;
+  // ** HIGH-MILEAGE ABSOLUTE TIERS: progressive penalty regardless of age ratio **
+  if (data.mileage > 300000) mileageFactor *= 0.75;
+  else if (data.mileage > 250000) mileageFactor *= 0.82;
+  else if (data.mileage > 200000) mileageFactor *= 0.90;
 
-  // 4. Damage Cost Deduction (replaces flat accident penalty)
-  // Use itemized damage costs from AI detection when available,
-  // fall back to flat penalty for self-reported accidents without scan
+  // 3. Condition Factor — WIDENED range (0.70-1.02)
+  const condAvg = (data.conditionExterior + data.conditionInterior) / 2;
+  const conditionFactor = 0.70 + (condAvg / 100) * 0.32;
+
+  // 4. Damage Cost Deduction + Accident Stigma (combined, not either/or)
   let damageCostDeduction = 0;
+  let accidentStigmaDeduction = 0;
+
   if (data.totalDamageCostEur > 0) {
     damageCostDeduction = data.totalDamageCostEur;
-  } else if (data.accidentHistory) {
-    // Fallback: brand-tier flat estimate when no AI scan was done
-    const flatPenaltyRate = isIconic ? 0.20 : isPremium ? 0.15 : 0.10;
-    damageCostDeduction = referenceMSRP * depreciationFactor * flatPenaltyRate;
   }
+
+  if (data.accidentHistory) {
+    const flatPenaltyRate = isIconic ? 0.20 : isPremium ? 0.15 : 0.10;
+    const fullStigma = referenceMSRP * depreciationFactor * flatPenaltyRate;
+    // When itemized damage costs exist, apply 50% stigma on top; otherwise full stigma
+    accidentStigmaDeduction = damageCostDeduction > 0 ? fullStigma * 0.50 : fullStigma;
+  }
+
+  const totalDamageDeduction = damageCostDeduction + accidentStigmaDeduction;
 
   // 5. Equipment Value Index (capped at 10%)
   let equipWeightedScore = 0;
@@ -188,6 +203,9 @@ export function calculateFairValue(data: CarFormData, modelMsrpEur?: number | nu
   if (data.damageScanned) transparencyPoints += 3;
   const transparencyBonus = 1 + Math.min(transparencyPoints / 15, 1) * 0.04;
 
+  // ** SMOKER CAR PENALTY (-3% to -5%) **
+  const smokerFactor = data.smokerCar ? 0.95 : 1.0;
+
   // Compute 100% attribute-based fair value (NO asking price influence)
   const attributeValue = Math.round(
     referenceMSRP
@@ -198,14 +216,15 @@ export function calculateFairValue(data: CarFormData, modelMsrpEur?: number | nu
     * marketPositionFactor
     * regionalDemandMultiplier
     * transparencyBonus
+    * smokerFactor
   );
 
-  // Subtract itemized damage costs as a EUR deduction
-  const fairValue = Math.max(500, attributeValue - Math.round(damageCostDeduction));
+  // Subtract itemized damage costs + accident stigma as EUR deduction
+  const fairValue = Math.max(500, attributeValue - Math.round(totalDamageDeduction));
 
   // Condition Score (0-100)
-  const damagePenaltyFactor = damageCostDeduction > 0
-    ? Math.max(0.5, 1 - damageCostDeduction / attributeValue)
+  const damagePenaltyFactor = totalDamageDeduction > 0
+    ? Math.max(0.5, 1 - totalDamageDeduction / attributeValue)
     : 1;
   const condScore = Math.round(
     condAvg * damagePenaltyFactor * (mileageFactor > 0.9 ? 1 : 0.9 + mileageFactor * 0.1)

@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Service role can manage feedback" ON public.appraisal_feedback;

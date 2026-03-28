@@ -90,14 +90,43 @@ const FairValueResult: React.FC = () => {
       const md = result as MarketData;
       setMarketData(md);
 
-      // Blend: 40% formula-based + 60% market average — market insists on fair value
-      // No asking price influence: fair value is 100% attribute-based, market data provides real price signal
-      const blended = Math.round(carData.fair_value_price * 0.4 + md.avg_price * 0.6);
+      // Dynamic blend: weight shifts toward market when formula deviates significantly
+      const formulaVal = carData.fair_value_price;
+      const marketAvg = md.avg_price;
+      const deviation = Math.abs(formulaVal - marketAvg) / Math.max(marketAvg, 1);
+
+      // If formula deviates >50% from market avg, shift to 20/80 blend (market-heavy)
+      const formulaWeight = deviation > 0.5 ? 0.20 : 0.40;
+      const marketWeight = 1 - formulaWeight;
+
+      let blended = Math.round(formulaVal * formulaWeight + marketAvg * marketWeight);
+
+      // Cap: final value should not exceed market max_price
+      if (md.max_price && blended > md.max_price) {
+        blended = Math.round(md.max_price);
+      }
+
       setBlendedValue(blended);
 
       // Update the car record with the blended fair value
       await supabase.from("cars").update({ fair_value_price: blended, market_blended: true } as any).eq("id", carData.id);
       setCar((prev) => prev ? { ...prev, fair_value_price: blended } : prev);
+
+      // Record appraisal feedback for future calibration
+      await supabase.from("appraisal_feedback" as any).insert({
+        car_id: carData.id,
+        make: carData.make,
+        model: carData.model,
+        year: carData.year,
+        body_type: carData.body_type,
+        fuel_type: carData.fuel_type,
+        mileage: carData.mileage,
+        formula_value: formulaVal,
+        market_avg_value: marketAvg,
+        market_max_value: md.max_price ?? null,
+        blended_value: blended,
+        deviation_pct: Math.round(deviation * 100),
+      } as any);
     } catch (e) {
       console.error("Market comparison error:", e);
       setMarketError(true);
