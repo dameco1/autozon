@@ -14,15 +14,60 @@ interface Props {
   onChange: (updates: Partial<CarFormData>) => void;
 }
 
+const CONDITION_GRADES = [
+  { grade: 1, value: 35, key: "poor" as const },
+  { grade: 2, value: 60, key: "fair" as const },
+  { grade: 3, value: 82, key: "good" as const },
+  { grade: 4, value: 96, key: "excellent" as const },
+];
+
+const gradeFromValue = (val: number) =>
+  CONDITION_GRADES.reduce((prev, curr) =>
+    Math.abs(curr.value - val) < Math.abs(prev.value - val) ? curr : prev
+  );
+
 const StepCondition: React.FC<Props> = ({ data, onChange }) => {
   const { t, language } = useLanguage();
   const [generating, setGenerating] = useState(false);
 
-  const conditionLabel = (val: number) => {
-    if (val >= 90) return t.carUpload.conditionScale.excellent;
-    if (val >= 70) return t.carUpload.conditionScale.good;
-    if (val >= 50) return t.carUpload.conditionScale.fair;
-    return t.carUpload.conditionScale.poor;
+  const renderGradeSelector = (
+    label: string,
+    currentValue: number,
+    fieldKey: "conditionExterior" | "conditionInterior"
+  ) => {
+    const current = gradeFromValue(currentValue);
+    return (
+      <div>
+        <Label className="text-muted-foreground text-sm mb-3 block">{label}</Label>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {CONDITION_GRADES.map(({ grade, value, key }) => {
+            const selected = current.grade === grade;
+            return (
+              <button
+                key={grade}
+                type="button"
+                onClick={() => onChange({ [fieldKey]: value })}
+                className={`relative rounded-xl border-2 p-3 text-left transition-all ${
+                  selected
+                    ? "border-primary bg-primary/10 ring-1 ring-primary/30"
+                    : "border-border bg-muted hover:border-primary/40"
+                }`}
+              >
+                <span className={`block text-lg font-bold mb-0.5 ${selected ? "text-primary" : "text-foreground"}`}>
+                  {grade}
+                </span>
+                <span className={`block text-xs font-semibold ${selected ? "text-primary" : "text-foreground"}`}>
+                  {(t.carUpload.conditionScale as any)[key]}
+                </span>
+                <span className="block text-[10px] text-muted-foreground mt-0.5 leading-tight">
+                  {(t.carUpload.conditionGradeHint as any)[key]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
   };
 
   const generateDescription = async () => {
@@ -30,27 +75,16 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
     try {
       const { data: result, error } = await supabase.functions.invoke("generate-description", {
         body: {
-          make: data.make,
-          model: data.model,
-          year: data.year,
-          mileage: data.mileage,
-          fuelType: data.fuelType,
-          transmission: data.transmission,
-          bodyType: data.bodyType,
-          color: data.color,
-          powerHp: data.powerHp,
-          equipment: data.equipment,
-          conditionExterior: data.conditionExterior,
-          conditionInterior: data.conditionInterior,
-          accidentHistory: data.accidentHistory,
-          language,
+          make: data.make, model: data.model, year: data.year, mileage: data.mileage,
+          fuelType: data.fuelType, transmission: data.transmission, bodyType: data.bodyType,
+          color: data.color, powerHp: data.powerHp, equipment: data.equipment,
+          conditionExterior: data.conditionExterior, conditionInterior: data.conditionInterior,
+          accidentHistory: data.accidentHistory, language,
         },
       });
       if (error) throw error;
       if (result?.error) throw new Error(result.error);
-      if (result?.description) {
-        onChange({ description: result.description });
-      }
+      if (result?.description) onChange({ description: result.description });
     } catch (err: any) {
       console.error(err);
       toast.error(err.message || "Failed to generate description");
@@ -61,32 +95,9 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <Label className="text-muted-foreground text-sm mb-3 block">
-          {t.carUpload.conditionExterior}: <span className="text-primary font-bold">{data.conditionExterior}/100</span> — {conditionLabel(data.conditionExterior)}
-        </Label>
-        <input
-          type="range"
-          min={10}
-          max={100}
-          value={data.conditionExterior}
-          onChange={(e) => onChange({ conditionExterior: Number(e.target.value) })}
-          className="w-full accent-[hsl(155,100%,42%)]"
-        />
-      </div>
-      <div>
-        <Label className="text-muted-foreground text-sm mb-3 block">
-          {t.carUpload.conditionInterior}: <span className="text-primary font-bold">{data.conditionInterior}/100</span> — {conditionLabel(data.conditionInterior)}
-        </Label>
-        <input
-          type="range"
-          min={10}
-          max={100}
-          value={data.conditionInterior}
-          onChange={(e) => onChange({ conditionInterior: Number(e.target.value) })}
-          className="w-full accent-[hsl(155,100%,42%)]"
-        />
-      </div>
+      {renderGradeSelector(t.carUpload.conditionExterior, data.conditionExterior, "conditionExterior")}
+      {renderGradeSelector(t.carUpload.conditionInterior, data.conditionInterior, "conditionInterior")}
+
       <div>
         <Label className="text-muted-foreground text-sm mb-3 block">{t.carUpload.accidentHistory}</Label>
         <div className="flex gap-3">
@@ -125,7 +136,6 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
       {/* Documentation & Condition Questions */}
       <div className="border-t border-border pt-6 space-y-4">
         <Label className="text-muted-foreground text-sm block mb-2">{t.carUpload.documentation.title}</Label>
-
         <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
             <Cigarette className="h-4 w-4 text-muted-foreground" />
@@ -136,7 +146,6 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           </div>
           <Switch checked={data.smokerCar} onCheckedChange={(v) => onChange({ smokerCar: v })} />
         </div>
-
         <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
             <BookOpen className="h-4 w-4 text-muted-foreground" />
@@ -147,7 +156,6 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           </div>
           <Switch checked={data.serviceBookUpdated} onCheckedChange={(v) => onChange({ serviceBookUpdated: v })} />
         </div>
-
         <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
             <FileCheck className="h-4 w-4 text-muted-foreground" />
@@ -158,7 +166,6 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           </div>
           <Switch checked={data.originalDocsAvailable} onCheckedChange={(v) => onChange({ originalDocsAvailable: v })} />
         </div>
-
         <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
             <Receipt className="h-4 w-4 text-muted-foreground" />
@@ -174,7 +181,6 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
       {/* Accessories */}
       <div className="border-t border-border pt-6 space-y-4">
         <Label className="text-muted-foreground text-sm block mb-2">{t.carUpload.accessories.title}</Label>
-
         <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
             <CircleDot className="h-4 w-4 text-muted-foreground" />
@@ -185,7 +191,6 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           </div>
           <Switch checked={data.secondWheelSet} onCheckedChange={(v) => onChange({ secondWheelSet: v })} />
         </div>
-
         <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
             <Luggage className="h-4 w-4 text-muted-foreground" />
@@ -196,7 +201,6 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           </div>
           <Switch checked={data.hasRoofRack} onCheckedChange={(v) => onChange({ hasRoofRack: v })} />
         </div>
-
         <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
           <div className="flex items-center gap-3">
             <Package className="h-4 w-4 text-muted-foreground" />
@@ -208,6 +212,7 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
           <Switch checked={data.hasRoofBox} onCheckedChange={(v) => onChange({ hasRoofBox: v })} />
         </div>
       </div>
+
       <div>
         <div className="flex items-center justify-between mb-1">
           <Label className="text-muted-foreground text-sm">{t.carUpload.description}</Label>
