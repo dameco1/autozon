@@ -93,6 +93,20 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
       onChange(updates);
       setVinDecoded(true);
 
+      // Handle stolen check
+      if (result.stolen) {
+        setStolenWarning({ stolen: true, details: result.stolen_details });
+        onStolenDetected?.(true);
+        toast.error("⚠️ Stolen Vehicle Alert", {
+          description: result.stolen_details || "This VIN has been flagged in a stolen vehicle database.",
+          duration: 10000,
+        });
+        return; // Don't show success toast
+      } else {
+        setStolenWarning({ stolen: false });
+        onStolenDetected?.(false);
+      }
+
       const confidenceMsg = result.confidence === "high"
         ? "High confidence decode"
         : result.confidence === "medium"
