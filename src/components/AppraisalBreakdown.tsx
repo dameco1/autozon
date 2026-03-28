@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import {
   TrendingDown, Gauge, Shield, Wrench, BarChart3, Globe, Eye,
   AlertTriangle, Sparkles, ArrowUpRight, Pencil, Star, Car, Gem,
-  ScanSearch, CircleAlert, CheckCircle2
+  ScanSearch, CircleAlert, CheckCircle2, ClipboardCheck
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { INSPECTION_CATEGORIES, type ChecklistAnswer } from "@/components/car-upload/inspectionChecklist";
 
 interface DetectedDamageEntry {
   type: string;
@@ -473,6 +474,46 @@ function computeAppraisalFactors(car: CarData, t: any): AppraisalFactor[] {
       actionable: false,
       formulaTooltip: `${roofRack ? "Roof rack +€250" : ""}${roofRack && roofBox ? " + " : ""}${roofBox ? "Roof box +€350" : ""} = +€${rackValue}`,
     });
+  }
+
+  // 14. INSPECTION CHECKLIST PENALTY
+  const inspChecklist = (car as any).inspection_checklist as Record<string, ChecklistAnswer> | null;
+  const totalChecklistItems = INSPECTION_CATEGORIES.reduce((sum, cat) => sum + cat.items.length, 0);
+  if (inspChecklist && totalChecklistItems > 0) {
+    let noCount = 0;
+    let unknownCount = 0;
+    let yesCount = 0;
+    for (const cat of INSPECTION_CATEGORIES) {
+      for (const item of cat.items) {
+        const answer = inspChecklist[item.id];
+        if (answer === "no") noCount++;
+        else if (answer === "unknown") unknownCount++;
+        else if (answer === "yes") yesCount++;
+      }
+    }
+    const penaltyPct = noCount * 1.5 + unknownCount * 0.75;
+    const inspectionFactor = Math.max(0.70, 1 - penaltyPct / 100);
+    const inspEuro = Math.round(basePrice * depreciationFactor * (inspectionFactor - 1));
+    const answered = yesCount + noCount + unknownCount;
+
+    if (answered > 0) {
+      factors.push({
+        id: "inspection",
+        label: "Inspection Checklist",
+        explanation: noCount === 0 && unknownCount === 0
+          ? `All ${yesCount} inspection items passed — full marks on the 20-point checklist.`
+          : `${noCount} item${noCount !== 1 ? "s" : ""} flagged as "No" (−1.5% each) and ${unknownCount} as "Unknown" (−0.75% each) out of ${totalChecklistItems} inspection points. Total penalty: −${penaltyPct.toFixed(1)}%.`,
+        euroImpact: inspEuro,
+        percentImpact: (inspectionFactor - 1) * 100,
+        barValue: Math.round((yesCount / totalChecklistItems) * 100),
+        type: penaltyPct > 0 ? "reducer" : "booster",
+        icon: <ClipboardCheck className="h-5 w-5" />,
+        actionable: noCount > 0 || unknownCount > 0,
+        actionLabel: "Review inspection answers",
+        actionStep: 4,
+        formulaTooltip: `Yes: ${yesCount} · No: ${noCount} (×−1.5%) · Unknown: ${unknownCount} (×−0.75%) · Penalty: −${penaltyPct.toFixed(1)}% · Factor: ×${inspectionFactor.toFixed(3)} · Capped at −30%`,
+      });
+    }
   }
 
   return factors;
