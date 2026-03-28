@@ -1300,7 +1300,18 @@ export const translations = {
       description: "Zusätzliche Beschreibung",
       generateDescription: "Mit KI generieren",
       generatingDescription: "Wird generiert...",
-      conditionScale: { poor: "Schlecht", fair: "Akzeptabel", good: "Gut", excellent: "Ausgezeichnet" },
+      conditionScale: {
+        poor: "Starke Gebrauchsspuren",
+        fair: "Normal gebraucht",
+        good: "Wie neu",
+        excellent: "Neu / Ausgezeichnet",
+      },
+      conditionGradeHint: {
+        poor: "Sichtbare Kratzer, Dellen, Flecken oder starke Abnutzung",
+        fair: "Normale Gebrauchsspuren, kleinere optische Mängel",
+        good: "Minimale Abnutzung, sieht fast neu aus",
+        excellent: "Fabrikneu, keinerlei Gebrauchsspuren",
+      },
       documentation: {
         title: "Fahrzeugdokumentation & Historie",
         smokerCar: "Raucherfahrzeug?",
