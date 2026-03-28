@@ -69,7 +69,7 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 | `StepBasicInfo` | Make/model selection with DB-backed autocomplete |
 | `StepPhotos` | 7 mandatory photo slots with compression |
 | `StepEquipment` | Categorized equipment checklist |
-| `StepCondition` | Interior/exterior sliders + accident history |
+| `StepCondition` | 1–4 grade condition selector (Heavy Wear/Fair/Like New/Excellent) + accident history |
 | `StepInspection` | 20-point inspection checklist (transparent disclosure) |
 | `StepDamageReview` | AI damage detection results |
 | `AppraisalDisclaimer` | Legal disclaimer before appraisal |
@@ -126,7 +126,24 @@ The **Signup page** (`/signup`) collects lifestyle data alongside account creden
 - Budget range
 - **Current car** (free text, e.g. "BMW 3 Series 2019") — used for brand loyalty and upgrade path recommendations
 
-This data is stored in the `profiles` table and feeds directly into the **lifestyle-aware matching algorithm**.
+### Optional Buyer Preferences (collapsible at signup)
+
+All optional — helps pre-fill the buyer questionnaire and improve matching from day one:
+- Preferred brands (multi-select from DB-backed makes)
+- Body type (Sedan, SUV, Hatchback, Wagon, Coupe, Convertible, Van, Pickup)
+- Fuel type (Petrol, Diesel, Electric, Hybrid, Plug-in Hybrid)
+- Transmission (Manual, Automatic)
+- Budget range (min/max sliders)
+- Year range (min/max sliders)
+- Must-have features (Navigation, Heated Seats, Parking Sensors, etc.)
+- Preferred colors
+- Timing preference (Immediately, 1–3 Months, Just Browsing)
+
+This data is stored in `profiles` (lifestyle) and `user_preferences` (buyer prefs) tables and feeds directly into the **lifestyle-aware matching algorithm**.
+
+## Edit & Resubmit
+
+When editing an existing car listing, **all data from every step is restored**: specs, photos, equipment, condition grade, inspection checklist, documentation flags (smoker, service book, maintenance receipts, accessories), and AI-detected damages with costs. Users only need to change what they want — no re-entry required.
 
 ---
 
