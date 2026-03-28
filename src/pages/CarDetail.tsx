@@ -179,6 +179,28 @@ const CarDetail: React.FC = () => {
         title={pageTitle}
         description={pageDescription}
         path={`/car/${id}`}
+        type="product"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: `${car.year} ${car.make} ${car.model}`,
+          description: pageDescription,
+          url: `https://autozon.lovable.app/car/${id}`,
+          image: car.photos?.[0] || undefined,
+          brand: { "@type": "Brand", name: car.make },
+          vehicleModelDate: String(car.year),
+          mileageFromOdometer: { "@type": "QuantitativeValue", value: car.mileage, unitCode: "KMT" },
+          fuelType: car.fuel_type,
+          vehicleTransmission: car.transmission,
+          color: car.color || undefined,
+          offers: {
+            "@type": "Offer",
+            price: car.fair_value_price || car.price,
+            priceCurrency: "EUR",
+            availability: "https://schema.org/InStock",
+            url: `https://autozon.lovable.app/car/${id}`,
+          },
+        }}
       />
       <Navbar />
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">

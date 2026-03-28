@@ -39,7 +39,24 @@ const AboutUs: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO path="/about" description="Learn about Autozon — the AI-powered car platform that shows you your car's real market value. Fair prices, verified matches, zero dealer margin." />
+      <SEO
+        title="About Us"
+        path="/about"
+        description="Learn about Autozon — the AI-powered car platform that shows you your car's real market value. Fair prices, verified matches, zero dealer margin."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Autozon",
+          url: "https://autozon.lovable.app",
+          logo: "https://autozon.lovable.app/favicon.png",
+          description: "AI-powered fair value car marketplace. Sell fair, buy smart.",
+          foundingDate: "2025",
+          founders: [
+            { "@type": "Person", name: "Emina Mukic-Buljubasic", jobTitle: "CEO & Co-Founder" },
+            { "@type": "Person", name: "Damir Buljubasic", jobTitle: "CIO & Co-Founder" },
+          ],
+        }}
+      />
       <Navbar />
 
       {/* Hero / Manifesto */}
