@@ -72,8 +72,9 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Integration**: VINCARIO API (info + decode + OEM endpoints, layered merge)
 - **Auth**: Required (JWT)
 - **Input**: `{ vin: "WBAPH5C55BA..." }`
-- **Output**: `{ make, model, year, body_type, fuel_type, transmission, power_hp, suggested_equipment[], confidence, notes, source }`
-- **Strategy**: Calls 3 VINCARIO endpoints in sequence — info (free base), decode (paid specs), OEM (manufacturer data as gap-filler) — and merges results for maximum coverage
+- **Output**: `{ make, model, year, body_type, fuel_type, transmission, power_hp, suggested_equipment[], stolen, stolen_details, confidence, notes, source }`
+- **Strategy**: Calls 4 VINCARIO endpoints in sequence — info (free base), decode (paid specs), OEM (manufacturer data as gap-filler), stolen-check (theft database) — and merges results for maximum coverage
+- **Stolen Check**: Queries VINCARIO's stolen vehicle database; if flagged, the UI blocks listing and shows a warning alert
 - **Used in**: Car Upload Step 1 (Basic Info) — "Decode VIN" button
 - **Data source**: Manufacturer-backed EU vehicle database
 
