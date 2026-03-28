@@ -187,13 +187,14 @@ const BuyerQuestionnaire: React.FC = () => {
           <div>
             <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q1}</h2>
             <button
-              onClick={() => { setBrands([]); setStep(2); }}
+              onClick={handlePickForMe}
+              disabled={pickingForMe}
               className={`w-full mb-4 flex items-center justify-center gap-2 px-6 py-4 rounded-xl border-2 border-dashed transition-all ${
                 brands.length === 0 ? "border-primary bg-primary/5 text-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-primary"
-              }`}
+              } disabled:opacity-50`}
             >
-              <Sparkles className="h-4 w-4" />
-              <span className="font-semibold text-sm">{t.buyerQ.pickForMe}</span>
+              {pickingForMe ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+              <span className="font-semibold text-sm">{pickingForMe ? "Matching..." : t.buyerQ.pickForMe}</span>
             </button>
             {renderMultiSelect(dbMakes || [], brands, setBrands, 3)}
           </div>
