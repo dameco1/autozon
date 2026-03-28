@@ -268,6 +268,8 @@ serve(async (req) => {
       confidence: (make && model && year) ? "high" : "medium",
       notes: `Data sourced from VINCARIO (${sources.join(" + ")}).`,
       source: "vincario",
+      stolen: stolenCheck.stolen,
+      stolen_details: stolenCheck.details || null,
       // Additional specs for fair value enrichment
       engine_displacement_ccm: engineDisplacementCcm || undefined,
       max_speed_kmh: maxSpeedKmh || undefined,
