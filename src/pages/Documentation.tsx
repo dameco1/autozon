@@ -103,6 +103,7 @@ const sections: Section[] = [
       { title: "Go-to-Market Strategy", desc: "Austria launch plan, channels, positioning, Germany prep", icon: Globe, file: "go-to-market.md", status: "ready" },
       { title: "Competitive Analysis", desc: "Market landscape, positioning, and differentiators", icon: BarChart3, file: "competitive-analysis.md", status: "ready" },
       { title: "Partnership Pipeline", desc: "Financing partners, insurance, logistics integrations", icon: Building2, file: "partnership-pipeline.md", status: "ready" },
+      { title: "Partnership Costs & ROI", desc: "API integration costs, revenue projections, break-even analysis for Qover, finAPI, BAWAG/Santander", icon: BarChart3, file: "partnership-costs.md", status: "ready" },
     ],
   },
 ];

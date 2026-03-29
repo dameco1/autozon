@@ -56,6 +56,9 @@
 - [ ] **PWA (Progressive Web App)** — installable from browser to home screen (iOS + Android), offline support, ~1.5 hours setup
 - [ ] **VIN Equipment API Integration** — Connect CarsXE or VINdecoder.eu for OEM equipment auto-population from VIN (replaces AI-only decode)
 - [ ] **Equipment Option Pricing** — AI-seeded or API-sourced original option prices per equipment item, enabling residual-value-based equipment scoring
+- [ ] **Qover Embedded Insurance API** — Real-time motor insurance quotes (Haftpflicht, Teilkasko, Vollkasko) in transaction flow via REST API
+- [ ] **finAPI Open Banking** — PSD2-compliant SEPA instant payments + identity verification for seller KYC (AT/DE)
+- [ ] **Bank Referral Tracking** — BAWAG/Santander click-through attribution and conversion tracking with UTM links
 
 ## V2 (Planned)
 - [ ] Full financing flow (application → approval → disbursement)
@@ -67,6 +70,9 @@
 - [ ] **Real Market Data API** — Integrate mobile.de / AutoScout24 APIs for actual listing prices and transaction data to power market-blended valuations
 - [ ] **DAT/SilverDAT Integration** — Enterprise-grade repair cost estimation using OEM parts pricing and standardized labor times (insurance-grade accuracy)
 - [ ] **GT Motive / Audatex Integration** — Pan-European cloud-based repair cost estimation for cross-border accuracy
+- [ ] **Qover Policy Binding** — Full embedded insurance purchase flow (quote → bind → certificate) within transaction wizard
+- [ ] **finAPI Credit Checks** — Automated affordability scoring for financing pre-qualification
+- [ ] **Embedded Bank Quotes** — BAWAG/Santander inline financing offers via partner API
 
 ## V3 (Planned)
 - [ ] Car lifecycle tracking (service history, value over time)
@@ -141,6 +147,8 @@ Migration planning begins when **any two** of these thresholds are met:
 3. **Financing referrals** — Commission from partner banks/leasers (planned)
 4. **Advertising & Sponsored Content** — Display ads, sponsored listings, partner promotions (planned V1.5+)
 5. **Data insights** — Market analytics for dealers (planned)
+6. **Insurance commissions** — 15–25% of first-year premium via Qover embedded insurance (planned V1.5+)
+7. **Financing referrals** — €150–200 per funded deal via BAWAG/Santander referral tracking (planned V1.5+)
 
 ---
 
