@@ -260,6 +260,44 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 
 ---
 
+## Partnership Revenue Projections
+
+### Qover — Embedded Insurance Commissions
+
+| Year | Policies/Month | Avg. Commission | Annual Revenue |
+|---|---|---|---|
+| **Y1** | 10–15 | €180 | **€27,000** |
+| **Y2** | 60–80 | €200 | **€168,000** |
+| **Y3** | 200–300 | €220 | **€660,000** |
+
+### BAWAG + Santander — Financing Referrals
+
+| Year | Funded Deals/Month | Avg. Fee | Annual Revenue |
+|---|---|---|---|
+| **Y1** | 3 | €175 | **€6,300** |
+| **Y2** | 25 | €175 | **€52,500** |
+| **Y3** | 75 | €200 | **€180,000** |
+
+### finAPI — Payment Cost Savings
+
+| Year | Net Annual Savings |
+|---|---|
+| **Y1** | **€4,500** |
+| **Y2** | **€42,600** |
+| **Y3** | **€156,000** |
+
+### Total Partnership Impact
+
+| Year | New Revenue | Cost Savings | Total Impact |
+|---|---|---|---|
+| **Y1** | €33,300 | €4,500 | **€37,800** |
+| **Y2** | €220,500 | €42,600 | **€263,100** |
+| **Y3** | €840,000 | €156,000 | **€996,000** |
+
+For detailed cost-benefit analysis, see **[Partnership Costs & ROI Analysis](partnership-costs.md)**.
+
+---
+
 ## Geographic Expansion Impact
 
 | Phase | Market | Est. Addressable Listings/Year | Revenue Potential |

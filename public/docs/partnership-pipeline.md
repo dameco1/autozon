@@ -101,6 +101,7 @@ Every car sale triggers an insurance event — the buyer needs new coverage, the
 | **UNIQA** | Motor + warranty | Austria | Referral | Outreach Q4 | High |
 | **Generali AT** | Motor insurance | Austria | Referral | Research | Medium |
 | **Wiener Städtische** | Motor + GAP | Austria | Referral | Research | Medium |
+| **Qover** | Embedded insurance API | Pan-EU (AT/DE) | REST API (quotes + binding) | Evaluate | **High** |
 | **wefox** | Digital insurance broker | DACH | API integration | Evaluate Y2 | Medium |
 | **CarGarantie** | Extended warranty | DACH | API (warranty quotes) | Research | Medium |
 | **ÖAMTC Schutzbrief** | Roadside + protection | Austria | Co-marketing | Outreach Q3 | High |
@@ -227,6 +228,7 @@ Austrian automobile clubs (ÖAMTC: 2.1M members, ARBÖ: 400K members) are truste
 | **Stripe** | Payment processing | Success fee collection, placement payments | ✅ Integrated |
 | **OpenAI / Google AI** | AI models | Fair value, damage detection, chat, descriptions | ✅ Integrated |
 | **Mapbox / Google Maps** | Location services | Buyer-seller proximity, transport quotes | Evaluate Y2 |
+| **finAPI** | PSD2 open banking (AT/DE) | SEPA payments, identity verification, credit checks | Evaluate |
 
 ---
 
