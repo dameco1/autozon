@@ -48,6 +48,9 @@ const sections: Section[] = [
     docs: [
       { title: "Architecture Overview", desc: "System design, tech stack, infrastructure, and project structure", icon: Server, file: "architecture.md", status: "ready" },
       { title: "Sitemap & Routes", desc: "All pages, routes, and user flow diagrams", icon: Map, file: "sitemap.md", status: "ready" },
+      { title: "Seller Flow Diagram", desc: "Complete seller journey wireframe — upload to sale", icon: Map, file: "seller-flow.md", status: "ready" },
+      { title: "Buyer Flow Diagram", desc: "Complete buyer journey wireframe — onboarding to acquisition", icon: Map, file: "buyer-flow.md", status: "ready" },
+      { title: "System Overview Diagram", desc: "Backend services, security, admin, and cross-cutting features", icon: Server, file: "system-overview.md", status: "ready" },
       { title: "Database Schema", desc: "Tables, relationships, RLS policies, and triggers", icon: Database, file: "database-schema.md", status: "ready" },
       { title: "Backend Functions", desc: "Edge functions, AI integrations, Stripe webhooks", icon: Server, file: "backend-functions.md", status: "ready" },
       { title: "Core Business Logic", desc: "Fair value algorithm, matching engine, negotiation", icon: Brain, file: "business-logic.md", status: "ready" },
