@@ -101,6 +101,7 @@ Every car sale triggers an insurance event — the buyer needs new coverage, the
 | **UNIQA** | Motor + warranty | Austria | Referral | Outreach Q4 | High |
 | **Generali AT** | Motor insurance | Austria | Referral | Research | Medium |
 | **Wiener Städtische** | Motor + GAP | Austria | Referral | Research | Medium |
+| **Qover** | Embedded insurance API | Pan-EU (AT/DE) | REST API (quotes + binding) | Evaluate | **High** |
 | **wefox** | Digital insurance broker | DACH | API integration | Evaluate Y2 | Medium |
 | **CarGarantie** | Extended warranty | DACH | API (warranty quotes) | Research | Medium |
 | **ÖAMTC Schutzbrief** | Roadside + protection | Austria | Co-marketing | Outreach Q3 | High |
@@ -227,6 +228,7 @@ Austrian automobile clubs (ÖAMTC: 2.1M members, ARBÖ: 400K members) are truste
 | **Stripe** | Payment processing | Success fee collection, placement payments | ✅ Integrated |
 | **OpenAI / Google AI** | AI models | Fair value, damage detection, chat, descriptions | ✅ Integrated |
 | **Mapbox / Google Maps** | Location services | Buyer-seller proximity, transport quotes | Evaluate Y2 |
+| **finAPI** | PSD2 open banking (AT/DE) | SEPA payments, identity verification, credit checks | Evaluate |
 
 ---
 
@@ -335,7 +337,23 @@ Autozon's user base is 100% in-market for automotive-related services — financ
 | Allianz AT | — | — | — | — | — |
 | ÖAMTC Prüfdienst | — | — | — | — | — |
 | CarGarantie | — | — | — | — | — |
+| **Qover** | — | — | — | — | — |
+| **finAPI** | — | — | — | — | — |
 
 ---
 
-*Document status: V1 — For investor data room. Pipeline updated as outreach progresses.*
+## 7. API Integration Cost Analysis
+
+For detailed cost-benefit analysis of each API partner (setup costs, ongoing expenses, revenue projections, and break-even timelines), see the dedicated **[Partnership Costs & ROI Analysis](partnership-costs.md)** document.
+
+### Summary
+
+| Partner | Setup Cost | Monthly Cost | Y1 Revenue | Break-Even | Priority |
+|---|---|---|---|---|---|
+| **Qover (Insurance)** | €4,000 | €0 | €27,000 | Month 2 | 🔴 HIGH |
+| **BAWAG + Santander (Financing)** | €2,000 | €0 | €6,300 | Month 4 | 🔴 HIGH |
+| **finAPI (Open Banking)** | €8,000 | €350–1,500 | €4,500 savings | Month 8 | 🟡 MEDIUM |
+
+---
+
+*Document status: V2 — Updated with Qover, finAPI, and API cost analysis. For investor data room. Pipeline updated as outreach progresses.*
