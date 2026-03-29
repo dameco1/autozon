@@ -337,7 +337,23 @@ Autozon's user base is 100% in-market for automotive-related services — financ
 | Allianz AT | — | — | — | — | — |
 | ÖAMTC Prüfdienst | — | — | — | — | — |
 | CarGarantie | — | — | — | — | — |
+| **Qover** | — | — | — | — | — |
+| **finAPI** | — | — | — | — | — |
 
 ---
 
-*Document status: V1 — For investor data room. Pipeline updated as outreach progresses.*
+## 7. API Integration Cost Analysis
+
+For detailed cost-benefit analysis of each API partner (setup costs, ongoing expenses, revenue projections, and break-even timelines), see the dedicated **[Partnership Costs & ROI Analysis](partnership-costs.md)** document.
+
+### Summary
+
+| Partner | Setup Cost | Monthly Cost | Y1 Revenue | Break-Even | Priority |
+|---|---|---|---|---|---|
+| **Qover (Insurance)** | €4,000 | €0 | €27,000 | Month 2 | 🔴 HIGH |
+| **BAWAG + Santander (Financing)** | €2,000 | €0 | €6,300 | Month 4 | 🔴 HIGH |
+| **finAPI (Open Banking)** | €8,000 | €350–1,500 | €4,500 savings | Month 8 | 🟡 MEDIUM |
+
+---
+
+*Document status: V2 — Updated with Qover, finAPI, and API cost analysis. For investor data room. Pipeline updated as outreach progresses.*
