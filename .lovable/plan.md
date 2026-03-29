@@ -1,64 +1,99 @@
 
 
-# Partnership Integration: Qover, finAPI, Local Banks
+# iOS App with Capacitor
 
-## What We're Building
+## Overview
 
-Integrate real partnership APIs into the platform and document the full cost/revenue analysis in both the data room and roadmap.
+Wrap the existing Autozon React app in a native iOS shell using Capacitor. This gives you a real App Store app with full device access (camera, push notifications, biometrics) while sharing 100% of the existing codebase.
 
-## Plan
+## What Changes in the Codebase
 
-### 1. Create Partnership Cost & Revenue Analysis Document
+### 1. Install Capacitor Dependencies
 
-New file: `public/docs/partnership-costs.md` (+ `docs/` mirror)
+Add to `package.json`:
+- `@capacitor/core` (runtime)
+- `@capacitor/cli` (dev dependency)
+- `@capacitor/ios` (iOS platform)
 
-Content:
-- **Qover (Embedded Insurance)**: Setup cost (€0), revenue model (15-25% commission), per-policy revenue (€120-300), Y1-Y3 projections, API integration effort, technical requirements
-- **finAPI (Open Banking)**: Pricing tiers (€200-500/mo base + per-call), SEPA vs Stripe savings, identity verification costs, PSD2 compliance notes
-- **Local Banking Partners (BAWAG, Santander)**: Referral model (€150-200/funded deal), integration effort (tracking links vs API), projected Y1-Y3 revenue
-- **Nordea**: Why deprioritized (no AT market coverage)
-- **Consolidated ROI table**: Cost vs. revenue per integration, break-even timeline, priority ranking
+### 2. Initialize Capacitor
 
-### 2. Update Partnership Pipeline Document
+Create `capacitor.config.ts` in project root with:
+- **appId**: `app.lovable.f15fd8ef222f40d2907b9cb03e4cbf27`
+- **appName**: `autozon`
+- **webDir**: `dist` (Vite build output)
+- **server.url**: Points to the Lovable sandbox preview for hot-reload during development
 
-Edit `docs/partnership-pipeline.md` and `public/docs/partnership-pipeline.md`:
-- Add **Qover** to Insurance Partners table (API-first, pan-EU, High priority, "Evaluate" status)
-- Add **finAPI** to Technology & Data Partners table (PSD2 open banking, AT/DE, Medium priority)
-- Update Partnership Outreach Tracker with Qover and finAPI rows
-- Add new section: **7. API Integration Cost Analysis** summarizing setup costs, ongoing costs, and expected ROI per partner
+### 3. Update Vite Config
 
-### 3. Update Roadmap
+No changes needed -- Capacitor reads from the `dist` folder which `vite build` already produces.
 
-Edit `docs/roadmap.md` and `public/docs/roadmap.md`:
-- Add to **V1.5**: `Qover embedded insurance API — real-time motor insurance quotes in transaction flow`
-- Add to **V1.5**: `finAPI open banking — SEPA payments, identity verification (PSD2)`
-- Add to **V1.5**: `Bank referral tracking — BAWAG/Santander click-through attribution and conversion tracking`
-- Add to **V2**: `Qover policy binding — full embedded insurance purchase flow`
-- Add to **V2**: `finAPI credit checks — automated affordability scoring for financing`
-- Update Revenue Model section to reflect partnership revenue streams
+### 4. iOS App Icons
 
-### 4. Register in Data Room Index
+The existing 192px and 512px icons need to be supplemented with iOS-specific sizes (20, 29, 40, 60, 76, 83.5, 1024pt @1x/2x/3x). These get placed into the iOS project after `npx cap add ios`.
 
-Edit `src/pages/Documentation.tsx`:
-- Add "Partnership Costs & ROI" entry to Section 6.0 (Operations & Launch) with status "ready"
+---
 
-### 5. Update Revenue Model Document
+## What You Do Locally (After Export)
 
-Edit `docs/revenue-model.md` and `public/docs/revenue-model.md`:
-- Add partnership revenue projections section with Qover, finAPI, and bank referral numbers
-- Update Y1-Y3 revenue scenarios to include partnership income
+This is the part that happens on your Mac -- Lovable sets up the config, but native builds require local tools.
+
+### Prerequisites
+- **macOS** with **Xcode 15+** installed (free from Mac App Store)
+- **Apple Developer account** ($99/year) for App Store submission
+- **CocoaPods** (`sudo gem install cocoapods`)
+
+### Steps
+
+```text
+1. Export project to GitHub (Settings → Export to GitHub)
+2. git clone <your-repo> && cd autozon
+3. npm install
+4. npx cap add ios          ← creates the /ios folder
+5. npx cap update ios       ← installs native dependencies
+6. npm run build            ← builds the dist/ folder
+7. npx cap sync             ← copies dist/ into the iOS project
+8. npx cap open ios         ← opens Xcode
+9. In Xcode: select a simulator or your iPhone → Run
+```
+
+### For App Store Submission
+
+```text
+1. In Xcode → Signing & Capabilities → select your Apple Developer team
+2. Set bundle ID, version, build number
+3. Product → Archive → Distribute App → App Store Connect
+4. Fill out App Store listing in App Store Connect (screenshots, description)
+5. Submit for Apple review (typically 1-3 days)
+```
+
+---
+
+## Optional Native Plugins (Future)
+
+Once the base app works, you can add Capacitor plugins for enhanced native features:
+
+| Plugin | Purpose | Effort |
+|---|---|---|
+| `@capacitor/camera` | Native camera for car photos | ~1 hour |
+| `@capacitor/push-notifications` | Real push notifications | ~2 hours |
+| `@capacitor/haptics` | Haptic feedback on swipe actions | ~30 min |
+| `@capacitor/share` | Native share sheet for listings | ~30 min |
+| `@capacitor/app` | Deep linking, back button handling | ~1 hour |
+
+---
 
 ## Files Changed
 
 | File | Action |
 |---|---|
-| `public/docs/partnership-costs.md` | Create |
-| `docs/partnership-costs.md` | Create |
-| `docs/partnership-pipeline.md` | Edit — add Qover, finAPI |
-| `public/docs/partnership-pipeline.md` | Edit — add Qover, finAPI |
-| `docs/roadmap.md` | Edit — add V1.5/V2 items |
-| `public/docs/roadmap.md` | Edit — add V1.5/V2 items |
-| `docs/revenue-model.md` | Edit — add partnership revenue |
-| `public/docs/revenue-model.md` | Edit — add partnership revenue |
-| `src/pages/Documentation.tsx` | Edit — add new doc entry |
+| `capacitor.config.ts` | Create -- Capacitor configuration |
+| `package.json` | Edit -- add Capacitor dependencies |
+
+## Cost & Timeline
+
+| Item | Cost |
+|---|---|
+| Apple Developer Program | $99/year |
+| Development effort | ~3-4 hours (setup + testing) |
+| App Store review | Free (1-3 business days) |
 
