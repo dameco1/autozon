@@ -178,6 +178,39 @@ const PasswordGate: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
 };
 
 /* ------------------------------------------------------------------ */
+/* Mermaid diagram renderer                                            */
+/* ------------------------------------------------------------------ */
+
+const MermaidRenderer: React.FC<{
+  html: string;
+  containerRef: React.RefObject<HTMLDivElement>;
+  loading: boolean;
+  error: string;
+}> = ({ html, containerRef, loading, error }) => {
+  useEffect(() => {
+    if (loading || error || !containerRef.current) return;
+    const codeBlocks = containerRef.current.querySelectorAll("code.language-mermaid");
+    codeBlocks.forEach(async (block, idx) => {
+      const pre = block.parentElement;
+      if (!pre || pre.dataset.mermaidRendered) return;
+      pre.dataset.mermaidRendered = "true";
+      const code = block.textContent || "";
+      try {
+        const { svg } = await mermaid.render(`mermaid-${idx}`, code);
+        const wrapper = document.createElement("div");
+        wrapper.className = "mermaid-diagram my-6 overflow-x-auto";
+        wrapper.innerHTML = svg;
+        pre.replaceWith(wrapper);
+      } catch (e) {
+        console.warn("Mermaid render failed", e);
+      }
+    });
+  }, [html, loading, error]);
+
+  return null;
+};
+
+/* ------------------------------------------------------------------ */
 /* Document viewer                                                     */
 /* ------------------------------------------------------------------ */
 
