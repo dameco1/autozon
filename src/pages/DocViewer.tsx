@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { marked } from "marked";
+import mermaid from "mermaid";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
+
+mermaid.initialize({ startOnLoad: false, theme: "dark", securityLevel: "loose" });
 
 /* ------------------------------------------------------------------ */
 /* helpers                                                             */
@@ -175,6 +178,39 @@ const PasswordGate: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
 };
 
 /* ------------------------------------------------------------------ */
+/* Mermaid diagram renderer                                            */
+/* ------------------------------------------------------------------ */
+
+const MermaidRenderer: React.FC<{
+  html: string;
+  containerRef: React.RefObject<HTMLDivElement>;
+  loading: boolean;
+  error: string;
+}> = ({ html, containerRef, loading, error }) => {
+  useEffect(() => {
+    if (loading || error || !containerRef.current) return;
+    const codeBlocks = containerRef.current.querySelectorAll("code.language-mermaid");
+    codeBlocks.forEach(async (block, idx) => {
+      const pre = block.parentElement;
+      if (!pre || pre.dataset.mermaidRendered) return;
+      pre.dataset.mermaidRendered = "true";
+      const code = block.textContent || "";
+      try {
+        const { svg } = await mermaid.render(`mermaid-${idx}`, code);
+        const wrapper = document.createElement("div");
+        wrapper.className = "mermaid-diagram my-6 overflow-x-auto";
+        wrapper.innerHTML = svg;
+        pre.replaceWith(wrapper);
+      } catch (e) {
+        console.warn("Mermaid render failed", e);
+      }
+    });
+  }, [html, loading, error]);
+
+  return null;
+};
+
+/* ------------------------------------------------------------------ */
 /* Document viewer                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -280,6 +316,7 @@ const DocViewer: React.FC = () => {
             dangerouslySetInnerHTML={{ __html: html }}
           />
         )}
+        <MermaidRenderer html={html} containerRef={contentRef} loading={loading} error={error} />
       </div>
     </div>
   );
