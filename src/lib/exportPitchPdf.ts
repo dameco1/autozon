@@ -20,11 +20,12 @@ export async function exportPitchPdf(
     "position:fixed;left:-9999px;top:0;width:1920px;height:1080px;overflow:hidden;z-index:-1;";
   document.body.appendChild(container);
 
-  // Inner wrapper that matches the slide styling
+  // Inner wrapper that matches the slide styling — must carry the light theme
   const wrapper = document.createElement("div");
   wrapper.className = "slide-content";
+  wrapper.setAttribute("data-theme", "light");
   wrapper.style.cssText =
-    "width:1920px;height:1080px;background:#1A1A2E;position:relative;";
+    "width:1920px;height:1080px;position:relative;background:hsl(60 30% 96%);color:hsl(240 20% 20%);";
   container.appendChild(wrapper);
 
   for (let i = 0; i < slides.length; i++) {
