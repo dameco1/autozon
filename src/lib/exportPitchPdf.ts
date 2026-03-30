@@ -18,6 +18,8 @@ export async function exportPitchPdf(
   const container = document.createElement("div");
   container.style.cssText =
     "position:fixed;left:-9999px;top:0;width:1920px;height:1080px;overflow:hidden;z-index:-1;";
+  // Copy the root CSS variables so theme tokens resolve correctly
+  container.className = document.documentElement.className;
   document.body.appendChild(container);
 
   // Inner wrapper that matches the slide styling — must carry the light theme
