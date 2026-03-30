@@ -31,43 +31,86 @@ const sourceText = "absolute bottom-8 left-40 right-40 text-[16px] text-muted-fo
 
 // Slide 1: Cover / Investor Intro
 export const SlideCover = () => (
-  <div className="flex flex-col justify-center h-full px-40 relative">
-    <div className="flex items-center gap-6 mb-10">
-      <Car className={accent} size={72} />
-      <div>
-        <h1 className="font-display text-[88px] font-black text-foreground leading-none">
-          auto<span className="text-primary">zon</span>
-        </h1>
-        <p className="text-[28px] text-muted-foreground mt-1 font-light">Sell Fair. Buy Smart.</p>
+  <div className="flex flex-col justify-between h-full px-40 py-16 relative">
+    {/* Header row */}
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-5">
+        <Car className={accent} size={56} />
+        <div>
+          <h1 className="font-display text-[64px] font-black text-foreground leading-none">
+            auto<span className="text-primary">zon</span>
+          </h1>
+          <p className="text-[22px] text-muted-foreground mt-1 font-light">Sell Fair. Buy Smart.</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-[2px] bg-primary" />
+        <span className="text-[18px] text-muted-foreground/50">Investor Presentation 2026</span>
       </div>
     </div>
 
-    <p className={`${body} max-w-[1400px] leading-[1.7]`}>
-      I'm building <span className="text-foreground font-bold">Autozon</span>, the first AI-driven smart platform that makes selling cars fair and buying cars smart. Sellers lose <span className={`${accent} font-bold`}>up to 30%</span> because the system is opaque and designed against them. Autozon fixes this with AI photo analysis, live market comparison, and structured negotiations — so sellers keep the full margin.
-    </p>
+    {/* Main content */}
+    <div className="flex flex-col items-center text-center -mt-4">
+      <h2 className="font-display text-[72px] font-black text-foreground leading-[1.1] max-w-[1400px]">
+        The AI-Powered Marketplace<br />
+        <span className="text-primary">Giving Car Sellers Their Margin Back</span>
+      </h2>
 
-    <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      The platform is <span className="text-foreground font-bold">free for buyers</span>. Sellers pay a flat listing fee — <span className={`${accent} font-bold`}>€49 Basic</span> or <span className={`${accent} font-bold`}>€99 Premium</span>. The European used‑car market is <span className={`${accent} font-bold`}>€300B+</span>, and no dominant AI-driven car platform exists.
-    </p>
-
-    <p className={`${body} max-w-[1400px] leading-[1.7] mt-6`}>
-      We've built a <span className="text-foreground font-bold">complete end‑to‑end AI-driven platform</span> — smart valuation engine, photo-based damage detection, lifestyle-aware buyer matching, market comparison, structured negotiation, <span className={`${accent} font-bold`}>full transaction pipeline</span> (contract generation, payment, insurance), AI concierge, <span className={`${accent} font-bold`}>VINCARIO VIN decoding</span> with stolen-vehicle check, 20-point inspection checklist, MFA security, admin dashboard, and bilingual DE/EN support — all live.
-    </p>
-
-    <p className={`text-[26px] ${accent} font-semibold mt-10`}>
-      If this aligns with your investment strategy and goals in mobility, marketplace, or AI — I'd love to share more.
-    </p>
-
-    <div className="absolute bottom-24 left-40 right-40">
-      <p className="text-[24px] text-foreground font-light">
-        <span className="font-semibold">Emina Mukic-Buljubasic</span>, CEO &amp; <span className="font-semibold">Damir Buljubasic</span>, CIO — Co-Founders
+      <p className="text-[26px] text-muted-foreground/80 mt-8 max-w-[1100px] leading-relaxed italic">
+        Welcome — we're building the trust layer the €300B European used-car market has never had.
+        Here's why now is the time to join us.
       </p>
+
+      {/* Stat cards */}
+      <div className="grid grid-cols-4 gap-6 mt-10 w-full max-w-[1400px]">
+        {[
+          { value: "€300B+", label: "EU Used-Car Market", icon: Globe },
+          { value: "30%", label: "Lost to Dealer Margins", icon: TrendingDown },
+          { value: "€49", label: "Flat Fee to List", icon: Tag },
+          { value: "10 Days", label: "Avg Sales Cycle", icon: Clock },
+        ].map((s) => (
+          <div key={s.label} className="bg-secondary/60 border border-border rounded-2xl px-6 py-7 flex flex-col items-center gap-2">
+            <s.icon className="text-primary" size={28} />
+            <span className="font-display text-[40px] font-black text-foreground leading-none">{s.value}</span>
+            <span className="text-[16px] text-muted-foreground">{s.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Capabilities row */}
+      <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8">
+        {[
+          "AI photo analysis",
+          "live market pricing",
+          "lifestyle-aware seller matching",
+          "structured negotiation",
+          "full transaction pipeline",
+        ].map((cap) => (
+          <span key={cap} className="text-[18px] text-muted-foreground flex items-center gap-2">
+            <Zap className="text-primary" size={16} /> {cap}
+          </span>
+        ))}
+      </div>
+
+      {/* Car image strip */}
+      <div className="flex justify-center gap-5 mt-8">
+        {[carBmw5Black, carBmwX6Red, carPorsche911, carCitroenDs5].map((src, i) => (
+          <div key={i} className="w-[200px] h-[120px] rounded-xl overflow-hidden border border-border shadow-sm">
+            <img src={src} alt="" className="w-full h-full object-cover" />
+          </div>
+        ))}
+      </div>
     </div>
 
-    <div className="absolute bottom-8 left-40 right-40 flex items-center gap-3">
-      <div className="w-12 h-[2px] bg-primary" />
-      <span className={`text-[20px] ${dim}`}>Investor Presentation 2026</span>
-      <div className="w-12 h-[2px] bg-primary" />
+    {/* Footer */}
+    <div className="flex items-center justify-center gap-2 text-[22px] text-foreground/70">
+      <span className="font-semibold">Emina Mukic-Buljubasic</span>
+      <span className="text-muted-foreground/40">CEO</span>
+      <span className="text-primary mx-2">·</span>
+      <span className="font-semibold">Damir Buljubasic</span>
+      <span className="text-muted-foreground/40">CIO</span>
+      <span className="text-primary mx-2">·</span>
+      <span className="text-muted-foreground/40">Co-Founders</span>
     </div>
   </div>
 );
