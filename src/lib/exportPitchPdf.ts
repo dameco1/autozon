@@ -55,7 +55,7 @@ export async function exportPitchPdf(
       width: 1920,
       height: 1080,
       scale: 2,
-      backgroundColor: "#1A1A2E",
+      backgroundColor: null,
       useCORS: true,
       logging: false,
     });
