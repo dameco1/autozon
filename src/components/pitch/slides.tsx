@@ -53,7 +53,7 @@ export const SlideCover = () => (
     <div className="flex flex-col items-center text-center -mt-4">
       <h2 className="font-display text-[72px] font-black text-foreground leading-[1.1] max-w-[1400px]">
         The AI-Powered Marketplace<br />
-        <span className="text-primary">Giving Car Sellers Their Margin Back</span>
+        <span className="text-primary">Streamlining Car Sourcing, Pricing, and Buyer–Seller Matching Through Automated Data Intelligence</span>
       </h2>
 
       <p className="text-[26px] text-muted-foreground/80 mt-8 max-w-[1100px] leading-relaxed italic">
