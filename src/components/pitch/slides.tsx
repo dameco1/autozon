@@ -92,14 +92,6 @@ export const SlideCover = () => (
         ))}
       </div>
 
-      {/* Car image strip */}
-      <div className="flex justify-center gap-5 mt-8">
-        {[carBmw5Black, carBmwX6Red, carPorsche911, carCitroenDs5].map((src, i) => (
-          <div key={i} className="w-[200px] h-[120px] rounded-xl overflow-hidden border border-border shadow-sm">
-            <img src={src} alt="" className="w-full h-full object-cover" />
-          </div>
-        ))}
-      </div>
     </div>
 
     {/* Footer */}
