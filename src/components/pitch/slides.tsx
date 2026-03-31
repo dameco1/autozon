@@ -57,7 +57,7 @@ export const SlideCover = () => (
       </h2>
 
       <p className="text-[26px] text-muted-foreground/80 mt-8 max-w-[1100px] leading-relaxed italic">
-        Welcome — we're building the trust layer the €300B European used-car market has never had.
+        Welcome Investors, to the trust layer the €300B European used-car market has never had.
         Here's why now is the time to join us.
       </p>
 
