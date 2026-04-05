@@ -27,7 +27,7 @@ const YEARS = Array.from({ length: currentYear - 1999 }, (_, i) => currentYear -
 /** Fields that VIN decode can auto-fill */
 type VinField = "make" | "model" | "variant" | "year" | "fuelType" | "bodyType" | "transmission" | "powerHp" | "color";
 
-const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested, onStolenDetected }) => {
+const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested, onStolenDetected, isEdit }) => {
   const { t } = useLanguage();
   const [vinDecoding, setVinDecoding] = useState(false);
   const [vinDecoded, setVinDecoded] = useState(false);
