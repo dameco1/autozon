@@ -478,6 +478,9 @@ const CarDetail: React.FC = () => {
               </Button>
             </div>
 
+            {/* Vincario Data Card */}
+            <VincarioDataCard vin={(car as any).vin} carId={car.id} />
+
             {/* Coming Soon — Spare Parts & Merchandise */}
             <motion.div
               className="bg-muted/50 border border-border rounded-2xl p-5 opacity-60 cursor-not-allowed"
