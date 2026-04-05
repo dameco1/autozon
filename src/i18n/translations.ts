@@ -782,6 +782,23 @@ export const translations = {
       stepInsurance: "Insurance",
       stepComplete: "Complete",
       sellerWaitingForBuyer: "The buyer is setting up the transaction. You'll be able to sign the contract once it's ready.",
+      // Document checklist
+      documentChecklist: "Document Checklist",
+      yourDocuments: "Your Documents",
+      otherPartyDocuments: "Other Party Documents",
+      documentUploaded: "Document uploaded",
+      uploadFailed: "Upload failed",
+      verified: "Verified",
+      optional: "Optional",
+      complete: "Complete",
+      // Deadline manager
+      offlineSteps: "Offline Steps & Deadlines",
+      overdue: "Overdue",
+      stepCompleted: "Step completed",
+      completed: "Completed",
+      done: "Done",
+      // Warranty
+      warranty: "Warranty",
     },
     nextCar: {
       title: "Your Next Car",
