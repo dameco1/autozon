@@ -53,7 +53,7 @@ const AcquisitionOptions: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [sellerName, setSellerName] = useState("Seller");
   const [buyerName, setBuyerName] = useState("Buyer");
-  const [sellerCountry, setSellerCountry] = useState("Germany");
+  const [sellerCountry, setSellerCountry] = useState("");
 
   // Transaction wizard state
   const [step, setStep] = useState(1);
