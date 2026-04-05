@@ -173,6 +173,13 @@ export type Database = {
             referencedRelation: "cars"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "buyer_selections_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       buyers: {
@@ -295,6 +302,13 @@ export type Database = {
             referencedRelation: "cars"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "car_shortlists_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       car_views: {
@@ -322,6 +336,13 @@ export type Database = {
             columns: ["car_id"]
             isOneToOne: false
             referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "car_views_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars_public"
             referencedColumns: ["id"]
           },
         ]
@@ -545,6 +566,13 @@ export type Database = {
             referencedRelation: "cars"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "matches_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       notifications: {
@@ -632,6 +660,13 @@ export type Database = {
             columns: ["car_id"]
             isOneToOne: false
             referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "offers_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars_public"
             referencedColumns: ["id"]
           },
         ]
@@ -784,6 +819,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "transactions_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars_public"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "transactions_financing_partner_id_fkey"
             columns: ["financing_partner_id"]
             isOneToOne: false
@@ -916,7 +958,132 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      cars_public: {
+        Row: {
+          accident_details: string | null
+          accident_history: boolean | null
+          body_type: string | null
+          color: string | null
+          condition_exterior: number | null
+          condition_interior: number | null
+          condition_score: number | null
+          created_at: string | null
+          demand_score: number | null
+          description: string | null
+          detected_damages: Json | null
+          equipment: string[] | null
+          fair_value_price: number | null
+          features: string[] | null
+          fuel_type: string | null
+          has_roof_box: boolean | null
+          has_roof_rack: boolean | null
+          id: string | null
+          image_url: string | null
+          inspection_checklist: Json | null
+          is_seed: boolean | null
+          maintenance_receipts: boolean | null
+          make: string | null
+          market_blended: boolean | null
+          mileage: number | null
+          model: string | null
+          original_docs_available: boolean | null
+          owner_id: string | null
+          photos: string[] | null
+          placement_paid: boolean | null
+          power_hp: number | null
+          price: number | null
+          second_wheel_set: boolean | null
+          service_book_updated: boolean | null
+          smoker_car: boolean | null
+          status: string | null
+          transmission: string | null
+          updated_at: string | null
+          year: number | null
+        }
+        Insert: {
+          accident_details?: string | null
+          accident_history?: boolean | null
+          body_type?: string | null
+          color?: string | null
+          condition_exterior?: number | null
+          condition_interior?: number | null
+          condition_score?: number | null
+          created_at?: string | null
+          demand_score?: number | null
+          description?: string | null
+          detected_damages?: Json | null
+          equipment?: string[] | null
+          fair_value_price?: number | null
+          features?: string[] | null
+          fuel_type?: string | null
+          has_roof_box?: boolean | null
+          has_roof_rack?: boolean | null
+          id?: string | null
+          image_url?: string | null
+          inspection_checklist?: Json | null
+          is_seed?: boolean | null
+          maintenance_receipts?: boolean | null
+          make?: string | null
+          market_blended?: boolean | null
+          mileage?: number | null
+          model?: string | null
+          original_docs_available?: boolean | null
+          owner_id?: string | null
+          photos?: string[] | null
+          placement_paid?: boolean | null
+          power_hp?: number | null
+          price?: number | null
+          second_wheel_set?: boolean | null
+          service_book_updated?: boolean | null
+          smoker_car?: boolean | null
+          status?: string | null
+          transmission?: string | null
+          updated_at?: string | null
+          year?: number | null
+        }
+        Update: {
+          accident_details?: string | null
+          accident_history?: boolean | null
+          body_type?: string | null
+          color?: string | null
+          condition_exterior?: number | null
+          condition_interior?: number | null
+          condition_score?: number | null
+          created_at?: string | null
+          demand_score?: number | null
+          description?: string | null
+          detected_damages?: Json | null
+          equipment?: string[] | null
+          fair_value_price?: number | null
+          features?: string[] | null
+          fuel_type?: string | null
+          has_roof_box?: boolean | null
+          has_roof_rack?: boolean | null
+          id?: string | null
+          image_url?: string | null
+          inspection_checklist?: Json | null
+          is_seed?: boolean | null
+          maintenance_receipts?: boolean | null
+          make?: string | null
+          market_blended?: boolean | null
+          mileage?: number | null
+          model?: string | null
+          original_docs_available?: boolean | null
+          owner_id?: string | null
+          photos?: string[] | null
+          placement_paid?: boolean | null
+          power_hp?: number | null
+          price?: number | null
+          second_wheel_set?: boolean | null
+          service_book_updated?: boolean | null
+          smoker_car?: boolean | null
+          status?: string | null
+          transmission?: string | null
+          updated_at?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
