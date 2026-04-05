@@ -438,7 +438,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
               {buyerOffers.length === 0 ? (
                 <div className="p-6 text-center">
                   <p className="text-sm text-muted-foreground">{dt.buyerNoOffers || "No offers yet. Browse cars and make an offer!"}</p>
-                  <Button variant="ghost" size="sm" className="mt-2 text-primary text-xs" onClick={() => navigate("/cars")}>
+                  <Button variant="ghost" size="sm" className="mt-2 text-primary text-xs" onClick={() => navigate("/car-selection")}>
                     <Search className="h-3 w-3 mr-1" /> {dt.buyerBrowseCars || "Browse Cars"}
                   </Button>
                 </div>
@@ -517,7 +517,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
             <Card className="bg-secondary/50 border-border p-6">
               <h2 className="text-lg font-display font-bold text-foreground mb-4">{t.dashboard.quickActions}</h2>
               <div className="space-y-2">
-                <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/cars")}>
+                <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/car-selection")}>
                   <Search className="h-4 w-4 mr-3 text-primary" /> {dt.buyerBrowseCars || "Browse Cars"}
                 </Button>
                 <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/recommendations")}>
