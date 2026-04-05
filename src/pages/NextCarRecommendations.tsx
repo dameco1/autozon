@@ -92,7 +92,12 @@ const NextCarRecommendations: React.FC = () => {
         </motion.div>
 
         {cars.length === 0 ? (
-          <div className="text-center py-20 text-muted-foreground">{t.nextCar.noResults}</div>
+          <div className="text-center py-20">
+            <p className="text-muted-foreground mb-4">{t.nextCar.noResults}</p>
+            <Button onClick={() => navigate("/onboarding")} className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
+              Complete Your Profile <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {cars.map((car, i) => (
