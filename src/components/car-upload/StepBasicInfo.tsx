@@ -18,6 +18,7 @@ interface Props {
   onChange: (updates: Partial<CarFormData>) => void;
   onVinEquipmentSuggested?: (equipment: string[]) => void;
   onStolenDetected?: (stolen: boolean) => void;
+  isEdit?: boolean;
 }
 
 const currentYear = new Date().getFullYear();
