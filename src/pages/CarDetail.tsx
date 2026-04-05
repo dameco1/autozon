@@ -93,12 +93,23 @@ const CarDetail: React.FC = () => {
     if (!id) return;
     supabase
       .from("cars")
-      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos, inspection_checklist, owner_id, vin")
+      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos, inspection_checklist, owner_id")
       .eq("id", id)
       .single()
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         if (data) {
-          setCar(data as unknown as CarFull);
+          let vinValue: string | null = null;
+          // Only fetch VIN for the car owner
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user && (data as any).owner_id === user.id) {
+            const { data: vinData } = await supabase
+              .from("cars")
+              .select("vin")
+              .eq("id", id)
+              .single();
+            vinValue = vinData?.vin ?? null;
+          }
+          setCar({ ...data, vin: vinValue } as unknown as CarFull);
           setDownPayment(Math.round((data as any).price * 0.2));
         }
         setLoading(false);
