@@ -44,6 +44,9 @@ const BuyerQuestionnaire: React.FC = () => {
   const [features, setFeatures] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [timing, setTiming] = useState("browsing");
+  const [sports, setSports] = useState<string[]>([]);
+  const [needsTowing, setNeedsTowing] = useState(false);
+  const [towingWeight, setTowingWeight] = useState<number | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
