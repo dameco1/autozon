@@ -333,14 +333,38 @@ const Dashboard: React.FC = () => {
                                 onClick={async () => {
                                   setPlacingCarId(car.id);
                                   try {
-                                    const { data, error } = await supabase.functions.invoke("create-placement-checkout", {
-                                      body: { carId: car.id },
-                                    });
-                                    if (error) throw error;
+                                    const { data: sessionData } = await supabase.auth.getSession();
+                                    const token = sessionData?.session?.access_token;
+                                    if (!token) {
+                                      toast.error("Session expired. Redirecting to login…");
+                                      setTimeout(() => navigate("/login"), 1500);
+                                      return;
+                                    }
+                                    const res = await fetch(
+                                      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-placement-checkout`,
+                                      {
+                                        method: "POST",
+                                        headers: {
+                                          "Content-Type": "application/json",
+                                          Authorization: `Bearer ${token}`,
+                                          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+                                        },
+                                        body: JSON.stringify({ carId: car.id }),
+                                      }
+                                    );
+                                    const data = await res.json();
+                                    if (!res.ok) throw new Error(data?.error || "Checkout failed");
                                     if (data?.url) window.location.href = data.url;
-                                  } catch (err) {
+                                    else throw new Error("No checkout URL returned");
+                                  } catch (err: any) {
                                     console.error(err);
-                                    toast.error("Failed to start checkout.");
+                                    const msg = err.message || "Failed to start checkout";
+                                    if (msg.toLowerCase().includes("session") || msg.toLowerCase().includes("log in")) {
+                                      toast.error(msg);
+                                      setTimeout(() => navigate("/login"), 1500);
+                                    } else {
+                                      toast.error(msg);
+                                    }
                                   } finally {
                                     setPlacingCarId(null);
                                   }
