@@ -39,6 +39,12 @@ const Signup: React.FC = () => {
   const [currentCar, setCurrentCar] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPrefs, setShowPrefs] = useState(false);
+  const [userType, setUserType] = useState("private");
+  const [companyName, setCompanyName] = useState("");
+  const [uidNumber, setUidNumber] = useState("");
+  const [registryNumber, setRegistryNumber] = useState("");
+  const [representative, setRepresentative] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
 
   // Buyer preferences (all optional)
   const [prefBrands, setPrefBrands] = useState<string[]>([]);
