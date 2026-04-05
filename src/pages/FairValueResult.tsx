@@ -540,7 +540,13 @@ const FairValueResult: React.FC = () => {
                 if (data?.url) window.location.href = data.url;
                 else throw new Error("No checkout URL returned");
               } catch (err: any) {
-                toast.error(err.message || "Failed to start checkout");
+                const msg = err.message || "Failed to start checkout";
+                if (msg.toLowerCase().includes("sign") || msg.toLowerCase().includes("session") || msg.toLowerCase().includes("log in")) {
+                  toast.error("Your session expired. Redirecting to login…");
+                  setTimeout(() => navigate("/login"), 1500);
+                } else {
+                  toast.error(msg);
+                }
               } finally {
                 setPlacementLoading(false);
               }
