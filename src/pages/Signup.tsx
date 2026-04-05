@@ -238,13 +238,13 @@ const Signup: React.FC = () => {
                 <div className="space-y-2">
                   <Label className="text-muted-foreground text-sm">{ls.transmissionPref}</Label>
                   <div className="flex gap-2">
-                    {TRANSMISSIONS.map((tr) => (
+                    {["Any", ...TRANSMISSIONS].map((tr) => (
                       <button
                         key={tr}
                         type="button"
-                        onClick={() => setPrefTransmission(prefTransmission === tr ? "" : tr)}
+                        onClick={() => setPrefTransmission(tr === "Any" ? "" : (prefTransmission === tr ? "" : tr))}
                         className={`flex-1 px-3 py-2 rounded-lg border text-xs font-medium transition-all ${
-                          prefTransmission === tr ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground"
+                          (tr === "Any" && !prefTransmission) || prefTransmission === tr ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground"
                         }`}
                       >
                         {tr}
