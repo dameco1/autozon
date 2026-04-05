@@ -344,24 +344,35 @@ const AcquisitionOptions: React.FC = () => {
           {/* Seller sees contract signing view when at step 2+ */}
           {isSeller ? (
             step >= 2 && step <= 5 && completionMethod === "digital" ? (
-              <StepContract
-                car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
-                agreedPrice={agreedPrice}
-                sellerCountry={sellerCountry}
-                buyerName={buyerName}
-                sellerName={sellerName}
-                transactionId={transactionId}
-                onContinue={handleContractDone}
-                role="seller"
-                contractSignedSeller={contractSignedSeller}
-                contractSignedBuyer={contractSignedBuyer}
-                onSellerSign={async () => {
-                  if (!transactionId) return;
-                  await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
-                  setContractSignedSeller(true);
-                  toast.success(t.transaction.contractSigned);
-                }}
-              />
+              myKycStatus !== "verified" && myKycStatus !== "approved" ? (
+                <div className="text-center py-12 space-y-4">
+                  <AlertTriangle className="h-12 w-12 text-orange mx-auto" />
+                  <h3 className="text-xl font-display font-bold text-foreground">{(t as any).kyc?.title || "Identity Verification Required"}</h3>
+                  <p className="text-muted-foreground max-w-md mx-auto">{(t as any).kyc?.subtitle || "You must verify your identity before signing a contract."}</p>
+                  <Button className="bg-primary text-primary-foreground" onClick={() => navigate("/kyc")}>
+                    <Shield className="mr-2 h-4 w-4" /> {(t as any).kyc?.startVerification || "Start Verification"}
+                  </Button>
+                </div>
+              ) : (
+                <StepContract
+                  car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
+                  agreedPrice={agreedPrice}
+                  sellerCountry={sellerCountry}
+                  buyerName={buyerName}
+                  sellerName={sellerName}
+                  transactionId={transactionId}
+                  onContinue={handleContractDone}
+                  role="seller"
+                  contractSignedSeller={contractSignedSeller}
+                  contractSignedBuyer={contractSignedBuyer}
+                  onSellerSign={async () => {
+                    if (!transactionId) return;
+                    await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
+                    setContractSignedSeller(true);
+                    toast.success(t.transaction.contractSigned);
+                  }}
+                />
+              )
             ) : step === 99 ? (
               <StepManualComplete
                 car={car}
