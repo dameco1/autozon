@@ -137,10 +137,11 @@ const Negotiation: React.FC = () => {
 
   // Seed initial round if offer exists but no rounds yet (backward compat)
   useEffect(() => {
-    if (!offer || !user || rounds.length > 0) return;
-    // Only the buyer who created the offer seeds round 1
+    if (!offer || !user || !roundsLoaded || seeded) return;
+    if (rounds.length > 0) return;
     if (user.id !== offer.buyer_id) return;
 
+    setSeeded(true);
     const seedRound = async () => {
       await supabase.from("negotiation_rounds" as any).insert({
         offer_id: offer.id,
@@ -154,7 +155,7 @@ const Negotiation: React.FC = () => {
       fetchData();
     };
     seedRound();
-  }, [offer, user, rounds.length, fetchData]);
+  }, [offer, user, roundsLoaded, seeded, rounds.length, fetchData]);
 
   if (loading) {
     return (
