@@ -816,6 +816,7 @@ export type Database = {
           min_budget: number | null
           min_power_hp: number | null
           min_year: number | null
+          needs_towing: boolean | null
           onboarding_completed: boolean | null
           ownership_preference: string | null
           parking_type: string | null
@@ -824,7 +825,9 @@ export type Database = {
           preferred_fuel_types: string[] | null
           preferred_makes: string[] | null
           preferred_transmission: string | null
+          sports: string[] | null
           timing_preference: string | null
+          towing_weight_kg: number | null
           updated_at: string
           usage_pattern: string | null
           user_id: string
@@ -842,6 +845,7 @@ export type Database = {
           min_budget?: number | null
           min_power_hp?: number | null
           min_year?: number | null
+          needs_towing?: boolean | null
           onboarding_completed?: boolean | null
           ownership_preference?: string | null
           parking_type?: string | null
@@ -850,7 +854,9 @@ export type Database = {
           preferred_fuel_types?: string[] | null
           preferred_makes?: string[] | null
           preferred_transmission?: string | null
+          sports?: string[] | null
           timing_preference?: string | null
+          towing_weight_kg?: number | null
           updated_at?: string
           usage_pattern?: string | null
           user_id: string
@@ -868,6 +874,7 @@ export type Database = {
           min_budget?: number | null
           min_power_hp?: number | null
           min_year?: number | null
+          needs_towing?: boolean | null
           onboarding_completed?: boolean | null
           ownership_preference?: string | null
           parking_type?: string | null
@@ -876,7 +883,9 @@ export type Database = {
           preferred_fuel_types?: string[] | null
           preferred_makes?: string[] | null
           preferred_transmission?: string | null
+          sports?: string[] | null
           timing_preference?: string | null
+          towing_weight_kg?: number | null
           updated_at?: string
           usage_pattern?: string | null
           user_id?: string

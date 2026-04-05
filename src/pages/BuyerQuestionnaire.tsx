@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Car, ArrowRight, ArrowLeft, LayoutDashboard, Sparkles, Loader2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
@@ -15,8 +17,10 @@ const TRANSMISSIONS = ["Manual", "Automatic"];
 const FEATURES = ["Navigation", "Heated Seats", "Parking Sensors", "Backup Camera", "Sunroof", "Leather Interior", "LED Headlights", "Adaptive Cruise Control", "Lane Assist", "Apple CarPlay"];
 const COLORS = ["Black", "White", "Silver", "Grey", "Blue", "Red", "Green", "Brown", "Beige", "Orange"];
 const TIMING_OPTIONS = ["immediately", "1-3months", "browsing"];
+const SPORTS_OPTIONS = ["Cycling", "Skiing", "Running", "Gym", "Motorsports", "Hiking", "Surfing", "Golf", "Camping", "Other"];
+const TOWING_WEIGHTS = [750, 1500, 2500, 3500];
 
-const TOTAL_STEPS = 10;
+const TOTAL_STEPS = 12;
 
 const BuyerQuestionnaire: React.FC = () => {
   const { t } = useLanguage();
@@ -40,6 +44,9 @@ const BuyerQuestionnaire: React.FC = () => {
   const [features, setFeatures] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [timing, setTiming] = useState("browsing");
+  const [sports, setSports] = useState<string[]>([]);
+  const [needsTowing, setNeedsTowing] = useState(false);
+  const [towingWeight, setTowingWeight] = useState<number | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -134,6 +141,9 @@ const BuyerQuestionnaire: React.FC = () => {
           max_mileage: maxMileage,
           preferred_colors: colors,
           timing_preference: timing,
+          sports: sports,
+          needs_towing: needsTowing,
+          towing_weight_kg: needsTowing ? towingWeight : null,
           onboarding_completed: true,
         } as any,
         { onConflict: "user_id" }
@@ -286,6 +296,43 @@ const BuyerQuestionnaire: React.FC = () => {
                 </button>
               ))}
             </div>
+          </div>
+        );
+      case 11:
+        return (
+          <div>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">What sports or activities do you enjoy?</h2>
+            <p className="text-sm text-muted-foreground mb-4">This helps us find cars that fit your gear and lifestyle.</p>
+            {renderMultiSelect(SPORTS_OPTIONS, sports, setSports, 2)}
+          </div>
+        );
+      case 12:
+        return (
+          <div className="space-y-6">
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">Do you need towing capability?</h2>
+            <p className="text-sm text-muted-foreground mb-2">E.g. for a bike trailer, boat, caravan, or horse trailer.</p>
+            <div className="flex items-center gap-3">
+              <Switch checked={needsTowing} onCheckedChange={setNeedsTowing} />
+              <Label className="text-foreground">{needsTowing ? "Yes, I need towing" : "No towing needed"}</Label>
+            </div>
+            {needsTowing && (
+              <div>
+                <Label className="text-muted-foreground text-sm mb-3 block">Desired towing capacity (kg)</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {TOWING_WEIGHTS.map((w) => (
+                    <button
+                      key={w}
+                      onClick={() => setTowingWeight(w)}
+                      className={`px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
+                        towingWeight === w ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground hover:border-primary/30"
+                      }`}
+                    >
+                      {w.toLocaleString()} kg
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         );
       default:

@@ -39,6 +39,9 @@ export interface PreferenceSignals {
   preferred_fuel_types?: string[] | null;
   preferred_body_types?: string[] | null;
   preferred_transmission?: string | null;
+  sports?: string[] | null;
+  needs_towing?: boolean | null;
+  towing_weight_kg?: number | null;
 }
 
 export interface CarCandidate {
@@ -54,6 +57,7 @@ export interface CarCandidate {
   power_hp: number | null;
   condition_score: number | null;
   demand_score: number | null;
+  equipment?: string[] | null;
 }
 
 // ── Body-type groupings ────────────────────────────────────────────
@@ -273,17 +277,88 @@ export function computeMatchScore(
     preferenceScore = Math.max(0, Math.min(100, ps));
   }
 
+  // ─── 4. Sports & towing lifestyle sub-score ──────────────────
+  let sportsScore = -1; // -1 = not applicable (user didn't set sports)
+  if (prefs && prefs.sports && prefs.sports.length > 0) {
+    let ss = 50;
+    const equip = (car.equipment ?? []).map(e => e.toLowerCase());
+    const bt = car.body_type;
+
+    // Storage fit (40% weight of sub-score) — bulky sports need cargo space
+    const bulkySports = new Set(["Cycling", "Skiing", "Surfing", "Golf", "Camping"]);
+    const hasBulky = prefs.sports.some(s => bulkySports.has(s));
+    if (hasBulky) {
+      if (["SUV", "Wagon", "Van"].includes(bt)) ss += 20;
+      else if (["Sedan", "Hatchback"].includes(bt)) ss += 5;
+      else if (["Coupe", "Convertible", "Roadster"].includes(bt)) ss -= 15;
+    }
+
+    // Roofbox compatibility (20%) — check for roof rails/rack in equipment
+    const hasRoofMount = equip.some(e => e.includes("roof rail") || e.includes("roof rack") || e.includes("roof bar"));
+    if (hasBulky && hasRoofMount) ss += 15;
+    else if (hasBulky && !hasRoofMount && ["Coupe", "Convertible"].includes(bt)) ss -= 10;
+
+    // Towing capability (20%)
+    if (prefs.needs_towing) {
+      const hasTowbar = equip.some(e => e.includes("trailer hitch") || e.includes("tow bar") || e.includes("towbar") || e.includes("anhängerkupplung"));
+      if (hasTowbar) {
+        ss += 15;
+      } else {
+        // Body-type based towing likelihood
+        if (["SUV", "Pickup", "Van"].includes(bt)) ss += 5;
+        else if (["Coupe", "Convertible", "Hatchback"].includes(bt)) ss -= 10;
+      }
+      // Weight class penalty: lightweight cars can't tow heavy loads
+      const desiredWeight = prefs.towing_weight_kg ?? 750;
+      if (desiredWeight >= 2500 && !["SUV", "Pickup", "Van"].includes(bt)) ss -= 10;
+    }
+
+    // Body type suitability (20%) — outdoor sports benefit from SUV/Wagon
+    const outdoorSports = new Set(["Cycling", "Skiing", "Running", "Hiking", "Surfing", "Camping"]);
+    const hasOutdoor = prefs.sports.some(s => outdoorSports.has(s));
+    if (hasOutdoor) {
+      if (["SUV", "Wagon", "Pickup"].includes(bt)) ss += 10;
+      else if (["Coupe", "Convertible"].includes(bt)) ss -= 8;
+    }
+
+    // Motorsports → sporty cars
+    if (prefs.sports.includes("Motorsports")) {
+      if (SPORTY_BODIES.includes(bt) || SPORTY_MAKES.has(car.make)) ss += 12;
+      if ((car.power_hp ?? 0) >= 200) ss += 5;
+    }
+
+    sportsScore = Math.max(0, Math.min(100, ss));
+  }
+
   // ─── Final weighted blend ────────────────────────────────────
-  // 30% lifestyle (profile signals) + 30% financial + 25% preference match + 15% condition/demand
-  const final = Math.min(
-    100,
-    Math.round(
-      0.30 * lifestyleScore +
-      0.30 * financialScore +
-      0.25 * preferenceScore +
-      0.15 * conditionScore,
-    ),
-  );
+  // If sports scoring is active, adjust weights:
+  // 25% lifestyle + 25% financial + 20% preference + 10% condition + 20% sports
+  // Otherwise: 30% lifestyle + 30% financial + 25% preference + 15% condition
+  let final: number;
+  if (sportsScore >= 0) {
+    final = Math.min(
+      100,
+      Math.round(
+        0.25 * lifestyleScore +
+        0.25 * financialScore +
+        0.20 * preferenceScore +
+        0.10 * conditionScore +
+        0.20 * sportsScore,
+      ),
+    );
+    // Deprioritize cars scoring very low on sports dimension
+    if (sportsScore < 30) final = Math.max(5, final - 10);
+  } else {
+    final = Math.min(
+      100,
+      Math.round(
+        0.30 * lifestyleScore +
+        0.30 * financialScore +
+        0.25 * preferenceScore +
+        0.15 * conditionScore,
+      ),
+    );
+  }
 
   return final;
 }
