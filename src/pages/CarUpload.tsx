@@ -439,7 +439,7 @@ const CarUpload: React.FC = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} onVinEquipmentSuggested={setVinSuggestedEquipment} onStolenDetected={setVinStolenBlocked} />}
+                  {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} onVinEquipmentSuggested={setVinSuggestedEquipment} onStolenDetected={setVinStolenBlocked} isEdit={!!editId} />}
                   {step === 2 && (
                     <StepPhotos
                       photoSlots={formData.photoSlots}
