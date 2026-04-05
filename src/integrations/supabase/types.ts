@@ -853,11 +853,100 @@ export type Database = {
         }
         Relationships: []
       }
+      transaction_deadlines: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          deadline_at: string
+          id: string
+          label: string
+          status: string
+          step_type: string
+          transaction_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          deadline_at: string
+          id?: string
+          label: string
+          status?: string
+          step_type: string
+          transaction_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          deadline_at?: string
+          id?: string
+          label?: string
+          status?: string
+          step_type?: string
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transaction_deadlines_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transaction_documents: {
+        Row: {
+          created_at: string
+          document_type: string
+          id: string
+          label: string
+          required: boolean
+          transaction_id: string
+          uploaded_at: string | null
+          uploaded_url: string | null
+          uploader_role: string
+          verified: boolean
+        }
+        Insert: {
+          created_at?: string
+          document_type: string
+          id?: string
+          label: string
+          required?: boolean
+          transaction_id: string
+          uploaded_at?: string | null
+          uploaded_url?: string | null
+          uploader_role?: string
+          verified?: boolean
+        }
+        Update: {
+          created_at?: string
+          document_type?: string
+          id?: string
+          label?: string
+          required?: boolean
+          transaction_id?: string
+          uploaded_at?: string | null
+          uploaded_url?: string | null
+          uploader_role?: string
+          verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transaction_documents_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       transactions: {
         Row: {
           agreed_price: number
           buyer_id: string
           buyer_kyc_status: string
+          buyer_type: string
           car_id: string
           completion_method: string | null
           contract_generated_at: string | null
@@ -877,6 +966,7 @@ export type Database = {
           payment_method: string | null
           seller_id: string
           seller_kyc_status: string
+          seller_type: string
           status: string
           updated_at: string
         }
@@ -884,6 +974,7 @@ export type Database = {
           agreed_price: number
           buyer_id: string
           buyer_kyc_status?: string
+          buyer_type?: string
           car_id: string
           completion_method?: string | null
           contract_generated_at?: string | null
@@ -903,6 +994,7 @@ export type Database = {
           payment_method?: string | null
           seller_id: string
           seller_kyc_status?: string
+          seller_type?: string
           status?: string
           updated_at?: string
         }
@@ -910,6 +1002,7 @@ export type Database = {
           agreed_price?: number
           buyer_id?: string
           buyer_kyc_status?: string
+          buyer_type?: string
           car_id?: string
           completion_method?: string | null
           contract_generated_at?: string | null
@@ -929,6 +1022,7 @@ export type Database = {
           payment_method?: string | null
           seller_id?: string
           seller_kyc_status?: string
+          seller_type?: string
           status?: string
           updated_at?: string
         }
