@@ -372,7 +372,7 @@ const AcquisitionOptions: React.FC = () => {
             ) : (
               <div className="text-center py-12">
                 <Package className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground">{t.transaction.sellerWaitingForBuyer || "The buyer is setting up the transaction. You'll be able to sign the contract once it's ready."}</p>
+                <p className="text-muted-foreground">{t.transaction.sellerWaitingForBuyer}</p>
                 <Button variant="ghost" className="mt-4 text-muted-foreground" onClick={() => navigate("/dashboard")}>
                   {t.transaction.backToDashboard}
                 </Button>
