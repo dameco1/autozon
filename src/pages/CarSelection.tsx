@@ -47,8 +47,11 @@ const CarSelection: React.FC = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setUserId(session.user.id);
+        // Load existing shortlists so hearts are pre-filled
+        supabase.from("car_shortlists").select("car_id").eq("user_id", session.user.id).then(({ data }) => {
+          if (data) setLiked(new Set(data.map(d => d.car_id)));
+        });
       }
-      // Load cars regardless of auth status
       loadMatchingCars(session?.user?.id ?? null);
     });
   }, [navigate]);
