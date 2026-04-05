@@ -1826,6 +1826,7 @@ export const translations = {
       stepPayment: "Zahlung",
       stepInsurance: "Versicherung",
       stepComplete: "Abschluss",
+      sellerWaitingForBuyer: "Der Käufer richtet die Transaktion ein. Sie können den Vertrag unterzeichnen, sobald er bereit ist.",
     },
     nextCar: {
       title: "Ihr nächstes Auto",
