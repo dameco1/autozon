@@ -1698,7 +1698,7 @@ export const translations = {
       methodSubtitle: "Wie möchten Sie diese Transaktion abschließen?",
       digitalTitle: "Digitale Transaktion über Autozon",
       digitalBadge: "Empfohlen",
-      digitalDesc: "Wir übernehmen Vertrag, Zahlung und Versicherung — alles digital. Standard ÖAMTC (Österreich) oder ADAC (Deutschland) Kaufvertrag.",
+      digitalDesc: "Wir übernehmen Vertrag, Zahlung und Versicherung — alles digital. Autozon digitaler Kaufvertrag inklusive.",
       manualTitle: "Manuell abschließen",
       manualDesc: "Vertrag, Zahlung und Anmeldung selbst erledigen. Wir stellen eine Checkliste und Links zu offiziellen Vertragsvorlagen bereit.",
       featureContract: "Digitaler Vertrag",
