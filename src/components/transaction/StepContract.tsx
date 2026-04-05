@@ -29,6 +29,7 @@ const COUNTRIES = ["Austria", "Germany", "Switzerland", "Italy", "Czech Republic
 const StepContract: React.FC<Props> = ({
   car, agreedPrice, sellerCountry, buyerName, sellerName, transactionId, onContinue,
   role = "buyer", contractSignedSeller = false, contractSignedBuyer = false, onSellerSign,
+  buyerKycVerified = false, sellerKycVerified = false,
 }) => {
   const { t } = useLanguage();
   const [signed, setSigned] = useState(role === "buyer" ? contractSignedBuyer : contractSignedSeller);
