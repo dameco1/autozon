@@ -112,8 +112,12 @@ const FairValueResult: React.FC = () => {
 
       setBlendedValue(blended);
 
-      // Update the car record with the blended fair value
-      await supabase.from("cars").update({ fair_value_price: blended, market_blended: true } as any).eq("id", carData.id);
+      // Persist via SECURITY DEFINER function (bypasses system-field trigger)
+      await supabase.rpc("lock_fair_value", {
+        _car_id: carData.id,
+        _fair_value_price: blended,
+        _market_blended: true,
+      });
       setCar((prev) => prev ? { ...prev, fair_value_price: blended } : prev);
 
       // Record appraisal feedback for future calibration
