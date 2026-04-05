@@ -4,6 +4,17 @@
 
 After buyer and seller agree on a price via the Negotiation engine, they proceed to the **Transaction Wizard** (`/acquire/:offerId`). This is a 5-step process that handles contract, payment, and insurance.
 
+## Prerequisites
+
+### KYC Identity Verification (`/kyc`)
+
+Before signing a contract, users must complete identity verification:
+1. **ID Document Upload** — Front and back of government-issued ID (passport, driver's license, national ID)
+2. **Selfie Verification** — Photo holding ID next to face
+3. **Address Confirmation** — Street, postal code, city
+
+KYC status tracked in `profiles.kyc_status`: `none` → `pending` → `verified` / `rejected`. Documents stored securely in cloud storage. Typically reviewed in 1-2 business days.
+
 ## Step 1: Choose Completion Method
 
 Users choose between:
@@ -39,12 +50,37 @@ Three payment options:
 
 Financing partners are loaded from the `financing_partners` table.
 
+### Financing Calculator (`/financing/:offerId?`)
+
+A dedicated Austrian financing calculator is available with:
+- **Kredit** (standard annuity loan) — buyer owns the car
+- **Leasing** (operating lease) — return car at end of term
+- **3-Wege-Finanzierung** (balloon) — low monthly payments + 30% residual at end
+
+Inputs: vehicle price, down payment (0–40%), term (12–120 months), interest rate (1–12%), processing fee. Includes simulated Bonitätsindikator (creditworthiness indicator).
+
+Partner banks (Raiffeisen, UniCredit Bank Austria, Arval) shown as "Coming Soon" with placeholder cards.
+
 ## Step 4: Insurance
 
 Mandatory for vehicle registration. Three tiers:
-- **Haftpflicht (Liability)**: Legal minimum, ~€38/mo
-- **Teilkasko (Partial Cover)**: Adds theft, fire, glass, weather — recommended, ~€67/mo
-- **Vollkasko (Comprehensive)**: Full protection including own-fault collision, ~€112/mo
+- **Haftpflicht (Liability)**: Legal minimum
+- **Teilkasko (Partial Cover)**: Adds theft, fire, glass, weather — recommended
+- **Vollkasko (Comprehensive)**: Full protection including own-fault collision
+
+### Insurance Estimate Calculator
+
+Embedded calculator with Austrian-specific formulas:
+- Inputs: vehicle value, power (kW), registration year, Bonus-Malus level (0–18), Kasko type, deductible, annual km
+- Outputs: Haftpflicht, Kasko, combined premium, optional GAP insurance, optional warranty extension — all per month
+
+### Insurance Integration Roadmap
+
+| Milestone | Target | Description |
+|---|---|---|
+| Durchblicker API | Q3 2026 | Price comparison across Austrian insurers |
+| Direct Insurer Integration | Q4 2026 | Instant binding quotes from partner insurers |
+| Broker-as-a-Service | 2027 | Full insurance brokerage within the platform |
 
 Users can also skip and arrange insurance themselves.
 
@@ -84,6 +120,14 @@ The system prevents users from buying their own cars at every level:
 ## Re-Purchase Guard
 
 If a user navigates to `/negotiate/:offerId` for an accepted offer whose car is already sold, they are automatically redirected to the transaction summary at `/acquire/:offerId`.
+
+## Vincario Vehicle History Report
+
+Available on the car detail page before and during the transaction flow. VIN-based lookup provides:
+- Vehicle specifications verification
+- Stolen vehicle check
+- Market value estimate (below/average/above bands)
+- Open manufacturer recall notices
 
 ## Database
 

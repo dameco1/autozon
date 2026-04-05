@@ -41,29 +41,29 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
    - Fallback: if no AI scan, brand-tier flat estimate (iconic 20%, premium 15%, volume 10%)
    - Example: scratch on Dacia = ~€300 deduction, same on Porsche = ~€1,500
 
-5. **Equipment Value Index** — Weighted by category:
+6. **Equipment Value Index** — Weighted by category:
    - Safety features: 2.5 pts each
    - Tech features: 1.8 pts each
    - Comfort features: 1.2 pts each
    - Capped at +10% total
 
-6. **Market Position** — Body type demand × brand demand:
+7. **Market Position** — Body type demand × brand demand:
    - SUVs and Hatchbacks: +4%
    - Toyota, Honda, Porsche, Tesla: +3%
 
-7. **Regional Demand** — Fuel type trends (European market):
+8. **Regional Demand** — Fuel type trends (European market):
    - Electric: +5%, Diesel: -3%
 
-8. **Transparency Bonus** — Rewards complete listings (up to +4%):
+9. **Transparency Bonus** — Rewards complete listings (up to +4%):
    - VIN provided, description quality, photo count, damage scan completed
 
-9. **Inspection Checklist Penalty** — 20-point inspection where YES = good condition:
-   - Each "No" answer: −1.5% penalty
-   - Each "I don't know" answer: −0.75% penalty
-   - Capped at −30% maximum
-   - Categories: Exterior (5), Interior (6), Mechanical (5), Test Drive (4)
+10. **Inspection Checklist Penalty** — 20-point inspection where YES = good condition:
+    - Each "No" answer: −1.5% penalty
+    - Each "I don't know" answer: −0.75% penalty
+    - Capped at −30% maximum
+    - Categories: Exterior (5), Interior (6), Mechanical (5), Test Drive (4)
 
-10. **Final Calculation**: `100% attribute-based` (no asking price influence)
+11. **Final Calculation**: `100% attribute-based` (no asking price influence)
     - Fair value = attribute value × inspection factor − itemized damage costs (min €500)
     - Market blending on FairValueResult page: 40% formula + 60% AI market (if available)
     - Seller can accept AI fair value OR override with custom listing price (deviation % displayed)
@@ -79,16 +79,19 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
 
 **Location**: `src/lib/lifestyleMatch.ts`
 
-The matching engine uses a **4-dimensional weighted scoring model** that combines lifestyle signals, financial fit, explicit preferences, and car quality into a single 0-100 match score.
+The matching engine uses a **5-dimensional weighted scoring model** that combines lifestyle signals, financial fit, explicit preferences, car quality, and sports/towing fit into a single 0-100 match score.
 
-### Score Weights
+### Score Weights (when sports data present)
 
 | Dimension | Weight | Source |
 |---|---|---|
-| **Lifestyle** | 30% | Profile: relationship, kids, purpose, current car |
-| **Financial** | 30% | Preferences: budget range; fallback: profile budget |
-| **Preference Match** | 25% | Preferences: makes, fuel, body, transmission, commute, parking |
-| **Condition/Demand** | 15% | Car: condition_score + demand_score averaged |
+| **Lifestyle** | 25% | Profile: relationship, kids, purpose, current car |
+| **Financial** | 25% | Preferences: budget range; fallback: profile budget |
+| **Preference Match** | 20% | Preferences: makes, fuel, body, transmission, commute, parking |
+| **Condition/Demand** | 10% | Car: condition_score + demand_score averaged |
+| **Sports & Towing** | 20% | Preferences: sports, needs_towing, towing_weight_kg; Car: equipment, body_type |
+
+*When no sports data: falls back to original 4D weights (30/30/25/15).*
 
 ### Lifestyle Scoring Rules
 
@@ -124,6 +127,59 @@ The matching engine uses a **4-dimensional weighted scoring model** that combine
 - **Upgrade path**: Budget brand owner viewing a premium brand → +8 (e.g. Dacia owner sees BMW)
 - **Segment continuity**: SUV keywords in current car + SUV/Wagon candidate → +10
 
+### Sports & Towing Scoring Rules (5th Dimension)
+
+**Activated when**: User has selected ≥1 sport in onboarding (Step 11).
+
+The sports & towing sub-score starts at 50 and adjusts across four factors:
+
+#### Storage Fit (40% weight of sub-score)
+
+Evaluates whether the car can carry bulky sports equipment.
+
+| Bulky Sports | Body Type Match | Score Impact |
+|---|---|---|
+| Cycling, Skiing, Surfing, Golf, Camping | SUV, Wagon, Van | +20 |
+| Same sports | Sedan, Hatchback | +5 |
+| Same sports | Coupe, Convertible, Roadster | −15 |
+| Non-bulky sports (Tennis, Running, etc.) | Any | No adjustment |
+
+#### Roofbox Compatibility (20% weight)
+
+Checks car equipment for roof mounting capability.
+
+| Condition | Score Impact |
+|---|---|
+| Has bulky sport + car has "roof rails" / "roof rack" / "roof bar" in equipment | +15 |
+| Has bulky sport + Coupe/Convertible body + no roof mount | −10 |
+| No bulky sports selected | No adjustment |
+
+#### Towing Capability (20% weight)
+
+Evaluated when user sets `needs_towing = true` (Step 12).
+
+| Condition | Score Impact |
+|---|---|
+| Car has "trailer hitch" / "tow bar" / "Anhängerkupplung" in equipment | +15 |
+| No towbar but SUV/Pickup/Van body type (likely factory-optionable) | +5 |
+| No towbar + Coupe/Convertible/Hatchback (unlikely to support towing) | −10 |
+| Desired towing weight ≥2,500 kg + non-SUV/Pickup/Van body | −10 (additional) |
+
+**Towing weight options**: 750 kg, 1,000 kg, 1,500 kg, 2,000 kg, 2,500 kg, 3,000 kg, 3,500 kg
+
+#### Body Type Suitability for Outdoor Sports (20% weight)
+
+| Condition | Score Impact |
+|---|---|
+| Has outdoor sport (Cycling, Skiing, Running, Hiking, Surfing, Camping) + SUV/Wagon/Pickup | +10 |
+| Same sports + Coupe/Convertible | −8 |
+| Motorsports selected + sporty body or sporty brand | +12 |
+| Motorsports + ≥200 HP | +5 (additional) |
+
+#### Deprioritization Rule
+
+If the final sports sub-score falls **below 30**, the overall match score is penalized by −10 points (floored at 5). This ensures cars that are fundamentally incompatible with the buyer's active lifestyle are pushed to the bottom of results.
+
 ### Preference Scoring (from Onboarding)
 
 | Signal | Logic |
@@ -134,6 +190,23 @@ The matching engine uses a **4-dimensional weighted scoring model** that combine
 | Commute distance (short) | Electric/Hybrid +10 |
 | Parking (street/underground) | Compact +5; Van/Pickup -5 |
 | Insurance tolerance (low) | High power -8; sporty brands -5 |
+
+### Onboarding Steps (12 total)
+
+| Step | Content | Data Stored |
+|---|---|---|
+| 1 | Budget range (min/max) | `user_preferences.min_budget`, `max_budget` |
+| 2 | Preferred makes (multi-select) | `user_preferences.preferred_makes` |
+| 3 | Preferred fuel types | `user_preferences.preferred_fuel_types` |
+| 4 | Preferred body types | `user_preferences.preferred_body_types` |
+| 5 | Transmission preference | `user_preferences.preferred_transmission` |
+| 6 | Year range | `user_preferences.min_year`, `max_year` |
+| 7 | Max mileage | `user_preferences.max_mileage` |
+| 8 | Min power (HP) | `user_preferences.min_power_hp` |
+| 9 | Commute distance | `user_preferences.commute_distance` |
+| 10 | Additional prefs (parking, insurance tolerance, family size, timing) | Various `user_preferences.*` |
+| 11 | **Sports & Activities** — Multi-select: Cycling, Skiing, Surfing, Golf, Tennis, Running, Hiking, Camping, Motorsports, Fitness | `user_preferences.sports[]` |
+| 12 | **Towing Requirements** — Toggle + weight selector (750–3,500 kg) | `user_preferences.needs_towing`, `towing_weight_kg` |
 
 ---
 
@@ -191,3 +264,102 @@ Dashboard includes an AI chat assistant that:
 - Helps with listing optimization
 - Streams responses via SSE for real-time feel
 - Persists conversation history per user
+
+---
+
+## 7. KYC Identity Verification
+
+**Location**: `src/pages/KycVerification.tsx`
+
+3-step identity verification required before signing a purchase contract:
+
+| Step | Content | Validation |
+|---|---|---|
+| 1 | **ID Document** — Upload front and back of government ID (passport, driver's license, national ID) | File ≤5 MB, image/* |
+| 2 | **Selfie Verification** — Photo of user holding their ID next to face | File ≤5 MB, image/* |
+| 3 | **Address Verification** — Street, postal code, city | All fields required |
+
+**Status Flow**: `none` → `pending` → `verified` / `rejected`
+
+Documents uploaded to secure cloud storage (`car-images/kyc/{user_id}/`). KYC status tracked in `profiles.kyc_status`.
+
+---
+
+## 8. Austrian Financing Calculator
+
+**Location**: `src/pages/FinancingCalculator.tsx`
+
+Route: `/financing/:offerId?` — Can be opened standalone or linked to a specific offer.
+
+### Three Financing Models
+
+| Model | Description | Key Parameters |
+|---|---|---|
+| **Kredit** (Standard Loan) | Standard annuity loan — buyer owns the car | Down payment, term, interest rate |
+| **Leasing** (Operating Lease) | Monthly payments, return car at end | Slightly higher rate (+0.5%), no ownership |
+| **3-Wege-Finanzierung** (Balloon) | Low monthly payments + 30% residual balloon at end | Best for flexibility |
+
+### Inputs
+- Fahrzeugpreis (vehicle price, auto-filled from offer if linked)
+- Anzahlung (down payment, 0–40% slider)
+- Laufzeit (term, 12–120 months)
+- Zinssatz (interest rate, 1.0–12.0%)
+- Bearbeitungsgebühr (processing fee, default €250)
+
+### Bonitätsindikator
+Simulated creditworthiness indicator (72/100) based on financing structure. Not a real credit check — informational only.
+
+### Partner Banks (Coming Soon)
+Raiffeisen, UniCredit Bank Austria, Arval — placeholder cards with "Coming Soon" badges.
+
+---
+
+## 9. Insurance Estimate Calculator
+
+**Location**: `src/components/InsuranceCalculator.tsx`
+
+Austrian-specific motor insurance estimation embedded in the transaction insurance step.
+
+### Inputs
+- Vehicle value (€), Power (kW), First registration year
+- Bonus-Malus level (0–18, Austrian no-claims scale)
+- Kasko type: Teilkasko (partial) or Vollkasko (comprehensive)
+- Selbstbehalt (deductible, €0–€2,000)
+- Annual km driven
+
+### Outputs
+| Line Item | Description |
+|---|---|
+| **Haftpflicht** (Liability) | Base = €25 + kW × 0.35, adjusted by Bonus-Malus and km |
+| **Kasko** | Based on vehicle value, age, power factor, deductible |
+| **Combined Premium** | Sum of Haftpflicht + Kasko per month |
+| **GAP Insurance** (optional) | For vehicles >€20K, covers gap between value and loan balance |
+| **Warranty Extension** (optional) | Age-dependent, kW-scaled monthly add-on |
+
+### Insurance Integration Roadmap
+
+| Milestone | Target | Description |
+|---|---|---|
+| Durchblicker API | Q3 2026 | Price comparison across Austrian insurers |
+| Direct Insurer Integration | Q4 2026 | Instant binding quotes from partner insurers |
+| Broker-as-a-Service | 2027 | Full insurance brokerage within the platform |
+
+---
+
+## 10. Vincario Vehicle History Report
+
+**Location**: `src/components/VincarioDataCard.tsx`
+
+Integrated on the car detail page. Decodes VIN via the `vin-decode` edge function.
+
+### Report Contents
+- **Vehicle Specs**: Make, model, year, body type, fuel, power, transmission, drive type
+- **Stolen Check**: Clear / flagged status
+- **Market Value Estimate**: Below average, average, above average price bands
+- **Recall Notices**: Open manufacturer recalls (if any)
+
+VIN auto-populated from `cars.vin` when available; manual entry fallback for ad-hoc lookups.
+
+---
+
+*Document status: V5 — Updated with Phase 3 (5D sports & towing scoring, 12-step onboarding) and Phase 4 (financing calculator, insurance estimator, KYC verification, Vincario data card). For investor data room.*
