@@ -39,6 +39,9 @@ export interface PreferenceSignals {
   preferred_fuel_types?: string[] | null;
   preferred_body_types?: string[] | null;
   preferred_transmission?: string | null;
+  sports?: string[] | null;
+  needs_towing?: boolean | null;
+  towing_weight_kg?: number | null;
 }
 
 export interface CarCandidate {
