@@ -508,7 +508,7 @@ const Negotiation: React.FC = () => {
               {/* Seller: congratulations message */}
               {isSeller && (
                 <p className="text-sm text-muted-foreground">
-                  {t.negotiation.sellerCongrats} {Math.round((1 - offer.agreed_price / car.price) * 100)}% {isSeller ? "gesenkt" : "lowered"}.
+                  {t.negotiation.sellerCongrats} {Math.round((1 - offer.agreed_price / car.price) * 100)}%.
                 </p>
               )}
             </div>
