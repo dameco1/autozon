@@ -222,6 +222,10 @@ export function calculateFairValue(data: CarFormData, modelMsrpEur?: number | nu
   // Cap at 30% max penalty
   const inspectionFactor = Math.max(0.70, 1 - inspectionPenaltyPct / 100);
 
+  // ** PPF BONUS: +1-3% value increase when PPF is confirmed **
+  const ppfAnswer = data.inspectionChecklist["ppf"];
+  const ppfBonus = ppfAnswer === "yes" ? 1.02 : 1.0; // +2% average bonus
+
   // Compute 100% attribute-based fair value (NO asking price influence)
   const attributeValue = Math.round(
     referenceMSRP
