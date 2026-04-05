@@ -6,20 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, ExternalLink } from "lucide-react";
+import { Trash2, ExternalLink, Search, Eye } from "lucide-react";
 import { toast } from "sonner";
+import AdminCarCard from "./AdminCarCard";
 
 const AdminCarsTable: React.FC = () => {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
 
   const { data: cars, isLoading } = useQuery({
     queryKey: ["admin-cars"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("cars")
-        .select("id, make, model, year, price, fair_value_price, status, placement_paid, created_at, owner_id")
+        .select("id, make, model, year, price, fair_value_price, status, placement_paid, created_at, owner_id, transmission")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
@@ -63,7 +65,10 @@ const AdminCarsTable: React.FC = () => {
   return (
     <div className="space-y-4">
       <div className="flex gap-3 flex-wrap">
-        <Input placeholder="Search make/model…" value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-xs" />
+        <div className="relative flex-1 max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input placeholder="Search make/model…" value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+        </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
           <SelectContent>
@@ -94,7 +99,14 @@ const AdminCarsTable: React.FC = () => {
             )}
             {filtered?.map((car) => (
               <TableRow key={car.id}>
-                <TableCell className="font-medium">{car.make} {car.model} ({car.year})</TableCell>
+                <TableCell>
+                  <button
+                    className="font-medium text-primary hover:underline cursor-pointer"
+                    onClick={() => setSelectedCarId(car.id)}
+                  >
+                    {car.make} {car.model} ({car.year})
+                  </button>
+                </TableCell>
                 <TableCell>€{car.price?.toLocaleString()}</TableCell>
                 <TableCell>€{car.fair_value_price?.toLocaleString() ?? "—"}</TableCell>
                 <TableCell>
@@ -112,7 +124,10 @@ const AdminCarsTable: React.FC = () => {
                 <TableCell>{car.placement_paid ? "✅" : "—"}</TableCell>
                 <TableCell className="text-muted-foreground text-xs">{new Date(car.created_at).toLocaleDateString()}</TableCell>
                 <TableCell className="text-right space-x-1">
-                  <Button variant="ghost" size="icon" onClick={() => window.open(`/car/${car.id}`, "_blank")}>
+                  <Button variant="ghost" size="icon" onClick={() => setSelectedCarId(car.id)} title="View details">
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={() => window.open(`/car/${car.id}`, "_blank")} title="Open public page">
                     <ExternalLink className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="text-destructive" onClick={() => deleteCar.mutate(car.id)}>
@@ -127,6 +142,8 @@ const AdminCarsTable: React.FC = () => {
           </TableBody>
         </Table>
       </div>
+
+      <AdminCarCard carId={selectedCarId} onClose={() => setSelectedCarId(null)} />
     </div>
   );
 };
