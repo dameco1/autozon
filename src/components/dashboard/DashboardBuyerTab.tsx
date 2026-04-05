@@ -418,6 +418,36 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
               </div>
             )}
           </Card>
+
+          {/* Completed Acquisitions */}
+          {completedAcquisitions.length > 0 && (
+            <Card className="bg-secondary/50 border-border mt-6">
+              <div className="px-6 py-4 border-b border-border">
+                <h2 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-400" /> {dt.buyerCompletedAcquisitions || "Completed Acquisitions"}
+                </h2>
+              </div>
+              <div className="divide-y divide-border">
+                {completedAcquisitions.map(tx => (
+                  <div
+                    key={tx.id}
+                    className="px-6 py-4 hover:bg-muted/40 transition-colors cursor-pointer"
+                    onClick={() => navigate(`/acquire/${tx.offer_id}`)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">{carLabel(tx.car_id)}</p>
+                        <p className="text-xs text-primary font-semibold mt-0.5">€{tx.agreed_price.toLocaleString()}</p>
+                      </div>
+                      <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px]">
+                        {dt.buyerCompleted || "Completed"}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
         </motion.div>
 
         {/* Sidebar */}
