@@ -90,7 +90,7 @@ const KycVerification: React.FC = () => {
     );
   }
 
-  // Pending / In Review state
+  // Pending / In Review state — poll for updates
   if (kycStatus === "pending" || kycStatus === "in_progress" || kycStatus === "pending_review") {
     return (
       <div className="min-h-screen bg-background">
