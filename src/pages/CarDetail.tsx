@@ -33,6 +33,7 @@ interface CarFull {
   photos: string[] | null;
   inspection_checklist: InspectionChecklist | null;
   owner_id: string | null;
+  vin: string | null;
 }
 
 const CarDetail: React.FC = () => {
