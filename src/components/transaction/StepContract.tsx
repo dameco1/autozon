@@ -20,6 +20,8 @@ interface Props {
   contractSignedSeller?: boolean;
   contractSignedBuyer?: boolean;
   onSellerSign?: () => Promise<void>;
+  buyerKycVerified?: boolean;
+  sellerKycVerified?: boolean;
 }
 
 const COUNTRIES = ["Austria", "Germany", "Switzerland", "Italy", "Czech Republic", "Hungary", "Slovakia", "Slovenia"];
@@ -27,6 +29,7 @@ const COUNTRIES = ["Austria", "Germany", "Switzerland", "Italy", "Czech Republic
 const StepContract: React.FC<Props> = ({
   car, agreedPrice, sellerCountry, buyerName, sellerName, transactionId, onContinue,
   role = "buyer", contractSignedSeller = false, contractSignedBuyer = false, onSellerSign,
+  buyerKycVerified = false, sellerKycVerified = false,
 }) => {
   const { t } = useLanguage();
   const [signed, setSigned] = useState(role === "buyer" ? contractSignedBuyer : contractSignedSeller);
@@ -52,6 +55,11 @@ const StepContract: React.FC<Props> = ({
         sellerCountry: country,
         contractDate: new Date().toISOString(),
         transactionId: transactionId || "draft",
+        buyerKycVerified,
+        sellerKycVerified,
+        contractSignedBuyer: true,
+        contractSignedSeller,
+        buyerSignedDate: new Date().toISOString(),
       };
       const doc = generateContractPdf(contractData);
       const pdfBlob = doc.output("blob");
@@ -92,6 +100,10 @@ const StepContract: React.FC<Props> = ({
       sellerCountry: country,
       contractDate: new Date().toISOString(),
       transactionId: transactionId || "draft",
+      buyerKycVerified,
+      sellerKycVerified,
+      contractSignedBuyer,
+      contractSignedSeller,
     };
     const doc = generateContractPdf(contractData);
     doc.save(`autozon-contract-${(transactionId || "draft").slice(0, 8)}.pdf`);
