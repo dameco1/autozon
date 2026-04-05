@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Car, ArrowRight, ArrowLeft, LayoutDashboard, Sparkles, Loader2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
@@ -15,8 +17,10 @@ const TRANSMISSIONS = ["Manual", "Automatic"];
 const FEATURES = ["Navigation", "Heated Seats", "Parking Sensors", "Backup Camera", "Sunroof", "Leather Interior", "LED Headlights", "Adaptive Cruise Control", "Lane Assist", "Apple CarPlay"];
 const COLORS = ["Black", "White", "Silver", "Grey", "Blue", "Red", "Green", "Brown", "Beige", "Orange"];
 const TIMING_OPTIONS = ["immediately", "1-3months", "browsing"];
+const SPORTS_OPTIONS = ["Cycling", "Skiing", "Running", "Gym", "Motorsports", "Hiking", "Surfing", "Golf", "Camping", "Other"];
+const TOWING_WEIGHTS = [750, 1500, 2500, 3500];
 
-const TOTAL_STEPS = 10;
+const TOTAL_STEPS = 12;
 
 const BuyerQuestionnaire: React.FC = () => {
   const { t } = useLanguage();
