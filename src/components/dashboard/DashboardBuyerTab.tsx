@@ -438,7 +438,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
               {buyerOffers.length === 0 ? (
                 <div className="p-6 text-center">
                   <p className="text-sm text-muted-foreground">{dt.buyerNoOffers || "No offers yet. Browse cars and make an offer!"}</p>
-                  <Button variant="ghost" size="sm" className="mt-2 text-primary text-xs" onClick={() => navigate("/cars")}>
+                  <Button variant="ghost" size="sm" className="mt-2 text-primary text-xs" onClick={() => navigate("/car-selection")}>
                     <Search className="h-3 w-3 mr-1" /> {dt.buyerBrowseCars || "Browse Cars"}
                   </Button>
                 </div>
