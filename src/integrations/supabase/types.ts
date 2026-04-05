@@ -649,6 +649,7 @@ export type Database = {
           full_name: string
           has_kids: boolean | null
           id: string
+          kyc_status: string
           language: string | null
           num_kids: number | null
           phone: string | null
@@ -670,6 +671,7 @@ export type Database = {
           full_name?: string
           has_kids?: boolean | null
           id?: string
+          kyc_status?: string
           language?: string | null
           num_kids?: number | null
           phone?: string | null
@@ -691,6 +693,7 @@ export type Database = {
           full_name?: string
           has_kids?: boolean | null
           id?: string
+          kyc_status?: string
           language?: string | null
           num_kids?: number | null
           phone?: string | null

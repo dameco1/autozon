@@ -37,6 +37,8 @@ import ResetPassword from "./pages/ResetPassword";
 import DocViewer from "./pages/DocViewer";
 import QA from "./pages/QA";
 import AboutUs from "./pages/AboutUs";
+import FinancingCalculator from "./pages/FinancingCalculator";
+import KycVerification from "./pages/KycVerification";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +84,8 @@ const App = () => (
               <Route path="/negotiate/:offerId" element={<MfaGuard><Negotiation /></MfaGuard>} />
               <Route path="/acquire/:offerId" element={<MfaGuard><AcquisitionOptions /></MfaGuard>} />
               <Route path="/admin" element={<MfaGuard><AdminDashboard /></MfaGuard>} />
+              <Route path="/financing/:offerId?" element={<MfaGuard><FinancingCalculator /></MfaGuard>} />
+              <Route path="/kyc" element={<MfaGuard><KycVerification /></MfaGuard>} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>

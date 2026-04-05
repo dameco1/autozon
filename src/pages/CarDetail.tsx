@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight, X, Maximize2, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Bookmark, BookmarkCheck, Package, ShoppingBag } from "lucide-react";
+import VincarioDataCard from "@/components/VincarioDataCard";
 import { toast } from "sonner";
 import { INSPECTION_CATEGORIES, type InspectionChecklist } from "@/components/car-upload/inspectionChecklist";
 
@@ -32,6 +33,7 @@ interface CarFull {
   photos: string[] | null;
   inspection_checklist: InspectionChecklist | null;
   owner_id: string | null;
+  vin: string | null;
 }
 
 const CarDetail: React.FC = () => {
@@ -91,7 +93,7 @@ const CarDetail: React.FC = () => {
     if (!id) return;
     supabase
       .from("cars")
-      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos, inspection_checklist, owner_id")
+      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos, inspection_checklist, owner_id, vin")
       .eq("id", id)
       .single()
       .then(({ data }) => {
@@ -476,6 +478,9 @@ const CarDetail: React.FC = () => {
                 {shortlisted ? t.carDetail.removeFromShortlist : t.carDetail.addToShortlist}
               </Button>
             </div>
+
+            {/* Vincario Data Card */}
+            <VincarioDataCard vin={car.vin} carId={car.id} />
 
             {/* Coming Soon — Spare Parts & Merchandise */}
             <motion.div

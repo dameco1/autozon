@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, CheckCircle2, Star } from "lucide-react";
+import { Shield, CheckCircle2, Star, Info, Compass, Link2, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
+import InsuranceCalculator from "@/components/InsuranceCalculator";
 
 interface Partner {
   id: string;
@@ -117,6 +119,35 @@ const StepInsurance: React.FC<Props> = ({ agreedPrice, partners, onContinue, onS
           </Button>
         </div>
       )}
+
+      {/* Insurance Calculator */}
+      <InsuranceCalculator carPrice={agreedPrice} />
+
+      {/* Insurance Roadmap */}
+      <div className="bg-secondary/50 border border-border rounded-xl p-5 space-y-3">
+        <div className="flex items-center gap-2">
+          <Compass className="h-5 w-5 text-primary" />
+          <h4 className="font-display font-bold text-foreground text-sm">Insurance Integration Roadmap</h4>
+        </div>
+        <div className="space-y-2">
+          {[
+            { label: "Durchblicker API", desc: "Price comparison across Austrian insurers", status: "Q3 2026" },
+            { label: "Direct Insurer Integration", desc: "Instant binding quotes from partner insurers", status: "Q4 2026" },
+            { label: "Broker-as-a-Service", desc: "Full insurance brokerage within the platform", status: "2027" },
+          ].map(item => (
+            <div key={item.label} className="flex items-center justify-between bg-background rounded-lg p-3 border border-border">
+              <div className="flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">{item.label}</p>
+                  <p className="text-xs text-muted-foreground">{item.desc}</p>
+                </div>
+              </div>
+              <Badge variant="outline" className="text-xs text-muted-foreground border-border shrink-0">{item.status}</Badge>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Skip option */}
       <div className="text-center">
