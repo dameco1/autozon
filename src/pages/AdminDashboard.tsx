@@ -9,6 +9,10 @@ import AdminNegotiations from "@/components/admin/AdminNegotiations";
 import AdminActivityFeed from "@/components/admin/AdminActivityFeed";
 import AdminMatches from "@/components/admin/AdminMatches";
 import AdminTransactions from "@/components/admin/AdminTransactions";
+import AdminContracts from "@/components/admin/AdminContracts";
+import AdminReports from "@/components/admin/AdminReports";
+import AdminFinancingRequests from "@/components/admin/AdminFinancingRequests";
+import AdminInsuranceRequests from "@/components/admin/AdminInsuranceRequests";
 
 const AdminDashboard: React.FC = () => {
   const { loading } = useAdminAuth();
@@ -33,22 +37,30 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="bg-muted">
+          <TabsList className="bg-muted flex-wrap h-auto gap-1 p-1">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="cars">Cars</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="contracts">Contracts</TabsTrigger>
             <TabsTrigger value="transactions">Transactions</TabsTrigger>
             <TabsTrigger value="negotiations">Negotiations</TabsTrigger>
             <TabsTrigger value="matches">Matches</TabsTrigger>
+            <TabsTrigger value="financing">Financing</TabsTrigger>
+            <TabsTrigger value="insurance">Insurance</TabsTrigger>
+            <TabsTrigger value="reports">Reports</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview"><AdminOverview /></TabsContent>
           <TabsContent value="cars"><AdminCarsTable /></TabsContent>
           <TabsContent value="users"><AdminUsersTable /></TabsContent>
+          <TabsContent value="contracts"><AdminContracts /></TabsContent>
           <TabsContent value="transactions"><AdminTransactions /></TabsContent>
           <TabsContent value="negotiations"><AdminNegotiations /></TabsContent>
           <TabsContent value="matches"><AdminMatches /></TabsContent>
+          <TabsContent value="financing"><AdminFinancingRequests /></TabsContent>
+          <TabsContent value="insurance"><AdminInsuranceRequests /></TabsContent>
+          <TabsContent value="reports"><AdminReports /></TabsContent>
           <TabsContent value="activity"><AdminActivityFeed /></TabsContent>
         </Tabs>
       </div>

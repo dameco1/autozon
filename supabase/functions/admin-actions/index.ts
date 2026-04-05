@@ -35,17 +35,34 @@ serve(async (req) => {
 
     const { action, ...params } = await req.json();
 
+    if (action === "get_user_details") {
+      const { target_user_id } = params;
+      if (!target_user_id) throw new Error("target_user_id required");
+
+      const { data: userData, error: userErr } = await supabaseAdmin.auth.admin.getUserById(target_user_id);
+      if (userErr || !userData?.user) throw new Error("User not found");
+
+      return new Response(JSON.stringify({
+        email: userData.user.email,
+        last_sign_in_at: userData.user.last_sign_in_at,
+        created_at: userData.user.created_at,
+        phone: userData.user.phone,
+        email_confirmed_at: userData.user.email_confirmed_at,
+        confirmed_at: userData.user.confirmed_at,
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     if (action === "suspend_user") {
       const { target_user_id, suspended, suspension_type } = params;
       if (!target_user_id) throw new Error("target_user_id required");
 
-      // Update profile
       await supabaseAdmin
         .from("profiles")
         .update({ suspended, suspension_type: suspended ? (suspension_type || "soft") : null })
         .eq("user_id", target_user_id);
 
-      // Hard suspension: disable/enable auth user
       if (suspension_type === "hard" && suspended) {
         await supabaseAdmin.auth.admin.updateUserById(target_user_id, { ban_duration: "876000h" });
       } else if (!suspended) {
@@ -61,8 +78,6 @@ serve(async (req) => {
       const { target_email } = params;
       if (!target_email) throw new Error("target_email required");
 
-      // Get the user to find their email
-      // If target_email is a user_id, look up their email
       let email = target_email;
       if (!target_email.includes("@")) {
         const { data: userData } = await supabaseAdmin.auth.admin.getUserById(target_email);
@@ -70,7 +85,6 @@ serve(async (req) => {
         email = userData.user.email;
       }
 
-      // Send password reset via the Supabase auth API
       const { error: resetError } = await supabaseAdmin.auth.admin.generateLink({
         type: "recovery",
         email,
@@ -86,7 +100,6 @@ serve(async (req) => {
       const { transaction_id, target_user_id } = params;
       if (!transaction_id || !target_user_id) throw new Error("transaction_id and target_user_id required");
 
-      // Get transaction details
       const { data: tx, error: txErr } = await supabaseAdmin
         .from("transactions")
         .select("*")
@@ -94,11 +107,9 @@ serve(async (req) => {
         .single();
       if (txErr || !tx) throw new Error("Transaction not found");
 
-      // Get buyer email
       const { data: buyerAuth } = await supabaseAdmin.auth.admin.getUserById(target_user_id);
       if (!buyerAuth?.user?.email) throw new Error("Buyer not found");
 
-      // Get car info
       const { data: car } = await supabaseAdmin
         .from("cars")
         .select("make, model, year")
@@ -107,7 +118,6 @@ serve(async (req) => {
 
       const carLabel = car ? `${car.year} ${car.make} ${car.model}` : "Vehicle";
 
-      // Send a notification to the buyer with transaction details
       await supabaseAdmin.from("notifications").insert({
         user_id: target_user_id,
         title: "Transaction Invoice",
