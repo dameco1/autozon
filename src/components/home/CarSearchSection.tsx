@@ -249,11 +249,12 @@ const CarSearchSection: React.FC = () => {
               </SelectContent>
             </Select>
 
-            <Select value={transmission} onValueChange={setTransmission}>
+            <Select value={transmission} onValueChange={(v) => setTransmission(v === "any" ? "" : v)}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder="Transmission" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="any">Any</SelectItem>
                 {TRANSMISSIONS.map((tr) => (
                   <SelectItem key={tr} value={tr}>{tr}</SelectItem>
                 ))}

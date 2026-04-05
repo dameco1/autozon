@@ -351,10 +351,10 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
               <div>
                 <p className="text-xs font-semibold text-muted-foreground mb-2">{dt.prefTransmission || "Transmission"}</p>
                 <div className="flex gap-1.5">
-                  {["Manual", "Automatic"].map(tr => (
-                    <button key={tr} onClick={() => setEditPrefs(p => p ? { ...p, preferred_transmission: p.preferred_transmission === tr ? null : tr } : p)}
+                  {["Any", "Manual", "Automatic"].map(tr => (
+                    <button key={tr} onClick={() => setEditPrefs(p => p ? { ...p, preferred_transmission: tr === "Any" ? null : (p.preferred_transmission === tr ? null : tr) } : p)}
                       className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
-                        editPrefs?.preferred_transmission === tr
+                        (tr === "Any" && !editPrefs?.preferred_transmission) || editPrefs?.preferred_transmission === tr
                           ? "bg-primary/10 border-primary/30 text-primary"
                           : "bg-muted/60 border-border text-muted-foreground hover:border-primary/30"
                       }`}>{tr}</button>

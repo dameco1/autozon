@@ -228,12 +228,12 @@ const BuyerQuestionnaire: React.FC = () => {
           <div>
             <h2 className="text-xl font-display font-bold text-foreground mb-4">{t.buyerQ.q4}</h2>
             <div className="flex gap-3">
-              {TRANSMISSIONS.map((tr) => (
+              {["Any", ...TRANSMISSIONS].map((tr) => (
                 <button
                   key={tr}
-                  onClick={() => setTransmission(tr)}
+                  onClick={() => setTransmission(tr === "Any" ? "" : tr)}
                   className={`flex-1 px-6 py-4 rounded-xl border text-sm font-medium transition-all ${
-                    transmission === tr ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground"
+                    (tr === "Any" && transmission === "") || transmission === tr ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground"
                   }`}
                 >
                   {tr}
