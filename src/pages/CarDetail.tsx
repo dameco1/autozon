@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight, X, Maximize2, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Bookmark, BookmarkCheck, Package, ShoppingBag } from "lucide-react";
+import VincarioDataCard from "@/components/VincarioDataCard";
 import { toast } from "sonner";
 import { INSPECTION_CATEGORIES, type InspectionChecklist } from "@/components/car-upload/inspectionChecklist";
 
