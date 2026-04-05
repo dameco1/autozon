@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, CheckCircle2, Star } from "lucide-react";
+import { Shield, CheckCircle2, Star, Info, Compass, Link2, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
+import InsuranceCalculator from "@/components/InsuranceCalculator";
 
 interface Partner {
   id: string;
