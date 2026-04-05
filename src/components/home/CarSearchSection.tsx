@@ -85,8 +85,8 @@ const CarSearchSection: React.FC = () => {
 
   const resetAll = () => {
     setMake(""); setModel(""); setMaxPrice(""); setYearFrom("");
-    setFuelType(""); setMaxMileage(""); setBodyType(""); setRelationship("");
-    setHasKids(""); setPurpose(""); setBudget("");
+    setFuelType(""); setMaxMileage(""); setBodyType(""); setTransmission("");
+    setRelationship(""); setHasKids(""); setPurpose(""); setBudget("");
   };
 
   const cs = t.carSearch;
