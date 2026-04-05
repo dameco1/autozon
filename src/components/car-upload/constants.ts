@@ -4,7 +4,7 @@ export const COLORS = [
 ];
 
 export const FUEL_TYPES = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
-export const TRANSMISSIONS = ["Manual", "Automatic"];
+export const TRANSMISSIONS = ["Manual", "Automatic", "Semi-Automatic", "CVT"];
 export const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
 
 export const EQUIPMENT_LIST = [
