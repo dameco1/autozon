@@ -68,6 +68,8 @@ const AcquisitionOptions: React.FC = () => {
   const [contractSignedSeller, setContractSignedSeller] = useState(false);
   const [contractSignedBuyer, setContractSignedBuyer] = useState(false);
   const [myKycStatus, setMyKycStatus] = useState<string>("none");
+  const [buyerKycVerified, setBuyerKycVerified] = useState(false);
+  const [sellerKycVerified, setSellerKycVerified] = useState(false);
 
   // Record appraisal feedback for future calibration
   const recordAppraisalFeedback = useCallback(async (carId: string, agreedSalePrice: number) => {
