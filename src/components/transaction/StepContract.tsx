@@ -100,6 +100,10 @@ const StepContract: React.FC<Props> = ({
       sellerCountry: country,
       contractDate: new Date().toISOString(),
       transactionId: transactionId || "draft",
+      buyerKycVerified,
+      sellerKycVerified,
+      contractSignedBuyer,
+      contractSignedSeller,
     };
     const doc = generateContractPdf(contractData);
     doc.save(`autozon-contract-${(transactionId || "draft").slice(0, 8)}.pdf`);
