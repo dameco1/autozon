@@ -57,6 +57,7 @@ export interface CarCandidate {
   power_hp: number | null;
   condition_score: number | null;
   demand_score: number | null;
+  equipment?: string[] | null;
 }
 
 // ── Body-type groupings ────────────────────────────────────────────
