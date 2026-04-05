@@ -54,6 +54,7 @@ const AcquisitionOptions: React.FC = () => {
   const [sellerName, setSellerName] = useState("Seller");
   const [buyerName, setBuyerName] = useState("Buyer");
   const [sellerCountry, setSellerCountry] = useState("");
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   // Transaction wizard state
   const [step, setStep] = useState(1);
@@ -64,6 +65,8 @@ const AcquisitionOptions: React.FC = () => {
   const [insuranceTier, setInsuranceTier] = useState<string | null>(null);
   const [insurancePartnerId, setInsurancePartnerId] = useState<string | null>(null);
   const [transactionId, setTransactionId] = useState<string | null>(null);
+  const [contractSignedSeller, setContractSignedSeller] = useState(false);
+  const [contractSignedBuyer, setContractSignedBuyer] = useState(false);
 
   // Record appraisal feedback for future calibration
   const recordAppraisalFeedback = useCallback(async (carId: string, agreedSalePrice: number) => {
