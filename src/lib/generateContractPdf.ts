@@ -13,11 +13,22 @@ export interface ContractData {
   sellerCountry: string;
   contractDate: string; // ISO string
   transactionId: string;
+  buyerKycVerified?: boolean;
+  sellerKycVerified?: boolean;
+  contractSignedBuyer?: boolean;
+  contractSignedSeller?: boolean;
+  buyerSignedDate?: string;
+  sellerSignedDate?: string;
 }
 
 export function generateContractPdf(data: ContractData): jsPDF {
   const doc = new jsPDF();
-  const { car, agreedPrice, sellerName, buyerName, sellerCountry, contractDate, transactionId } = data;
+  const {
+    car, agreedPrice, sellerName, buyerName, sellerCountry, contractDate, transactionId,
+    buyerKycVerified = false, sellerKycVerified = false,
+    contractSignedBuyer = false, contractSignedSeller = false,
+    buyerSignedDate, sellerSignedDate,
+  } = data;
   const pw = doc.internal.pageSize.getWidth();
   const dateStr = new Date(contractDate).toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -75,16 +86,44 @@ export function generateContractPdf(data: ContractData): jsPDF {
   field("Buyer / Käufer:", buyerName);
   y += 3;
 
-  // ── 2. Vehicle ──
-  section("§2 — Vehicle / Fahrzeug");
+  // ── 2. Identity Verification / Identitätsprüfung ──
+  section("§2 — Identity Verification / Identitätsprüfung");
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(60);
+  const kycIntro = "Both parties have undergone digital identity verification (KYC) through Autozon's certified verification partner. Identity documents have been verified electronically. / Beide Parteien haben eine digitale Identitätsprüfung (KYC) über den zertifizierten Verifizierungspartner von Autozon durchlaufen. Ausweisdokumente wurden elektronisch verifiziert.";
+  const kycLines = doc.splitTextToSize(kycIntro, pw - 50);
+  doc.text(kycLines, 24, y);
+  y += kycLines.length * 4 + 4;
+
+  // KYC status badges
+  const kycBadge = (label: string, name: string, verified: boolean, xPos: number) => {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(verified ? 22 : 180, verified ? 163 : 50, verified ? 74 : 50);
+    doc.text(`${label}: ${name}`, xPos, y);
+    y += 4;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    doc.text(verified ? "✓ Identity Verified / Identität verifiziert" : "✗ Not Verified / Nicht verifiziert", xPos, y);
+  };
+
+  const savedY = y;
+  kycBadge("Seller / Verkäufer", sellerName, sellerKycVerified, 24);
+  y = savedY;
+  kycBadge("Buyer / Käufer", buyerName, buyerKycVerified, pw / 2 + 10);
+  y += 8;
+
+  // ── 3. Vehicle ──
+  section("§3 — Vehicle / Fahrzeug");
   field("Make / Marke:", car.make);
   field("Model / Modell:", car.model);
   field("Year / Baujahr:", String(car.year));
   field("VIN / FIN:", car.vin || "—");
   y += 3;
 
-  // ── 3. Purchase Price ──
-  section("§3 — Purchase Price / Kaufpreis");
+  // ── 4. Purchase Price ──
+  section("§4 — Purchase Price / Kaufpreis");
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(22, 163, 74);
@@ -95,8 +134,8 @@ export function generateContractPdf(data: ContractData): jsPDF {
   doc.text("(agreed purchase price / vereinbarter Kaufpreis)", 80, y);
   y += 10;
 
-  // ── 4. Clauses ──
-  section("§4 — Terms and Conditions / Vertragsbedingungen");
+  // ── 5. Clauses ──
+  section("§5 — Terms and Conditions / Vertragsbedingungen");
   const clauses = [
     "The vehicle is sold as inspected and test-driven by the buyer. / Das Fahrzeug wird verkauft wie vom Käufer besichtigt und probegefahren.",
     "The seller warrants legal ownership and confirms no liens, encumbrances, or third-party claims exist on the vehicle. / Der Verkäufer garantiert das rechtliche Eigentum und bestätigt, dass keine Pfandrechte oder Ansprüche Dritter bestehen.",
@@ -105,6 +144,7 @@ export function generateContractPdf(data: ContractData): jsPDF {
     "Both parties agree to notify the relevant vehicle registration authority (Zulassungsstelle) of the ownership transfer within the legally required timeframe. / Beide Parteien verpflichten sich, die zuständige Zulassungsstelle fristgerecht über den Eigentümerwechsel zu informieren.",
     "The buyer assumes responsibility for vehicle registration, insurance, and any applicable taxes from the date of ownership transfer. / Der Käufer übernimmt ab dem Datum der Eigentumsübertragung die Verantwortung für Anmeldung, Versicherung und etwaige Steuern.",
     "This contract is governed by the laws of the seller's country of residence. / Dieser Vertrag unterliegt dem Recht des Wohnsitzlandes des Verkäufers.",
+    "Both contracting parties have been digitally identified and verified through Autozon's KYC process. The identity verification results are stored securely and serve as proof of identity for the purposes of this contract. / Beide Vertragsparteien wurden digital identifiziert und über den KYC-Prozess von Autozon verifiziert. Die Ergebnisse der Identitätsprüfung werden sicher gespeichert und dienen als Identitätsnachweis für die Zwecke dieses Vertrages.",
   ];
 
   doc.setFontSize(8);
@@ -123,11 +163,20 @@ export function generateContractPdf(data: ContractData): jsPDF {
   });
 
   y += 5;
+  if (y > 230) {
+    doc.addPage();
+    y = 20;
+  }
 
-  // ── 5. Signatures ──
-  section("§5 — Digital Signatures / Digitale Unterschriften");
+  // ── 6. Signatures ──
+  section("§6 — Digital Signatures / Digitale Unterschriften");
   doc.setFontSize(9);
   doc.setTextColor(60);
+
+  const formatSignDate = (d?: string) => {
+    if (!d) return dateStr;
+    return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
+  };
 
   // Seller
   doc.setFont("helvetica", "normal");
@@ -139,8 +188,15 @@ export function generateContractPdf(data: ContractData): jsPDF {
   doc.setTextColor(30);
   doc.text(sellerName, 24, y + 5);
   doc.setFont("helvetica", "normal");
-  doc.setTextColor(100);
-  doc.text("Pending / Ausstehend", 24, y + 10);
+  if (contractSignedSeller) {
+    doc.setTextColor(22, 163, 74);
+    doc.text("Signed digitally / Digital unterzeichnet", 24, y + 10);
+    doc.setTextColor(100);
+    doc.text(formatSignDate(sellerSignedDate), 24, y + 15);
+  } else {
+    doc.setTextColor(200, 100, 0);
+    doc.text("Pending / Ausstehend", 24, y + 10);
+  }
 
   // Buyer
   const bx = pw / 2 + 10;
@@ -151,10 +207,15 @@ export function generateContractPdf(data: ContractData): jsPDF {
   doc.setTextColor(30);
   doc.text(buyerName, bx, y + 5);
   doc.setFont("helvetica", "normal");
-  doc.setTextColor(22, 163, 74);
-  doc.text("Signed digitally / Digital unterzeichnet", bx, y + 10);
-  doc.setTextColor(100);
-  doc.text(dateStr, bx, y + 15);
+  if (contractSignedBuyer) {
+    doc.setTextColor(22, 163, 74);
+    doc.text("Signed digitally / Digital unterzeichnet", bx, y + 10);
+    doc.setTextColor(100);
+    doc.text(formatSignDate(buyerSignedDate), bx, y + 15);
+  } else {
+    doc.setTextColor(200, 100, 0);
+    doc.text("Pending / Ausstehend", bx, y + 10);
+  }
 
   y += 25;
 
