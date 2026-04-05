@@ -59,6 +59,7 @@ const CarSearchSection: React.FC = () => {
       if (fuelType) query = query.eq("fuel_type", fuelType);
       if (maxMileage) query = query.lte("mileage", Number(maxMileage));
       if (bodyType) query = query.eq("body_type", bodyType);
+      if (transmission) query = query.eq("transmission", transmission);
 
       const { count } = await query;
       setTotalCount(count ?? 0);
