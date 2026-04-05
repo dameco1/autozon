@@ -171,7 +171,7 @@ const CarSearchSection: React.FC = () => {
               <Car className="h-3.5 w-3.5" /> {cs.vehicleType}
             </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 mb-6">
             <Select value={make} onValueChange={(v) => { setMake(v); setModel(""); }}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder={cs.make} />
