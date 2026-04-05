@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Users, CheckCircle2, ArrowRight, Download, ExternalLink } from "lucide-react";
+import { Users, CheckCircle2, ArrowRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import ValuationFeedback from "./ValuationFeedback";
@@ -17,11 +17,6 @@ interface Props {
 
 const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, carId, fairValuePrice, onDashboard, onDownload }) => {
   const { t } = useLanguage();
-  const isAustria = sellerCountry?.toLowerCase().includes("austria") || sellerCountry?.toLowerCase().includes("österreich");
-
-  const contractUrl = isAustria
-    ? "https://www.oeamtc.at/thema/autokauf/kaufvertrag/"
-    : "https://www.adac.de/rund-ums-fahrzeug/auto-kaufen-verkaufen/kaufvertrag/";
 
   return (
     <motion.div
@@ -53,19 +48,6 @@ const StepManualComplete: React.FC<Props> = ({ car, agreedPrice, sellerCountry, 
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Download official contract */}
-      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6">
-        <p className="text-sm text-muted-foreground mb-2">{t.transaction.downloadOfficialContract}</p>
-        <a
-          href={contractUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:underline"
-        >
-          {isAustria ? "ÖAMTC Kaufvertrag" : "ADAC Kaufvertrag"} <ExternalLink className="h-3.5 w-3.5" />
-        </a>
       </div>
 
       {/* Valuation feedback prompt */}
