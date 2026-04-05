@@ -116,6 +116,11 @@ const CarUpload: React.FC = () => {
         hasRoofRack: (data as any).has_roof_rack ?? false,
         hasRoofBox: (data as any).has_roof_box ?? false,
         inspectionChecklist: (data as any).inspection_checklist ?? {},
+        firstRegistrationMonth: (data as any).first_registration_month ?? null,
+        firstRegistrationYear: (data as any).first_registration_year ?? null,
+        pickerlValidMonth: (data as any).pickerl_valid_month ?? null,
+        pickerlValidYear: (data as any).pickerl_valid_year ?? null,
+        warrantyType: (data as any).warranty_type ?? "none",
       }));
     });
   }, [editId]);
