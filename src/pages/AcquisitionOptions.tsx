@@ -54,6 +54,7 @@ const AcquisitionOptions: React.FC = () => {
   const [sellerName, setSellerName] = useState("Seller");
   const [buyerName, setBuyerName] = useState("Buyer");
   const [sellerCountry, setSellerCountry] = useState("");
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   // Transaction wizard state
   const [step, setStep] = useState(1);
@@ -64,6 +65,8 @@ const AcquisitionOptions: React.FC = () => {
   const [insuranceTier, setInsuranceTier] = useState<string | null>(null);
   const [insurancePartnerId, setInsurancePartnerId] = useState<string | null>(null);
   const [transactionId, setTransactionId] = useState<string | null>(null);
+  const [contractSignedSeller, setContractSignedSeller] = useState(false);
+  const [contractSignedBuyer, setContractSignedBuyer] = useState(false);
 
   // Record appraisal feedback for future calibration
   const recordAppraisalFeedback = useCallback(async (carId: string, agreedSalePrice: number) => {
@@ -94,6 +97,7 @@ const AcquisitionOptions: React.FC = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) { navigate("/login"); return; }
       if (!offerId) return;
+      setCurrentUserId(session.user.id);
 
       const [offerRes, partnersRes] = await Promise.all([
         supabase.from("offers").select("id, car_id, agreed_price, status, buyer_id, seller_id").eq("id", offerId).single(),
@@ -141,6 +145,8 @@ const AcquisitionOptions: React.FC = () => {
         setContractType(tx.contract_type);
         setPaymentMethod(tx.payment_method);
         setInsuranceTier(tx.insurance_tier);
+        setContractSignedSeller(tx.contract_signed_seller || false);
+        setContractSignedBuyer(tx.contract_signed_buyer || false);
         setStep(tx.current_step || 1);
       }
 
@@ -185,6 +191,8 @@ const AcquisitionOptions: React.FC = () => {
   }
 
   const agreedPrice = offer.agreed_price;
+  const isSeller = currentUserId === offer.seller_id;
+  const isBuyer = currentUserId === offer.buyer_id;
 
   const wizardSteps = [
     { label: t.transaction.stepMethod, icon: <Package className="h-4 w-4" /> },
@@ -330,68 +338,115 @@ const AcquisitionOptions: React.FC = () => {
 
         {/* Wizard content */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          {step === 1 && <StepMethod onSelect={handleMethodSelect} />}
+          {/* Seller sees contract signing view when at step 2+ */}
+          {isSeller ? (
+            step >= 2 && step <= 5 && completionMethod === "digital" ? (
+              <StepContract
+                car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
+                agreedPrice={agreedPrice}
+                sellerCountry={sellerCountry}
+                buyerName={buyerName}
+                sellerName={sellerName}
+                transactionId={transactionId}
+                onContinue={handleContractDone}
+                role="seller"
+                contractSignedSeller={contractSignedSeller}
+                contractSignedBuyer={contractSignedBuyer}
+                onSellerSign={async () => {
+                  if (!transactionId) return;
+                  await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
+                  setContractSignedSeller(true);
+                  toast.success(t.transaction.contractSigned);
+                }}
+              />
+            ) : step === 99 ? (
+              <StepManualComplete
+                car={car}
+                agreedPrice={agreedPrice}
+                sellerCountry={sellerCountry}
+                carId={offer?.car_id}
+                fairValuePrice={car?.fair_value_price}
+                onDashboard={() => navigate("/dashboard")}
+                onDownload={handleDownload}
+              />
+            ) : (
+              <div className="text-center py-12">
+                <Package className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <p className="text-muted-foreground">{t.transaction.sellerWaitingForBuyer}</p>
+                <Button variant="ghost" className="mt-4 text-muted-foreground" onClick={() => navigate("/dashboard")}>
+                  {t.transaction.backToDashboard}
+                </Button>
+              </div>
+            )
+          ) : (
+            <>
+              {step === 1 && <StepMethod onSelect={handleMethodSelect} />}
 
-          {step === 2 && (
-            <StepContract
-              car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
-              agreedPrice={agreedPrice}
-              sellerCountry={sellerCountry}
-              buyerName={buyerName}
-              sellerName={sellerName}
-              transactionId={transactionId}
-              onContinue={handleContractDone}
-            />
-          )}
+              {step === 2 && (
+                <StepContract
+                  car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
+                  agreedPrice={agreedPrice}
+                  sellerCountry={sellerCountry}
+                  buyerName={buyerName}
+                  sellerName={sellerName}
+                  transactionId={transactionId}
+                  onContinue={handleContractDone}
+                  role="buyer"
+                  contractSignedSeller={contractSignedSeller}
+                  contractSignedBuyer={contractSignedBuyer}
+                />
+              )}
 
-          {step === 3 && (
-            <StepPayment
-              agreedPrice={agreedPrice}
-              partners={partners}
-              onContinue={handlePaymentDone}
-              onBack={() => setStep(2)}
-            />
-          )}
+              {step === 3 && (
+                <StepPayment
+                  agreedPrice={agreedPrice}
+                  partners={partners}
+                  onContinue={handlePaymentDone}
+                  onBack={() => setStep(2)}
+                />
+              )}
 
-          {step === 4 && (
-            <StepInsurance
-              agreedPrice={agreedPrice}
-              partners={partners}
-              onContinue={handleInsuranceDone}
-              onSkip={handleInsuranceSkip}
-            />
-          )}
+              {step === 4 && (
+                <StepInsurance
+                  agreedPrice={agreedPrice}
+                  partners={partners}
+                  onContinue={handleInsuranceDone}
+                  onSkip={handleInsuranceSkip}
+                />
+              )}
 
-          {step === 5 && (
-            <StepComplete
-              car={car}
-              agreedPrice={agreedPrice}
-              completionMethod={completionMethod || "digital"}
-              contractType={contractType}
-              paymentMethod={paymentMethod}
-              insuranceTier={insuranceTier}
-              carId={offer?.car_id}
-              fairValuePrice={car?.fair_value_price}
-              onDashboard={() => navigate("/dashboard")}
-              onDownload={handleDownload}
-            />
-          )}
+              {step === 5 && (
+                <StepComplete
+                  car={car}
+                  agreedPrice={agreedPrice}
+                  completionMethod={completionMethod || "digital"}
+                  contractType={contractType}
+                  paymentMethod={paymentMethod}
+                  insuranceTier={insuranceTier}
+                  carId={offer?.car_id}
+                  fairValuePrice={car?.fair_value_price}
+                  onDashboard={() => navigate("/dashboard")}
+                  onDownload={handleDownload}
+                />
+              )}
 
-          {step === 99 && (
-            <StepManualComplete
-              car={car}
-              agreedPrice={agreedPrice}
-              sellerCountry={sellerCountry}
-              carId={offer?.car_id}
-              fairValuePrice={car?.fair_value_price}
-              onDashboard={() => navigate("/dashboard")}
-              onDownload={handleDownload}
-            />
+              {step === 99 && (
+                <StepManualComplete
+                  car={car}
+                  agreedPrice={agreedPrice}
+                  sellerCountry={sellerCountry}
+                  carId={offer?.car_id}
+                  fairValuePrice={car?.fair_value_price}
+                  onDashboard={() => navigate("/dashboard")}
+                  onDownload={handleDownload}
+                />
+              )}
+            </>
           )}
         </motion.div>
 
         {/* Back */}
-        {step === 1 && (
+        {step === 1 && isBuyer && (
           <div className="mt-8 text-center">
             <Button variant="ghost" className="text-muted-foreground" onClick={() => navigate(`/negotiate/${offerId}`)}>
               <ArrowLeft className="mr-2 h-4 w-4" /> {t.acquisition.backToNegotiation}
