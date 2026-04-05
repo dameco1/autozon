@@ -485,20 +485,52 @@ const Negotiation: React.FC = () => {
           </motion.div>
         )}
 
-        {/* Deal Accepted → Proceed */}
+        {/* Deal Accepted → role-specific view */}
         {isAccepted && offer.agreed_price && (
           <motion.div
-            className="bg-primary/5 border border-primary/30 rounded-2xl p-8 text-center"
+            className="bg-primary/5 border border-primary/30 rounded-2xl p-8"
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
           >
-            <CheckCircle2 className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-display font-black text-foreground mb-2">{t.negotiation.dealAgreed}</h3>
-            <p className="text-muted-foreground mb-2">
-              {t.negotiation.agreedAt} <span className="text-primary font-bold">€{offer.agreed_price.toLocaleString()}</span>
-            </p>
-            <p className="text-sm text-muted-foreground mb-6">
-              {t.negotiation.youSaved} €{(car.price - offer.agreed_price).toLocaleString()} ({Math.round((1 - offer.agreed_price / car.price) * 100)}%)
-            </p>
+            <div className="text-center mb-6">
+              <CheckCircle2 className="h-12 w-12 text-primary mx-auto mb-4" />
+              <h3 className="text-2xl font-display font-black text-foreground mb-2">{t.negotiation.dealAgreed}</h3>
+              <p className="text-muted-foreground mb-2">
+                {t.negotiation.agreedAt} <span className="text-primary font-bold">€{offer.agreed_price.toLocaleString()}</span>
+              </p>
+
+              {/* Buyer: savings message */}
+              {isBuyer && (
+                <p className="text-sm text-muted-foreground">
+                  {t.negotiation.youSaved} €{(car.price - offer.agreed_price).toLocaleString()} ({Math.round((1 - offer.agreed_price / car.price) * 100)}%)
+                </p>
+              )}
+
+              {/* Seller: congratulations message */}
+              {isSeller && (
+                <p className="text-sm text-muted-foreground">
+                  {t.negotiation.sellerCongrats} {Math.round((1 - offer.agreed_price / car.price) * 100)}% {isSeller ? "gesenkt" : "lowered"}.
+                </p>
+              )}
+            </div>
+
+            {/* Role-specific checklist */}
+            <div className="bg-secondary/50 border border-border rounded-xl p-5 mb-6">
+              <h4 className="font-display font-bold text-foreground text-sm mb-3">
+                {isBuyer ? t.negotiation.buyerChecklist : t.negotiation.sellerChecklist}
+              </h4>
+              <div className="space-y-2.5">
+                {(isBuyer
+                  ? [t.negotiation.buyerCheck1, t.negotiation.buyerCheck2, t.negotiation.buyerCheck3, t.negotiation.buyerCheck4, t.negotiation.buyerCheck5]
+                  : [t.negotiation.sellerCheck1, t.negotiation.sellerCheck2, t.negotiation.sellerCheck3, t.negotiation.sellerCheck4, t.negotiation.sellerCheck5, t.negotiation.sellerCheck6]
+                ).map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="w-4 h-4 rounded-full border-2 border-border flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button
                 size="lg"
