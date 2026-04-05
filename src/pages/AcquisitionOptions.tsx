@@ -427,6 +427,8 @@ const AcquisitionOptions: React.FC = () => {
                   role="buyer"
                   contractSignedSeller={contractSignedSeller}
                   contractSignedBuyer={contractSignedBuyer}
+                  buyerKycVerified={buyerKycVerified}
+                  sellerKycVerified={sellerKycVerified}
                 />
               ) : null}
 
