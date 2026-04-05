@@ -145,6 +145,8 @@ const AcquisitionOptions: React.FC = () => {
         setContractType(tx.contract_type);
         setPaymentMethod(tx.payment_method);
         setInsuranceTier(tx.insurance_tier);
+        setContractSignedSeller(tx.contract_signed_seller || false);
+        setContractSignedBuyer(tx.contract_signed_buyer || false);
         setStep(tx.current_step || 1);
       }
 
