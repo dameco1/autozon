@@ -37,6 +37,8 @@ import ResetPassword from "./pages/ResetPassword";
 import DocViewer from "./pages/DocViewer";
 import QA from "./pages/QA";
 import AboutUs from "./pages/AboutUs";
+import FinancingCalculator from "./pages/FinancingCalculator";
+import KycVerification from "./pages/KycVerification";
 
 const queryClient = new QueryClient();
 
