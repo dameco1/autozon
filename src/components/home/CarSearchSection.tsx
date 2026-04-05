@@ -65,7 +65,7 @@ const CarSearchSection: React.FC = () => {
       setTotalCount(count ?? 0);
     };
     fetchCount();
-  }, [make, model, effectiveMaxPrice, yearFrom, fuelType, maxMileage, bodyType]);
+  }, [make, model, effectiveMaxPrice, yearFrom, fuelType, maxMileage, bodyType, transmission]);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
