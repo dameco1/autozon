@@ -8,13 +8,14 @@ import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import {
   Handshake, ArrowRight, CheckCircle2, XCircle, RotateCcw,
-  MessageSquare, ShieldCheck, AlertTriangle, Download,
+  MessageSquare, ShieldCheck, AlertTriangle, Download, User,
 } from "lucide-react";
 import { generateNegotiationPdf } from "@/lib/generateNegotiationPdf";
-import type { User } from "@supabase/supabase-js";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface OfferRow {
   id: string;
@@ -40,22 +41,26 @@ interface CarInfo {
   fair_value_price: number | null;
 }
 
-interface NegotiationEvent {
-  type: "offer" | "counter" | "accept" | "reject";
+interface RoundRow {
+  id: string;
+  offer_id: string;
+  round_number: number;
+  actor_id: string;
+  actor_role: string;
+  action: string;
   amount: number;
   message: string | null;
-  by: "buyer" | "seller";
-  round: number;
-  timestamp: string;
+  created_at: string;
 }
 
 const Negotiation: React.FC = () => {
   const { offerId } = useParams<{ offerId: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [offer, setOffer] = useState<OfferRow | null>(null);
   const [car, setCar] = useState<CarInfo | null>(null);
+  const [rounds, setRounds] = useState<RoundRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [counterAmount, setCounterAmount] = useState("");
   const [counterMessage, setCounterMessage] = useState("");
@@ -79,7 +84,7 @@ const Negotiation: React.FC = () => {
     if (!offerData) { setLoading(false); return; }
     const o = offerData as unknown as OfferRow;
 
-    // If car is already sold, redirect to transaction summary instead of allowing re-purchase
+    // If car is already sold, redirect to transaction summary
     if (o.status === "accepted") {
       const { data: carCheck } = await supabase.from("cars").select("status").eq("id", o.car_id).single();
       if (carCheck && (carCheck as any).status === "sold") {
@@ -90,21 +95,18 @@ const Negotiation: React.FC = () => {
 
     setOffer(o);
 
-    const { data: carData } = await supabase
-      .from("cars")
-      .select("make, model, year, price, fair_value_price")
-      .eq("id", o.car_id)
-      .single();
-
-    if (carData) setCar(carData as CarInfo);
-
-    // Fetch party names
-    const [profileRes, buyerRes] = await Promise.all([
+    // Fetch car, rounds, and party names in parallel
+    const [carRes, roundsRes, sellerRes, buyerRes] = await Promise.all([
+      supabase.from("cars").select("make, model, year, price, fair_value_price").eq("id", o.car_id).single(),
+      supabase.from("negotiation_rounds" as any).select("*").eq("offer_id", offerId).order("round_number", { ascending: true }).order("created_at", { ascending: true }),
       supabase.from("profiles").select("full_name").eq("user_id", o.seller_id).maybeSingle(),
-      supabase.from("buyers").select("name").eq("id", o.buyer_id).maybeSingle(),
+      supabase.from("profiles").select("full_name").eq("user_id", o.buyer_id).maybeSingle(),
     ]);
-    if (profileRes.data?.full_name) setSellerName(profileRes.data.full_name);
-    if (buyerRes.data?.name) setBuyerName(buyerRes.data.name);
+
+    if (carRes.data) setCar(carRes.data as CarInfo);
+    if (roundsRes.data) setRounds(roundsRes.data as unknown as RoundRow[]);
+    if (sellerRes.data?.full_name) setSellerName(sellerRes.data.full_name);
+    if (buyerRes.data?.full_name) setBuyerName(buyerRes.data.full_name);
 
     setLoading(false);
   }, [offerId, navigate]);
@@ -118,12 +120,38 @@ const Negotiation: React.FC = () => {
       .channel(`offer-${offerId}`)
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "offers", filter: `id=eq.${offerId}` },
+        { event: "*", schema: "public", table: "offers", filter: `id=eq.${offerId}` },
+        () => { fetchData(); }
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "negotiation_rounds" as any, filter: `offer_id=eq.${offerId}` },
         () => { fetchData(); }
       )
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [offerId, fetchData]);
+
+  // Seed initial round if offer exists but no rounds yet (backward compat)
+  useEffect(() => {
+    if (!offer || !user || rounds.length > 0) return;
+    // Only the buyer who created the offer seeds round 1
+    if (user.id !== offer.buyer_id) return;
+
+    const seedRound = async () => {
+      await supabase.from("negotiation_rounds" as any).insert({
+        offer_id: offer.id,
+        round_number: 1,
+        actor_id: offer.buyer_id,
+        actor_role: "buyer",
+        action: "offer",
+        amount: offer.amount,
+        message: offer.message || null,
+      } as any);
+      fetchData();
+    };
+    seedRound();
+  }, [offer, user, rounds.length, fetchData]);
 
   if (loading) {
     return (
@@ -144,72 +172,42 @@ const Negotiation: React.FC = () => {
 
   const isBuyer = user.id === offer.buyer_id;
   const isSeller = user.id === offer.seller_id;
+  const myRole = isBuyer ? "buyer" : "seller";
   const fairValue = car.fair_value_price ?? car.price;
-
-  // Build negotiation timeline from offer data
-  const events: NegotiationEvent[] = [];
-
-  // Initial offer
-  events.push({
-    type: "offer",
-    amount: offer.amount,
-    message: offer.message,
-    by: "buyer",
-    round: 1,
-    timestamp: offer.created_at,
-  });
-
-  // Counter if exists
-  if (offer.counter_amount && offer.status !== "pending") {
-    events.push({
-      type: "counter",
-      amount: offer.counter_amount,
-      message: null,
-      by: "seller",
-      round: offer.current_round,
-      timestamp: offer.updated_at,
-    });
-  }
-
-  if (offer.status === "accepted" && offer.agreed_price) {
-    events.push({
-      type: "accept",
-      amount: offer.agreed_price,
-      message: null,
-      by: offer.counter_amount ? "buyer" : "seller",
-      round: offer.current_round,
-      timestamp: offer.updated_at,
-    });
-  }
-
-  if (offer.status === "rejected") {
-    events.push({
-      type: "reject",
-      amount: offer.counter_amount ?? offer.amount,
-      message: null,
-      by: isBuyer ? "seller" : "buyer",
-      round: offer.current_round,
-      timestamp: offer.updated_at,
-    });
-  }
 
   const isAccepted = offer.status === "accepted";
   const isRejected = offer.status === "rejected";
   const isFinished = isAccepted || isRejected;
-  const roundsLeft = offer.max_rounds - offer.current_round;
 
-  // Determine whose turn it is
-  const waitingForSeller = offer.status === "pending" && !offer.counter_amount;
-  const waitingForBuyer = offer.status === "countered";
-  const canAct = (isSeller && waitingForSeller) || (isBuyer && waitingForBuyer);
+  // Determine whose turn it is based on the last round action
+  const lastRound = rounds.length > 0 ? rounds[rounds.length - 1] : null;
+  const lastActorRole = lastRound?.actor_role;
+  // After someone makes an offer or counter, it's the OTHER party's turn
+  const isMyTurn = !isFinished && lastRound && lastActorRole !== myRole;
+  const roundsUsed = offer.current_round;
+  const roundsLeft = offer.max_rounds - roundsUsed;
+  const latestAmount = lastRound?.amount ?? offer.amount;
 
   const handleAccept = async () => {
     setSubmitting(true);
-    const agreedPrice = offer.counter_amount ?? offer.amount;
+    const agreedPrice = latestAmount;
+
+    // Record the accept round
+    await supabase.from("negotiation_rounds" as any).insert({
+      offer_id: offer.id,
+      round_number: offer.current_round,
+      actor_id: user.id,
+      actor_role: myRole,
+      action: "accept",
+      amount: agreedPrice,
+      message: null,
+    } as any);
+
     const { error } = await supabase
       .from("offers")
       .update({ status: "accepted", agreed_price: agreedPrice } as any)
       .eq("id", offer.id);
+
     if (error) { toast.error(error.message); setSubmitting(false); return; }
     toast.success(t.negotiation.dealAgreed);
     await fetchData();
@@ -218,10 +216,22 @@ const Negotiation: React.FC = () => {
 
   const handleReject = async () => {
     setSubmitting(true);
+
+    await supabase.from("negotiation_rounds" as any).insert({
+      offer_id: offer.id,
+      round_number: offer.current_round,
+      actor_id: user.id,
+      actor_role: myRole,
+      action: "reject",
+      amount: latestAmount,
+      message: null,
+    } as any);
+
     const { error } = await supabase
       .from("offers")
       .update({ status: "rejected" } as any)
       .eq("id", offer.id);
+
     if (error) { toast.error(error.message); setSubmitting(false); return; }
     toast.info(t.negotiation.dealRejected);
     await fetchData();
@@ -233,10 +243,23 @@ const Negotiation: React.FC = () => {
     if (!amt || amt <= 0) { toast.error("Enter a valid amount"); return; }
     setSubmitting(true);
 
+    const newRound = offer.current_round + 1;
+
+    // Record the counter round
+    await supabase.from("negotiation_rounds" as any).insert({
+      offer_id: offer.id,
+      round_number: newRound,
+      actor_id: user.id,
+      actor_role: myRole,
+      action: "counter",
+      amount: amt,
+      message: counterMessage || null,
+    } as any);
+
     const updates: Record<string, any> = {
       counter_amount: amt,
       status: "countered",
-      current_round: offer.current_round + 1,
+      current_round: newRound,
     };
     if (counterMessage) updates.message = counterMessage;
 
@@ -253,6 +276,21 @@ const Negotiation: React.FC = () => {
     setSubmitting(false);
   };
 
+  const actionIcon = (action: string) => {
+    if (action === "accept") return <CheckCircle2 className="h-5 w-5 text-primary" />;
+    if (action === "reject") return <XCircle className="h-5 w-5 text-destructive" />;
+    if (action === "counter") return <RotateCcw className="h-5 w-5 text-amber-400" />;
+    return <ArrowRight className="h-5 w-5 text-primary" />;
+  };
+
+  const actionLabel = (action: string) => {
+    if (action === "offer") return t.negotiation.offered;
+    if (action === "counter") return t.negotiation.countered;
+    if (action === "accept") return t.negotiation.accepted;
+    if (action === "reject") return t.negotiation.rejected;
+    return action;
+  };
+
   return (
     <div className="min-h-screen bg-background text-muted-foreground">
       <SEO title={`Negotiate — ${car.year} ${car.make} ${car.model}`} description="Negotiate the price" path={`/negotiate/${offerId}`} noIndex />
@@ -267,11 +305,18 @@ const Negotiation: React.FC = () => {
           <h1 className="text-3xl sm:text-4xl font-display font-black text-foreground">
             {car.year} {car.make} {car.model}
           </h1>
+          {/* Role indicator */}
+          <div className="mt-3 flex items-center justify-center gap-2">
+            <Badge variant="secondary" className="text-xs">
+              <User className="h-3 w-3 mr-1" />
+              You are the {myRole === "buyer" ? t.negotiation.buyer : t.negotiation.seller}
+            </Badge>
+          </div>
         </motion.div>
 
         {/* Fair Value Anchor */}
         <motion.div
-          className="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-8 flex items-center gap-4"
+          className="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-4 flex items-center gap-4"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
         >
           <ShieldCheck className="h-6 w-6 text-primary flex-shrink-0" />
@@ -293,7 +338,22 @@ const Negotiation: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Negotiation Timeline */}
+        {/* Parties */}
+        <motion.div
+          className="flex items-center justify-between bg-secondary/50 border border-border rounded-2xl px-6 py-3 mb-8 text-sm"
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">{t.negotiation.seller}:</span>
+            <span className="font-semibold text-foreground">{sellerName}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">{t.negotiation.buyer}:</span>
+            <span className="font-semibold text-foreground">{buyerName}</span>
+          </div>
+        </motion.div>
+
+        {/* Negotiation Timeline — built from rounds table */}
         <motion.div
           className="bg-secondary/50 border border-border rounded-2xl overflow-hidden mb-8"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
@@ -308,52 +368,54 @@ const Negotiation: React.FC = () => {
           </div>
 
           <div className="divide-y divide-border">
-            {events.map((ev, i) => (
-              <div key={i} className={`px-6 py-5 ${ev.type === "accept" ? "bg-primary/5" : ev.type === "reject" ? "bg-destructive/5" : ""}`}>
+            {rounds.map((r) => (
+              <div
+                key={r.id}
+                className={`px-6 py-5 ${r.action === "accept" ? "bg-primary/5" : r.action === "reject" ? "bg-destructive/5" : ""}`}
+              >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    {ev.type === "accept" ? (
-                      <CheckCircle2 className="h-5 w-5 text-primary" />
-                    ) : ev.type === "reject" ? (
-                      <XCircle className="h-5 w-5 text-destructive" />
-                    ) : ev.type === "counter" ? (
-                      <RotateCcw className="h-5 w-5 text-amber-400" />
-                    ) : (
-                      <ArrowRight className="h-5 w-5 text-primary" />
-                    )}
+                    {actionIcon(r.action)}
                     <span className="text-sm font-semibold text-foreground">
-                      {ev.by === "buyer" ? t.negotiation.buyer : t.negotiation.seller}
+                      {r.actor_role === "buyer" ? buyerName : sellerName}
                       {" "}
-                      {ev.type === "offer" && t.negotiation.offered}
-                      {ev.type === "counter" && t.negotiation.countered}
-                      {ev.type === "accept" && t.negotiation.accepted}
-                      {ev.type === "reject" && t.negotiation.rejected}
+                      <span className="text-muted-foreground font-normal">({r.actor_role === "buyer" ? t.negotiation.buyer : t.negotiation.seller})</span>
+                      {" "}
+                      {actionLabel(r.action)}
                     </span>
                   </div>
-                  <span className="text-2xl font-display font-black text-foreground">€{ev.amount.toLocaleString()}</span>
+                  <span className="text-2xl font-display font-black text-foreground">€{r.amount.toLocaleString()}</span>
                 </div>
-                {ev.message && (
-                  <p className="text-sm text-muted-foreground italic ml-7">"{ev.message}"</p>
+                {r.message && (
+                  <p className="text-sm text-muted-foreground italic ml-7">"{r.message}"</p>
                 )}
                 <p className="text-xs text-muted-foreground ml-7 mt-1">
-                  {new Date(ev.timestamp).toLocaleString()}
+                  Round {r.round_number} · {new Date(r.created_at).toLocaleString()}
                 </p>
               </div>
             ))}
 
+            {rounds.length === 0 && !isFinished && (
+              <div className="px-6 py-4 text-muted-foreground text-sm">Initializing negotiation…</div>
+            )}
+
             {/* Waiting state */}
-            {!isFinished && (
+            {!isFinished && rounds.length > 0 && (
               <div className="px-6 py-4 flex items-center gap-2 text-muted-foreground text-sm">
                 <div className="w-4 h-4 border-2 border-border border-t-primary rounded-full animate-spin" />
-                {waitingForSeller ? t.negotiation.waitingSeller : t.negotiation.waitingBuyer}
+                {isMyTurn
+                  ? t.negotiation.yourTurn
+                  : lastActorRole === "buyer"
+                    ? t.negotiation.waitingSeller
+                    : t.negotiation.waitingBuyer}
                 {roundsLeft > 0 && ` · ${roundsLeft} ${t.negotiation.roundsLeft}`}
               </div>
             )}
           </div>
         </motion.div>
 
-        {/* Action Area */}
-        {!isFinished && canAct && (
+        {/* Action Area — shown to whoever's turn it is */}
+        {!isFinished && isMyTurn && (
           <motion.div
             className="bg-secondary/50 border border-border rounded-2xl p-6 mb-8"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
@@ -373,7 +435,7 @@ const Negotiation: React.FC = () => {
                 disabled={submitting}
               >
                 <CheckCircle2 className="mr-2 h-4 w-4" />
-                {t.negotiation.acceptBtn} €{(offer.counter_amount ?? offer.amount).toLocaleString()}
+                {t.negotiation.acceptBtn} €{latestAmount.toLocaleString()}
               </Button>
               <Button
                 variant="outline"
@@ -386,37 +448,35 @@ const Negotiation: React.FC = () => {
             </div>
 
             {roundsLeft > 0 && (
-              <>
-                <div className="border-t border-border pt-4 mt-2">
-                  <p className="text-sm text-muted-foreground mb-3">{t.negotiation.orCounter}</p>
-                  <div className="flex gap-3 mb-3">
-                    <div className="relative flex-1">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">€</span>
-                      <Input
-                        type="number"
-                        value={counterAmount}
-                        onChange={(e) => setCounterAmount(e.target.value)}
-                        placeholder="0"
-                        className="pl-7 bg-muted border-border text-foreground"
-                      />
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="border-amber-400/30 text-amber-400 hover:bg-amber-400/10 font-semibold"
-                      onClick={handleCounter}
-                      disabled={submitting || !counterAmount}
-                    >
-                      <RotateCcw className="mr-2 h-4 w-4" /> {t.negotiation.counterBtn}
-                    </Button>
+              <div className="border-t border-border pt-4 mt-2">
+                <p className="text-sm text-muted-foreground mb-3">{t.negotiation.orCounter}</p>
+                <div className="flex gap-3 mb-3">
+                  <div className="relative flex-1">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">€</span>
+                    <Input
+                      type="number"
+                      value={counterAmount}
+                      onChange={(e) => setCounterAmount(e.target.value)}
+                      placeholder="0"
+                      className="pl-7 bg-muted border-border text-foreground"
+                    />
                   </div>
-                  <Textarea
-                    value={counterMessage}
-                    onChange={(e) => setCounterMessage(e.target.value)}
-                    placeholder={t.negotiation.messagePlaceholder}
-                    className="bg-muted border-border text-foreground text-sm h-20"
-                  />
+                  <Button
+                    variant="outline"
+                    className="border-amber-400/30 text-amber-400 hover:bg-amber-400/10 font-semibold"
+                    onClick={handleCounter}
+                    disabled={submitting || !counterAmount}
+                  >
+                    <RotateCcw className="mr-2 h-4 w-4" /> {t.negotiation.counterBtn}
+                  </Button>
                 </div>
-              </>
+                <Textarea
+                  value={counterMessage}
+                  onChange={(e) => setCounterMessage(e.target.value)}
+                  placeholder={t.negotiation.messagePlaceholder}
+                  className="bg-muted border-border text-foreground text-sm h-20"
+                />
+              </div>
             )}
           </motion.div>
         )}
