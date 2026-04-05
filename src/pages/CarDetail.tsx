@@ -93,7 +93,7 @@ const CarDetail: React.FC = () => {
     if (!id) return;
     supabase
       .from("cars")
-      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos, inspection_checklist, owner_id")
+      .select("id, make, model, year, mileage, fuel_type, transmission, body_type, color, power_hp, price, fair_value_price, condition_score, demand_score, equipment, description, photos, inspection_checklist, owner_id, vin")
       .eq("id", id)
       .single()
       .then(({ data }) => {
