@@ -799,6 +799,12 @@ export const translations = {
       inspectionYes: "Yes",
       inspectionNo: "No",
       inspectionUnknown: "Unknown",
+      firstReg: "First Reg.",
+      pickerl: "Pickerl",
+      warranty: "Warranty",
+      warrantyNone: "None",
+      warrantyManufacturer: "Manufacturer Warranty",
+      warrantyThirdParty: "Third-Party Warranty",
     },
     intent: {
       title: "What brings you here?",
