@@ -756,6 +756,7 @@ export const translations = {
       stepPayment: "Payment",
       stepInsurance: "Insurance",
       stepComplete: "Complete",
+      sellerWaitingForBuyer: "The buyer is setting up the transaction. You'll be able to sign the contract once it's ready.",
     },
     nextCar: {
       title: "Your Next Car",
