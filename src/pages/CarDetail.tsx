@@ -480,7 +480,7 @@ const CarDetail: React.FC = () => {
             </div>
 
             {/* Vincario Data Card */}
-            <VincarioDataCard vin={(car as any).vin} carId={car.id} />
+            <VincarioDataCard vin={car.vin} carId={car.id} />
 
             {/* Coming Soon — Spare Parts & Merchandise */}
             <motion.div
