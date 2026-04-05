@@ -85,13 +85,21 @@ const Signup: React.FC = () => {
     if (data.user) {
       // Save lifestyle data to profile
       await supabase.from("profiles").update({
+        user_type: userType,
         relationship_status: relationship || null,
         has_kids: hasKids === "yes" ? true : hasKids === "no" ? false : null,
         num_kids: hasKids === "yes" && numKids ? Number(numKids) : null,
         car_purpose: purpose || null,
         budget_max: budgetMax && Number(budgetMax) > 0 ? Number(budgetMax) : null,
         current_car: currentCar || null,
-      }).eq("user_id", data.user.id);
+        ...(userType !== "private" ? {
+          company_name: companyName || null,
+          uid_number: uidNumber || null,
+          commercial_registry_number: registryNumber || null,
+          authorized_representative: representative || null,
+        } : {}),
+        ...(dateOfBirth ? { date_of_birth: dateOfBirth } : {}),
+      } as any).eq("user_id", data.user.id);
 
       // Save buyer preferences if any were filled
       const hasAnyPref = prefBrands.length > 0 || prefBodyTypes.length > 0 || prefFuelTypes.length > 0 ||
