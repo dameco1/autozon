@@ -44,14 +44,19 @@ Autozon operates an **asymmetric marketplace model**: buyers use the platform fo
 | Financing Referrals | Commission on funded deals | ✅ Live |
 | **Advertising & Sponsored Content** | Display ads, sponsored listings, partner promotions | ✅ Live |
 
-### Recently Shipped (V1.5)
+### Recently Shipped (V1 + V1.5)
 
 | Feature | Impact on Revenue |
 |---|---|
-| Lifestyle-aware buyer matching (4D algorithm) | Higher match quality → faster sales → improved seller NPS → more referrals |
+| Lifestyle-aware buyer matching (5D algorithm with sports & towing) | Higher match quality → faster sales → improved seller NPS → more referrals |
 | Brand-specific damage costing | More accurate fair values → increased seller trust → higher Premium uptake |
 | Current car intelligence | Upgrade path recommendations → cross-sell to existing car owners |
 | Warm light theme redesign | Premium brand perception → higher conversion rates |
+| Austrian Financing Calculator (Kredit/Leasing/3-Wege) | Demonstrates financing capability → partner bank onboarding accelerator |
+| Insurance Estimate Calculator (Haftpflicht/Kasko/GAP) | Primes users for embedded insurance → higher policy attach rate at launch |
+| KYC Identity Verification (3-step flow) | Compliance readiness → trust signal → unlocks contract signing |
+| Vincario VIN Reports | Vehicle transparency → higher buyer confidence → faster transactions |
+| Admin Command Center (11 tabs, User/Car cards) | Operational readiness → scalable user/car management |
 
 ### Planned (V2 – V3)
 
