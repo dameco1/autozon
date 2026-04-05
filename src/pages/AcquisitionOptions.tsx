@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Package, ArrowLeft, FileText, CreditCard, Shield, CheckCircle2 } from "lucide-react";
+import { Package, ArrowLeft, FileText, CreditCard, Shield, CheckCircle2, AlertTriangle } from "lucide-react";
 import { generateNegotiationPdf } from "@/lib/generateNegotiationPdf";
 import TransactionStepIndicator from "@/components/transaction/TransactionStepIndicator";
 import StepMethod from "@/components/transaction/StepMethod";
@@ -67,6 +67,7 @@ const AcquisitionOptions: React.FC = () => {
   const [transactionId, setTransactionId] = useState<string | null>(null);
   const [contractSignedSeller, setContractSignedSeller] = useState(false);
   const [contractSignedBuyer, setContractSignedBuyer] = useState(false);
+  const [myKycStatus, setMyKycStatus] = useState<string>("none");
 
   // Record appraisal feedback for future calibration
   const recordAppraisalFeedback = useCallback(async (carId: string, agreedSalePrice: number) => {
@@ -122,14 +123,16 @@ const AcquisitionOptions: React.FC = () => {
 
       if (carData) setCar(carData as CarInfo);
 
-      // Fetch names and seller country
-      const [profileRes, buyerRes] = await Promise.all([
+      // Fetch names, seller country, and current user KYC
+      const [profileRes, buyerRes, myProfileRes] = await Promise.all([
         supabase.from("profiles").select("full_name, country").eq("user_id", o.seller_id).maybeSingle(),
         supabase.from("profiles").select("full_name").eq("user_id", o.buyer_id).maybeSingle(),
+        supabase.from("profiles").select("kyc_status").eq("user_id", session.user.id).maybeSingle(),
       ]);
       if (profileRes.data?.full_name) setSellerName(profileRes.data.full_name);
       if (profileRes.data?.country) setSellerCountry(profileRes.data.country);
       if (buyerRes.data?.full_name) setBuyerName(buyerRes.data.full_name);
+      if (myProfileRes.data) setMyKycStatus((myProfileRes.data as any).kyc_status || "none");
 
       // Check for existing transaction
       const { data: txData } = await supabase
@@ -341,24 +344,35 @@ const AcquisitionOptions: React.FC = () => {
           {/* Seller sees contract signing view when at step 2+ */}
           {isSeller ? (
             step >= 2 && step <= 5 && completionMethod === "digital" ? (
-              <StepContract
-                car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
-                agreedPrice={agreedPrice}
-                sellerCountry={sellerCountry}
-                buyerName={buyerName}
-                sellerName={sellerName}
-                transactionId={transactionId}
-                onContinue={handleContractDone}
-                role="seller"
-                contractSignedSeller={contractSignedSeller}
-                contractSignedBuyer={contractSignedBuyer}
-                onSellerSign={async () => {
-                  if (!transactionId) return;
-                  await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
-                  setContractSignedSeller(true);
-                  toast.success(t.transaction.contractSigned);
-                }}
-              />
+              myKycStatus !== "verified" && myKycStatus !== "approved" ? (
+                <div className="text-center py-12 space-y-4">
+                  <AlertTriangle className="h-12 w-12 text-orange mx-auto" />
+                  <h3 className="text-xl font-display font-bold text-foreground">{(t as any).kyc?.title || "Identity Verification Required"}</h3>
+                  <p className="text-muted-foreground max-w-md mx-auto">{(t as any).kyc?.subtitle || "You must verify your identity before signing a contract."}</p>
+                  <Button className="bg-primary text-primary-foreground" onClick={() => navigate("/kyc")}>
+                    <Shield className="mr-2 h-4 w-4" /> {(t as any).kyc?.startVerification || "Start Verification"}
+                  </Button>
+                </div>
+              ) : (
+                <StepContract
+                  car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
+                  agreedPrice={agreedPrice}
+                  sellerCountry={sellerCountry}
+                  buyerName={buyerName}
+                  sellerName={sellerName}
+                  transactionId={transactionId}
+                  onContinue={handleContractDone}
+                  role="seller"
+                  contractSignedSeller={contractSignedSeller}
+                  contractSignedBuyer={contractSignedBuyer}
+                  onSellerSign={async () => {
+                    if (!transactionId) return;
+                    await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
+                    setContractSignedSeller(true);
+                    toast.success(t.transaction.contractSigned);
+                  }}
+                />
+              )
             ) : step === 99 ? (
               <StepManualComplete
                 car={car}
@@ -382,7 +396,16 @@ const AcquisitionOptions: React.FC = () => {
             <>
               {step === 1 && <StepMethod onSelect={handleMethodSelect} />}
 
-              {step === 2 && (
+              {step === 2 && myKycStatus !== "verified" && myKycStatus !== "approved" ? (
+                <div className="text-center py-12 space-y-4">
+                  <AlertTriangle className="h-12 w-12 text-orange mx-auto" />
+                  <h3 className="text-xl font-display font-bold text-foreground">{(t as any).kyc?.title || "Identity Verification Required"}</h3>
+                  <p className="text-muted-foreground max-w-md mx-auto">{(t as any).kyc?.subtitle || "You must verify your identity before signing a contract."}</p>
+                  <Button className="bg-primary text-primary-foreground" onClick={() => navigate("/kyc")}>
+                    <Shield className="mr-2 h-4 w-4" /> {(t as any).kyc?.startVerification || "Start Verification"}
+                  </Button>
+                </div>
+              ) : step === 2 ? (
                 <StepContract
                   car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
                   agreedPrice={agreedPrice}
@@ -395,7 +418,7 @@ const AcquisitionOptions: React.FC = () => {
                   contractSignedSeller={contractSignedSeller}
                   contractSignedBuyer={contractSignedBuyer}
                 />
-              )}
+              ) : null}
 
               {step === 3 && (
                 <StepPayment

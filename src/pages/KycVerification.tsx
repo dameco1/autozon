@@ -4,244 +4,208 @@ import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Upload, Camera, CheckCircle2, ArrowLeft, Loader2, MapPin } from "lucide-react";
+import { Shield, CheckCircle2, ArrowLeft, Loader2, XCircle, ExternalLink, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const KycVerification: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
+  const kyc = (t as any).kyc;
   const [userId, setUserId] = useState<string | null>(null);
   const [kycStatus, setKycStatus] = useState<string>("none");
-  const [step, setStep] = useState(1);
-  const [idFront, setIdFront] = useState<File | null>(null);
-  const [idBack, setIdBack] = useState<File | null>(null);
-  const [selfie, setSelfie] = useState<File | null>(null);
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [userType, setUserType] = useState<string>("private");
+  const [loading, setLoading] = useState(true);
+  const [starting, setStarting] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { navigate("/login"); return; }
       setUserId(session.user.id);
-      supabase.from("profiles").select("kyc_status, city").eq("user_id", session.user.id).maybeSingle()
+      supabase.from("profiles").select("kyc_status, user_type").eq("user_id", session.user.id).maybeSingle()
         .then(({ data }) => {
           if (data) {
             setKycStatus((data as any).kyc_status || "none");
-            setCity(data.city || "");
+            setUserType((data as any).user_type || "private");
           }
+          setLoading(false);
         });
     });
   }, [navigate]);
 
-  const handleFileChange = (setter: (f: File | null) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    if (file && file.size > 5 * 1024 * 1024) {
-      toast.error("File too large. Max 5MB.");
-      return;
-    }
-    setter(file);
-  };
-
-  const handleSubmit = async () => {
+  const startVerification = async () => {
     if (!userId) return;
-    if (!idFront || !idBack || !selfie) {
-      toast.error("Please upload all required documents.");
-      return;
-    }
-    if (!address.trim() || !city.trim() || !postalCode.trim()) {
-      toast.error("Please fill in your address.");
-      return;
-    }
-
-    setSubmitting(true);
+    setStarting(true);
 
     try {
-      // Upload files to storage
-      const uploads = [
-        { file: idFront, path: `kyc/${userId}/id-front` },
-        { file: idBack, path: `kyc/${userId}/id-back` },
-        { file: selfie, path: `kyc/${userId}/selfie` },
-      ];
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { navigate("/login"); return; }
 
-      for (const { file, path } of uploads) {
-        const ext = file.name.split(".").pop() || "jpg";
-        const { error } = await supabase.storage.from("car-images").upload(`${path}.${ext}`, file, { upsert: true });
-        if (error) throw error;
+      const res = await supabase.functions.invoke("kyc-create-session", {
+        body: { role: "buyer", transaction_id: null },
+      });
+
+      if (res.error) throw new Error(res.error.message);
+
+      const { verification_url } = res.data;
+      if (verification_url) {
+        window.open(verification_url, "_blank");
+        setKycStatus("pending");
+        toast.success(kyc.verifyingIdentity);
+      } else {
+        throw new Error("No verification URL received");
       }
-
-      // Update profile KYC status
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update({ kyc_status: "pending", city, country: "Austria" } as any)
-        .eq("user_id", userId);
-
-      if (profileError) throw profileError;
-
-      setKycStatus("pending");
-      toast.success("KYC documents submitted successfully! Review typically takes 1-2 business days.");
     } catch (err: any) {
-      toast.error(err.message || "Upload failed");
+      toast.error(err.message || "Failed to start verification");
     } finally {
-      setSubmitting(false);
+      setStarting(false);
     }
   };
 
-  if (kycStatus === "verified") {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Verified state
+  if (kycStatus === "verified" || kycStatus === "approved") {
     return (
       <div className="min-h-screen bg-background">
         <SEO title="KYC Verified | Autozon" />
         <Navbar />
         <div className="max-w-lg mx-auto px-4 py-20 text-center">
-          <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-4" />
-          <h1 className="text-3xl font-display font-bold text-foreground mb-2">Identity Verified</h1>
-          <p className="text-muted-foreground mb-6">Your identity has been verified. You can proceed with transactions.</p>
-          <Button onClick={() => navigate("/dashboard")} className="bg-primary text-primary-foreground">Go to Dashboard</Button>
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+            <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-4" />
+            <h1 className="text-3xl font-display font-bold text-foreground mb-2">{kyc.verified}</h1>
+            <p className="text-muted-foreground mb-6">{kyc.verifiedDesc}</p>
+            <Button onClick={() => navigate("/dashboard")} className="bg-primary text-primary-foreground">{kyc.goToDashboard}</Button>
+          </motion.div>
         </div>
       </div>
     );
   }
 
-  if (kycStatus === "pending") {
+  // Pending / In Review state
+  if (kycStatus === "pending" || kycStatus === "in_progress" || kycStatus === "pending_review") {
     return (
       <div className="min-h-screen bg-background">
         <SEO title="KYC Pending | Autozon" />
         <Navbar />
         <div className="max-w-lg mx-auto px-4 py-20 text-center">
-          <Loader2 className="h-16 w-16 text-primary mx-auto mb-4 animate-spin" />
-          <h1 className="text-3xl font-display font-bold text-foreground mb-2">Verification In Progress</h1>
-          <p className="text-muted-foreground mb-6">Your documents are being reviewed. This usually takes 1-2 business days.</p>
-          <Button variant="outline" onClick={() => navigate("/dashboard")} className="border-border text-foreground">Back to Dashboard</Button>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <Loader2 className="h-16 w-16 text-primary mx-auto mb-4 animate-spin" />
+            <h1 className="text-3xl font-display font-bold text-foreground mb-2">{kyc.pending}</h1>
+            <p className="text-muted-foreground mb-6">{kyc.pendingDesc}</p>
+            <Button variant="outline" onClick={() => navigate("/dashboard")} className="border-border text-foreground">{kyc.backToDashboard}</Button>
+          </motion.div>
         </div>
       </div>
     );
   }
 
+  // Declined state
+  if (kycStatus === "declined") {
+    return (
+      <div className="min-h-screen bg-background">
+        <SEO title="KYC Declined | Autozon" />
+        <Navbar />
+        <div className="max-w-lg mx-auto px-4 py-20 text-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
+            <h1 className="text-3xl font-display font-bold text-foreground mb-2">{kyc.declined}</h1>
+            <p className="text-muted-foreground mb-6">{kyc.declinedDesc}</p>
+            <div className="flex gap-3 justify-center">
+              <Button onClick={startVerification} disabled={starting} className="bg-primary text-primary-foreground">
+                {starting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                {kyc.tryAgain}
+              </Button>
+              <Button variant="outline" onClick={() => navigate("/dashboard")} className="border-border text-foreground">{kyc.backToDashboard}</Button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default: Not started
   return (
     <div className="min-h-screen bg-background">
       <SEO title="KYC Verification | Autozon" description="Verify your identity to proceed with car transactions" />
       <Navbar />
-      <div className="max-w-2xl mx-auto px-4 py-10">
+      <div className="max-w-lg mx-auto px-4 py-10">
         <Button variant="ghost" className="mb-4 text-muted-foreground" onClick={() => navigate(-1)}>
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back
+          <ArrowLeft className="mr-2 h-4 w-4" /> {t.auth.back}
         </Button>
 
-        <div className="flex items-center gap-3 mb-8">
-          <Shield className="h-8 w-8 text-primary" />
-          <div>
-            <h1 className="text-3xl font-display font-bold text-foreground">Identity Verification</h1>
-            <p className="text-muted-foreground">Required before signing a purchase contract</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <Shield className="h-16 w-16 text-primary mx-auto mb-4" />
+          <h1 className="text-3xl font-display font-bold text-foreground mb-2">{kyc.title}</h1>
+          <p className="text-muted-foreground">{kyc.subtitle}</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-card border border-border rounded-2xl p-8 space-y-6"
+        >
+          {/* User type badge */}
+          <div className="flex items-center justify-center gap-2">
+            {userType !== "private" ? (
+              <Badge variant="outline" className="gap-1.5 px-3 py-1">
+                <Building2 className="h-3.5 w-3.5" />
+                {(t.auth as any).businessEntity}
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="gap-1.5 px-3 py-1">
+                <Shield className="h-3.5 w-3.5" />
+                {(t.auth as any).privatePerson}
+              </Badge>
+            )}
           </div>
-        </div>
 
-        {/* Steps indicator */}
-        <div className="flex items-center gap-2 mb-8">
-          {[1, 2, 3].map(s => (
-            <React.Fragment key={s}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
-                s === step ? "bg-primary text-primary-foreground" : s < step ? "bg-primary/20 text-primary" : "bg-secondary text-muted-foreground"
-              }`}>{s < step ? "✓" : s}</div>
-              {s < 3 && <div className={`flex-1 h-0.5 ${s < step ? "bg-primary" : "bg-border"}`} />}
-            </React.Fragment>
-          ))}
-        </div>
+          {userType !== "private" && (
+            <p className="text-sm text-muted-foreground text-center bg-secondary/50 rounded-xl p-3">
+              {kyc.businessNote}
+            </p>
+          )}
 
-        <Card className="border-border">
-          <CardContent className="pt-6">
-            {step === 1 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <CardTitle className="text-foreground flex items-center gap-2"><Upload className="h-5 w-5 text-primary" /> ID Document</CardTitle>
-                <p className="text-sm text-muted-foreground">Upload front and back of your government-issued ID (passport, driver's license, or national ID).</p>
+          {/* What happens */}
+          <div className="space-y-3">
+            <div className="flex items-start gap-3 text-sm">
+              <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <span className="text-muted-foreground">ID document scan (passport, driver's license, or national ID)</span>
+            </div>
+            <div className="flex items-start gap-3 text-sm">
+              <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <span className="text-muted-foreground">Selfie verification for liveness check</span>
+            </div>
+            <div className="flex items-start gap-3 text-sm">
+              <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <span className="text-muted-foreground">Automated review — typically under 5 minutes</span>
+            </div>
+          </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-muted-foreground text-sm mb-2 block">Front Side</Label>
-                    <label className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
-                      idFront ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-                    }`}>
-                      <Upload className="h-6 w-6 text-muted-foreground mb-1" />
-                      <span className="text-xs text-muted-foreground">{idFront ? idFront.name : "Click to upload"}</span>
-                      <input type="file" accept="image/*" className="hidden" onChange={handleFileChange(setIdFront)} />
-                    </label>
-                  </div>
-                  <div>
-                    <Label className="text-muted-foreground text-sm mb-2 block">Back Side</Label>
-                    <label className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
-                      idBack ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-                    }`}>
-                      <Upload className="h-6 w-6 text-muted-foreground mb-1" />
-                      <span className="text-xs text-muted-foreground">{idBack ? idBack.name : "Click to upload"}</span>
-                      <input type="file" accept="image/*" className="hidden" onChange={handleFileChange(setIdBack)} />
-                    </label>
-                  </div>
-                </div>
-
-                <Button className="w-full bg-primary text-primary-foreground" onClick={() => setStep(2)} disabled={!idFront || !idBack}>
-                  Continue
-                </Button>
-              </motion.div>
+          <Button
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 text-base"
+            onClick={startVerification}
+            disabled={starting}
+          >
+            {starting ? (
+              <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> {kyc.verifyingIdentity}</>
+            ) : (
+              <><ExternalLink className="mr-2 h-5 w-5" /> {kyc.startVerification}</>
             )}
-
-            {step === 2 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <CardTitle className="text-foreground flex items-center gap-2"><Camera className="h-5 w-5 text-primary" /> Selfie Verification</CardTitle>
-                <p className="text-sm text-muted-foreground">Upload a clear photo of yourself holding your ID next to your face.</p>
-
-                <label className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
-                  selfie ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-                }`}>
-                  <Camera className="h-8 w-8 text-muted-foreground mb-2" />
-                  <span className="text-sm text-muted-foreground">{selfie ? selfie.name : "Click to upload selfie"}</span>
-                  <input type="file" accept="image/*" className="hidden" onChange={handleFileChange(setSelfie)} />
-                </label>
-
-                <div className="flex gap-3">
-                  <Button variant="outline" className="flex-1 border-border text-foreground" onClick={() => setStep(1)}>Back</Button>
-                  <Button className="flex-1 bg-primary text-primary-foreground" onClick={() => setStep(3)} disabled={!selfie}>Continue</Button>
-                </div>
-              </motion.div>
-            )}
-
-            {step === 3 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <CardTitle className="text-foreground flex items-center gap-2"><MapPin className="h-5 w-5 text-primary" /> Address Verification</CardTitle>
-                <p className="text-sm text-muted-foreground">Confirm your residential address.</p>
-
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-muted-foreground text-sm">Street Address</Label>
-                    <Input value={address} onChange={e => setAddress(e.target.value)} placeholder="Hauptstraße 1" className="mt-1 bg-background border-border text-foreground" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <Label className="text-muted-foreground text-sm">Postal Code</Label>
-                      <Input value={postalCode} onChange={e => setPostalCode(e.target.value)} placeholder="1010" className="mt-1 bg-background border-border text-foreground" />
-                    </div>
-                    <div>
-                      <Label className="text-muted-foreground text-sm">City</Label>
-                      <Input value={city} onChange={e => setCity(e.target.value)} placeholder="Wien" className="mt-1 bg-background border-border text-foreground" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <Button variant="outline" className="flex-1 border-border text-foreground" onClick={() => setStep(2)}>Back</Button>
-                  <Button className="flex-1 bg-primary text-primary-foreground" onClick={handleSubmit} disabled={submitting}>
-                    {submitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</> : "Submit Verification"}
-                  </Button>
-                </div>
-              </motion.div>
-            )}
-          </CardContent>
-        </Card>
+          </Button>
+        </motion.div>
 
         <p className="text-xs text-muted-foreground text-center mt-6">
-          Your documents are encrypted and stored securely. They are only used for identity verification per Austrian AML regulations.
+          {kyc.securityNote}
         </p>
       </div>
     </div>

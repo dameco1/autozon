@@ -10,7 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Car, ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
+import { Car, ArrowLeft, ChevronDown, ChevronUp, Building2, User } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import SEO from "@/components/SEO";
 
@@ -39,6 +40,12 @@ const Signup: React.FC = () => {
   const [currentCar, setCurrentCar] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPrefs, setShowPrefs] = useState(false);
+  const [userType, setUserType] = useState("private");
+  const [companyName, setCompanyName] = useState("");
+  const [uidNumber, setUidNumber] = useState("");
+  const [registryNumber, setRegistryNumber] = useState("");
+  const [representative, setRepresentative] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
 
   // Buyer preferences (all optional)
   const [prefBrands, setPrefBrands] = useState<string[]>([]);
@@ -79,13 +86,21 @@ const Signup: React.FC = () => {
     if (data.user) {
       // Save lifestyle data to profile
       await supabase.from("profiles").update({
+        user_type: userType,
         relationship_status: relationship || null,
         has_kids: hasKids === "yes" ? true : hasKids === "no" ? false : null,
         num_kids: hasKids === "yes" && numKids ? Number(numKids) : null,
         car_purpose: purpose || null,
         budget_max: budgetMax && Number(budgetMax) > 0 ? Number(budgetMax) : null,
         current_car: currentCar || null,
-      }).eq("user_id", data.user.id);
+        ...(userType !== "private" ? {
+          company_name: companyName || null,
+          uid_number: uidNumber || null,
+          commercial_registry_number: registryNumber || null,
+          authorized_representative: representative || null,
+        } : {}),
+        ...(dateOfBirth ? { date_of_birth: dateOfBirth } : {}),
+      } as any).eq("user_id", data.user.id);
 
       // Save buyer preferences if any were filled
       const hasAnyPref = prefBrands.length > 0 || prefBodyTypes.length > 0 || prefFuelTypes.length > 0 ||
@@ -155,6 +170,63 @@ const Signup: React.FC = () => {
             <Label className="text-muted-foreground">{t.auth.password}</Label>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="bg-background border-border text-foreground placeholder:text-muted-foreground/50" placeholder="••••••••" />
           </div>
+
+          {/* Account Type */}
+          <div className="border-t border-border pt-4">
+            <Label className="text-muted-foreground text-sm mb-3 block">{(t.auth as any).accountType}</Label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setUserType("private")}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
+                  userType === "private" ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground hover:border-primary/30"
+                }`}
+              >
+                <User className="h-4 w-4" /> {(t.auth as any).privatePerson}
+              </button>
+              <button
+                type="button"
+                onClick={() => setUserType("business_seller")}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
+                  userType !== "private" ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground hover:border-primary/30"
+                }`}
+              >
+                <Building2 className="h-4 w-4" /> {(t.auth as any).businessEntity}
+              </button>
+            </div>
+          </div>
+
+          {/* Business fields */}
+          {userType !== "private" && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">{(t.auth as any).companyName}</Label>
+                <Input value={companyName} onChange={(e) => setCompanyName(e.target.value)} required className="bg-background border-border text-foreground" placeholder="Autohaus Mustermann GmbH" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label className="text-muted-foreground text-sm">{(t.auth as any).uidNumber}</Label>
+                  <Input value={uidNumber} onChange={(e) => setUidNumber(e.target.value)} required className="bg-background border-border text-foreground" placeholder="ATU12345678" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-muted-foreground text-sm">{(t.auth as any).registryNumber}</Label>
+                  <Input value={registryNumber} onChange={(e) => setRegistryNumber(e.target.value)} className="bg-background border-border text-foreground" placeholder="FN 123456a" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">{(t.auth as any).representative}</Label>
+                <Input value={representative} onChange={(e) => setRepresentative(e.target.value)} required className="bg-background border-border text-foreground" placeholder="Max Mustermann" />
+              </div>
+            </div>
+          )}
+
+          {/* Date of birth (for private) */}
+          {userType === "private" && (
+            <div className="space-y-2">
+              <Label className="text-muted-foreground text-sm">{(t.auth as any).dateOfBirth}</Label>
+              <Input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} className="bg-background border-border text-foreground" />
+            </div>
+          )}
 
           {/* Lifestyle questions divider */}
           <div className="border-t border-border pt-4">
