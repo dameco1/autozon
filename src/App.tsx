@@ -79,6 +79,7 @@ const App = () => (
               <Route path="/car/:id" element={<CarDetail />} />
               <Route path="/intent" element={<MfaGuard><IntentSelection /></MfaGuard>} />
               <Route path="/buyer-questionnaire" element={<MfaGuard><BuyerQuestionnaire /></MfaGuard>} />
+              <Route path="/cars" element={<CarSelection />} />
               <Route path="/car-selection" element={<CarSelection />} />
               <Route path="/compare" element={<MfaGuard><CarComparison /></MfaGuard>} />
               <Route path="/negotiate/:offerId" element={<MfaGuard><Negotiation /></MfaGuard>} />
