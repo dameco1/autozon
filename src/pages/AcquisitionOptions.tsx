@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Package, ArrowLeft, FileText, CreditCard, Shield, CheckCircle2, AlertTriangle } from "lucide-react";
 import { generateNegotiationPdf } from "@/lib/generateNegotiationPdf";
+import { getWorkflow, getAllDocuments, type PartyType, type RoleWorkflow } from "@/lib/roleWorkflow";
 import TransactionStepIndicator from "@/components/transaction/TransactionStepIndicator";
 import StepMethod from "@/components/transaction/StepMethod";
 import StepContract from "@/components/transaction/StepContract";
@@ -16,6 +17,8 @@ import StepPayment from "@/components/transaction/StepPayment";
 import StepInsurance from "@/components/transaction/StepInsurance";
 import StepComplete from "@/components/transaction/StepComplete";
 import StepManualComplete from "@/components/transaction/StepManualComplete";
+import DocumentChecklist from "@/components/transaction/DocumentChecklist";
+import DeadlineManager from "@/components/transaction/DeadlineManager";
 
 interface OfferInfo {
   id: string;
@@ -56,6 +59,11 @@ const AcquisitionOptions: React.FC = () => {
   const [sellerCountry, setSellerCountry] = useState("");
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
+  // Role types
+  const [sellerType, setSellerType] = useState<PartyType>("private");
+  const [buyerType, setBuyerType] = useState<PartyType>("private");
+  const [workflow, setWorkflow] = useState<RoleWorkflow | null>(null);
+
   // Transaction wizard state
   const [step, setStep] = useState(1);
   const [completionMethod, setCompletionMethod] = useState<string | null>(null);
@@ -67,6 +75,7 @@ const AcquisitionOptions: React.FC = () => {
   const [transactionId, setTransactionId] = useState<string | null>(null);
   const [contractSignedSeller, setContractSignedSeller] = useState(false);
   const [contractSignedBuyer, setContractSignedBuyer] = useState(false);
+  const [contractSignedAt, setContractSignedAt] = useState<string | null>(null);
   const [myKycStatus, setMyKycStatus] = useState<string>("none");
   const [buyerKycVerified, setBuyerKycVerified] = useState(false);
   const [sellerKycVerified, setSellerKycVerified] = useState(false);
@@ -125,16 +134,23 @@ const AcquisitionOptions: React.FC = () => {
 
       if (carData) setCar(carData as CarInfo);
 
-      // Fetch names, seller country, and current user KYC
+      // Fetch names, seller country, user types, and current user KYC
       const [profileRes, buyerRes, myProfileRes] = await Promise.all([
-        supabase.from("profiles").select("full_name, country, kyc_status").eq("user_id", o.seller_id).maybeSingle(),
-        supabase.from("profiles").select("full_name, kyc_status").eq("user_id", o.buyer_id).maybeSingle(),
+        supabase.from("profiles").select("full_name, country, kyc_status, user_type").eq("user_id", o.seller_id).maybeSingle(),
+        supabase.from("profiles").select("full_name, kyc_status, user_type").eq("user_id", o.buyer_id).maybeSingle(),
         supabase.from("profiles").select("kyc_status").eq("user_id", session.user.id).maybeSingle(),
       ]);
       if (profileRes.data?.full_name) setSellerName(profileRes.data.full_name);
       if (profileRes.data?.country) setSellerCountry(profileRes.data.country);
       if (buyerRes.data?.full_name) setBuyerName(buyerRes.data.full_name);
       if (myProfileRes.data) setMyKycStatus((myProfileRes.data as any).kyc_status || "none");
+
+      // Set party types
+      const sType = ((profileRes.data as any)?.user_type === "business" ? "business" : "private") as PartyType;
+      const bType = ((buyerRes.data as any)?.user_type === "business" ? "business" : "private") as PartyType;
+      setSellerType(sType);
+      setBuyerType(bType);
+      setWorkflow(getWorkflow(sType, bType));
 
       // Set KYC verification statuses
       const sellerKyc = (profileRes.data as any)?.kyc_status;
@@ -158,6 +174,7 @@ const AcquisitionOptions: React.FC = () => {
         setInsuranceTier(tx.insurance_tier);
         setContractSignedSeller(tx.contract_signed_seller || false);
         setContractSignedBuyer(tx.contract_signed_buyer || false);
+        setContractSignedAt(tx.contract_generated_at || null);
         setStep(tx.current_step || 1);
       }
 
@@ -175,6 +192,8 @@ const AcquisitionOptions: React.FC = () => {
       buyer_id: offer.buyer_id,
       seller_id: offer.seller_id,
       agreed_price: offer.agreed_price,
+      seller_type: sellerType,
+      buyer_type: buyerType,
     } as any).select("id").single();
     if (data) {
       const id = (data as any).id;
@@ -182,7 +201,7 @@ const AcquisitionOptions: React.FC = () => {
       return id;
     }
     return null;
-  }, [offer, transactionId]);
+  }, [offer, transactionId, sellerType, buyerType]);
 
   if (loading) {
     return (
@@ -224,7 +243,6 @@ const AcquisitionOptions: React.FC = () => {
         _status: "completed",
         _current_step: 5,
       });
-      // Car marked sold by the insurance function won't apply here, do it via RPC or direct
       await supabase.from("cars").update({ status: "sold" } as any).eq("id", offer!.car_id);
       recordAppraisalFeedback(offer!.car_id, agreedPrice);
       setStep(99);
@@ -241,6 +259,7 @@ const AcquisitionOptions: React.FC = () => {
 
   const handleContractDone = async (type: string) => {
     setContractType(type);
+    setContractSignedAt(new Date().toISOString());
     if (!transactionId) return;
     await supabase.rpc("transaction_set_contract", {
       _transaction_id: transactionId,
@@ -271,7 +290,6 @@ const AcquisitionOptions: React.FC = () => {
       _insurance_partner_id: partnerId || null,
       _insurance_confirmed: true,
     });
-    // Car is marked sold inside the DB function
     if (offer) recordAppraisalFeedback(offer.car_id, agreedPrice);
     setStep(5);
   };
@@ -304,6 +322,8 @@ const AcquisitionOptions: React.FC = () => {
       buyerName,
     });
   };
+
+  const myRole: "buyer" | "seller" = isSeller ? "seller" : "buyer";
 
   return (
     <div className="min-h-screen bg-background text-muted-foreground">
@@ -362,26 +382,47 @@ const AcquisitionOptions: React.FC = () => {
                   </Button>
                 </div>
               ) : (
-                <StepContract
-                  car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
-                  agreedPrice={agreedPrice}
-                  sellerCountry={sellerCountry}
-                  buyerName={buyerName}
-                  sellerName={sellerName}
-                  transactionId={transactionId}
-                  onContinue={handleContractDone}
-                  role="seller"
-                  contractSignedSeller={contractSignedSeller}
-                  contractSignedBuyer={contractSignedBuyer}
-                  buyerKycVerified={buyerKycVerified}
-                  sellerKycVerified={sellerKycVerified}
-                  onSellerSign={async () => {
-                    if (!transactionId) return;
-                    await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
-                    setContractSignedSeller(true);
-                    toast.success(t.transaction.contractSigned);
-                  }}
-                />
+                <div className="space-y-6">
+                  <StepContract
+                    car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
+                    agreedPrice={agreedPrice}
+                    sellerCountry={sellerCountry}
+                    buyerName={buyerName}
+                    sellerName={sellerName}
+                    transactionId={transactionId}
+                    onContinue={handleContractDone}
+                    role="seller"
+                    contractSignedSeller={contractSignedSeller}
+                    contractSignedBuyer={contractSignedBuyer}
+                    buyerKycVerified={buyerKycVerified}
+                    sellerKycVerified={sellerKycVerified}
+                    sellerType={sellerType}
+                    buyerType={buyerType}
+                    workflow={workflow || undefined}
+                    onSellerSign={async () => {
+                      if (!transactionId) return;
+                      await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
+                      setContractSignedSeller(true);
+                      toast.success(t.transaction.contractSigned);
+                    }}
+                  />
+                  {/* Document checklist for seller */}
+                  {transactionId && workflow && (
+                    <DocumentChecklist
+                      transactionId={transactionId}
+                      documents={getAllDocuments(workflow)}
+                      role="seller"
+                    />
+                  )}
+                  {/* Deadline manager */}
+                  {transactionId && workflow && contractSignedAt && (
+                    <DeadlineManager
+                      transactionId={transactionId}
+                      deadlines={workflow.deadlines}
+                      contractSignedAt={contractSignedAt}
+                    />
+                  )}
+                </div>
               )
             ) : step === 99 ? (
               <StepManualComplete
@@ -416,20 +457,33 @@ const AcquisitionOptions: React.FC = () => {
                   </Button>
                 </div>
               ) : step === 2 ? (
-                <StepContract
-                  car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
-                  agreedPrice={agreedPrice}
-                  sellerCountry={sellerCountry}
-                  buyerName={buyerName}
-                  sellerName={sellerName}
-                  transactionId={transactionId}
-                  onContinue={handleContractDone}
-                  role="buyer"
-                  contractSignedSeller={contractSignedSeller}
-                  contractSignedBuyer={contractSignedBuyer}
-                  buyerKycVerified={buyerKycVerified}
-                  sellerKycVerified={sellerKycVerified}
-                />
+                <div className="space-y-6">
+                  <StepContract
+                    car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
+                    agreedPrice={agreedPrice}
+                    sellerCountry={sellerCountry}
+                    buyerName={buyerName}
+                    sellerName={sellerName}
+                    transactionId={transactionId}
+                    onContinue={handleContractDone}
+                    role="buyer"
+                    contractSignedSeller={contractSignedSeller}
+                    contractSignedBuyer={contractSignedBuyer}
+                    buyerKycVerified={buyerKycVerified}
+                    sellerKycVerified={sellerKycVerified}
+                    sellerType={sellerType}
+                    buyerType={buyerType}
+                    workflow={workflow || undefined}
+                  />
+                  {/* Document checklist for buyer at contract step */}
+                  {transactionId && workflow && (
+                    <DocumentChecklist
+                      transactionId={transactionId}
+                      documents={getAllDocuments(workflow)}
+                      role="buyer"
+                    />
+                  )}
+                </div>
               ) : null}
 
               {step === 3 && (
@@ -451,18 +505,36 @@ const AcquisitionOptions: React.FC = () => {
               )}
 
               {step === 5 && (
-                <StepComplete
-                  car={car}
-                  agreedPrice={agreedPrice}
-                  completionMethod={completionMethod || "digital"}
-                  contractType={contractType}
-                  paymentMethod={paymentMethod}
-                  insuranceTier={insuranceTier}
-                  carId={offer?.car_id}
-                  fairValuePrice={car?.fair_value_price}
-                  onDashboard={() => navigate("/dashboard")}
-                  onDownload={handleDownload}
-                />
+                <div className="space-y-6">
+                  <StepComplete
+                    car={car}
+                    agreedPrice={agreedPrice}
+                    completionMethod={completionMethod || "digital"}
+                    contractType={contractType}
+                    paymentMethod={paymentMethod}
+                    insuranceTier={insuranceTier}
+                    carId={offer?.car_id}
+                    fairValuePrice={car?.fair_value_price}
+                    onDashboard={() => navigate("/dashboard")}
+                    onDownload={handleDownload}
+                  />
+                  {/* Document checklist in completion */}
+                  {transactionId && workflow && (
+                    <DocumentChecklist
+                      transactionId={transactionId}
+                      documents={getAllDocuments(workflow)}
+                      role="buyer"
+                    />
+                  )}
+                  {/* Deadline manager after completion */}
+                  {transactionId && workflow && (
+                    <DeadlineManager
+                      transactionId={transactionId}
+                      deadlines={workflow.deadlines}
+                      contractSignedAt={contractSignedAt || new Date().toISOString()}
+                    />
+                  )}
+                </div>
               )}
 
               {step === 99 && (
