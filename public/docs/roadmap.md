@@ -5,8 +5,8 @@
 | Phase | Focus | Status |
 |---|---|---|
 | **MVP** | Core valuation + matching | ✅ Complete |
-| **V1** | Concierge service + dealer network | 🔄 In Progress |
-| **V1.5** | Seller KYC + automated financing + PWA | 📋 Planned |
+| **V1** | Concierge service + dealer network | ✅ Complete |
+| **V1.5** | Lifestyle matching + financing + insurance + KYC | 🔄 In Progress |
 | **V2** | Full financing, insurance, logistics + native mobile app | 📋 Planned |
 | **V3** | Lifecycle platform + data insights | 📋 Planned |
 
@@ -30,7 +30,7 @@
 - [x] Investor pitch deck (`/pitch`)
 - [x] Brand book (`/brand`)
 
-## V1 (In Progress)
+## V1 (Complete)
 - [x] AI Concierge chat (streaming, context-aware)
 - [x] Market comparison with AI insights
 - [x] AI-powered car model database (2,700+ variants, 48 makes)
@@ -44,14 +44,22 @@
 - [x] Registration lifestyle profiling (relationship, kids, purpose, current car, budget)
 - [x] Warm light theme migration (cream/amber design system, semantic HSL tokens)
 - [x] Full dark-mode class cleanup (replaced all hardcoded bg-charcoal, bg-navy, text-silver)
-- [ ] Dealer network integration
-- [ ] Car comparison tool (side-by-side)
+- [x] Car comparison tool (side-by-side)
 
-## V1.5 (Planned)
-- [ ] Seller identity verification (KYC)
+## V1.5 (In Progress)
+- [x] **5D Lifestyle Matching** — Sports & towing scoring dimension (20% weight), 12-step buyer onboarding
+- [x] **Sports Questionnaire** — Multi-select for 10 activities (Cycling, Skiing, Surfing, Golf, Tennis, Running, Hiking, Camping, Motorsports, Fitness)
+- [x] **Towing Requirements** — Toggle + weight selector (750–3,500 kg), equipment-based towbar detection
+- [x] **Admin Command Center Overhaul** — 11 tabs: Overview, Cars, Users, Matches, Negotiations, Transactions, Activity Feed, Appraisal Accuracy, Contracts, Reports, Financing/Insurance Requests
+- [x] **Admin User Card** — Deep-dive dialog with auth metadata, activity stats, suspension controls
+- [x] **Admin Car Card** — Full vehicle view with photos, specs, equipment, inspection, negotiation history
+- [x] **Austrian Financing Calculator** — Kredit/Leasing/3-Wege comparison with adjustable inputs (`/financing/:offerId?`)
+- [x] **Insurance Estimate Calculator** — Austrian Haftpflicht/Kasko/GAP/Warranty estimates embedded in transaction flow
+- [x] **Insurance Integration Roadmap** — Durchblicker API (Q3 2026), Direct Insurer (Q4 2026), Broker-as-a-Service (2027)
+- [x] **KYC Identity Verification** — 3-step flow: ID upload, selfie verification, address confirmation (`/kyc`)
+- [x] **Vincario Vehicle History Report** — VIN-based specs, stolen check, market value, recall notices on car detail page
 - [ ] Vehicle ownership verification
-- [ ] Automated financing arrangements
-- [ ] Partner bank/leasing integrations
+- [ ] Partner bank/leasing API integrations (Raiffeisen, UniCredit, Arval)
 - [ ] **Advertising Module V1** — Homepage banner ads (dealer/partner sponsors), contextual ads on vehicle detail pages, self-serve ad booking for dealers
 - [ ] **PWA (Progressive Web App)** — installable from browser to home screen (iOS + Android), offline support, ~1.5 hours setup
 - [ ] **VIN Equipment API Integration** — Connect CarsXE or VINdecoder.eu for OEM equipment auto-population from VIN (replaces AI-only decode)

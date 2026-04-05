@@ -37,6 +37,10 @@ flowchart TD
         F4["PWA Support\n- Offline Capable\n- Install Prompt\n- App Icons"]
         F5["SEO\n- Meta Tags\n- Sitemap\n- robots.txt\n- JSON-LD"]
         F6["Cookie Consent\n- GDPR Compliant"]
+        F7["KYC Verification\n- ID Upload\n- Selfie + Address\n- Status: none/pending/verified"]
+        F8["Financing Calculator\n- Kredit / Leasing / 3-Wege\n- Austrian Market"]
+        F9["Insurance Calculator\n- Haftpflicht / Kasko\n- GAP / Warranty"]
+        F10["Vincario VIN Report\n- Specs / Stolen Check\n- Market Value / Recalls"]
     end
 ```
 

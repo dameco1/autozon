@@ -18,18 +18,21 @@ flowchart TD
         I1 -->|Selling| SD[Seller Dashboard]
     end
 
-    subgraph ONBOARDING["Buyer Onboarding - Preferences"]
+    subgraph ONBOARDING["Buyer Onboarding - 12-Step Preferences"]
         O1 --> O2["Budget Range\n- Min / Max EUR"]
         O2 --> O3["Preferred Makes\n- Multi-select Brands"]
         O3 --> O4["Preferred Fuel Types\n- Petrol / Diesel /\n  Electric / Hybrid"]
         O4 --> O5["Preferred Body Types\n- SUV / Sedan / Hatch /\n  Coupe / Wagon / Van"]
         O5 --> O6["Transmission\n- Manual / Automatic"]
-        O6 --> O7["Additional Preferences\n- Commute Distance\n- Parking Type\n- Insurance Tolerance\n- Family Size\n- Timing Preference"]
-        O7 --> CS1[Car Selection]
+        O6 --> O7["Year Range / Mileage /\n  Power Preferences"]
+        O7 --> O8["Commute Distance /\n  Parking / Insurance\n  Family Size / Timing"]
+        O8 --> O9["Sports & Activities\n- Multi-select 10 options\n- Cycling, Skiing, Surfing,\n  Golf, Tennis, Running,\n  Hiking, Camping,\n  Motorsports, Fitness"]
+        O9 --> O10["Towing Requirements\n- Toggle On/Off\n- Weight: 750–3500 kg"]
+        O10 --> CS1[Car Selection]
     end
 
     subgraph SELECTION["Car Selection - Swipe Phase"]
-        CS1 --> CS2["Cars Ranked by\n4D Match Score:\n- 30% Lifestyle\n- 30% Financial\n- 25% Preference\n- 15% Condition"]
+        CS1 --> CS2["Cars Ranked by\n5D Match Score:\n- 25% Lifestyle\n- 25% Financial\n- 20% Preference\n- 10% Condition\n- 20% Sports & Towing"]
         CS2 --> CS3["Browse Car Cards\n- Photo / Price / Details\n- Match Score Badge\n- Like or Skip"]
         CS3 -->|Like| CS4[Add to Liked List]
         CS3 -->|Skip| CS3
@@ -48,7 +51,7 @@ flowchart TD
     end
 
     subgraph DETAIL["Car Detail Page"]
-        CD1 --> CD2["Full Listing View\n- Photo Gallery\n- All Specifications\n- Equipment List\n- Seller Inspection Report\n- Fair Value vs Price\n- Market Comparison"]
+        CD1 --> CD2["Full Listing View\n- Photo Gallery\n- All Specifications\n- Equipment List\n- Seller Inspection Report\n- Fair Value vs Price\n- Market Comparison\n- Vincario VIN Report"]
         CD2 -->|Shortlist| SL1["Added to Shortlist\n- Stored in car_shortlists\n- Toast Notification"]
         CD2 -->|Start Trade| N1["Navigate to\nBuyer Matches\n- Make Offer"]
     end
@@ -71,10 +74,15 @@ flowchart TD
         NE3 --> T1["Step 1: Choose Method\n- Digital Recommended\n- Manual Offline"]
         T1 -->|Digital| T2["Step 2: Contract\n- Country Auto-detect\n- OEAMTC or ADAC\n- Review Clauses\n- Sign Digitally"]
         T1 -->|Manual| TM["Manual Path\n- Download Template\n- Offline Checklist"]
-        T2 --> T3["Step 3: Payment\n- Wire Transfer\n- Credit Card\n- Bank Financing\n- Leasing"]
-        T3 --> T4["Step 4: Insurance\n- Liability / Partial /\n  Comprehensive\n- Or Skip"]
+        T2 --> T3["Step 3: Payment\n- Wire Transfer\n- Credit Card\n- Bank Financing\n- Leasing\n- Financing Calculator"]
+        T3 --> T4["Step 4: Insurance\n- Haftpflicht / Teilkasko /\n  Vollkasko\n- Insurance Calculator\n- Integration Roadmap\n- Or Skip"]
         T4 --> T5["Step 5: Complete\n- Summary of Deal\n- Next Steps\n- Car Marked SOLD"]
         TM --> T5
+    end
+
+    subgraph KYC["Identity Verification"]
+        T2 -.->|Required| KYC1["KYC Flow /kyc\n- ID Upload (front/back)\n- Selfie with ID\n- Address Verification"]
+        KYC1 -.-> KYC2["Status: Pending → Verified"]
     end
 
     subgraph DASHBOARD["Buyer Dashboard"]
@@ -93,11 +101,12 @@ flowchart TD
 |-------|-------|-------------|
 | **Authentication** | 6 | Sign up with lifestyle profile, email verify, MFA |
 | **Intent Selection** | 1 | Choose Buying or Selling path |
-| **Onboarding** | 6 | Budget, makes, fuel, body, transmission, lifestyle prefs |
-| **Car Selection** | 3+ rounds | Browse scored cards, like/skip, narrow down |
+| **Onboarding** | 12 | Budget, makes, fuel, body, transmission, year, mileage, power, commute, lifestyle, sports, towing |
+| **Car Selection** | 3+ rounds | Browse 5D-scored cards, like/skip, narrow down |
 | **Comparison** | 1 | Side-by-side feature comparison |
-| **Car Detail** | 1 | Full listing, shortlist, or start trade |
+| **Car Detail** | 1 | Full listing + Vincario VIN report, shortlist, or start trade |
 | **Offer** | 1 | Submit offer amount + message |
 | **Negotiation** | 1-5 rounds | Counter-offers until agreement |
-| **Transaction** | 5 | Method, contract, payment, insurance, complete |
+| **KYC** | 3 | ID upload, selfie, address — required for contract signing |
+| **Transaction** | 5 | Method, contract, payment (with financing calculator), insurance (with estimate calculator), complete |
 | **Dashboard** | Ongoing | Manage offers, shortlists, acquisitions |
