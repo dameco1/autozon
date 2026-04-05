@@ -141,6 +141,9 @@ const BuyerQuestionnaire: React.FC = () => {
           max_mileage: maxMileage,
           preferred_colors: colors,
           timing_preference: timing,
+          sports: sports,
+          needs_towing: needsTowing,
+          towing_weight_kg: needsTowing ? towingWeight : null,
           onboarding_completed: true,
         } as any,
         { onConflict: "user_id" }
