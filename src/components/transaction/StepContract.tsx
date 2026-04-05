@@ -55,6 +55,11 @@ const StepContract: React.FC<Props> = ({
         sellerCountry: country,
         contractDate: new Date().toISOString(),
         transactionId: transactionId || "draft",
+        buyerKycVerified,
+        sellerKycVerified,
+        contractSignedBuyer: true,
+        contractSignedSeller,
+        buyerSignedDate: new Date().toISOString(),
       };
       const doc = generateContractPdf(contractData);
       const pdfBlob = doc.output("blob");
