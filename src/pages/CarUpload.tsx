@@ -282,8 +282,16 @@ const CarUpload: React.FC = () => {
     let resultId: string | null = null;
 
     if (editId) {
-      const { error } = await supabase.from("cars").update(carData).eq("id", editId);
+      // Remove system-controlled fields that the trigger would revert
+      const { fair_value_price, condition_score, demand_score, detected_damages, status, ...editableData } = carData;
+      const { error } = await supabase.from("cars").update(editableData).eq("id", editId);
       if (error) { toast.error(error.message); setLoading(false); return; }
+      // Persist system fields via SECURITY DEFINER function
+      await supabase.rpc("lock_fair_value", {
+        _car_id: editId,
+        _fair_value_price: fairValue,
+        _market_blended: false,
+      });
       resultId = editId;
     } else {
       // Check for duplicate car before inserting
