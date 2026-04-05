@@ -171,6 +171,63 @@ const Signup: React.FC = () => {
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="bg-background border-border text-foreground placeholder:text-muted-foreground/50" placeholder="••••••••" />
           </div>
 
+          {/* Account Type */}
+          <div className="border-t border-border pt-4">
+            <Label className="text-muted-foreground text-sm mb-3 block">{(t.auth as any).accountType}</Label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setUserType("private")}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
+                  userType === "private" ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground hover:border-primary/30"
+                }`}
+              >
+                <User className="h-4 w-4" /> {(t.auth as any).privatePerson}
+              </button>
+              <button
+                type="button"
+                onClick={() => setUserType("business_seller")}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
+                  userType !== "private" ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground hover:border-primary/30"
+                }`}
+              >
+                <Building2 className="h-4 w-4" /> {(t.auth as any).businessEntity}
+              </button>
+            </div>
+          </div>
+
+          {/* Business fields */}
+          {userType !== "private" && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">{(t.auth as any).companyName}</Label>
+                <Input value={companyName} onChange={(e) => setCompanyName(e.target.value)} required className="bg-background border-border text-foreground" placeholder="Autohaus Mustermann GmbH" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label className="text-muted-foreground text-sm">{(t.auth as any).uidNumber}</Label>
+                  <Input value={uidNumber} onChange={(e) => setUidNumber(e.target.value)} required className="bg-background border-border text-foreground" placeholder="ATU12345678" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-muted-foreground text-sm">{(t.auth as any).registryNumber}</Label>
+                  <Input value={registryNumber} onChange={(e) => setRegistryNumber(e.target.value)} className="bg-background border-border text-foreground" placeholder="FN 123456a" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">{(t.auth as any).representative}</Label>
+                <Input value={representative} onChange={(e) => setRepresentative(e.target.value)} required className="bg-background border-border text-foreground" placeholder="Max Mustermann" />
+              </div>
+            </div>
+          )}
+
+          {/* Date of birth (for private) */}
+          {userType === "private" && (
+            <div className="space-y-2">
+              <Label className="text-muted-foreground text-sm">{(t.auth as any).dateOfBirth}</Label>
+              <Input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} className="bg-background border-border text-foreground" />
+            </div>
+          )}
+
           {/* Lifestyle questions divider */}
           <div className="border-t border-border pt-4">
             <p className="text-muted-foreground/70 text-xs uppercase tracking-wider mb-4">{ls.sectionTitle}</p>
