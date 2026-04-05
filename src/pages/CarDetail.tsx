@@ -152,7 +152,7 @@ const CarDetail: React.FC = () => {
       .maybeSingle();
 
     if (existingOffer) {
-      navigate(`/negotiation/${existingOffer.id}`);
+      navigate(`/negotiate/${existingOffer.id}`);
       setOfferLoading(false);
       return;
     }
@@ -178,7 +178,7 @@ const CarDetail: React.FC = () => {
       return;
     }
     toast.success("Offer sent! Negotiation started.");
-    navigate(`/negotiation/${newOffer.id}`);
+    navigate(`/negotiate/${newOffer.id}`);
   };
 
   if (loading) {
