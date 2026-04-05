@@ -134,12 +134,51 @@ const CarDetail: React.FC = () => {
      setShortlistLoading(false);
    };
 
-  const handleStartTrade = () => {
+  const [offerLoading, setOfferLoading] = useState(false);
+
+  const handleStartTrade = async () => {
     if (!userId) { navigate("/login"); return; }
-    // If user is the owner, redirect to fair value
     if (car?.owner_id === userId) { navigate(`/fair-value/${id}`); return; }
-    // Otherwise navigate to buyer matches or create an offer flow
-    navigate(`/buyer-matches/${id}`);
+    if (!car || !id) return;
+
+    setOfferLoading(true);
+    // Check if there's already an active offer from this buyer for this car
+    const { data: existingOffer } = await supabase
+      .from("offers")
+      .select("id")
+      .eq("car_id", id)
+      .eq("buyer_id", userId)
+      .in("status", ["pending", "countered"])
+      .maybeSingle();
+
+    if (existingOffer) {
+      navigate(`/negotiation/${existingOffer.id}`);
+      setOfferLoading(false);
+      return;
+    }
+
+    // Create a new offer at the asking price
+    const { data: newOffer, error } = await supabase
+      .from("offers")
+      .insert({
+        car_id: id,
+        buyer_id: userId,
+        seller_id: car.owner_id!,
+        amount: car.fair_value_price || car.price,
+        status: "pending",
+        current_round: 1,
+        max_rounds: 5,
+      })
+      .select("id")
+      .single();
+
+    setOfferLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Offer sent! Negotiation started.");
+    navigate(`/negotiation/${newOffer.id}`);
   };
 
   if (loading) {
