@@ -12,7 +12,7 @@ flowchart TD
 
     subgraph BACKEND["Backend Services"]
         BE1["Edge Functions:\n- concierge-chat AI Assistant\n- detect-damage AI Scan\n- generate-description AI\n- market-comparison\n- vin-decode VINCARIO\n- seed-car-models\n- create-placement-checkout\n- stripe-webhook\n- verify-placement\n- admin-actions"]
-        BE2["Database Tables:\n- cars / car_models\n- profiles / user_preferences\n- offers / transactions\n- matches / car_shortlists\n- buyer_selections / car_views\n- financing_partners\n- acquisition_quotes\n- notifications\n- chat_messages\n- appraisal_feedback\n- user_roles"]
+        BE2["Database Tables:\n- cars / car_models\n- profiles (+ kyc_status)\n- user_preferences (+ sports, towing)\n- offers / transactions\n- matches / car_shortlists\n- buyer_selections / car_views\n- financing_partners\n- acquisition_quotes\n- notifications\n- chat_messages\n- appraisal_feedback\n- user_roles"]
         BE3["External APIs:\n- Stripe Payments\n- Lovable AI Models\n- VINCARIO VIN Decode"]
     end
 
