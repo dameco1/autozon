@@ -152,7 +152,7 @@ const CarDetail: React.FC = () => {
       .maybeSingle();
 
     if (existingOffer) {
-      navigate(`/negotiation/${existingOffer.id}`);
+      navigate(`/negotiate/${existingOffer.id}`);
       setOfferLoading(false);
       return;
     }
