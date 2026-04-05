@@ -517,7 +517,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
             <Card className="bg-secondary/50 border-border p-6">
               <h2 className="text-lg font-display font-bold text-foreground mb-4">{t.dashboard.quickActions}</h2>
               <div className="space-y-2">
-                <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/cars")}>
+                <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/car-selection")}>
                   <Search className="h-4 w-4 mr-3 text-primary" /> {dt.buyerBrowseCars || "Browse Cars"}
                 </Button>
                 <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => navigate("/recommendations")}>
