@@ -178,7 +178,7 @@ const CarDetail: React.FC = () => {
       return;
     }
     toast.success("Offer sent! Negotiation started.");
-    navigate(`/negotiation/${newOffer.id}`);
+    navigate(`/negotiate/${newOffer.id}`);
   };
 
   if (loading) {
