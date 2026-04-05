@@ -34,6 +34,11 @@ interface CarFull {
   inspection_checklist: InspectionChecklist | null;
   owner_id: string | null;
   vin: string | null;
+  first_registration_month: number | null;
+  first_registration_year: number | null;
+  pickerl_valid_month: number | null;
+  pickerl_valid_year: number | null;
+  warranty_type: string | null;
 }
 
 const CarDetail: React.FC = () => {
