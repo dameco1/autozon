@@ -332,7 +332,10 @@ const CarComparison: React.FC = () => {
                   </div>
 
                   {/* CTA */}
-                  <Button className="w-full mt-4 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl">
+                  <Button
+                    className="w-full mt-4 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl"
+                    onClick={() => navigate(`/car/${car.id}`)}
+                  >
                     <CheckCircle className="mr-2 h-5 w-5" /> {t.compare.chooseCar}
                   </Button>
                 </CardContent>
