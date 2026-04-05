@@ -327,11 +327,14 @@ const CarUpload: React.FC = () => {
   const validateStep = (s: number): string | null => {
     switch (s) {
       case 1:
+        if (!formData.vin || formData.vin.length < 11) return language === "de" ? "Bitte geben Sie eine gültige FIN ein (mind. 11 Zeichen)" : "Please enter a valid VIN (at least 11 characters)";
         if (!formData.make) return "Please select a make";
         if (!formData.model) return "Please select a model";
         if (!formData.color) return "Please select a color";
         if (formData.mileage <= 0) return "Please enter a valid mileage";
         if (formData.price <= 0) return "Please enter a valid price";
+        if (!formData.firstRegistrationMonth || !formData.firstRegistrationYear) return language === "de" ? "Bitte Erstzulassung angeben" : "Please enter first registration date";
+        if (!formData.pickerlValidMonth || !formData.pickerlValidYear) return language === "de" ? "Bitte Pickerl-Gültigkeit angeben" : "Please enter Pickerl validity date";
         return null;
       case 2: {
         const missingSlots = PHOTO_SLOTS.filter((s) => s.required && !formData.photoSlots[s.id]);
