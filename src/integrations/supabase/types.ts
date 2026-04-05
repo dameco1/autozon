@@ -806,6 +806,7 @@ export type Database = {
           car_id: string
           completion_method: string | null
           contract_generated_at: string | null
+          contract_pdf_url: string | null
           contract_signed_buyer: boolean
           contract_signed_seller: boolean
           contract_type: string | null
@@ -829,6 +830,7 @@ export type Database = {
           car_id: string
           completion_method?: string | null
           contract_generated_at?: string | null
+          contract_pdf_url?: string | null
           contract_signed_buyer?: boolean
           contract_signed_seller?: boolean
           contract_type?: string | null
@@ -852,6 +854,7 @@ export type Database = {
           car_id?: string
           completion_method?: string | null
           contract_generated_at?: string | null
+          contract_pdf_url?: string | null
           contract_signed_buyer?: boolean
           contract_signed_seller?: boolean
           contract_type?: string | null
