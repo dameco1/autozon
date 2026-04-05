@@ -1093,6 +1093,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      lock_fair_value: {
+        Args: {
+          _car_id: string
+          _fair_value_price: number
+          _market_blended?: boolean
+        }
+        Returns: undefined
+      }
       transaction_set_contract: {
         Args: { _contract_type: string; _transaction_id: string }
         Returns: undefined
