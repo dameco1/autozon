@@ -406,6 +406,57 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
           <Input type="number" value={data.price} onChange={(e) => onChange({ price: Number(e.target.value) })} className="bg-background border-border text-foreground mt-1" />
         </div>
       </div>
+
+      {/* First Registration Date */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label className="text-muted-foreground text-sm">{(t.carUpload as any).firstRegistration || "First Registration"}</Label>
+          <div className="grid grid-cols-2 gap-2 mt-1">
+            <Select value={data.firstRegistrationMonth ? String(data.firstRegistrationMonth) : ""} onValueChange={(v) => onChange({ firstRegistrationMonth: Number(v) })}>
+              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Month" /></SelectTrigger>
+              <SelectContent>
+                {MONTHS.map((m) => <SelectItem key={m} value={String(m)}>{String(m).padStart(2, "0")}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Select value={data.firstRegistrationYear ? String(data.firstRegistrationYear) : ""} onValueChange={(v) => onChange({ firstRegistrationYear: Number(v) })}>
+              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Year" /></SelectTrigger>
+              <SelectContent>
+                {REG_YEARS.map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div>
+          <Label className="text-muted-foreground text-sm">{(t.carUpload as any).pickerlValid || "Pickerl Valid Until"}</Label>
+          <div className="grid grid-cols-2 gap-2 mt-1">
+            <Select value={data.pickerlValidMonth ? String(data.pickerlValidMonth) : ""} onValueChange={(v) => onChange({ pickerlValidMonth: Number(v) })}>
+              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Month" /></SelectTrigger>
+              <SelectContent>
+                {MONTHS.map((m) => <SelectItem key={m} value={String(m)}>{String(m).padStart(2, "0")}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Select value={data.pickerlValidYear ? String(data.pickerlValidYear) : ""} onValueChange={(v) => onChange({ pickerlValidYear: Number(v) })}>
+              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Year" /></SelectTrigger>
+              <SelectContent>
+                {Array.from({ length: 5 }, (_, i) => currentYear + i).map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+
+      {/* Warranty */}
+      <div>
+        <Label className="text-muted-foreground text-sm">{(t.carUpload as any).warrantyType || "Warranty"}</Label>
+        <Select value={data.warrantyType} onValueChange={(v) => onChange({ warrantyType: v })}>
+          <SelectTrigger className="bg-background border-border text-foreground mt-1"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">{(t.carUpload as any).warrantyOptions?.none || "No Warranty"}</SelectItem>
+            <SelectItem value="manufacturer">{(t.carUpload as any).warrantyOptions?.manufacturer || "Manufacturer Warranty"}</SelectItem>
+            <SelectItem value="thirdParty">{(t.carUpload as any).warrantyOptions?.thirdParty || "Third-Party Warranty"}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 };
