@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, CheckCircle2, Download, MapPin, Edit2 } from "lucide-react";
+import { FileText, CheckCircle2, Download, MapPin, Edit2, Clock, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -16,13 +16,20 @@ interface Props {
   sellerName: string;
   transactionId: string | null;
   onContinue: (contractType: string) => void;
+  role?: "buyer" | "seller";
+  contractSignedSeller?: boolean;
+  contractSignedBuyer?: boolean;
+  onSellerSign?: () => Promise<void>;
 }
 
 const COUNTRIES = ["Austria", "Germany", "Switzerland", "Italy", "Czech Republic", "Hungary", "Slovakia", "Slovenia"];
 
-const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerName, sellerName, transactionId, onContinue }) => {
+const StepContract: React.FC<Props> = ({
+  car, agreedPrice, sellerCountry, buyerName, sellerName, transactionId, onContinue,
+  role = "buyer", contractSignedSeller = false, contractSignedBuyer = false, onSellerSign,
+}) => {
   const { t } = useLanguage();
-  const [signed, setSigned] = useState(false);
+  const [signed, setSigned] = useState(role === "buyer" ? contractSignedBuyer : contractSignedSeller);
   const [signing, setSigning] = useState(false);
   const [country, setCountry] = useState(sellerCountry || "Austria");
   const [editingCountry, setEditingCountry] = useState(false);
@@ -30,7 +37,13 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
   const handleSign = async () => {
     setSigning(true);
     try {
-      // Generate PDF
+      if (role === "seller" && onSellerSign) {
+        await onSellerSign();
+        setSigned(true);
+        return;
+      }
+
+      // Buyer signing flow — generate PDF
       const contractData: ContractData = {
         car,
         agreedPrice,
@@ -43,7 +56,6 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
       const doc = generateContractPdf(contractData);
       const pdfBlob = doc.output("blob");
 
-      // Upload to storage if we have a transaction
       if (transactionId) {
         const filePath = `${transactionId}/contract.pdf`;
         const { error: uploadError } = await supabase.storage
@@ -54,8 +66,6 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
           console.error("Upload error:", uploadError);
           toast.error("Failed to archive contract");
         } else {
-          // Save URL reference on transaction
-          const { data: urlData } = supabase.storage.from("contracts").getPublicUrl(filePath);
           await supabase
             .from("transactions")
             .update({ contract_pdf_url: filePath } as any)
@@ -87,9 +97,43 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
     doc.save(`autozon-contract-${(transactionId || "draft").slice(0, 8)}.pdf`);
   };
 
+  const tt = t.transaction as any;
+
   return (
     <div className="space-y-6">
-      {/* Country detection with override */}
+      {/* Signature status badges */}
+      <motion.div
+        className="flex flex-col sm:flex-row gap-3"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-xl border ${contractSignedBuyer ? "bg-emerald-500/5 border-emerald-500/20" : "bg-secondary/50 border-border"}`}>
+          <User className={`h-4 w-4 ${contractSignedBuyer ? "text-emerald-400" : "text-muted-foreground"}`} />
+          <div className="flex-1">
+            <p className="text-xs text-muted-foreground">{t.transaction.buyer}</p>
+            <p className="text-sm font-semibold text-foreground">{buyerName}</p>
+          </div>
+          {contractSignedBuyer ? (
+            <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+          ) : (
+            <Clock className="h-5 w-5 text-muted-foreground" />
+          )}
+        </div>
+        <div className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-xl border ${contractSignedSeller || signed && role === "seller" ? "bg-emerald-500/5 border-emerald-500/20" : "bg-secondary/50 border-border"}`}>
+          <User className={`h-4 w-4 ${contractSignedSeller || (signed && role === "seller") ? "text-emerald-400" : "text-muted-foreground"}`} />
+          <div className="flex-1">
+            <p className="text-xs text-muted-foreground">{t.transaction.seller}</p>
+            <p className="text-sm font-semibold text-foreground">{sellerName}</p>
+          </div>
+          {contractSignedSeller || (signed && role === "seller") ? (
+            <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+          ) : (
+            <Clock className="h-5 w-5 text-muted-foreground" />
+          )}
+        </div>
+      </motion.div>
+
+      {/* Country detection with override (only buyer can change) */}
       <motion.div
         className="bg-secondary/50 border border-border rounded-xl p-4 flex items-center gap-3"
         initial={{ opacity: 0, y: 10 }}
@@ -98,7 +142,7 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
         <MapPin className="h-5 w-5 text-primary flex-shrink-0" />
         <div className="flex-1">
           <p className="text-sm text-muted-foreground">{t.transaction.contractCountry}</p>
-          {editingCountry ? (
+          {editingCountry && role === "buyer" ? (
             <Select value={country} onValueChange={(v) => { setCountry(v); setEditingCountry(false); }}>
               <SelectTrigger className="w-48 h-8 mt-1">
                 <SelectValue />
@@ -112,12 +156,14 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
           ) : (
             <p className="text-foreground font-semibold">
               {country}
-              <button
-                onClick={() => setEditingCountry(true)}
-                className="ml-2 text-primary hover:text-primary/80 inline-flex items-center gap-1 text-xs font-normal"
-              >
-                <Edit2 className="h-3 w-3" /> {t.transaction.changeCountry || "Change"}
-              </button>
+              {role === "buyer" && (
+                <button
+                  onClick={() => setEditingCountry(true)}
+                  className="ml-2 text-primary hover:text-primary/80 inline-flex items-center gap-1 text-xs font-normal"
+                >
+                  <Edit2 className="h-3 w-3" /> {t.transaction.changeCountry || "Change"}
+                </button>
+              )}
             </p>
           )}
         </div>
@@ -142,7 +188,6 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
         </div>
 
         <div className="px-6 py-5 space-y-4 text-sm">
-          {/* Contract summary fields */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-muted-foreground text-xs">{t.transaction.seller}</p>
@@ -170,7 +215,6 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
             </div>
           </div>
 
-          {/* Key clauses */}
           <div className="border-t border-border pt-4">
             <p className="text-muted-foreground text-xs mb-2">{t.transaction.keyClauses}</p>
             <ul className="space-y-1.5 text-muted-foreground text-xs">
@@ -210,12 +254,23 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
             >
               <Download className="mr-2 h-4 w-4" /> {t.transaction.downloadContract}
             </Button>
-            <Button
-              className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
-              onClick={() => onContinue("autozon")}
-            >
-              {t.transaction.continueToPayment}
-            </Button>
+            {role === "buyer" && (
+              <Button
+                className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
+                onClick={() => onContinue("autozon")}
+              >
+                {t.transaction.continueToPayment}
+              </Button>
+            )}
+            {role === "seller" && (
+              <Button
+                variant="ghost"
+                className="flex-1 text-muted-foreground"
+                onClick={() => window.location.href = "/dashboard"}
+              >
+                {t.transaction.backToDashboard}
+              </Button>
+            )}
           </>
         )}
       </div>
