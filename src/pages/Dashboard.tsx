@@ -67,6 +67,7 @@ const Dashboard: React.FC = () => {
   const [recentShortlists, setRecentShortlists] = useState<{ id: string; car_id: string; user_id: string; created_at: string }[]>([]);
   const [placementReceipts, setPlacementReceipts] = useState<{ id: string; carId: string | null; amountPaid: number; currency: string; paidAt: string | null; receiptUrl: string | null; invoiceUrl: string | null }[]>([]);
   const [soldCarTxMap, setSoldCarTxMap] = useState<Record<string, { offer_id: string }>>({});
+  const [acceptedOfferMap, setAcceptedOfferMap] = useState<Record<string, string>>({}); // car_id -> offer_id for accepted (not yet sold)
 
   useEffect(() => {
     const init = async () => {
