@@ -478,7 +478,10 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                     <div
                       key={offer.id}
                       className="px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-muted/40 transition-colors"
-                      onClick={() => navigate(`/negotiate/${offer.id}`)}
+                      onClick={() => {
+                        const hasTx = buyerTxs.some(tx => tx.offer_id === offer.id);
+                        navigate(offer.status === "accepted" && hasTx ? `/acquire/${offer.id}` : `/negotiate/${offer.id}`);
+                      }}
                     >
                       <div>
                         <p className="text-sm text-foreground font-semibold">{carLabel(offer.car_id)}</p>
