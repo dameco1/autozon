@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Package, ArrowLeft, FileText, CreditCard, Shield, CheckCircle2 } from "lucide-react";
+import { Package, ArrowLeft, FileText, CreditCard, Shield, CheckCircle2, AlertTriangle } from "lucide-react";
 import { generateNegotiationPdf } from "@/lib/generateNegotiationPdf";
 import TransactionStepIndicator from "@/components/transaction/TransactionStepIndicator";
 import StepMethod from "@/components/transaction/StepMethod";
