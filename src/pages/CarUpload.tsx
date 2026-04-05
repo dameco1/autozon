@@ -59,7 +59,7 @@ const CarUpload: React.FC = () => {
 
   useEffect(() => {
     if (!editId) return;
-    supabase.from("cars").select("id, make, model, year, vin, mileage, fuel_type, transmission, body_type, color, power_hp, price, equipment, condition_exterior, condition_interior, accident_history, accident_details, description, photos, detected_damages, smoker_car, service_book_updated, original_docs_available, maintenance_receipts, second_wheel_set, has_roof_rack, has_roof_box, inspection_checklist").eq("id", editId).maybeSingle().then(({ data }) => {
+    supabase.from("cars").select("id, make, model, year, vin, mileage, fuel_type, transmission, body_type, color, power_hp, price, equipment, condition_exterior, condition_interior, accident_history, accident_details, description, photos, detected_damages, smoker_car, service_book_updated, original_docs_available, maintenance_receipts, second_wheel_set, has_roof_rack, has_roof_box, inspection_checklist, first_registration_month, first_registration_year, pickerl_valid_month, pickerl_valid_year, warranty_type").eq("id", editId).maybeSingle().then(({ data }) => {
       if (!data) return;
       // Map saved photos back into named slots, remainder goes to extras
       const savedPhotos: string[] = (data as any).photos ?? [];
