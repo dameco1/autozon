@@ -20,6 +20,8 @@ interface Props {
   contractSignedSeller?: boolean;
   contractSignedBuyer?: boolean;
   onSellerSign?: () => Promise<void>;
+  buyerKycVerified?: boolean;
+  sellerKycVerified?: boolean;
 }
 
 const COUNTRIES = ["Austria", "Germany", "Switzerland", "Italy", "Czech Republic", "Hungary", "Slovakia", "Slovenia"];
