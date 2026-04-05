@@ -191,6 +191,8 @@ const AcquisitionOptions: React.FC = () => {
   }
 
   const agreedPrice = offer.agreed_price;
+  const isSeller = currentUserId === offer.seller_id;
+  const isBuyer = currentUserId === offer.buyer_id;
 
   const wizardSteps = [
     { label: t.transaction.stepMethod, icon: <Package className="h-4 w-4" /> },
