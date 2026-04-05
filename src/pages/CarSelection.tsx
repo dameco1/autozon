@@ -131,18 +131,26 @@ const CarSelection: React.FC = () => {
     }
   };
 
-  const toggleLike = (carId: string) => {
+  const toggleLike = async (carId: string) => {
     if (!userId) {
       toast.error("Please log in to save favorites");
       navigate("/login");
       return;
     }
+    const isLiked = liked.has(carId);
     setLiked((prev) => {
       const next = new Set(prev);
       if (next.has(carId)) next.delete(carId);
       else next.add(carId);
       return next;
     });
+
+    // Persist to car_shortlists
+    if (isLiked) {
+      await supabase.from("car_shortlists").delete().eq("user_id", userId).eq("car_id", carId);
+    } else {
+      await supabase.from("car_shortlists").insert({ user_id: userId, car_id: carId });
+    }
   };
 
   const handleNarrowDown = () => {
