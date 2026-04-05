@@ -32,6 +32,11 @@ export interface CarFormData {
   hasRoofRack: boolean;
   hasRoofBox: boolean;
   inspectionChecklist: InspectionChecklist;
+  firstRegistrationMonth: number | null;
+  firstRegistrationYear: number | null;
+  pickerlValidMonth: number | null;
+  pickerlValidYear: number | null;
+  warrantyType: string;
 }
 
 export const defaultCarFormData: CarFormData = {
@@ -65,4 +70,9 @@ export const defaultCarFormData: CarFormData = {
   hasRoofRack: false,
   hasRoofBox: false,
   inspectionChecklist: {},
+  firstRegistrationMonth: null,
+  firstRegistrationYear: null,
+  pickerlValidMonth: null,
+  pickerlValidYear: null,
+  warrantyType: "none",
 };

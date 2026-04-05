@@ -18,6 +18,7 @@ interface Props {
   onChange: (updates: Partial<CarFormData>) => void;
   onVinEquipmentSuggested?: (equipment: string[]) => void;
   onStolenDetected?: (stolen: boolean) => void;
+  isEdit?: boolean;
 }
 
 const currentYear = new Date().getFullYear();
@@ -26,7 +27,7 @@ const YEARS = Array.from({ length: currentYear - 1999 }, (_, i) => currentYear -
 /** Fields that VIN decode can auto-fill */
 type VinField = "make" | "model" | "variant" | "year" | "fuelType" | "bodyType" | "transmission" | "powerHp" | "color";
 
-const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested, onStolenDetected }) => {
+const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggested, onStolenDetected, isEdit }) => {
   const { t } = useLanguage();
   const [vinDecoding, setVinDecoding] = useState(false);
   const [vinDecoded, setVinDecoded] = useState(false);
@@ -170,6 +171,9 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
     );
   };
 
+  const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
+  const REG_YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
+
   return (
     <div className="space-y-5">
       {/* VIN Decode Section — prominent placement */}
@@ -178,37 +182,51 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
           <ScanSearch className="h-4 w-4 text-primary" />
           {t.carUpload.vin} — Auto-fill from VIN
         </Label>
-        <div className="flex gap-2">
-          <Input
-            value={data.vin}
-            onChange={(e) => {
-              onChange({ vin: e.target.value.toUpperCase() });
-              setVinDecoded(false);
-              setVinFields(new Set());
-              setOverriddenFields(new Set());
-            }}
-            className="bg-background border-border text-foreground font-mono tracking-wider"
-            placeholder="WVWZZZ3CZWE123456"
-            maxLength={17}
-          />
-          <Button
-            type="button"
-            onClick={handleVinDecode}
-            disabled={vinDecoding || !data.vin || data.vin.length < 11}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-4 whitespace-nowrap"
-          >
-            {vinDecoding ? (
-              <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Decoding...</>
-            ) : vinDecoded ? (
-              <><CheckCircle2 className="h-4 w-4 mr-1.5" /> Decoded</>
-            ) : (
-              <><ScanSearch className="h-4 w-4 mr-1.5" /> Decode VIN</>
-            )}
-          </Button>
-        </div>
-        <p className="text-muted-foreground text-xs mt-1.5">
-          Enter your 17-character VIN to auto-fill make, model, year, specs, color, and suggested equipment
-        </p>
+        {isEdit && data.vin ? (
+          <div>
+            <div className="bg-muted/50 border border-border rounded-md px-3 py-2 text-sm text-foreground font-mono tracking-wider flex items-center gap-2">
+              <Lock className="h-4 w-4 text-muted-foreground" />
+              {data.vin}
+            </div>
+            <p className="text-muted-foreground text-xs mt-1.5">
+              {(t.carUpload as any).vinImmutableHint}
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex gap-2">
+              <Input
+                value={data.vin}
+                onChange={(e) => {
+                  onChange({ vin: e.target.value.toUpperCase() });
+                  setVinDecoded(false);
+                  setVinFields(new Set());
+                  setOverriddenFields(new Set());
+                }}
+                className="bg-background border-border text-foreground font-mono tracking-wider"
+                placeholder="WVWZZZ3CZWE123456"
+                maxLength={17}
+              />
+              <Button
+                type="button"
+                onClick={handleVinDecode}
+                disabled={vinDecoding || !data.vin || data.vin.length < 11}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-4 whitespace-nowrap"
+              >
+                {vinDecoding ? (
+                  <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Decoding...</>
+                ) : vinDecoded ? (
+                  <><CheckCircle2 className="h-4 w-4 mr-1.5" /> Decoded</>
+                ) : (
+                  <><ScanSearch className="h-4 w-4 mr-1.5" /> Decode VIN</>
+                )}
+              </Button>
+            </div>
+            <p className="text-muted-foreground text-xs mt-1.5">
+              Enter your 17-character VIN to auto-fill make, model, year, specs, color, and suggested equipment
+            </p>
+          </>
+        )}
       </div>
 
       {/* Stolen vehicle warning */}
@@ -387,6 +405,57 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
           <Label className="text-muted-foreground text-sm">{t.carUpload.price}</Label>
           <Input type="number" value={data.price} onChange={(e) => onChange({ price: Number(e.target.value) })} className="bg-background border-border text-foreground mt-1" />
         </div>
+      </div>
+
+      {/* First Registration Date */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label className="text-muted-foreground text-sm">{(t.carUpload as any).firstRegistration || "First Registration"}</Label>
+          <div className="grid grid-cols-2 gap-2 mt-1">
+            <Select value={data.firstRegistrationMonth ? String(data.firstRegistrationMonth) : ""} onValueChange={(v) => onChange({ firstRegistrationMonth: Number(v) })}>
+              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Month" /></SelectTrigger>
+              <SelectContent>
+                {MONTHS.map((m) => <SelectItem key={m} value={String(m)}>{String(m).padStart(2, "0")}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Select value={data.firstRegistrationYear ? String(data.firstRegistrationYear) : ""} onValueChange={(v) => onChange({ firstRegistrationYear: Number(v) })}>
+              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Year" /></SelectTrigger>
+              <SelectContent>
+                {REG_YEARS.map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div>
+          <Label className="text-muted-foreground text-sm">{(t.carUpload as any).pickerlValid || "Pickerl Valid Until"}</Label>
+          <div className="grid grid-cols-2 gap-2 mt-1">
+            <Select value={data.pickerlValidMonth ? String(data.pickerlValidMonth) : ""} onValueChange={(v) => onChange({ pickerlValidMonth: Number(v) })}>
+              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Month" /></SelectTrigger>
+              <SelectContent>
+                {MONTHS.map((m) => <SelectItem key={m} value={String(m)}>{String(m).padStart(2, "0")}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Select value={data.pickerlValidYear ? String(data.pickerlValidYear) : ""} onValueChange={(v) => onChange({ pickerlValidYear: Number(v) })}>
+              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Year" /></SelectTrigger>
+              <SelectContent>
+                {Array.from({ length: 5 }, (_, i) => currentYear + i).map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+
+      {/* Warranty */}
+      <div>
+        <Label className="text-muted-foreground text-sm">{(t.carUpload as any).warrantyType || "Warranty"}</Label>
+        <Select value={data.warrantyType} onValueChange={(v) => onChange({ warrantyType: v })}>
+          <SelectTrigger className="bg-background border-border text-foreground mt-1"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">{(t.carUpload as any).warrantyOptions?.none || "No Warranty"}</SelectItem>
+            <SelectItem value="manufacturer">{(t.carUpload as any).warrantyOptions?.manufacturer || "Manufacturer Warranty"}</SelectItem>
+            <SelectItem value="thirdParty">{(t.carUpload as any).warrantyOptions?.thirdParty || "Third-Party Warranty"}</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );

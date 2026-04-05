@@ -363,6 +363,8 @@ export type Database = {
           equipment: string[] | null
           fair_value_price: number | null
           features: string[] | null
+          first_registration_month: number | null
+          first_registration_year: number | null
           fuel_type: string
           has_roof_box: boolean | null
           has_roof_rack: boolean | null
@@ -378,6 +380,8 @@ export type Database = {
           original_docs_available: boolean | null
           owner_id: string | null
           photos: string[] | null
+          pickerl_valid_month: number | null
+          pickerl_valid_year: number | null
           placement_paid: boolean
           power_hp: number | null
           price: number
@@ -387,7 +391,8 @@ export type Database = {
           status: string
           transmission: string
           updated_at: string
-          vin: string | null
+          vin: string
+          warranty_type: string | null
           year: number
         }
         Insert: {
@@ -405,6 +410,8 @@ export type Database = {
           equipment?: string[] | null
           fair_value_price?: number | null
           features?: string[] | null
+          first_registration_month?: number | null
+          first_registration_year?: number | null
           fuel_type?: string
           has_roof_box?: boolean | null
           has_roof_rack?: boolean | null
@@ -420,6 +427,8 @@ export type Database = {
           original_docs_available?: boolean | null
           owner_id?: string | null
           photos?: string[] | null
+          pickerl_valid_month?: number | null
+          pickerl_valid_year?: number | null
           placement_paid?: boolean
           power_hp?: number | null
           price?: number
@@ -429,7 +438,8 @@ export type Database = {
           status?: string
           transmission?: string
           updated_at?: string
-          vin?: string | null
+          vin?: string
+          warranty_type?: string | null
           year: number
         }
         Update: {
@@ -447,6 +457,8 @@ export type Database = {
           equipment?: string[] | null
           fair_value_price?: number | null
           features?: string[] | null
+          first_registration_month?: number | null
+          first_registration_year?: number | null
           fuel_type?: string
           has_roof_box?: boolean | null
           has_roof_rack?: boolean | null
@@ -462,6 +474,8 @@ export type Database = {
           original_docs_available?: boolean | null
           owner_id?: string | null
           photos?: string[] | null
+          pickerl_valid_month?: number | null
+          pickerl_valid_year?: number | null
           placement_paid?: boolean
           power_hp?: number | null
           price?: number
@@ -471,7 +485,8 @@ export type Database = {
           status?: string
           transmission?: string
           updated_at?: string
-          vin?: string | null
+          vin?: string
+          warranty_type?: string | null
           year?: number
         }
         Relationships: []

@@ -59,7 +59,7 @@ const CarUpload: React.FC = () => {
 
   useEffect(() => {
     if (!editId) return;
-    supabase.from("cars").select("id, make, model, year, vin, mileage, fuel_type, transmission, body_type, color, power_hp, price, equipment, condition_exterior, condition_interior, accident_history, accident_details, description, photos, detected_damages, smoker_car, service_book_updated, original_docs_available, maintenance_receipts, second_wheel_set, has_roof_rack, has_roof_box, inspection_checklist").eq("id", editId).maybeSingle().then(({ data }) => {
+    supabase.from("cars").select("id, make, model, year, vin, mileage, fuel_type, transmission, body_type, color, power_hp, price, equipment, condition_exterior, condition_interior, accident_history, accident_details, description, photos, detected_damages, smoker_car, service_book_updated, original_docs_available, maintenance_receipts, second_wheel_set, has_roof_rack, has_roof_box, inspection_checklist, first_registration_month, first_registration_year, pickerl_valid_month, pickerl_valid_year, warranty_type").eq("id", editId).maybeSingle().then(({ data }) => {
       if (!data) return;
       // Map saved photos back into named slots, remainder goes to extras
       const savedPhotos: string[] = (data as any).photos ?? [];
@@ -116,6 +116,11 @@ const CarUpload: React.FC = () => {
         hasRoofRack: (data as any).has_roof_rack ?? false,
         hasRoofBox: (data as any).has_roof_box ?? false,
         inspectionChecklist: (data as any).inspection_checklist ?? {},
+        firstRegistrationMonth: (data as any).first_registration_month ?? null,
+        firstRegistrationYear: (data as any).first_registration_year ?? null,
+        pickerlValidMonth: (data as any).pickerl_valid_month ?? null,
+        pickerlValidYear: (data as any).pickerl_valid_year ?? null,
+        warrantyType: (data as any).warranty_type ?? "none",
       }));
     });
   }, [editId]);
@@ -277,13 +282,18 @@ const CarUpload: React.FC = () => {
       status: "available",
       detected_damages: confirmedDamageData,
       inspection_checklist: formData.inspectionChecklist,
+      first_registration_month: formData.firstRegistrationMonth,
+      first_registration_year: formData.firstRegistrationYear,
+      pickerl_valid_month: formData.pickerlValidMonth,
+      pickerl_valid_year: formData.pickerlValidYear,
+      warranty_type: formData.warrantyType,
     } as any;
 
     let resultId: string | null = null;
 
     if (editId) {
       // Remove system-controlled fields that the trigger would revert
-      const { fair_value_price, condition_score, demand_score, detected_damages, status, ...editableData } = carData;
+      const { fair_value_price, condition_score, demand_score, detected_damages, status, vin, ...editableData } = carData;
       const { error } = await supabase.from("cars").update(editableData).eq("id", editId);
       if (error) { toast.error(error.message); setLoading(false); return; }
       // Persist system fields via SECURITY DEFINER function
@@ -327,11 +337,14 @@ const CarUpload: React.FC = () => {
   const validateStep = (s: number): string | null => {
     switch (s) {
       case 1:
+        if (!formData.vin || formData.vin.length < 11) return language === "de" ? "Bitte geben Sie eine gültige FIN ein (mind. 11 Zeichen)" : "Please enter a valid VIN (at least 11 characters)";
         if (!formData.make) return "Please select a make";
         if (!formData.model) return "Please select a model";
         if (!formData.color) return "Please select a color";
         if (formData.mileage <= 0) return "Please enter a valid mileage";
         if (formData.price <= 0) return "Please enter a valid price";
+        if (!formData.firstRegistrationMonth || !formData.firstRegistrationYear) return language === "de" ? "Bitte Erstzulassung angeben" : "Please enter first registration date";
+        if (!formData.pickerlValidMonth || !formData.pickerlValidYear) return language === "de" ? "Bitte Pickerl-Gültigkeit angeben" : "Please enter Pickerl validity date";
         return null;
       case 2: {
         const missingSlots = PHOTO_SLOTS.filter((s) => s.required && !formData.photoSlots[s.id]);
@@ -426,7 +439,7 @@ const CarUpload: React.FC = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} onVinEquipmentSuggested={setVinSuggestedEquipment} onStolenDetected={setVinStolenBlocked} />}
+                  {step === 1 && <StepBasicInfo data={formData} onChange={updateForm} onVinEquipmentSuggested={setVinSuggestedEquipment} onStolenDetected={setVinStolenBlocked} isEdit={!!editId} />}
                   {step === 2 && (
                     <StepPhotos
                       photoSlots={formData.photoSlots}
