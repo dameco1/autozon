@@ -61,6 +61,8 @@ const Negotiation: React.FC = () => {
   const [offer, setOffer] = useState<OfferRow | null>(null);
   const [car, setCar] = useState<CarInfo | null>(null);
   const [rounds, setRounds] = useState<RoundRow[]>([]);
+  const [roundsLoaded, setRoundsLoaded] = useState(false);
+  const [seeded, setSeeded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [counterAmount, setCounterAmount] = useState("");
   const [counterMessage, setCounterMessage] = useState("");
