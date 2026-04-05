@@ -575,6 +575,50 @@ export type Database = {
           },
         ]
       }
+      negotiation_rounds: {
+        Row: {
+          action: string
+          actor_id: string
+          actor_role: string
+          amount: number
+          created_at: string
+          id: string
+          message: string | null
+          offer_id: string
+          round_number: number
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          actor_role: string
+          amount: number
+          created_at?: string
+          id?: string
+          message?: string | null
+          offer_id: string
+          round_number?: number
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          actor_role?: string
+          amount?: number
+          created_at?: string
+          id?: string
+          message?: string | null
+          offer_id?: string
+          round_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "negotiation_rounds_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string

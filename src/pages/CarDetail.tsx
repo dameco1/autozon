@@ -158,13 +158,14 @@ const CarDetail: React.FC = () => {
     }
 
     // Create a new offer at the asking price
+    const offerAmount = car.fair_value_price || car.price;
     const { data: newOffer, error } = await supabase
       .from("offers")
       .insert({
         car_id: id,
         buyer_id: userId,
         seller_id: car.owner_id!,
-        amount: car.fair_value_price || car.price,
+        amount: offerAmount,
         status: "pending",
         current_round: 1,
         max_rounds: 5,
@@ -172,11 +173,24 @@ const CarDetail: React.FC = () => {
       .select("id")
       .single();
 
-    setOfferLoading(false);
     if (error) {
+      setOfferLoading(false);
       toast.error(error.message);
       return;
     }
+
+    // Record the initial round
+    await supabase.from("negotiation_rounds" as any).insert({
+      offer_id: newOffer.id,
+      round_number: 1,
+      actor_id: userId,
+      actor_role: "buyer",
+      action: "offer",
+      amount: offerAmount,
+      message: null,
+    } as any);
+
+    setOfferLoading(false);
     toast.success("Offer sent! Negotiation started.");
     navigate(`/negotiate/${newOffer.id}`);
   };
