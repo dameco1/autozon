@@ -12,18 +12,22 @@ flowchart TD
 
     subgraph BACKEND["Backend Services"]
         BE1["Edge Functions:\n- concierge-chat AI Assistant\n- detect-damage AI Scan\n- generate-description AI\n- market-comparison\n- vin-decode VINCARIO\n- seed-car-models\n- create-placement-checkout\n- stripe-webhook\n- verify-placement\n- admin-actions"]
-        BE2["Database Tables:\n- cars / car_models\n- profiles / user_preferences\n- offers / transactions\n- matches / car_shortlists\n- buyer_selections / car_views\n- financing_partners\n- acquisition_quotes\n- notifications\n- chat_messages\n- appraisal_feedback\n- user_roles"]
+        BE2["Database Tables:\n- cars / car_models\n- profiles (+ kyc_status)\n- user_preferences (+ sports, towing)\n- offers / transactions\n- matches / car_shortlists\n- buyer_selections / car_views\n- financing_partners\n- acquisition_quotes\n- notifications\n- chat_messages\n- appraisal_feedback\n- user_roles"]
         BE3["External APIs:\n- Stripe Payments\n- Lovable AI Models\n- VINCARIO VIN Decode"]
     end
 
-    subgraph ADMIN["Admin Dashboard"]
+    subgraph ADMIN["Admin Dashboard — 11 Tabs"]
         AD1["Overview Stats\n- Users / Cars / Revenue"]
-        AD2["Cars Management\n- All Listings Table"]
-        AD3["Users Management\n- Profiles / Suspend"]
+        AD2["Cars Management\n- All Listings + Car Card"]
+        AD3["Users Management\n- Profiles + User Card\n- Suspend / Reset"]
         AD4["Negotiations Monitor\n- All Active Offers"]
         AD5["Activity Feed\n- Recent Actions"]
         AD6["Appraisal Accuracy\n- Formula vs Market"]
         AD7["Transactions Overview\n- All Deals"]
+        AD8["Contracts\n- All Generated Contracts"]
+        AD9["Reports\n- Platform Analytics"]
+        AD10["Financing Requests\n- Credit / Leasing / 3-Wege"]
+        AD11["Insurance Requests\n- Policy Applications"]
     end
 
     subgraph FEATURES["Cross-Cutting Features"]
@@ -33,6 +37,10 @@ flowchart TD
         F4["PWA Support\n- Offline Capable\n- Install Prompt\n- App Icons"]
         F5["SEO\n- Meta Tags\n- Sitemap\n- robots.txt\n- JSON-LD"]
         F6["Cookie Consent\n- GDPR Compliant"]
+        F7["KYC Verification\n- ID Upload\n- Selfie + Address\n- Status: none/pending/verified"]
+        F8["Financing Calculator\n- Kredit / Leasing / 3-Wege\n- Austrian Market"]
+        F9["Insurance Calculator\n- Haftpflicht / Kasko\n- GAP / Warranty"]
+        F10["Vincario VIN Report\n- Specs / Stolen Check\n- Market Value / Recalls"]
     end
 ```
 
