@@ -106,7 +106,8 @@ const Negotiation: React.FC = () => {
     ]);
 
     if (carRes.data) setCar(carRes.data as CarInfo);
-    if (roundsRes.data) setRounds(roundsRes.data as unknown as RoundRow[]);
+    setRounds((roundsRes.data as unknown as RoundRow[]) ?? []);
+    setRoundsLoaded(true);
     if (sellerRes.data?.full_name) setSellerName(sellerRes.data.full_name);
     if (buyerRes.data?.full_name) setBuyerName(buyerRes.data.full_name);
 
