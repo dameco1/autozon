@@ -1163,6 +1163,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      transaction_seller_sign_contract: {
+        Args: { _transaction_id: string }
+        Returns: undefined
+      }
       transaction_set_contract: {
         Args: { _contract_type: string; _transaction_id: string }
         Returns: undefined
