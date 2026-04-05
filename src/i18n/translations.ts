@@ -1868,6 +1868,12 @@ export const translations = {
       inspectionYes: "Ja",
       inspectionNo: "Nein",
       inspectionUnknown: "Unbekannt",
+      firstReg: "Erstzulassung",
+      pickerl: "Pickerl",
+      warranty: "Garantie",
+      warrantyNone: "Keine",
+      warrantyManufacturer: "Herstellergarantie",
+      warrantyThirdParty: "Drittanbieter-Garantie",
     },
     intent: {
       title: "Was führt Sie hierher?",
