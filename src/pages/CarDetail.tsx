@@ -147,6 +147,22 @@ const CarDetail: React.FC = () => {
     if (!car || !id) return;
 
     setOfferLoading(true);
+
+    // Check if there's an accepted offer for this car (redirect to acquisition)
+    const { data: acceptedOffer } = await supabase
+      .from("offers")
+      .select("id")
+      .eq("car_id", id)
+      .eq("buyer_id", userId)
+      .eq("status", "accepted")
+      .maybeSingle();
+
+    if (acceptedOffer) {
+      navigate(`/acquire/${acceptedOffer.id}`);
+      setOfferLoading(false);
+      return;
+    }
+
     // Check if there's already an active offer from this buyer for this car
     const { data: existingOffer } = await supabase
       .from("offers")
