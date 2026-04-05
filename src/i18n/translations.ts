@@ -627,7 +627,7 @@ export const translations = {
       methodSubtitle: "How would you like to complete this transaction?",
       digitalTitle: "Digital Transaction via Autozon",
       digitalBadge: "Recommended",
-      digitalDesc: "We handle the contract, payment, and insurance — all digitally. Standard purchase contract included.",
+      digitalDesc: "We handle the contract, payment, and insurance — all digitally. Autozon digital purchase contract included.",
       manualTitle: "Complete Manually",
       manualDesc: "Handle the contract, payment, and registration yourself. We provide a checklist and links to official contract templates.",
       featureContract: "Digital Contract",
