@@ -79,16 +79,19 @@ The fair value engine is the core IP of Autozon. It estimates a car's market-fai
 
 **Location**: `src/lib/lifestyleMatch.ts`
 
-The matching engine uses a **4-dimensional weighted scoring model** that combines lifestyle signals, financial fit, explicit preferences, and car quality into a single 0-100 match score.
+The matching engine uses a **5-dimensional weighted scoring model** that combines lifestyle signals, financial fit, explicit preferences, car quality, and sports/towing fit into a single 0-100 match score.
 
-### Score Weights
+### Score Weights (when sports data present)
 
 | Dimension | Weight | Source |
 |---|---|---|
-| **Lifestyle** | 30% | Profile: relationship, kids, purpose, current car |
-| **Financial** | 30% | Preferences: budget range; fallback: profile budget |
-| **Preference Match** | 25% | Preferences: makes, fuel, body, transmission, commute, parking |
-| **Condition/Demand** | 15% | Car: condition_score + demand_score averaged |
+| **Lifestyle** | 25% | Profile: relationship, kids, purpose, current car |
+| **Financial** | 25% | Preferences: budget range; fallback: profile budget |
+| **Preference Match** | 20% | Preferences: makes, fuel, body, transmission, commute, parking |
+| **Condition/Demand** | 10% | Car: condition_score + demand_score averaged |
+| **Sports & Towing** | 20% | Preferences: sports, needs_towing, towing_weight_kg; Car: equipment, body_type |
+
+*When no sports data: falls back to original 4D weights (30/30/25/15).*
 
 ### Lifestyle Scoring Rules
 
