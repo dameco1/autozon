@@ -32,6 +32,7 @@ const CarSearchSection: React.FC = () => {
   const [fuelType, setFuelType] = useState("");
   const [maxMileage, setMaxMileage] = useState("");
   const [bodyType, setBodyType] = useState("");
+  const [transmission, setTransmission] = useState("");
 
   const [relationship, setRelationship] = useState("");
   const [hasKids, setHasKids] = useState("");
