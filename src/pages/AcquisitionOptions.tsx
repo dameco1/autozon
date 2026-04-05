@@ -127,14 +127,20 @@ const AcquisitionOptions: React.FC = () => {
 
       // Fetch names, seller country, and current user KYC
       const [profileRes, buyerRes, myProfileRes] = await Promise.all([
-        supabase.from("profiles").select("full_name, country").eq("user_id", o.seller_id).maybeSingle(),
-        supabase.from("profiles").select("full_name").eq("user_id", o.buyer_id).maybeSingle(),
+        supabase.from("profiles").select("full_name, country, kyc_status").eq("user_id", o.seller_id).maybeSingle(),
+        supabase.from("profiles").select("full_name, kyc_status").eq("user_id", o.buyer_id).maybeSingle(),
         supabase.from("profiles").select("kyc_status").eq("user_id", session.user.id).maybeSingle(),
       ]);
       if (profileRes.data?.full_name) setSellerName(profileRes.data.full_name);
       if (profileRes.data?.country) setSellerCountry(profileRes.data.country);
       if (buyerRes.data?.full_name) setBuyerName(buyerRes.data.full_name);
       if (myProfileRes.data) setMyKycStatus((myProfileRes.data as any).kyc_status || "none");
+
+      // Set KYC verification statuses
+      const sellerKyc = (profileRes.data as any)?.kyc_status;
+      const buyerKyc = (buyerRes.data as any)?.kyc_status;
+      setSellerKycVerified(sellerKyc === "verified" || sellerKyc === "approved");
+      setBuyerKycVerified(buyerKyc === "verified" || buyerKyc === "approved");
 
       // Check for existing transaction
       const { data: txData } = await supabase
