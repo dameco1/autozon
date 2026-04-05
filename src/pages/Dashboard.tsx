@@ -324,93 +324,113 @@ const Dashboard: React.FC = () => {
                           </>
                         ) : (
                           <>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
-                              <BarChart3 className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            {car.placement_paid ? (
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
-                                <Users className="h-4 w-4" />
-                              </Button>
-                            ) : (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 text-amber-400 hover:text-amber-300 text-xs font-semibold gap-1"
-                                disabled={placingCarId === car.id}
-                                onClick={async () => {
-                                  setPlacingCarId(car.id);
-                                  try {
-                                    const { data: sessionData } = await supabase.auth.getSession();
-                                    const token = sessionData?.session?.access_token;
-                                    if (!token) {
-                                      toast.error("Session expired. Redirecting to login…");
-                                      setTimeout(() => navigate("/login"), 1500);
-                                      return;
-                                    }
-                                    const res = await fetch(
-                                      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-placement-checkout`,
-                                      {
-                                        method: "POST",
-                                        headers: {
-                                          "Content-Type": "application/json",
-                                          Authorization: `Bearer ${token}`,
-                                          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-                                        },
-                                        body: JSON.stringify({ carId: car.id }),
-                                      }
-                                    );
-                                    const data = await res.json();
-                                    if (!res.ok) throw new Error(data?.error || "Checkout failed");
-                                    if (data?.url) window.location.href = data.url;
-                                    else throw new Error("No checkout URL returned");
-                                  } catch (err: any) {
-                                    console.error(err);
-                                    const msg = err.message || "Failed to start checkout";
-                                    if (msg.toLowerCase().includes("session") || msg.toLowerCase().includes("log in")) {
-                                      toast.error(msg);
-                                      setTimeout(() => navigate("/login"), 1500);
-                                    } else {
-                                      toast.error(msg);
-                                    }
-                                  } finally {
-                                    setPlacingCarId(null);
-                                  }
-                                }}
-                              >
-                                {placingCarId === car.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CreditCard className="h-3.5 w-3.5" />}
-                                {placingCarId === car.id ? "..." : t.dashboard.placeAd}
-                              </Button>
-                            )}
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive/60 hover:text-destructive">
-                                  <Trash2 className="h-4 w-4" />
+                            {acceptedOfferMap[car.id] ? (
+                              /* Car has an accepted offer — show acquisition button, no delete */
+                              <>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
+                                  <BarChart3 className="h-4 w-4" />
                                 </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent className="bg-secondary border-border">
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle className="text-foreground">{t.dashboard.deleteCar} {car.year} {car.make} {car.model}?</AlertDialogTitle>
-                                  <AlertDialogDescription>{t.dashboard.deleteConfirm}</AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel className="border-border text-muted-foreground">{t.dashboard.cancel}</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-8 text-primary hover:text-primary/80 text-xs font-semibold gap-1"
+                                  onClick={() => navigate(`/acquire/${acceptedOfferMap[car.id]}`)}
+                                >
+                                  <FileText className="h-3.5 w-3.5" /> {(t.dashboard as any).acquisition || "Acquisition"}
+                                </Button>
+                              </>
+                            ) : (
+                              /* Normal available car — full actions including delete */
+                              <>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
+                                  <BarChart3 className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
+                                  <Pencil className="h-4 w-4" />
+                                </Button>
+                                {car.placement_paid ? (
+                                  <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
+                                    <Users className="h-4 w-4" />
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-8 text-amber-400 hover:text-amber-300 text-xs font-semibold gap-1"
+                                    disabled={placingCarId === car.id}
                                     onClick={async () => {
-                                      const { error } = await supabase.from("cars").delete().eq("id", car.id);
-                                      if (error) { toast.error(error.message); return; }
-                                      setCars((prev) => prev.filter((c) => c.id !== car.id));
-                                      toast.success("Car deleted successfully");
+                                      setPlacingCarId(car.id);
+                                      try {
+                                        const { data: sessionData } = await supabase.auth.getSession();
+                                        const token = sessionData?.session?.access_token;
+                                        if (!token) {
+                                          toast.error("Session expired. Redirecting to login…");
+                                          setTimeout(() => navigate("/login"), 1500);
+                                          return;
+                                        }
+                                        const res = await fetch(
+                                          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-placement-checkout`,
+                                          {
+                                            method: "POST",
+                                            headers: {
+                                              "Content-Type": "application/json",
+                                              Authorization: `Bearer ${token}`,
+                                              apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+                                            },
+                                            body: JSON.stringify({ carId: car.id }),
+                                          }
+                                        );
+                                        const data = await res.json();
+                                        if (!res.ok) throw new Error(data?.error || "Checkout failed");
+                                        if (data?.url) window.location.href = data.url;
+                                        else throw new Error("No checkout URL returned");
+                                      } catch (err: any) {
+                                        console.error(err);
+                                        const msg = err.message || "Failed to start checkout";
+                                        if (msg.toLowerCase().includes("session") || msg.toLowerCase().includes("log in")) {
+                                          toast.error(msg);
+                                          setTimeout(() => navigate("/login"), 1500);
+                                        } else {
+                                          toast.error(msg);
+                                        }
+                                      } finally {
+                                        setPlacingCarId(null);
+                                      }
                                     }}
                                   >
-                                    {t.dashboard.deleteCar}
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
+                                    {placingCarId === car.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CreditCard className="h-3.5 w-3.5" />}
+                                    {placingCarId === car.id ? "..." : t.dashboard.placeAd}
+                                  </Button>
+                                )}
+                                <AlertDialog>
+                                  <AlertDialogTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive/60 hover:text-destructive">
+                                      <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent className="bg-secondary border-border">
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle className="text-foreground">{t.dashboard.deleteCar} {car.year} {car.make} {car.model}?</AlertDialogTitle>
+                                      <AlertDialogDescription>{t.dashboard.deleteConfirm}</AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel className="border-border text-muted-foreground">{t.dashboard.cancel}</AlertDialogCancel>
+                                      <AlertDialogAction
+                                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                        onClick={async () => {
+                                          const { error } = await supabase.from("cars").delete().eq("id", car.id);
+                                          if (error) { toast.error(error.message); return; }
+                                          setCars((prev) => prev.filter((c) => c.id !== car.id));
+                                          toast.success("Car deleted successfully");
+                                        }}
+                                      >
+                                        {t.dashboard.deleteCar}
+                                      </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                              </>
+                            )}
                           </>
                         )}
                       </div>
