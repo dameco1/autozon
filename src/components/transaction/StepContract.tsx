@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, CheckCircle2, Download, MapPin, Edit2, Clock, User } from "lucide-react";
+import { FileText, CheckCircle2, Download, MapPin, Edit2, Clock, User, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { generateContractPdf, ContractData } from "@/lib/generateContractPdf";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import type { PartyType, RoleWorkflow } from "@/lib/roleWorkflow";
 
 interface Props {
   car: { make: string; model: string; year: number; vin?: string };
@@ -22,6 +23,9 @@ interface Props {
   onSellerSign?: () => Promise<void>;
   buyerKycVerified?: boolean;
   sellerKycVerified?: boolean;
+  sellerType?: PartyType;
+  buyerType?: PartyType;
+  workflow?: RoleWorkflow;
 }
 
 const COUNTRIES = ["Austria", "Germany", "Switzerland", "Italy", "Czech Republic", "Hungary", "Slovakia", "Slovenia"];
@@ -30,8 +34,9 @@ const StepContract: React.FC<Props> = ({
   car, agreedPrice, sellerCountry, buyerName, sellerName, transactionId, onContinue,
   role = "buyer", contractSignedSeller = false, contractSignedBuyer = false, onSellerSign,
   buyerKycVerified = false, sellerKycVerified = false,
+  sellerType = "private", buyerType = "private", workflow,
 }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [signed, setSigned] = useState(role === "buyer" ? contractSignedBuyer : contractSignedSeller);
   const [signing, setSigning] = useState(false);
   const [country, setCountry] = useState(sellerCountry || "Austria");
@@ -46,7 +51,6 @@ const StepContract: React.FC<Props> = ({
         return;
       }
 
-      // Buyer signing flow — generate PDF
       const contractData: ContractData = {
         car,
         agreedPrice,
@@ -60,6 +64,8 @@ const StepContract: React.FC<Props> = ({
         contractSignedBuyer: true,
         contractSignedSeller,
         buyerSignedDate: new Date().toISOString(),
+        sellerType,
+        buyerType,
       };
       const doc = generateContractPdf(contractData);
       const pdfBlob = doc.output("blob");
@@ -104,6 +110,8 @@ const StepContract: React.FC<Props> = ({
       sellerKycVerified,
       contractSignedBuyer,
       contractSignedSeller,
+      sellerType,
+      buyerType,
     };
     const doc = generateContractPdf(contractData);
     doc.save(`autozon-contract-${(transactionId || "draft").slice(0, 8)}.pdf`);
@@ -113,6 +121,25 @@ const StepContract: React.FC<Props> = ({
 
   return (
     <div className="space-y-6">
+      {/* Warranty badge */}
+      {workflow && (
+        <motion.div
+          className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-3"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-foreground">
+              {language === "de" ? workflow.warrantyConfig.label_de : workflow.warrantyConfig.label}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {language === "de" ? workflow.warrantyConfig.description_de : workflow.warrantyConfig.description}
+            </p>
+          </div>
+        </motion.div>
+      )}
+
       {/* Signature status badges */}
       <motion.div
         className="flex flex-col sm:flex-row gap-3"
@@ -131,7 +158,7 @@ const StepContract: React.FC<Props> = ({
             <Clock className="h-5 w-5 text-muted-foreground" />
           )}
         </div>
-        <div className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-xl border ${contractSignedSeller || signed && role === "seller" ? "bg-emerald-500/5 border-emerald-500/20" : "bg-secondary/50 border-border"}`}>
+        <div className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-xl border ${contractSignedSeller || (signed && role === "seller") ? "bg-emerald-500/5 border-emerald-500/20" : "bg-secondary/50 border-border"}`}>
           <User className={`h-4 w-4 ${contractSignedSeller || (signed && role === "seller") ? "text-emerald-400" : "text-muted-foreground"}`} />
           <div className="flex-1">
             <p className="text-xs text-muted-foreground">{t.transaction.seller}</p>
@@ -145,7 +172,7 @@ const StepContract: React.FC<Props> = ({
         </div>
       </motion.div>
 
-      {/* Country detection with override (only buyer can change) */}
+      {/* Country detection with override */}
       <motion.div
         className="bg-secondary/50 border border-border rounded-xl p-4 flex items-center gap-3"
         initial={{ opacity: 0, y: 10 }}
@@ -204,10 +231,12 @@ const StepContract: React.FC<Props> = ({
             <div>
               <p className="text-muted-foreground text-xs">{t.transaction.seller}</p>
               <p className="text-foreground font-medium">{sellerName}</p>
+              <p className="text-[10px] text-muted-foreground">{sellerType === "business" ? "Business" : "Private"}</p>
             </div>
             <div>
               <p className="text-muted-foreground text-xs">{t.transaction.buyer}</p>
               <p className="text-foreground font-medium">{buyerName}</p>
+              <p className="text-[10px] text-muted-foreground">{buyerType === "business" ? "Business" : "Private"}</p>
             </div>
             <div>
               <p className="text-muted-foreground text-xs">{t.transaction.vehicle}</p>
@@ -227,6 +256,16 @@ const StepContract: React.FC<Props> = ({
             </div>
           </div>
 
+          {/* Warranty info in preview */}
+          {workflow && (
+            <div className="border-t border-border pt-3">
+              <p className="text-muted-foreground text-xs mb-1">{language === "de" ? "Gewährleistung" : "Warranty"}</p>
+              <p className="text-foreground text-xs font-semibold">
+                {language === "de" ? workflow.warrantyConfig.label_de : workflow.warrantyConfig.label}
+              </p>
+            </div>
+          )}
+
           <div className="border-t border-border pt-4">
             <p className="text-muted-foreground text-xs mb-2">{t.transaction.keyClauses}</p>
             <ul className="space-y-1.5 text-muted-foreground text-xs">
@@ -237,6 +276,9 @@ const StepContract: React.FC<Props> = ({
               <li>• {t.transaction.clause5}</li>
               <li>• {t.transaction.clause6}</li>
               <li>• {t.transaction.clause7}</li>
+              {workflow?.extraClauses.map((c, i) => (
+                <li key={i}>• {language === "de" ? c.de : c.en}</li>
+              ))}
             </ul>
           </div>
         </div>
