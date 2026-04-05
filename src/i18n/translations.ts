@@ -1894,6 +1894,23 @@ export const translations = {
       stepInsurance: "Versicherung",
       stepComplete: "Abschluss",
       sellerWaitingForBuyer: "Der Käufer richtet die Transaktion ein. Sie können den Vertrag unterzeichnen, sobald er bereit ist.",
+      // Document checklist
+      documentChecklist: "Dokumenten-Checkliste",
+      yourDocuments: "Ihre Dokumente",
+      otherPartyDocuments: "Dokumente der Gegenpartei",
+      documentUploaded: "Dokument hochgeladen",
+      uploadFailed: "Upload fehlgeschlagen",
+      verified: "Verifiziert",
+      optional: "Optional",
+      complete: "Vollständig",
+      // Deadline manager
+      offlineSteps: "Offline-Schritte & Fristen",
+      overdue: "Überfällig",
+      stepCompleted: "Schritt abgeschlossen",
+      completed: "Erledigt am",
+      done: "Erledigt",
+      // Warranty
+      warranty: "Gewährleistung",
     },
     nextCar: {
       title: "Ihr nächstes Auto",

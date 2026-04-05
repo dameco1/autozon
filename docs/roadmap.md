@@ -58,6 +58,7 @@
 - [x] **Insurance Integration Roadmap** — Durchblicker API (Q3 2026), Direct Insurer (Q4 2026), Broker-as-a-Service (2027)
 - [x] **KYC Identity Verification** — 3-step flow: ID upload, selfie verification, address confirmation (`/kyc`)
 - [x] **Vincario Vehicle History Report** — VIN-based specs, stolen check, market value, recall notices on car detail page
+- [x] **Role-Based Workflow Engine** — 4 role combos (Private↔Business), role-specific contract clauses, warranty rules (Gewährleistungsausschluss / 2-year statutory / negotiable B2B), document checklists (Zulassungsschein, Gewerbeschein, Firmenbuchauszug, etc.), offline deadline manager (inspection 72h, registration 7d, handover 14d, NoVA 15d)
 - [ ] Vehicle ownership verification
 - [ ] Partner bank/leasing API integrations (Raiffeisen, UniCredit, Arval)
 - [ ] **Advertising Module V1** — Homepage banner ads (dealer/partner sponsors), contextual ads on vehicle detail pages, self-serve ad booking for dealers
