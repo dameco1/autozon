@@ -339,6 +339,7 @@ const AcquisitionOptions: React.FC = () => {
               sellerCountry={sellerCountry}
               buyerName={buyerName}
               sellerName={sellerName}
+              transactionId={transactionId}
               onContinue={handleContractDone}
             />
           )}

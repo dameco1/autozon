@@ -732,7 +732,7 @@ export const translations = {
       manualCompleteTitle: "Manual Transaction",
       manualCompleteSubtitle: "Follow this checklist to complete the transaction offline.",
       manualChecklist: "Transaction Checklist",
-      manualStep1: "Download and fill out the official purchase contract (ÖAMTC/ADAC)",
+      manualStep1: "Download and fill out the Autozon purchase contract or use your own",
       manualStep2: "Both parties sign the contract in person",
       manualStep3: "Arrange payment (cash or bank transfer)",
       manualStep4: "Complete vehicle handover with all documents and keys",
