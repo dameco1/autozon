@@ -293,7 +293,7 @@ const CarUpload: React.FC = () => {
 
     if (editId) {
       // Remove system-controlled fields that the trigger would revert
-      const { fair_value_price, condition_score, demand_score, detected_damages, status, ...editableData } = carData;
+      const { fair_value_price, condition_score, demand_score, detected_damages, status, vin, ...editableData } = carData;
       const { error } = await supabase.from("cars").update(editableData).eq("id", editId);
       if (error) { toast.error(error.message); setLoading(false); return; }
       // Persist system fields via SECURITY DEFINER function
