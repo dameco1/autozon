@@ -171,6 +171,9 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
     );
   };
 
+  const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
+  const REG_YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
+
   return (
     <div className="space-y-5">
       {/* VIN Decode Section — prominent placement */}
@@ -179,37 +182,51 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
           <ScanSearch className="h-4 w-4 text-primary" />
           {t.carUpload.vin} — Auto-fill from VIN
         </Label>
-        <div className="flex gap-2">
-          <Input
-            value={data.vin}
-            onChange={(e) => {
-              onChange({ vin: e.target.value.toUpperCase() });
-              setVinDecoded(false);
-              setVinFields(new Set());
-              setOverriddenFields(new Set());
-            }}
-            className="bg-background border-border text-foreground font-mono tracking-wider"
-            placeholder="WVWZZZ3CZWE123456"
-            maxLength={17}
-          />
-          <Button
-            type="button"
-            onClick={handleVinDecode}
-            disabled={vinDecoding || !data.vin || data.vin.length < 11}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-4 whitespace-nowrap"
-          >
-            {vinDecoding ? (
-              <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Decoding...</>
-            ) : vinDecoded ? (
-              <><CheckCircle2 className="h-4 w-4 mr-1.5" /> Decoded</>
-            ) : (
-              <><ScanSearch className="h-4 w-4 mr-1.5" /> Decode VIN</>
-            )}
-          </Button>
-        </div>
-        <p className="text-muted-foreground text-xs mt-1.5">
-          Enter your 17-character VIN to auto-fill make, model, year, specs, color, and suggested equipment
-        </p>
+        {isEdit && data.vin ? (
+          <div>
+            <div className="bg-muted/50 border border-border rounded-md px-3 py-2 text-sm text-foreground font-mono tracking-wider flex items-center gap-2">
+              <Lock className="h-4 w-4 text-muted-foreground" />
+              {data.vin}
+            </div>
+            <p className="text-muted-foreground text-xs mt-1.5">
+              {(t.carUpload as any).vinImmutableHint}
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex gap-2">
+              <Input
+                value={data.vin}
+                onChange={(e) => {
+                  onChange({ vin: e.target.value.toUpperCase() });
+                  setVinDecoded(false);
+                  setVinFields(new Set());
+                  setOverriddenFields(new Set());
+                }}
+                className="bg-background border-border text-foreground font-mono tracking-wider"
+                placeholder="WVWZZZ3CZWE123456"
+                maxLength={17}
+              />
+              <Button
+                type="button"
+                onClick={handleVinDecode}
+                disabled={vinDecoding || !data.vin || data.vin.length < 11}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-4 whitespace-nowrap"
+              >
+                {vinDecoding ? (
+                  <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Decoding...</>
+                ) : vinDecoded ? (
+                  <><CheckCircle2 className="h-4 w-4 mr-1.5" /> Decoded</>
+                ) : (
+                  <><ScanSearch className="h-4 w-4 mr-1.5" /> Decode VIN</>
+                )}
+              </Button>
+            </div>
+            <p className="text-muted-foreground text-xs mt-1.5">
+              Enter your 17-character VIN to auto-fill make, model, year, specs, color, and suggested equipment
+            </p>
+          </>
+        )}
       </div>
 
       {/* Stolen vehicle warning */}
