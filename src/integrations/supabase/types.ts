@@ -548,6 +548,42 @@ export type Database = {
         }
         Relationships: []
       }
+      kyc_verifications: {
+        Row: {
+          created_at: string
+          decision_json: Json | null
+          didit_session_id: string | null
+          id: string
+          role: string
+          status: string
+          transaction_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          decision_json?: Json | null
+          didit_session_id?: string | null
+          id?: string
+          role?: string
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          decision_json?: Json | null
+          didit_session_id?: string | null
+          id?: string
+          role?: string
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       matches: {
         Row: {
           car_id: string
@@ -732,14 +768,18 @@ export type Database = {
       }
       profiles: {
         Row: {
+          authorized_representative: string | null
           avatar_url: string | null
           budget_max: number | null
           budget_min: number | null
           car_purpose: string | null
           city: string | null
+          commercial_registry_number: string | null
+          company_name: string | null
           country: string | null
           created_at: string
           current_car: string | null
+          date_of_birth: string | null
           full_name: string
           has_kids: boolean | null
           id: string
@@ -750,18 +790,24 @@ export type Database = {
           relationship_status: string | null
           suspended: boolean
           suspension_type: string | null
+          uid_number: string | null
           updated_at: string
           user_id: string
+          user_type: string
         }
         Insert: {
+          authorized_representative?: string | null
           avatar_url?: string | null
           budget_max?: number | null
           budget_min?: number | null
           car_purpose?: string | null
           city?: string | null
+          commercial_registry_number?: string | null
+          company_name?: string | null
           country?: string | null
           created_at?: string
           current_car?: string | null
+          date_of_birth?: string | null
           full_name?: string
           has_kids?: boolean | null
           id?: string
@@ -772,18 +818,24 @@ export type Database = {
           relationship_status?: string | null
           suspended?: boolean
           suspension_type?: string | null
+          uid_number?: string | null
           updated_at?: string
           user_id: string
+          user_type?: string
         }
         Update: {
+          authorized_representative?: string | null
           avatar_url?: string | null
           budget_max?: number | null
           budget_min?: number | null
           car_purpose?: string | null
           city?: string | null
+          commercial_registry_number?: string | null
+          company_name?: string | null
           country?: string | null
           created_at?: string
           current_car?: string | null
+          date_of_birth?: string | null
           full_name?: string
           has_kids?: boolean | null
           id?: string
@@ -794,8 +846,10 @@ export type Database = {
           relationship_status?: string | null
           suspended?: boolean
           suspension_type?: string | null
+          uid_number?: string | null
           updated_at?: string
           user_id?: string
+          user_type?: string
         }
         Relationships: []
       }
@@ -803,6 +857,7 @@ export type Database = {
         Row: {
           agreed_price: number
           buyer_id: string
+          buyer_kyc_status: string
           car_id: string
           completion_method: string | null
           contract_generated_at: string | null
@@ -821,12 +876,14 @@ export type Database = {
           payment_confirmed: boolean
           payment_method: string | null
           seller_id: string
+          seller_kyc_status: string
           status: string
           updated_at: string
         }
         Insert: {
           agreed_price: number
           buyer_id: string
+          buyer_kyc_status?: string
           car_id: string
           completion_method?: string | null
           contract_generated_at?: string | null
@@ -845,12 +902,14 @@ export type Database = {
           payment_confirmed?: boolean
           payment_method?: string | null
           seller_id: string
+          seller_kyc_status?: string
           status?: string
           updated_at?: string
         }
         Update: {
           agreed_price?: number
           buyer_id?: string
+          buyer_kyc_status?: string
           car_id?: string
           completion_method?: string | null
           contract_generated_at?: string | null
@@ -869,6 +928,7 @@ export type Database = {
           payment_confirmed?: boolean
           payment_method?: string | null
           seller_id?: string
+          seller_kyc_status?: string
           status?: string
           updated_at?: string
         }
