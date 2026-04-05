@@ -20,7 +20,7 @@ export const EQUIPMENT_LIST = [
   "Park Assist (Semi-Auto)", "Park Assist (Full Auto)", "Surround View Monitor",
 
   // Lighting
-  "LED Headlights", "Adaptive Headlights", "Matrix LED", "Laser Headlights",
+  "LED Headlights", "Xenon Headlights", "Adaptive Headlights", "Matrix LED", "Laser Headlights",
   "LED Daytime Running Lights", "Cornering Lights", "Fog Lights", "Ambient Lighting",
 
   // Comfort & Seats

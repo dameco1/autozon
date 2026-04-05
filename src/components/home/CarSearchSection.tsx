@@ -248,6 +248,17 @@ const CarSearchSection: React.FC = () => {
                 ))}
               </SelectContent>
             </Select>
+
+            <Select value={transmission} onValueChange={setTransmission}>
+              <SelectTrigger className="bg-background border-border text-foreground">
+                <SelectValue placeholder="Transmission" />
+              </SelectTrigger>
+              <SelectContent>
+                {TRANSMISSIONS.map((tr) => (
+                  <SelectItem key={tr} value={tr}>{tr}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex items-center justify-between">
