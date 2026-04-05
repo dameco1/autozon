@@ -70,4 +70,9 @@ export const defaultCarFormData: CarFormData = {
   hasRoofRack: false,
   hasRoofBox: false,
   inspectionChecklist: {},
+  firstRegistrationMonth: null,
+  firstRegistrationYear: null,
+  pickerlValidMonth: null,
+  pickerlValidYear: null,
+  warrantyType: "none",
 };
