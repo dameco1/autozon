@@ -61,6 +61,8 @@ const Negotiation: React.FC = () => {
   const [offer, setOffer] = useState<OfferRow | null>(null);
   const [car, setCar] = useState<CarInfo | null>(null);
   const [rounds, setRounds] = useState<RoundRow[]>([]);
+  const [roundsLoaded, setRoundsLoaded] = useState(false);
+  const [seeded, setSeeded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [counterAmount, setCounterAmount] = useState("");
   const [counterMessage, setCounterMessage] = useState("");
@@ -104,7 +106,8 @@ const Negotiation: React.FC = () => {
     ]);
 
     if (carRes.data) setCar(carRes.data as CarInfo);
-    if (roundsRes.data) setRounds(roundsRes.data as unknown as RoundRow[]);
+    setRounds((roundsRes.data as unknown as RoundRow[]) ?? []);
+    setRoundsLoaded(true);
     if (sellerRes.data?.full_name) setSellerName(sellerRes.data.full_name);
     if (buyerRes.data?.full_name) setBuyerName(buyerRes.data.full_name);
 
@@ -134,10 +137,11 @@ const Negotiation: React.FC = () => {
 
   // Seed initial round if offer exists but no rounds yet (backward compat)
   useEffect(() => {
-    if (!offer || !user || rounds.length > 0) return;
-    // Only the buyer who created the offer seeds round 1
+    if (!offer || !user || !roundsLoaded || seeded) return;
+    if (rounds.length > 0) return;
     if (user.id !== offer.buyer_id) return;
 
+    setSeeded(true);
     const seedRound = async () => {
       await supabase.from("negotiation_rounds" as any).insert({
         offer_id: offer.id,
@@ -151,7 +155,7 @@ const Negotiation: React.FC = () => {
       fetchData();
     };
     seedRound();
-  }, [offer, user, rounds.length, fetchData]);
+  }, [offer, user, roundsLoaded, seeded, rounds.length, fetchData]);
 
   if (loading) {
     return (
