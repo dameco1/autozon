@@ -1,90 +1,68 @@
 
-# Autozon Role-Aware Transactions — Phase 1
+## Phase: Role-Based Workflow Engine & Offline Deadline Manager
 
-## Scope
-- User type classification (Private Person / Business Entity) at registration
-- Didit KYC integration replacing file-upload KYC
-- Support for **Private→Private** and **Business→Private** transaction combinations
+### 1. Database Changes
 
----
+**New table: `transaction_documents`**
+- Tracks required document uploads per transaction (e.g., Zulassungsschein, invoices, Gewerbeschein)
+- Columns: id, transaction_id, document_type, label, required, uploaded_url, uploaded_at, verified
 
-## Step 1: Database Schema Updates
+**New table: `transaction_deadlines`**
+- Tracks offline step deadlines (inspection, registration, handover, NoVA)
+- Columns: id, transaction_id, step_type, deadline_at, completed_at, reminded_at, status (pending/completed/overdue)
 
-### A) Add `user_type` and business fields to `profiles` table
-- `user_type` TEXT DEFAULT 'private' — values: 'private', 'business_seller', 'business_buyer'
-- `company_name` TEXT (nullable)
-- `uid_number` TEXT (nullable) — Austrian UID-Nummer
-- `commercial_registry_number` TEXT (nullable) — Firmenbuchnummer
-- `authorized_representative` TEXT (nullable)
-- `date_of_birth` DATE (nullable)
+**Alter `transactions` table:**
+- Add `seller_type` (private/business) and `buyer_type` (private/business)
+- Add `warranty_type` (none/statutory/extended) — determines warranty rules based on role combo
 
-### B) Create `kyc_verifications` table
-- `id` UUID PK
-- `user_id` UUID
-- `transaction_id` UUID (nullable — KYC can happen at registration too)
-- `role` TEXT ('buyer' or 'seller')
-- `didit_session_id` TEXT
-- `status` TEXT DEFAULT 'not_started' — values: not_started, in_progress, approved, declined, pending_review, abandoned, expired
-- `decision_json` JSONB (nullable)
-- `created_at`, `updated_at`
-- RLS: users see own records, admins see all
+### 2. Role-Based Contract Templates
 
-### C) Update `profiles.kyc_status` values
-- Expand to: 'none', 'pending', 'in_progress', 'approved', 'declined', 'pending_review'
+Current contract is one-size-fits-all. We'll generate different clauses based on 4 role combos:
 
-### D) Add transaction KYC tracking columns
-- `transactions.buyer_kyc_status` TEXT DEFAULT 'none'
-- `transactions.seller_kyc_status` TEXT DEFAULT 'none'
+| Combo | Warranty | Special Clauses |
+|-------|---------|-----------------|
+| Private→Private | Gewährleistungsausschluss (no warranty) | As-is sale, both parties verified |
+| Business→Private | 2-year statutory warranty (Gewährleistung) | Consumer protection applies, complaint procedure |
+| Private→Business | No warranty | Professional buyer accepts as-is |
+| Business→Business | Negotiable/limited warranty | B2B terms, commercial law applies |
 
----
+Update `generateContractPdf.ts` to accept `sellerType`/`buyerType` and generate appropriate clauses.
 
-## Step 2: Didit Edge Functions
+### 3. Document Checklists
 
-### A) `kyc-create-session` edge function
-- Auth required
-- Calls Didit API to create verification session
-- Stores session in `kyc_verifications` table
-- Returns `verification_url` and `session_token` to frontend
+Per role combination, different documents are required:
 
-### B) `kyc-webhook` edge function
-- No auth (public webhook), validates `X-Signature-V2` with HMAC-SHA256
-- Parses Didit callback payload
-- Updates `kyc_verifications` and `profiles.kyc_status`
-- Updates transaction KYC status if linked to a transaction
+**Private seller:** Zulassungsschein (Part I+II), Serviceheft, Pickerl (§57a)
+**Business seller:** Zulassungsschein, Gewerbeschein, invoice/Rechnung, warranty certificate
+**Private buyer:** ID verified (KYC), proof of payment
+**Business buyer:** UID-Nummer confirmation, Firmenbuchauszug, authorized representative proof
 
----
+UI: Checklist component in the acquisition flow showing required docs with upload capability.
 
-## Step 3: Frontend Changes
+### 4. Offline Deadline Manager
 
-### A) Update Signup page
-- Add "Account Type" selector: Private Person / Business
-- Show business fields conditionally (company name, UID, registry number, representative)
-- Save `user_type` and business fields to profiles
+After digital contract signing, offline steps with deadlines:
+- **Vehicle inspection**: 72 hours from contract signing
+- **Registration transfer**: 7 days
+- **Vehicle handover**: 14 days  
+- **NoVA payment** (if applicable): 15 days
 
-### B) Rewrite KYC Verification page
-- Replace file-upload flow with Didit SDK session
-- Call `kyc-create-session` edge function
-- Open Didit verification URL (redirect or modal)
-- Show status tracking (pending, approved, declined)
-- Handle retry for expired/abandoned sessions
+Each deadline shows a countdown timer. Overdue deadlines trigger warnings. Both parties can mark steps as completed.
 
-### C) Update Transaction flow (AcquisitionOptions)
-- Check both buyer and seller KYC status before allowing contract step
-- Show KYC prompts for each party
-- Block progress if KYC not approved
+### 5. Implementation Order
 
----
+1. DB migration (tables + columns)
+2. Role-based contract generation logic
+3. Document checklist component + upload
+4. Deadline manager component + display
+5. Wire everything into AcquisitionOptions flow
 
-## Step 4: Add Didit Secrets
-- `DIDIT_API_KEY`
-- `DIDIT_WEBHOOK_SECRET`  
-- `DIDIT_WORKFLOW_ID`
-
----
-
-## Not in this phase (future)
-- Business→Business and Private→Business workflows
-- Offline step deadline manager with countdown timers
-- Role-based document checklists
-- NoVA calculation logic
-- Handover protocol
+### Files to Create/Modify
+- **Migration**: New tables + alter transactions
+- `src/lib/generateContractPdf.ts` — role-based clauses
+- `src/lib/roleWorkflow.ts` — NEW: defines document requirements & deadlines per role combo
+- `src/components/transaction/DocumentChecklist.tsx` — NEW
+- `src/components/transaction/DeadlineManager.tsx` — NEW
+- `src/pages/AcquisitionOptions.tsx` — integrate new components
+- `src/components/transaction/StepContract.tsx` — pass role types
+- `src/components/transaction/StepComplete.tsx` — show deadlines after completion
