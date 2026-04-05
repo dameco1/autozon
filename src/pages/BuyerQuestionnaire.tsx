@@ -298,6 +298,43 @@ const BuyerQuestionnaire: React.FC = () => {
             </div>
           </div>
         );
+      case 11:
+        return (
+          <div>
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">What sports or activities do you enjoy?</h2>
+            <p className="text-sm text-muted-foreground mb-4">This helps us find cars that fit your gear and lifestyle.</p>
+            {renderMultiSelect(SPORTS_OPTIONS, sports, setSports, 2)}
+          </div>
+        );
+      case 12:
+        return (
+          <div className="space-y-6">
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">Do you need towing capability?</h2>
+            <p className="text-sm text-muted-foreground mb-2">E.g. for a bike trailer, boat, caravan, or horse trailer.</p>
+            <div className="flex items-center gap-3">
+              <Switch checked={needsTowing} onCheckedChange={setNeedsTowing} />
+              <Label className="text-foreground">{needsTowing ? "Yes, I need towing" : "No towing needed"}</Label>
+            </div>
+            {needsTowing && (
+              <div>
+                <Label className="text-muted-foreground text-sm mb-3 block">Desired towing capacity (kg)</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {TOWING_WEIGHTS.map((w) => (
+                    <button
+                      key={w}
+                      onClick={() => setTowingWeight(w)}
+                      className={`px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
+                        towingWeight === w ? "bg-primary/10 border-primary text-primary" : "bg-muted border-border text-muted-foreground hover:border-primary/30"
+                      }`}
+                    >
+                      {w.toLocaleString()} kg
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
       default:
         return null;
     }
