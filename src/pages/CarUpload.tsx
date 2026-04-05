@@ -277,6 +277,11 @@ const CarUpload: React.FC = () => {
       status: "available",
       detected_damages: confirmedDamageData,
       inspection_checklist: formData.inspectionChecklist,
+      first_registration_month: formData.firstRegistrationMonth,
+      first_registration_year: formData.firstRegistrationYear,
+      pickerl_valid_month: formData.pickerlValidMonth,
+      pickerl_valid_year: formData.pickerlValidYear,
+      warranty_type: formData.warrantyType,
     } as any;
 
     let resultId: string | null = null;
