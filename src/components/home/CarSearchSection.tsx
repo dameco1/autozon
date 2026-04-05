@@ -76,6 +76,7 @@ const CarSearchSection: React.FC = () => {
     if (fuelType) params.set("fuelType", fuelType);
     if (maxMileage) params.set("maxMileage", maxMileage);
     if (bodyType) params.set("bodyType", bodyType);
+    if (transmission) params.set("transmission", transmission);
     if (relationship) params.set("relationship", relationship);
     if (hasKids) params.set("kids", hasKids);
     if (purpose) params.set("purpose", purpose);
