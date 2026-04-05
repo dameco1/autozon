@@ -24,6 +24,8 @@ export const INSPECTION_CATEGORIES: ChecklistCategory[] = [
       { id: "tires", labelEn: "Do all tires have sufficient tread depth (minimum 3 mm)?", labelDe: "Haben alle Reifen ausreichende Profiltiefe (mind. 3 mm)?" },
       { id: "underbody_rust", labelEn: "Is the body free of rust, especially around wheel wells and the frame?", labelDe: "Ist die Karosserie rostfrei, insbesondere an Radkästen und Rahmen?" },
       { id: "mirrors", labelEn: "Are all mirrors secure, properly adjusted, and undamaged?", labelDe: "Sind alle Spiegel fest, richtig eingestellt und unbeschädigt?" },
+      { id: "wrapped", labelEn: "Is the car professionally wrapped?", labelDe: "Ist das Fahrzeug professionell foliert?" },
+      { id: "ppf", labelEn: "Is the car covered with PPF (Paint Protection Film)?", labelDe: "Ist das Fahrzeug mit PPF (Lackschutzfolie) versehen?" },
     ],
   },
   {

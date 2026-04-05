@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { COLORS } from "./constants";
+import { COLORS, TRANSMISSIONS } from "./constants";
 import { useCarMakes, useCarModels, useCarVariants } from "@/hooks/useCarModels";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -363,8 +363,26 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
         </div>
       </div>
 
-      {/* Price — always manual */}
+      {/* Transmission + Price */}
       <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label className="text-muted-foreground text-sm flex items-center">
+            {t.carUpload.transmission || "Transmission"}
+            <VinLockIndicator field="transmission" label="transmission" />
+          </Label>
+          {isFieldLocked("transmission") ? (
+            <div className="mt-1 bg-muted/50 border border-border rounded-md px-3 py-2 text-sm text-foreground font-medium">
+              {data.transmission}
+            </div>
+          ) : (
+            <Select value={data.transmission} onValueChange={(v) => onChange({ transmission: v })}>
+              <SelectTrigger className="bg-background border-border text-foreground mt-1"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {TRANSMISSIONS.map((tr) => <SelectItem key={tr} value={tr}>{tr}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
         <div>
           <Label className="text-muted-foreground text-sm">{t.carUpload.price}</Label>
           <Input type="number" value={data.price} onChange={(e) => onChange({ price: Number(e.target.value) })} className="bg-background border-border text-foreground mt-1" />

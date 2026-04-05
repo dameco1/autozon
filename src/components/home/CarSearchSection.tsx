@@ -8,7 +8,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useCarMakes, useCarModels } from "@/hooks/useCarModels";
-import { BODY_TYPES } from "@/components/car-upload/constants";
+import { BODY_TYPES, TRANSMISSIONS } from "@/components/car-upload/constants";
 
 const PRICE_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000, 200000, -1];
 const MILEAGE_OPTIONS = [25000, 50000, 100000, 150000, 200000];
@@ -32,6 +32,7 @@ const CarSearchSection: React.FC = () => {
   const [fuelType, setFuelType] = useState("");
   const [maxMileage, setMaxMileage] = useState("");
   const [bodyType, setBodyType] = useState("");
+  const [transmission, setTransmission] = useState("");
 
   const [relationship, setRelationship] = useState("");
   const [hasKids, setHasKids] = useState("");
@@ -58,12 +59,13 @@ const CarSearchSection: React.FC = () => {
       if (fuelType) query = query.eq("fuel_type", fuelType);
       if (maxMileage) query = query.lte("mileage", Number(maxMileage));
       if (bodyType) query = query.eq("body_type", bodyType);
+      if (transmission) query = query.eq("transmission", transmission);
 
       const { count } = await query;
       setTotalCount(count ?? 0);
     };
     fetchCount();
-  }, [make, model, effectiveMaxPrice, yearFrom, fuelType, maxMileage, bodyType]);
+  }, [make, model, effectiveMaxPrice, yearFrom, fuelType, maxMileage, bodyType, transmission]);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -74,6 +76,7 @@ const CarSearchSection: React.FC = () => {
     if (fuelType) params.set("fuelType", fuelType);
     if (maxMileage) params.set("maxMileage", maxMileage);
     if (bodyType) params.set("bodyType", bodyType);
+    if (transmission) params.set("transmission", transmission);
     if (relationship) params.set("relationship", relationship);
     if (hasKids) params.set("kids", hasKids);
     if (purpose) params.set("purpose", purpose);
@@ -82,8 +85,8 @@ const CarSearchSection: React.FC = () => {
 
   const resetAll = () => {
     setMake(""); setModel(""); setMaxPrice(""); setYearFrom("");
-    setFuelType(""); setMaxMileage(""); setBodyType(""); setRelationship("");
-    setHasKids(""); setPurpose(""); setBudget("");
+    setFuelType(""); setMaxMileage(""); setBodyType(""); setTransmission("");
+    setRelationship(""); setHasKids(""); setPurpose(""); setBudget("");
   };
 
   const cs = t.carSearch;
@@ -168,7 +171,7 @@ const CarSearchSection: React.FC = () => {
               <Car className="h-3.5 w-3.5" /> {cs.vehicleType}
             </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 mb-6">
             <Select value={make} onValueChange={(v) => { setMake(v); setModel(""); }}>
               <SelectTrigger className="bg-background border-border text-foreground">
                 <SelectValue placeholder={cs.make} />
@@ -242,6 +245,17 @@ const CarSearchSection: React.FC = () => {
               <SelectContent>
                 {BODY_TYPES.map((b) => (
                   <SelectItem key={b} value={b}>{b}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={transmission} onValueChange={setTransmission}>
+              <SelectTrigger className="bg-background border-border text-foreground">
+                <SelectValue placeholder="Transmission" />
+              </SelectTrigger>
+              <SelectContent>
+                {TRANSMISSIONS.map((tr) => (
+                  <SelectItem key={tr} value={tr}>{tr}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

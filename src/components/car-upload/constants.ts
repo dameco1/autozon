@@ -4,7 +4,7 @@ export const COLORS = [
 ];
 
 export const FUEL_TYPES = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
-export const TRANSMISSIONS = ["Manual", "Automatic"];
+export const TRANSMISSIONS = ["Manual", "Automatic", "Semi-Automatic", "CVT"];
 export const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
 
 export const EQUIPMENT_LIST = [
@@ -20,7 +20,7 @@ export const EQUIPMENT_LIST = [
   "Park Assist (Semi-Auto)", "Park Assist (Full Auto)", "Surround View Monitor",
 
   // Lighting
-  "LED Headlights", "Adaptive Headlights", "Matrix LED", "Laser Headlights",
+  "LED Headlights", "Xenon Headlights", "Adaptive Headlights", "Matrix LED", "Laser Headlights",
   "LED Daytime Running Lights", "Cornering Lights", "Fog Lights", "Ambient Lighting",
 
   // Comfort & Seats

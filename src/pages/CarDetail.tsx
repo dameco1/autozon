@@ -8,7 +8,7 @@ import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight, X, Maximize2, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Bookmark, BookmarkCheck } from "lucide-react";
+import { ArrowLeft, Shield, Gauge, Fuel, Calendar, Cog, Palette, Zap, BarChart3, Star, Calculator, Umbrella, Check, ChevronLeft, ChevronRight, X, Maximize2, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Bookmark, BookmarkCheck, Package, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { INSPECTION_CATEGORIES, type InspectionChecklist } from "@/components/car-upload/inspectionChecklist";
 
@@ -476,6 +476,31 @@ const CarDetail: React.FC = () => {
                 {shortlisted ? t.carDetail.removeFromShortlist : t.carDetail.addToShortlist}
               </Button>
             </div>
+
+            {/* Coming Soon — Spare Parts & Merchandise */}
+            <motion.div
+              className="bg-muted/50 border border-border rounded-2xl p-5 opacity-60 cursor-not-allowed"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 0.6, y: 0 }} transition={{ delay: 0.5 }}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Package className="h-5 w-5 text-muted-foreground" />
+                <h4 className="font-display font-bold text-muted-foreground text-sm">Spare Parts</h4>
+              </div>
+              <p className="text-xs text-muted-foreground">Find original and aftermarket parts for this vehicle.</p>
+              <span className="inline-block mt-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground bg-muted px-2 py-0.5 rounded">Coming Soon</span>
+            </motion.div>
+
+            <motion.div
+              className="bg-muted/50 border border-border rounded-2xl p-5 opacity-60 cursor-not-allowed"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 0.6, y: 0 }} transition={{ delay: 0.55 }}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <ShoppingBag className="h-5 w-5 text-muted-foreground" />
+                <h4 className="font-display font-bold text-muted-foreground text-sm">Brand Merchandise</h4>
+              </div>
+              <p className="text-xs text-muted-foreground">Official merchandise from {car.make}.</p>
+              <span className="inline-block mt-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground bg-muted px-2 py-0.5 rounded">Coming Soon</span>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -9,14 +9,14 @@ import { EQUIPMENT_LIST } from "./constants";
 const EQUIPMENT_CATEGORIES: Record<string, string[]> = {
   "Safety & Assistance": EQUIPMENT_LIST.slice(0, 21),
   "Parking & Cameras": EQUIPMENT_LIST.slice(21, 28),
-  "Lighting": EQUIPMENT_LIST.slice(28, 36),
-  "Comfort & Seats": EQUIPMENT_LIST.slice(36, 48),
-  "Climate & Glass": EQUIPMENT_LIST.slice(48, 57),
-  "Infotainment": EQUIPMENT_LIST.slice(57, 73),
-  "Convenience": EQUIPMENT_LIST.slice(73, 83),
-  "Exterior & Performance": EQUIPMENT_LIST.slice(83, 98),
-  "Storage & Practicality": EQUIPMENT_LIST.slice(98, 105),
-  "Electric / Hybrid": EQUIPMENT_LIST.slice(105),
+  "Lighting": EQUIPMENT_LIST.slice(28, 37),
+  "Comfort & Seats": EQUIPMENT_LIST.slice(37, 49),
+  "Climate & Glass": EQUIPMENT_LIST.slice(49, 58),
+  "Infotainment": EQUIPMENT_LIST.slice(58, 74),
+  "Convenience": EQUIPMENT_LIST.slice(74, 84),
+  "Exterior & Performance": EQUIPMENT_LIST.slice(84, 99),
+  "Storage & Practicality": EQUIPMENT_LIST.slice(99, 106),
+  "Electric / Hybrid": EQUIPMENT_LIST.slice(106),
 };
 
 interface Props {
