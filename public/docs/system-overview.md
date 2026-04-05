@@ -16,14 +16,18 @@ flowchart TD
         BE3["External APIs:\n- Stripe Payments\n- Lovable AI Models\n- VINCARIO VIN Decode"]
     end
 
-    subgraph ADMIN["Admin Dashboard"]
+    subgraph ADMIN["Admin Dashboard — 11 Tabs"]
         AD1["Overview Stats\n- Users / Cars / Revenue"]
-        AD2["Cars Management\n- All Listings Table"]
-        AD3["Users Management\n- Profiles / Suspend"]
+        AD2["Cars Management\n- All Listings + Car Card"]
+        AD3["Users Management\n- Profiles + User Card\n- Suspend / Reset"]
         AD4["Negotiations Monitor\n- All Active Offers"]
         AD5["Activity Feed\n- Recent Actions"]
         AD6["Appraisal Accuracy\n- Formula vs Market"]
         AD7["Transactions Overview\n- All Deals"]
+        AD8["Contracts\n- All Generated Contracts"]
+        AD9["Reports\n- Platform Analytics"]
+        AD10["Financing Requests\n- Credit / Leasing / 3-Wege"]
+        AD11["Insurance Requests\n- Policy Applications"]
     end
 
     subgraph FEATURES["Cross-Cutting Features"]
