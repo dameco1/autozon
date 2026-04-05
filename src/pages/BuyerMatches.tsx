@@ -133,14 +133,32 @@ const BuyerMatches: React.FC = () => {
   const handlePayPlacement = async () => {
     setPaymentLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("create-placement-checkout", {
-        body: { carId },
-      });
-      if (error) throw error;
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+      if (!token) {
+        toast.error("Session expired. Redirecting to login…");
+        setTimeout(() => navigate("/login"), 1500);
+        return;
+      }
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-placement-checkout`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          },
+          body: JSON.stringify({ carId }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Checkout failed");
       if (data?.url) window.location.href = data.url;
-    } catch (err) {
+      else throw new Error("No checkout URL returned");
+    } catch (err: any) {
       console.error(err);
-      toast.error("Failed to start checkout. Please try again.");
+      toast.error(err.message || "Failed to start checkout. Please try again.");
     } finally {
       setPaymentLoading(false);
     }
