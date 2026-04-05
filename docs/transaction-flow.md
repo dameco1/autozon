@@ -27,19 +27,67 @@ If manual is chosen, the user sees:
 - Direct links to **ÖAMTC** (Austria) or **ADAC** (Germany) official purchase contract templates
 - Option to download a deal summary PDF
 
-## Step 2: Digital Contract (ÖAMTC / ADAC)
+## Step 2: Digital Contract (Role-Based)
 
-The system auto-detects the seller's country from their profile:
-- **Austria** → ÖAMTC Kaufvertrag
-- **Germany** → ADAC Kaufvertrag
+### Role-Based Contract Generation
+
+The contract is generated based on the seller/buyer type combination, which determines warranty rules, required clauses, and document requirements:
+
+| Combo | Warranty | Key Legal Basis |
+|---|---|---|
+| **Private → Private** | Gewährleistungsausschluss (excluded by mutual agreement) | §9 KSchG — non-consumer transaction |
+| **Business → Private** | 2-year statutory warranty (Gewährleistung) | KSchG consumer protection — cannot be excluded |
+| **Private → Business** | No warranty (as-is sale to professional buyer) | No consumer protection applies |
+| **Business → Business** | Negotiable / limited warranty | UGB §377 Rügepflicht applies |
+
+### Contract Preview
 
 The contract preview shows:
-- Seller & buyer names
+- Seller & buyer names with party type badges (Private / Business)
 - Vehicle details (make, model, year, VIN)
 - Agreed purchase price
-- Key contract clauses (as-inspected, ownership warranty, mileage declaration, payment terms, registration notification)
+- **Warranty section** — type and description based on role combo
+- Key contract clauses (base clauses + role-specific extra clauses)
+- Required documents list per role
+
+### Warranty Badge
+
+A prominent warranty information badge is displayed at the top of the contract step, showing:
+- The applicable warranty type for the role combination
+- A description explaining the legal basis and implications
 
 User signs digitally, then can download the contract PDF.
+
+## Document Checklists (Role-Based)
+
+Per role combination, different documents are required. The `DocumentChecklist` component displays required and optional documents with upload capability.
+
+### Private Seller Documents
+- Zulassungsschein Teil I (Registration Certificate Part I) ✱
+- Zulassungsschein Teil II (Registration Certificate Part II) ✱
+- §57a Gutachten / Pickerl (Inspection Certificate) ✱
+- Serviceheft (Service Book) — optional
+- Amtlicher Lichtbildausweis (Government-issued ID) ✱
+
+### Business Seller Documents
+- Zulassungsschein Teil I + II ✱
+- Gewerbeschein (Trade License) ✱
+- Rechnung / Invoice ✱
+- §57a Gutachten / Pickerl ✱
+- Garantiezertifikat (Warranty Certificate) — optional
+- Serviceheft — optional
+
+### Private Buyer Documents
+- Government-issued ID (verified via KYC) ✱
+- Zahlungsnachweis (Proof of Payment) ✱
+
+### Business Buyer Documents
+- Firmenbuchauszug (Commercial Register Extract) ✱
+- UID-Nummernbestätigung (UID Number Confirmation) ✱
+- Vollmacht des Vertretungsbefugten (Authorized Representative Proof) ✱
+- Zahlungsnachweis (Proof of Payment) ✱
+
+Documents are stored in the `transaction_documents` table with RLS policies ensuring only transaction participants and admins can access them.
 
 ## Step 3: Payment / Financing
 
@@ -91,15 +139,31 @@ Insurance providers loaded from `financing_partners` table (type = 'insurance').
 Summary of:
 - Vehicle details
 - Agreed price
-- Contract type (ÖAMTC/ADAC)
+- Contract type (Autozon Kaufvertrag)
 - Payment method chosen
 - Insurance tier selected
 
-Next steps checklist:
-1. Both parties receive signed contract via email
-2. Complete payment within 3 business days
-3. Schedule vehicle handover and inspection
-4. Register at Zulassungsstelle
+### Offline Deadline Manager
+
+After the contract is signed, the **DeadlineManager** component tracks offline steps with countdown timers:
+
+| Step | Deadline | Description |
+|---|---|---|
+| Vehicle Inspection | 72 hours | Buyer inspects the vehicle |
+| Registration Transfer | 7 days | Ownership change at Zulassungsstelle |
+| Vehicle Handover | 14 days | Physical handover of vehicle and keys |
+| NoVA Payment | 15 days | Normverbrauchsabgabe (if applicable) |
+
+Features:
+- Live countdown timers (updated every minute)
+- Overdue warnings with visual indicators
+- Both parties can mark steps as completed
+- Completion date recorded for each step
+- Deadlines stored in `transaction_deadlines` table with RLS
+
+### Document Upload (Post-Completion)
+
+The document checklist remains visible after completion, allowing both parties to upload remaining required documents (proof of payment, registration confirmations, etc.).
 
 ## Car Status After Completion
 
@@ -131,16 +195,44 @@ Available on the car detail page before and during the transaction flow. VIN-bas
 
 ## Database
 
-`transactions` table tracks the full journey:
+### `transactions` table
 - `completion_method`: 'digital' | 'manual'
-- `contract_type`: 'oeamtc' | 'adac'
+- `contract_type`: 'oeamtc' | 'adac' | 'autozon'
 - `payment_method`: 'cash' | 'credit' | 'leasing'
 - `insurance_tier`: 'liability' | 'partial' | 'comprehensive'
 - `status`: initiated → contract_pending → payment_pending → insurance_pending → completed
 - `current_step`: 1-5 (wizard position, resumable)
+- `seller_type`: 'private' | 'business' — determines seller-side workflow
+- `buyer_type`: 'private' | 'business' — determines buyer-side workflow
+
+### `transaction_documents` table
+- Tracks required document uploads per transaction
+- Columns: id, transaction_id, document_type, label, required, uploaded_url, uploaded_at, verified, uploader_role
+- RLS: Participants can view/insert/update; admins have full access
+
+### `transaction_deadlines` table
+- Tracks offline step deadlines after contract signing
+- Columns: id, transaction_id, step_type, label, deadline_at, completed_at, status
+- RLS: Participants can view/update; admins have full access
 
 RLS: Buyers and sellers can view/update their own transactions. Admins have full access.
 
+## Role Workflow Configuration
+
+The `src/lib/roleWorkflow.ts` module exports:
+- `getWorkflow(sellerType, buyerType)` — returns the full workflow config for a role combo
+- `getAllDocuments(workflow)` — returns combined seller + buyer document requirements
+- `getDeadlinesFromNow(workflow, signedAt)` — returns deadlines with calculated dates
+
+Each workflow includes:
+- `warrantyConfig` — type, labels (EN/DE), descriptions
+- `sellerDocuments` / `buyerDocuments` — required/optional document specs
+- `extraClauses` — role-specific contract clauses (EN/DE)
+- `deadlines` — offline step deadlines with hours from signing
+
 ## Localization
 
-Fully localized in EN and DE under `t.transaction.*` namespace.
+Fully localized in EN and DE under `t.transaction.*` namespace, including:
+- Document checklist labels (`documentChecklist`, `yourDocuments`, `otherPartyDocuments`)
+- Deadline manager labels (`offlineSteps`, `overdue`, `stepCompleted`, `done`)
+- Warranty display (`warranty`)

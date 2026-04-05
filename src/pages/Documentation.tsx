@@ -55,6 +55,7 @@ const sections: Section[] = [
       { title: "Backend Functions", desc: "Edge functions, AI integrations, Stripe webhooks", icon: Server, file: "backend-functions.md", status: "ready" },
       { title: "Core Business Logic", desc: "Fair value algorithm, matching engine, negotiation", icon: Brain, file: "business-logic.md", status: "ready" },
       { title: "Component Library", desc: "UI components, design system, and i18n", icon: Palette, file: "components.md", status: "ready" },
+      { title: "Transaction Flow", desc: "Role-based contracts, document checklists, deadline manager, warranty rules", icon: FileText, file: "transaction-flow.md", status: "ready" },
       { title: "Product Roadmap", desc: "Phase planning, revenue model, geographic expansion", icon: BookOpen, file: "roadmap.md", status: "ready" },
       { title: "SEO & Social Sharing", desc: "Meta tags, JSON-LD, Open Graph, sitemap, robots.txt", icon: Search, file: "seo.md", status: "ready" },
     ],

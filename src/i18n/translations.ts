@@ -782,6 +782,23 @@ export const translations = {
       stepInsurance: "Insurance",
       stepComplete: "Complete",
       sellerWaitingForBuyer: "The buyer is setting up the transaction. You'll be able to sign the contract once it's ready.",
+      // Document checklist
+      documentChecklist: "Document Checklist",
+      yourDocuments: "Your Documents",
+      otherPartyDocuments: "Other Party Documents",
+      documentUploaded: "Document uploaded",
+      uploadFailed: "Upload failed",
+      verified: "Verified",
+      optional: "Optional",
+      complete: "Complete",
+      // Deadline manager
+      offlineSteps: "Offline Steps & Deadlines",
+      overdue: "Overdue",
+      stepCompleted: "Step completed",
+      completed: "Completed",
+      done: "Done",
+      // Warranty
+      warranty: "Warranty",
     },
     nextCar: {
       title: "Your Next Car",
@@ -1877,6 +1894,23 @@ export const translations = {
       stepInsurance: "Versicherung",
       stepComplete: "Abschluss",
       sellerWaitingForBuyer: "Der Käufer richtet die Transaktion ein. Sie können den Vertrag unterzeichnen, sobald er bereit ist.",
+      // Document checklist
+      documentChecklist: "Dokumenten-Checkliste",
+      yourDocuments: "Ihre Dokumente",
+      otherPartyDocuments: "Dokumente der Gegenpartei",
+      documentUploaded: "Dokument hochgeladen",
+      uploadFailed: "Upload fehlgeschlagen",
+      verified: "Verifiziert",
+      optional: "Optional",
+      complete: "Vollständig",
+      // Deadline manager
+      offlineSteps: "Offline-Schritte & Fristen",
+      overdue: "Überfällig",
+      stepCompleted: "Schritt abgeschlossen",
+      completed: "Erledigt am",
+      done: "Erledigt",
+      // Warranty
+      warranty: "Gewährleistung",
     },
     nextCar: {
       title: "Ihr nächstes Auto",
