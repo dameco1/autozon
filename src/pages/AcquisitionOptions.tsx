@@ -373,6 +373,8 @@ const AcquisitionOptions: React.FC = () => {
                   role="seller"
                   contractSignedSeller={contractSignedSeller}
                   contractSignedBuyer={contractSignedBuyer}
+                  buyerKycVerified={buyerKycVerified}
+                  sellerKycVerified={sellerKycVerified}
                   onSellerSign={async () => {
                     if (!transactionId) return;
                     await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
