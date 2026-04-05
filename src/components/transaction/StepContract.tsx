@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, CheckCircle2, Download, MapPin } from "lucide-react";
+import { FileText, CheckCircle2, Download, MapPin, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { generateContractPdf, ContractData } from "@/lib/generateContractPdf";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface Props {
   car: { make: string; model: string; year: number; vin?: string };
@@ -10,39 +14,112 @@ interface Props {
   sellerCountry: string;
   buyerName: string;
   sellerName: string;
+  transactionId: string | null;
   onContinue: (contractType: string) => void;
 }
 
-const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerName, sellerName, onContinue }) => {
+const COUNTRIES = ["Austria", "Germany", "Switzerland", "Italy", "Czech Republic", "Hungary", "Slovakia", "Slovenia"];
+
+const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerName, sellerName, transactionId, onContinue }) => {
   const { t } = useLanguage();
   const [signed, setSigned] = useState(false);
+  const [signing, setSigning] = useState(false);
+  const [country, setCountry] = useState(sellerCountry || "Austria");
+  const [editingCountry, setEditingCountry] = useState(false);
 
-  // Determine contract type by seller's country
-  const isAustria = sellerCountry?.toLowerCase().includes("austria") || sellerCountry?.toLowerCase().includes("österreich");
-  const contractType = isAustria ? "oeamtc" : "adac";
-  const contractOrg = isAustria ? "ÖAMTC" : "ADAC";
-  const contractTitle = isAustria
-    ? t.transaction.oeamtcTitle
-    : t.transaction.adacTitle;
+  const handleSign = async () => {
+    setSigning(true);
+    try {
+      // Generate PDF
+      const contractData: ContractData = {
+        car,
+        agreedPrice,
+        sellerName,
+        buyerName,
+        sellerCountry: country,
+        contractDate: new Date().toISOString(),
+        transactionId: transactionId || "draft",
+      };
+      const doc = generateContractPdf(contractData);
+      const pdfBlob = doc.output("blob");
 
-  const handleSign = () => {
-    setSigned(true);
+      // Upload to storage if we have a transaction
+      if (transactionId) {
+        const filePath = `${transactionId}/contract.pdf`;
+        const { error: uploadError } = await supabase.storage
+          .from("contracts")
+          .upload(filePath, pdfBlob, { contentType: "application/pdf", upsert: true });
+
+        if (uploadError) {
+          console.error("Upload error:", uploadError);
+          toast.error("Failed to archive contract");
+        } else {
+          // Save URL reference on transaction
+          const { data: urlData } = supabase.storage.from("contracts").getPublicUrl(filePath);
+          await supabase
+            .from("transactions")
+            .update({ contract_pdf_url: filePath } as any)
+            .eq("id", transactionId);
+        }
+      }
+
+      setSigned(true);
+      toast.success(t.transaction.contractSigned || "Contract signed successfully");
+    } catch (e) {
+      console.error("Signing error:", e);
+      toast.error("Failed to generate contract");
+    } finally {
+      setSigning(false);
+    }
+  };
+
+  const handleDownload = () => {
+    const contractData: ContractData = {
+      car,
+      agreedPrice,
+      sellerName,
+      buyerName,
+      sellerCountry: country,
+      contractDate: new Date().toISOString(),
+      transactionId: transactionId || "draft",
+    };
+    const doc = generateContractPdf(contractData);
+    doc.save(`autozon-contract-${(transactionId || "draft").slice(0, 8)}.pdf`);
   };
 
   return (
     <div className="space-y-6">
-      {/* Country detection */}
+      {/* Country detection with override */}
       <motion.div
         className="bg-secondary/50 border border-border rounded-xl p-4 flex items-center gap-3"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <MapPin className="h-5 w-5 text-primary flex-shrink-0" />
-        <div>
+        <div className="flex-1">
           <p className="text-sm text-muted-foreground">{t.transaction.contractCountry}</p>
-          <p className="text-foreground font-semibold">
-            {sellerCountry || "Germany"} → {contractOrg} {t.transaction.contractLabel}
-          </p>
+          {editingCountry ? (
+            <Select value={country} onValueChange={(v) => { setCountry(v); setEditingCountry(false); }}>
+              <SelectTrigger className="w-48 h-8 mt-1">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {COUNTRIES.map((c) => (
+                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <p className="text-foreground font-semibold">
+              {country}
+              <button
+                onClick={() => setEditingCountry(true)}
+                className="ml-2 text-primary hover:text-primary/80 inline-flex items-center gap-1 text-xs font-normal"
+              >
+                <Edit2 className="h-3 w-3" /> {t.transaction.changeCountry || "Change"}
+              </button>
+            </p>
+          )}
         </div>
       </motion.div>
 
@@ -57,8 +134,8 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
           <div className="flex items-center gap-3">
             <FileText className="h-5 w-5 text-primary" />
             <div>
-              <h3 className="font-display font-bold text-foreground">{contractTitle}</h3>
-              <p className="text-xs text-muted-foreground">{t.transaction.contractStandard} {contractOrg}</p>
+              <h3 className="font-display font-bold text-foreground">{t.transaction.autozonContractTitle}</h3>
+              <p className="text-xs text-muted-foreground">{t.transaction.autozonContractSub}</p>
             </div>
           </div>
           {signed && <CheckCircle2 className="h-5 w-5 text-primary" />}
@@ -89,7 +166,7 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
             </div>
             <div>
               <p className="text-muted-foreground text-xs">{t.transaction.contractType}</p>
-              <p className="text-foreground font-medium">{contractOrg} Kaufvertrag</p>
+              <p className="text-foreground font-medium">Autozon Kaufvertrag</p>
             </div>
           </div>
 
@@ -102,6 +179,8 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
               <li>• {t.transaction.clause3}</li>
               <li>• {t.transaction.clause4}</li>
               <li>• {t.transaction.clause5}</li>
+              <li>• {t.transaction.clause6}</li>
+              <li>• {t.transaction.clause7}</li>
             </ul>
           </div>
         </div>
@@ -113,31 +192,27 @@ const StepContract: React.FC<Props> = ({ car, agreedPrice, sellerCountry, buyerN
           <Button
             className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
             onClick={handleSign}
+            disabled={signing}
           >
-            <CheckCircle2 className="mr-2 h-5 w-5" /> {t.transaction.signContract}
+            {signing ? (
+              <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2" />
+            ) : (
+              <CheckCircle2 className="mr-2 h-5 w-5" />
+            )}
+            {t.transaction.signContract}
           </Button>
         ) : (
           <>
             <Button
               variant="outline"
               className="flex-1 border-border text-muted-foreground hover:bg-secondary"
-              onClick={() => {
-                // Placeholder for PDF download
-                import("@/lib/generateNegotiationPdf").then(({ generateNegotiationPdf }) => {
-                  generateNegotiationPdf({
-                    car: { ...car, price: agreedPrice, fair_value_price: null },
-                    offer: { amount: agreedPrice, agreed_price: agreedPrice, counter_amount: null, current_round: 1, max_rounds: 3, created_at: new Date().toISOString(), updated_at: new Date().toISOString() } as any,
-                    sellerName,
-                    buyerName,
-                  });
-                });
-              }}
+              onClick={handleDownload}
             >
               <Download className="mr-2 h-4 w-4" /> {t.transaction.downloadContract}
             </Button>
             <Button
               className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
-              onClick={() => onContinue(contractType)}
+              onClick={() => onContinue("autozon")}
             >
               {t.transaction.continueToPayment}
             </Button>

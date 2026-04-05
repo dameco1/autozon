@@ -23,7 +23,7 @@ const StepComplete: React.FC<Props> = ({
 }) => {
   const { t } = useLanguage();
 
-  const contractLabel = contractType === "oeamtc" ? "ÖAMTC" : contractType === "adac" ? "ADAC" : "—";
+  const contractLabel = contractType === "autozon" ? "Autozon" : contractType === "oeamtc" ? "ÖAMTC" : contractType === "adac" ? "ADAC" : "Autozon";
   const paymentLabel = paymentMethod === "cash"
     ? t.transaction.cashPayment
     : paymentMethod === "credit"
