@@ -279,18 +279,22 @@ const Dashboard: React.FC = () => {
                              €{(car.fair_value_price || car.price).toLocaleString()}
                            </span>
                            {car.status === "sold" ? (
-                             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-red-500/10 text-red-400 flex items-center gap-1">
-                               <CheckCircle2 className="h-2.5 w-2.5" /> {(t.dashboard as any).sold || "SOLD"}
-                             </span>
-                           ) : car.placement_paid ? (
-                             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-400">
-                               {t.dashboard.adLive}
-                             </span>
-                           ) : (
-                             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-400 flex items-center gap-1">
-                               <Lock className="h-2.5 w-2.5" /> {t.dashboard.notPlaced}
-                             </span>
-                           )}
+                              <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-red-500/10 text-red-400 flex items-center gap-1">
+                                <CheckCircle2 className="h-2.5 w-2.5" /> {(t.dashboard as any).sold || "SOLD"}
+                              </span>
+                            ) : acceptedOfferMap[car.id] ? (
+                              <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-primary/10 text-primary flex items-center gap-1">
+                                <Handshake className="h-2.5 w-2.5" /> {(t.dashboard as any).agreed || "AGREED"}
+                              </span>
+                            ) : car.placement_paid ? (
+                              <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-400">
+                                {t.dashboard.adLive}
+                              </span>
+                            ) : (
+                              <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-400 flex items-center gap-1">
+                                <Lock className="h-2.5 w-2.5" /> {t.dashboard.notPlaced}
+                              </span>
+                            )}
                         </div>
                         {/* Engagement Stats */}
                         <div className="flex items-center gap-3 mt-1.5">
