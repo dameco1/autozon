@@ -230,6 +230,20 @@ const CarDetail: React.FC = () => {
     return "text-destructive";
   };
 
+  const warrantyLabel = car.warranty_type === "manufacturer" 
+    ? (language === "de" ? "Herstellergarantie" : "Manufacturer Warranty")
+    : car.warranty_type === "thirdParty"
+      ? (language === "de" ? "Drittanbieter" : "Third-Party Warranty")
+      : (language === "de" ? "Keine" : "None");
+
+  const firstRegLabel = car.first_registration_month && car.first_registration_year
+    ? `${String(car.first_registration_month).padStart(2, "0")}/${car.first_registration_year}`
+    : "—";
+
+  const pickerlLabel = car.pickerl_valid_month && car.pickerl_valid_year
+    ? `${String(car.pickerl_valid_month).padStart(2, "0")}/${car.pickerl_valid_year}`
+    : "—";
+
   const specs = [
     { icon: Calendar, label: t.carDetail.year, value: car.year },
     { icon: Gauge, label: t.carDetail.mileage, value: `${car.mileage.toLocaleString()} km` },
@@ -238,6 +252,9 @@ const CarDetail: React.FC = () => {
     { icon: Shield, label: t.carDetail.bodyType, value: car.body_type },
     { icon: Palette, label: t.carDetail.color, value: car.color || "—" },
     { icon: Zap, label: t.carDetail.power, value: car.power_hp ? `${car.power_hp} HP` : "—" },
+    { icon: Calendar, label: language === "de" ? "Erstzulassung" : "First Reg.", value: firstRegLabel },
+    { icon: CheckCircle2, label: "Pickerl", value: pickerlLabel },
+    { icon: Shield, label: language === "de" ? "Garantie" : "Warranty", value: warrantyLabel },
   ];
 
   const isDE = language === "de";
