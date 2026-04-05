@@ -120,6 +120,15 @@ const Dashboard: React.FC = () => {
         setSoldCarTxMap(txMap);
       }
 
+      // Fetch accepted offers for cars (agreed but not yet sold)
+      const availableCarIds = (carsResult.data || []).filter((c: any) => c.status === "available").map((c: any) => c.id);
+      if (availableCarIds.length > 0) {
+        const { data: acceptedData } = await supabase.from("offers").select("id, car_id").eq("seller_id", session.user.id).eq("status", "accepted").in("car_id", availableCarIds);
+        const aMap: Record<string, string> = {};
+        (acceptedData || []).forEach((o: any) => { aMap[o.car_id] = o.id; });
+        setAcceptedOfferMap(aMap);
+      }
+
       // Fetch placement payment receipts
       supabase.functions.invoke("get-placement-receipts").then(({ data }) => {
         if (data?.receipts) setPlacementReceipts(data.receipts);
