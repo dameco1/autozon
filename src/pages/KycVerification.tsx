@@ -20,6 +20,7 @@ const KycVerification: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
 
+  // Initial load
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { navigate("/login"); return; }
@@ -34,6 +35,31 @@ const KycVerification: React.FC = () => {
         });
     });
   }, [navigate]);
+
+  // Poll for KYC status updates when pending/in_progress
+  useEffect(() => {
+    if (!userId || !["pending", "in_progress", "pending_review"].includes(kycStatus)) return;
+
+    const pollStatus = async () => {
+      try {
+        const res = await supabase.functions.invoke("get-kyc-status");
+        if (res.data?.status && res.data.status !== kycStatus) {
+          setKycStatus(res.data.status);
+          if (res.data.status === "approved" || res.data.status === "verified") {
+            toast.success(kyc.verified);
+          } else if (res.data.status === "declined") {
+            toast.error(kyc.declined);
+          }
+        }
+      } catch (e) {
+        console.error("KYC poll error:", e);
+      }
+    };
+
+    pollStatus();
+    const interval = setInterval(pollStatus, 8000);
+    return () => clearInterval(interval);
+  }, [userId, kycStatus, kyc, navigate]);
 
   const startVerification = async () => {
     if (!userId) return;
