@@ -97,6 +97,7 @@ const AcquisitionOptions: React.FC = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) { navigate("/login"); return; }
       if (!offerId) return;
+      setCurrentUserId(session.user.id);
 
       const [offerRes, partnersRes] = await Promise.all([
         supabase.from("offers").select("id, car_id, agreed_price, status, buyer_id, seller_id").eq("id", offerId).single(),
