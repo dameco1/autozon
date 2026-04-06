@@ -33,8 +33,7 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
   const [loanTerm, setLoanTerm] = useState(48);
   const [leaseDown, setLeaseDown] = useState(3000);
   const [leaseTerm, setLeaseTerm] = useState(36);
-
-
+  const [cardLoading, setCardLoading] = useState(false);
   const handleCardPayment = async () => {
     if (!carId || !transactionId) {
       toast.error("Missing transaction details. Please try again.");
