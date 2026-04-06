@@ -58,6 +58,7 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [user, setUser] = useState<User | null>(null);
+  const [profileName, setProfileName] = useState<string>("");
   const [cars, setCars] = useState<CarListing[]>([]);
   const [matches, setMatches] = useState<MatchData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,6 +78,19 @@ const Dashboard: React.FC = () => {
         return;
       }
       setUser(session.user);
+
+      // Fetch profile for greeting
+      const { data: profileData } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("user_id", session.user.id)
+        .single();
+      if (profileData?.full_name) {
+        const parts = profileData.full_name.trim().split(/\s+/);
+        const lastName = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+        const title = parts.length > 1 ? parts.slice(0, -1).join(" ") : "";
+        setProfileName(title ? `${title} ${lastName}` : lastName);
+      }
 
       const [carsResult, matchesResult, sellerOffersResult] = await Promise.all([
         supabase.from("cars").select("id, make, model, year, price, fair_value_price, status, image_url, condition_score, demand_score, created_at, placement_paid").eq("owner_id", session.user.id).order("created_at", { ascending: false }),
@@ -175,7 +189,9 @@ const Dashboard: React.FC = () => {
         >
           <div>
             <h1 className="text-3xl font-display font-black text-foreground">{t.dashboard.title}</h1>
-            <p className="text-muted-foreground text-sm mt-1">{t.dashboard.subtitle}</p>
+            <p className="text-muted-foreground text-sm mt-1">
+              {t.dashboard.subtitleGreeting}{profileName ? ` ${profileName}` : ""}, {t.dashboard.subtitleBody}
+            </p>
           </div>
           <Button
             className="mt-4 sm:mt-0 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
