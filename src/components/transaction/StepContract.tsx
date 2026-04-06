@@ -376,7 +376,7 @@ const StepContract: React.FC<Props> = ({
       </motion.div>
 
       {/* ═══════ ACTIONS ═══════ */}
-      <div className="flex flex-col sm:flex-row gap-3 pt-6">
+      <div className="flex flex-col sm:flex-row gap-3 pt-6 print:hidden">
         {!signed ? (
           <Button
             className="flex-1 font-bold py-6"
