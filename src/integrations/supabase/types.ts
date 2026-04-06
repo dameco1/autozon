@@ -947,6 +947,7 @@ export type Database = {
           buyer_id: string
           buyer_kyc_status: string
           buyer_type: string
+          cancellation_reason: string | null
           car_id: string
           completion_method: string | null
           contract_generated_at: string | null
@@ -957,6 +958,7 @@ export type Database = {
           created_at: string
           current_step: number
           financing_partner_id: string | null
+          grace_period_started_at: string | null
           id: string
           insurance_confirmed: boolean
           insurance_partner_id: string | null
@@ -968,6 +970,7 @@ export type Database = {
           seller_kyc_status: string
           seller_type: string
           status: string
+          stripe_payment_intent_id: string | null
           updated_at: string
         }
         Insert: {
@@ -975,6 +978,7 @@ export type Database = {
           buyer_id: string
           buyer_kyc_status?: string
           buyer_type?: string
+          cancellation_reason?: string | null
           car_id: string
           completion_method?: string | null
           contract_generated_at?: string | null
@@ -985,6 +989,7 @@ export type Database = {
           created_at?: string
           current_step?: number
           financing_partner_id?: string | null
+          grace_period_started_at?: string | null
           id?: string
           insurance_confirmed?: boolean
           insurance_partner_id?: string | null
@@ -996,6 +1001,7 @@ export type Database = {
           seller_kyc_status?: string
           seller_type?: string
           status?: string
+          stripe_payment_intent_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -1003,6 +1009,7 @@ export type Database = {
           buyer_id?: string
           buyer_kyc_status?: string
           buyer_type?: string
+          cancellation_reason?: string | null
           car_id?: string
           completion_method?: string | null
           contract_generated_at?: string | null
@@ -1013,6 +1020,7 @@ export type Database = {
           created_at?: string
           current_step?: number
           financing_partner_id?: string | null
+          grace_period_started_at?: string | null
           id?: string
           insurance_confirmed?: boolean
           insurance_partner_id?: string | null
@@ -1024,6 +1032,7 @@ export type Database = {
           seller_kyc_status?: string
           seller_type?: string
           status?: string
+          stripe_payment_intent_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -1302,6 +1311,22 @@ export type Database = {
       }
     }
     Functions: {
+      find_overdue_transactions: {
+        Args: never
+        Returns: {
+          agreed_price: number
+          buyer_id: string
+          car_id: string
+          deadline_at: string
+          grace_period_started_at: string
+          overdue_step: string
+          payment_method: string
+          seller_id: string
+          status: string
+          stripe_payment_intent_id: string
+          transaction_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
