@@ -49,7 +49,7 @@ const AdminCarCard: React.FC<AdminCarCardProps> = ({ carId, onClose }) => {
       if (!carId) return null;
       const [offersRes, txRes] = await Promise.all([
         supabase.from("offers").select("id, amount, counter_amount, agreed_price, status, current_round, max_rounds, created_at, buyer_id").eq("car_id", carId).order("created_at", { ascending: false }),
-        supabase.from("transactions").select("id, agreed_price, status, buyer_id, current_step, created_at").eq("car_id", carId).order("created_at", { ascending: false }),
+        supabase.from("transactions").select("id, offer_id, agreed_price, status, buyer_id, seller_id, current_step, payment_method, payment_confirmed, completion_method, contract_type, insurance_tier, insurance_confirmed, created_at, updated_at").eq("car_id", carId).order("created_at", { ascending: false }),
       ]);
 
       // Fetch buyer names
