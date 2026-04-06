@@ -50,7 +50,17 @@ const StepComplete: React.FC<Props> = ({
           <PartyPopper className="h-10 w-10 text-primary" />
         </div>
         <h2 className="text-2xl sm:text-3xl font-display font-black text-foreground mb-2">{t.transaction.completeTitle}</h2>
-        <p className="text-muted-foreground">{t.transaction.completeSubtitle} Scroll down for the full contract and next steps.</p>
+        <p className="text-muted-foreground mb-4">{t.transaction.completeSubtitle}</p>
+        <Button
+          variant="outline"
+          className="border-primary/30 text-primary hover:bg-primary/5 font-semibold py-3 px-6 rounded-xl"
+          onClick={() => {
+            const contractEl = document.getElementById("contract-printable");
+            if (contractEl) contractEl.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+        >
+          <ChevronDown className="mr-2 h-5 w-5 animate-bounce" /> View Contract & Next Steps
+        </Button>
       </div>
 
       {/* Summary */}
