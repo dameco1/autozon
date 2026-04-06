@@ -429,12 +429,11 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
               </div>
               <div className="divide-y divide-border">
                 {completedAcquisitions.map(tx => (
-                  <div
-                    key={tx.id}
-                    className="px-6 py-4 hover:bg-muted/40 transition-colors cursor-pointer"
-                    onClick={() => navigate(`/acquire/${tx.offer_id}`)}
-                  >
-                    <div className="flex items-center justify-between">
+                  <div key={tx.id} className="px-6 py-4">
+                    <div
+                      className="flex items-center justify-between cursor-pointer hover:bg-muted/40 transition-colors rounded-lg p-2 -m-2"
+                      onClick={() => navigate(`/acquire/${tx.offer_id}`)}
+                    >
                       <div>
                         <p className="text-sm font-semibold text-foreground">{carLabel(tx.car_id)}</p>
                         <p className="text-xs text-primary font-semibold mt-0.5">€{tx.agreed_price.toLocaleString()}</p>
@@ -442,6 +441,30 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                       <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px]">
                         {dt.buyerCompleted || "Completed"}
                       </Badge>
+                    </div>
+                    <div className="flex items-center gap-2 mt-3">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs gap-1 border-primary/30 text-primary hover:bg-primary/5"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/acquire/${tx.offer_id}`);
+                        }}
+                      >
+                        <FileCheck className="h-3 w-3" /> View Transaction
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs gap-1 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/5"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/upload?from_car=${tx.car_id}`);
+                        }}
+                      >
+                        <Car className="h-3 w-3" /> Sell This Car
+                      </Button>
                     </div>
                   </div>
                 ))}
