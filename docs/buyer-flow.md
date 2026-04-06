@@ -76,7 +76,7 @@ flowchart TD
         T1 -->|Manual| TM["Manual Path\n- Download Template\n- Offline Checklist"]
         T2 --> T3["Step 3: Payment\n- Wire Transfer\n- Credit Card\n- Bank Financing\n- Leasing\n- Financing Calculator"]
         T3 --> T4["Step 4: Insurance\n- Haftpflicht / Teilkasko /\n  Vollkasko\n- Insurance Calculator\n- Integration Roadmap\n- Or Skip"]
-        T4 --> T5["Step 5: Complete\n- Summary of Deal\n- Next Steps\n- Car Marked SOLD"]
+        T4 --> T5["Step 5: Ownership Transfer\n- 11-Step Checklist\n- Austrian Legal Order\n- 7 Manual Steps\n- All Deadlines Parallel\n- Countdown Timers\n- Sell This Car (gated)"]
         TM --> T5
     end
 
