@@ -157,3 +157,45 @@
 .doc-viewer strong { color: hsl(var(--foreground)); font-weight: 600; }
 .doc-viewer a { color: hsl(var(--primary)); text-decoration: underline; text-underline-offset: 2px; }
 .doc-viewer img { max-width: 100%; border-radius: 0.5rem; margin: 1rem 0; }
+
+/* ── Print styles for contract ── */
+@media print {
+  /* Hide everything except the contract */
+  body > *:not(#root) { display: none !important; }
+  nav, header, footer,
+  .print\\:hidden,
+  [class*="print:hidden"] { display: none !important; }
+
+  /* Reset page */
+  @page {
+    margin: 12mm 10mm;
+    size: A4;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: white !important;
+  }
+
+  /* Make the contract fill the page */
+  #contract-printable {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    break-inside: auto;
+  }
+
+  #contract-printable * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ensure contract sections don't break badly */
+  #contract-printable .space-y-6 > * {
+    break-inside: avoid;
+  }
+}

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import {
-  FileText, CheckCircle2, Download, MapPin, Edit2, Clock, User, Shield,
+  FileText, CheckCircle2, Printer, MapPin, Edit2, Clock, User, Shield,
   ShieldCheck, ShieldX, Car, Scale, Stamp, Lock, AlertTriangle, File
 } from "lucide-react";
+import autozonLogo from "@/assets/autozon-logo.png";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -47,6 +48,7 @@ const StepContract: React.FC<Props> = ({
   const [editingCountry, setEditingCountry] = useState(false);
   const [buyerSignedDate] = useState<string | null>(contractSignedBuyer ? new Date().toISOString() : null);
   const [sellerSignedDate] = useState<string | null>(contractSignedSeller ? new Date().toISOString() : null);
+  const contractRef = useRef<HTMLDivElement>(null);
 
   const bothSigned = (contractSignedBuyer || (signed && role === "buyer")) && (contractSignedSeller || (signed && role === "seller"));
   const isLocked = bothSigned;
@@ -95,19 +97,8 @@ const StepContract: React.FC<Props> = ({
     }
   };
 
-  const handleDownload = () => {
-    const contractData: ContractData = {
-      car, agreedPrice, sellerName, buyerName, sellerCountry: country,
-      contractDate: new Date().toISOString(), transactionId: transactionId || "draft",
-      buyerKycVerified, sellerKycVerified,
-      contractSignedBuyer: contractSignedBuyer || (signed && role === "buyer"),
-      contractSignedSeller: contractSignedSeller || (signed && role === "seller"),
-      buyerSignedDate: buyerSignedDate || undefined,
-      sellerSignedDate: sellerSignedDate || undefined,
-      sellerType, buyerType,
-    };
-    const doc = generateContractPdf(contractData);
-    doc.save(`autozon-contract-${refId}.pdf`);
+  const handlePrint = () => {
+    window.print();
   };
 
   const tt = t.transaction as any;
@@ -148,7 +139,7 @@ const StepContract: React.FC<Props> = ({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3 mb-4"
+          className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3 mb-4 print:hidden"
         >
           <Lock className="h-5 w-5 text-emerald-500 flex-shrink-0" />
           <p className="text-sm text-emerald-700 font-medium">
@@ -161,7 +152,9 @@ const StepContract: React.FC<Props> = ({
 
       {/* ═══════ ONLINE CONTRACT DOCUMENT ═══════ */}
       <motion.div
-        className="border border-border rounded-2xl overflow-hidden shadow-lg bg-background"
+        ref={contractRef}
+        id="contract-printable"
+        className="border border-border rounded-2xl overflow-hidden shadow-lg bg-background print:shadow-none print:border-none print:rounded-none"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -173,10 +166,7 @@ const StepContract: React.FC<Props> = ({
           <div className="flex flex-col items-center text-center gap-3">
             {/* Logo */}
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">A</span>
-              </div>
-              <span className="text-2xl font-display font-bold text-foreground tracking-tight">autozon</span>
+              <img src={autozonLogo} alt="Autozon" className="h-10 w-auto" />
             </div>
             {/* Title */}
             <h2 className="text-xl sm:text-2xl font-display font-black text-foreground">
@@ -386,7 +376,7 @@ const StepContract: React.FC<Props> = ({
       </motion.div>
 
       {/* ═══════ ACTIONS ═══════ */}
-      <div className="flex flex-col sm:flex-row gap-3 pt-6">
+      <div className="flex flex-col sm:flex-row gap-3 pt-6 print:hidden">
         {!signed ? (
           <Button
             className="flex-1 font-bold py-6"
@@ -402,9 +392,9 @@ const StepContract: React.FC<Props> = ({
           </Button>
         ) : (
           <>
-            <Button variant="outline" className="flex-1" onClick={handleDownload}>
-              <Download className="mr-2 h-4 w-4" />
-              {language === "de" ? "PDF herunterladen" : "Download PDF"}
+            <Button variant="outline" className="flex-1 print:hidden" onClick={handlePrint}>
+              <Printer className="mr-2 h-4 w-4" />
+              {language === "de" ? "Vertrag drucken / als PDF speichern" : "Print / Save as PDF"}
             </Button>
             {role === "buyer" && (
               <Button className="flex-1 font-bold py-6" onClick={() => onContinue("autozon")}>
@@ -420,7 +410,7 @@ const StepContract: React.FC<Props> = ({
         )}
       </div>
 
-      <p className="text-[10px] text-muted-foreground text-center pt-2">{t.transaction.contractDisclaimer}</p>
+      <p className="text-[10px] text-muted-foreground text-center pt-2 print:hidden">{t.transaction.contractDisclaimer}</p>
     </div>
   );
 };
