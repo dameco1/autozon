@@ -50,7 +50,7 @@ const StepComplete: React.FC<Props> = ({
           <PartyPopper className="h-10 w-10 text-primary" />
         </div>
         <h2 className="text-2xl sm:text-3xl font-display font-black text-foreground mb-2">{t.transaction.completeTitle}</h2>
-        <p className="text-muted-foreground">{t.transaction.completeSubtitle}</p>
+        <p className="text-muted-foreground">{t.transaction.completeSubtitle} Scroll down for the full contract and next steps.</p>
       </div>
 
       {/* Summary */}
@@ -100,21 +100,6 @@ const StepComplete: React.FC<Props> = ({
         </ol>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Button
-          variant="outline"
-          className="flex-1 border-border text-muted-foreground hover:bg-secondary font-semibold py-6 rounded-xl"
-          onClick={onDownload}
-        >
-          <Download className="mr-2 h-5 w-5" /> {t.transaction.downloadSummary}
-        </Button>
-        <Button
-          className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl"
-          onClick={onDashboard}
-        >
-          {t.transaction.backToDashboard} <ArrowRight className="ml-2 h-5 w-5" />
-        </Button>
-      </div>
     </motion.div>
   );
 };
