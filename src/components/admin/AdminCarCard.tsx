@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Car, User, Calendar, Gauge, Fuel, Cog, Palette, Zap, Check, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Handshake, Receipt, Camera } from "lucide-react";
+import { Car, User, Calendar, Gauge, Fuel, Cog, Palette, Zap, Check, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Handshake, Receipt, Camera, CreditCard, Shield, ExternalLink } from "lucide-react";
 import { INSPECTION_CATEGORIES, type InspectionChecklist } from "@/components/car-upload/inspectionChecklist";
 
 interface AdminCarCardProps {
