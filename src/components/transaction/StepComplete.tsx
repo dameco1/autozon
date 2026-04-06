@@ -50,7 +50,7 @@ const StepComplete: React.FC<Props> = ({
           <PartyPopper className="h-10 w-10 text-primary" />
         </div>
         <h2 className="text-2xl sm:text-3xl font-display font-black text-foreground mb-2">{t.transaction.completeTitle}</h2>
-        <p className="text-muted-foreground">{t.transaction.completeSubtitle}</p>
+        <p className="text-muted-foreground">{t.transaction.completeSubtitle} Scroll down for the full contract and next steps.</p>
       </div>
 
       {/* Summary */}
