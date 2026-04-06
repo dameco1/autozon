@@ -110,17 +110,6 @@ const StepComplete: React.FC<Props> = ({
         </ol>
       </div>
 
-      {/* Scroll to contract button */}
-      <Button
-        variant="outline"
-        className="w-full border-primary/30 text-primary hover:bg-primary/5 font-semibold py-6 rounded-xl"
-        onClick={() => {
-          const contractEl = document.getElementById("contract-printable");
-          if (contractEl) contractEl.scrollIntoView({ behavior: "smooth", block: "start" });
-        }}
-      >
-        <ChevronDown className="mr-2 h-5 w-5 animate-bounce" /> View Contract & Next Steps
-      </Button>
 
     </motion.div>
   );
