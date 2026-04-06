@@ -139,7 +139,7 @@ const StepContract: React.FC<Props> = ({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3 mb-4"
+          className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3 mb-4 print:hidden"
         >
           <Lock className="h-5 w-5 text-emerald-500 flex-shrink-0" />
           <p className="text-sm text-emerald-700 font-medium">
