@@ -58,6 +58,7 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [user, setUser] = useState<User | null>(null);
+  const [profileName, setProfileName] = useState<string>("");
   const [cars, setCars] = useState<CarListing[]>([]);
   const [matches, setMatches] = useState<MatchData[]>([]);
   const [loading, setLoading] = useState(true);
