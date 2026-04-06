@@ -1980,7 +1980,6 @@ export const translations = {
       complete: "Vollständig",
       // Deadline manager
       offlineSteps: "Offline-Schritte & Fristen",
-      overdue: "Überfällig",
       stepCompleted: "Schritt abgeschlossen",
       completed: "Erledigt am",
       done: "Erledigt",
