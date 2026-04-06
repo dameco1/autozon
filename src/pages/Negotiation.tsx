@@ -15,6 +15,7 @@ import {
   MessageSquare, ShieldCheck, AlertTriangle, Download, User,
 } from "lucide-react";
 import { generateNegotiationPdf } from "@/lib/generateNegotiationPdf";
+import ValuationFeedback from "@/components/transaction/ValuationFeedback";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface OfferRow {
