@@ -1924,6 +1924,13 @@ export const translations = {
       ownershipTransferCompleted: "Eigentumsübertragung abgeschlossen",
       autoLabel: "Auto",
       cardPayment: "Kartenzahlung",
+      deadlineWarning: "Sie haben {countdown} Zeit, um diesen Schritt abzuschließen, bevor die Transaktion ungültig wird und Kosten anfallen können.",
+      deadlineOverdueWarning: "Dieser Schritt ist überfällig. Autozon Support hat 24h, um mit beiden Parteien zu klären, bevor eine mögliche Stornierung erfolgt.",
+      deadlineInfoTitle: "Was passiert, wenn die Frist abläuft?",
+      deadlineInfoBody: "Wenn dieser Schritt nicht rechtzeitig abgeschlossen wird, kontaktiert der Autozon-Support innerhalb von 24 Stunden Käufer und Verkäufer, um das Problem zu lösen. Kann die Eigentumsübertragung nicht abgeschlossen werden, wird die Transaktion annulliert (Status: Nicht abgeschlossen). Das Fahrzeug wird für den Verkäufer erneut eingestellt, und der Käufer erhält eine Rückerstattung.",
+      deadlineInfoCostTitle: "Wer trägt die Kosten?",
+      deadlineInfoCostCard: "Bei Kreditkartenzahlungen werden die Stripe-Transaktionsgebühren gleichmäßig aufgeteilt — jede Partei zahlt 50% der Transaktionsgebühr. Der Käufer erhält seinen Betrag abzüglich der Hälfte der Bearbeitungsgebühr zurück.",
+      deadlineInfoCostOther: "Bei Banküberweisung, Barzahlung, Kredit oder Leasing fallen keine Plattformgebühren an. Der volle Betrag wird an den Käufer zurückerstattet.",
       // Checklist step labels
       stepKycVerified: "Amtlicher Lichtbildausweis (KYC-verifiziert)",
       stepKycVerifiedDesc: "Identität durch KYC-Verfahren verifiziert",
