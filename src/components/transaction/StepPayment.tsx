@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { CreditCard, Banknote, FileText, Building2, Star, CheckCircle2, ArrowLeft, Send, ShieldCheck, AlertTriangle, TestTube2, Loader2 } from "lucide-react";
+import { CreditCard, Banknote, FileText, Building2, Star, CheckCircle2, ArrowLeft, Send, ShieldCheck, AlertTriangle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useLanguage } from "@/i18n/LanguageContext";
