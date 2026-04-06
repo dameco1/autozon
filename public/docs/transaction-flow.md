@@ -182,10 +182,13 @@ Available on the car detail page before and during the transaction flow. VIN-bas
 - `contract_type`: 'oeamtc' | 'adac' | 'autozon'
 - `payment_method`: 'cash' | 'credit' | 'leasing' | 'card'
 - `insurance_tier`: 'liability' | 'partial' | 'comprehensive'
-- `status`: initiated → contract_pending → payment_pending → insurance_pending → completed
+- `status`: initiated → contract_pending → payment_pending → insurance_pending → completed → grace_period → cancellation_pending → not_completed
 - `current_step`: 1-5 (wizard position, resumable)
 - `seller_type`: 'private' | 'business' — determines seller-side workflow
 - `buyer_type`: 'private' | 'business' — determines buyer-side workflow
+- `grace_period_started_at`: timestamp when 24h grace period began (deadline enforcement)
+- `cancellation_reason`: text explaining why transaction was annulled
+- `stripe_payment_intent_id`: Stripe PI for card payment refunds
 
 ### `transaction_documents` table
 - Tracks required document uploads per transaction
@@ -195,10 +198,21 @@ Available on the car detail page before and during the transaction flow. VIN-bas
 ### `transaction_deadlines` table
 - Tracks ownership transfer step completions and deadlines
 - Columns: id, transaction_id, step_type, label, deadline_at, completed_at, status
+- Step types: `vehicle_inspection`, `buyer_insurance`, `deregistration`, `buyer_registration`, `plates_received`, `registration_cert`, `vehicle_handover`
 - Used by both the Ownership Transfer Checklist (Step 5) and admin dashboard
+- Overdue detection via `find_overdue_transactions()` DB function
 - RLS: Participants can view/insert/update; admins have full access
 
 RLS: Buyers and sellers can view/update their own transactions. Admins have full access.
+
+## Deadline Enforcement Backend
+
+### `check-deadlines` Edge Function
+- Scheduled hourly via `pg_cron`
+- Calls `find_overdue_transactions()` to detect missed manual steps
+- **Grace period**: Overdue step → transaction status set to `grace_period` → both parties notified → 24h to resolve
+- **Cancellation pending**: Grace period expired → status set to `cancellation_pending` → admin notified for confirmation
+- **Admin cancellation** (via `admin-actions`): Marks transaction as `not_completed`, relists car as `available`, processes Stripe refund (buyer gets amount minus 50% of processing fees for card payments)
 
 ## Role Workflow Configuration
 
@@ -211,7 +225,7 @@ Each workflow includes:
 - `warrantyConfig` — type, labels (EN/DE), descriptions
 - `sellerDocuments` / `buyerDocuments` — required/optional document specs
 - `extraClauses` — role-specific contract clauses (EN/DE)
-- `deadlines` — offline step deadlines (inspection: 72h, registration: 7d, handover: 14d)
+- `deadlines` — 7 offline step deadlines (all parallel from contract signing): inspection 72h, insurance 120h, deregistration 120h, registration 288h, plates 312h, cert 312h, handover 384h
 
 ## Admin Dashboard Integration
 
