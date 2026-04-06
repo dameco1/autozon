@@ -108,5 +108,5 @@ flowchart TD
 | **Offer** | 1 | Submit offer amount + message |
 | **Negotiation** | 1-5 rounds | Counter-offers until agreement |
 | **KYC** | 3 | ID upload, selfie, address — required for contract signing |
-| **Transaction** | 5 | Method, contract, payment (with financing calculator), insurance (with estimate calculator), complete |
-| **Dashboard** | Ongoing | Manage offers, shortlists, acquisitions |
+| **Transaction** | 5 | Method, contract, payment (with financing calculator), insurance (with estimate calculator), ownership transfer checklist (11 steps, Austrian legal order, parallel deadlines) |
+| **Dashboard** | Ongoing | Manage offers, shortlists, acquisitions — "Sell This Car" gated behind 100% ownership transfer |
