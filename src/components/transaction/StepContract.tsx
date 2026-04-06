@@ -166,7 +166,7 @@ const StepContract: React.FC<Props> = ({
           <div className="flex flex-col items-center text-center gap-3">
             {/* Logo */}
             <div className="flex items-center gap-2.5">
-              <img src={autozonLogo} alt="Autozon" className="h-10 w-auto" />
+              <img src={autozonLogo} alt="Autozon" className="h-16 w-auto" />
             </div>
             {/* Title */}
             <h2 className="text-xl sm:text-2xl font-display font-black text-foreground">
