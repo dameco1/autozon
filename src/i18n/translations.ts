@@ -763,6 +763,8 @@ export const translations = {
       overdue: "Overdue",
       congratsTitle: "Congratulations on Your New",
       congratsSubtitle: "Ownership transfer is complete. This vehicle is now officially yours. Enjoy the ride!",
+      congratsSellerTitle: "Congratulations on Selling Your",
+      congratsSellerSubtitle: "The ownership transfer is complete. Use Autozon to find your next car!",
       ownershipTransferCompleted: "Ownership Transfer Completed",
       autoLabel: "Auto",
       cardPayment: "Card Payment",
