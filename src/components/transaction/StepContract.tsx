@@ -97,19 +97,8 @@ const StepContract: React.FC<Props> = ({
     }
   };
 
-  const handleDownload = () => {
-    const contractData: ContractData = {
-      car, agreedPrice, sellerName, buyerName, sellerCountry: country,
-      contractDate: new Date().toISOString(), transactionId: transactionId || "draft",
-      buyerKycVerified, sellerKycVerified,
-      contractSignedBuyer: contractSignedBuyer || (signed && role === "buyer"),
-      contractSignedSeller: contractSignedSeller || (signed && role === "seller"),
-      buyerSignedDate: buyerSignedDate || undefined,
-      sellerSignedDate: sellerSignedDate || undefined,
-      sellerType, buyerType,
-    };
-    const doc = generateContractPdf(contractData);
-    doc.save(`autozon-contract-${refId}.pdf`);
+  const handlePrint = () => {
+    window.print();
   };
 
   const tt = t.transaction as any;
