@@ -63,9 +63,20 @@ const AdminCarCard: React.FC<AdminCarCardProps> = ({ carId, onClose }) => {
       const profilesMap: Record<string, string> = {};
       (profilesRes.data || []).forEach((p: any) => { profilesMap[p.user_id] = p.full_name; });
 
+      // Fetch ownership transfer deadlines for each transaction
+      const txIds = (txRes.data || []).map(t => t.id);
+      const deadlinesRes = txIds.length > 0
+        ? await supabase.from("transaction_deadlines").select("transaction_id, step_type, status, completed_at").in("transaction_id", txIds)
+        : { data: [] };
+      const deadlinesMap: Record<string, Array<{ step_type: string; status: string; completed_at: string | null }>> = {};
+      (deadlinesRes.data || []).forEach((d: any) => {
+        if (!deadlinesMap[d.transaction_id]) deadlinesMap[d.transaction_id] = [];
+        deadlinesMap[d.transaction_id].push(d);
+      });
+
       return {
         offers: (offersRes.data || []).map(o => ({ ...o, buyer_name: profilesMap[o.buyer_id] || o.buyer_id.slice(0, 8) })),
-        transactions: (txRes.data || []).map(t => ({ ...t, buyer_name: profilesMap[t.buyer_id] || t.buyer_id.slice(0, 8) })),
+        transactions: (txRes.data || []).map(t => ({ ...t, buyer_name: profilesMap[t.buyer_id] || t.buyer_id.slice(0, 8), deadlines: deadlinesMap[t.id] || [] })),
       };
     },
     enabled: !!carId,
@@ -306,6 +317,25 @@ const AdminCarCard: React.FC<AdminCarCardProps> = ({ carId, onClose }) => {
                                   <ExternalLink className="h-3 w-3 mr-1" /> View Transaction
                                 </Button>
                               </div>
+                              {/* Ownership Transfer Progress */}
+                              {tx.deadlines && tx.deadlines.length > 0 && (
+                                <div className="pt-2 border-t border-border/50">
+                                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                                    <ClipboardCheck className="h-3 w-3" /> Ownership Transfer ({tx.deadlines.filter((d: any) => d.status === "completed").length}/{tx.deadlines.length})
+                                  </p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {tx.deadlines.map((d: any) => (
+                                      <Badge
+                                        key={d.step_type}
+                                        variant={d.status === "completed" ? "default" : "secondary"}
+                                        className={`text-[9px] ${d.status === "completed" ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : ""}`}
+                                      >
+                                        {d.status === "completed" ? "✓" : "○"} {d.step_type.replace(/_/g, " ")}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           );
                         })}
