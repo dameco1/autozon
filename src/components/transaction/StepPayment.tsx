@@ -19,6 +19,9 @@ interface Props {
   partners: Partner[];
   onContinue: (method: string, partnerId?: string) => void;
   onBack?: () => void;
+  carId?: string;
+  transactionId?: string;
+  carTitle?: string;
 }
 
 type PaymentTab = "wire" | "card" | "credit" | "leasing";
