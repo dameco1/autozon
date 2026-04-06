@@ -317,6 +317,25 @@ const AdminCarCard: React.FC<AdminCarCardProps> = ({ carId, onClose }) => {
                                   <ExternalLink className="h-3 w-3 mr-1" /> View Transaction
                                 </Button>
                               </div>
+                              {/* Ownership Transfer Progress */}
+                              {tx.deadlines && tx.deadlines.length > 0 && (
+                                <div className="pt-2 border-t border-border/50">
+                                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                                    <ClipboardCheck className="h-3 w-3" /> Ownership Transfer ({tx.deadlines.filter((d: any) => d.status === "completed").length}/{tx.deadlines.length})
+                                  </p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {tx.deadlines.map((d: any) => (
+                                      <Badge
+                                        key={d.step_type}
+                                        variant={d.status === "completed" ? "default" : "secondary"}
+                                        className={`text-[9px] ${d.status === "completed" ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : ""}`}
+                                      >
+                                        {d.status === "completed" ? "✓" : "○"} {d.step_type.replace(/_/g, " ")}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           );
                         })}
