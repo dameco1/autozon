@@ -86,17 +86,19 @@ const StepComplete: React.FC<Props> = ({
     : t.transaction.stepPaymentBank;
 
   const ownershipSteps: OwnershipStep[] = [
+    // Digital steps (auto-completed)
     { key: "kyc_verified", label: t.transaction.stepKycVerified, description: t.transaction.stepKycVerifiedDesc, digital: true },
     { key: "contract_signed", label: `${t.transaction.stepContractSigned} — ${contractLabel}`, description: `${contractLabel} Kaufvertrag`, digital: true },
     { key: "countersigned", label: t.transaction.stepCountersigned, description: t.transaction.stepCountersignedDesc, digital: true },
     { key: "payment_done", label: `${t.transaction.stepPaymentDone} (${paymentLabel} — €${agreedPrice.toLocaleString()})`, description: paymentDesc, digital: paymentMethod === "card" },
-    { key: "insurance_arranged", label: `${t.transaction.insuranceLabel}: ${insuranceLabel}`, description: insuranceTier ? t.transaction.stepInsuranceActive : t.transaction.stepInsuranceSelf, digital: !!insuranceTier },
+    // Manual steps in Austrian legal order
     { key: "vehicle_inspection", label: t.transaction.stepVehicleInspection, description: t.transaction.stepVehicleInspectionDesc, digital: false, deadlineKey: "vehicle_inspection" },
-    { key: "vehicle_handover", label: t.transaction.stepVehicleHandover, description: t.transaction.stepVehicleHandoverDesc, digital: false, deadlineKey: "vehicle_handover" },
-    { key: "deregistration", label: t.transaction.stepDeregistration, description: t.transaction.stepDeregistrationDesc, digital: false },
+    { key: "buyer_insurance", label: t.transaction.stepBuyerInsurance, description: t.transaction.stepBuyerInsuranceDesc, digital: false, deadlineKey: "buyer_insurance" },
+    { key: "deregistration", label: t.transaction.stepDeregistration, description: t.transaction.stepDeregistrationDesc, digital: false, deadlineKey: "deregistration" },
     { key: "buyer_registration", label: t.transaction.stepBuyerRegistration, description: t.transaction.stepBuyerRegistrationDesc, digital: false, deadlineKey: "buyer_registration" },
-    { key: "plates_received", label: t.transaction.stepPlatesReceived, description: t.transaction.stepPlatesReceivedDesc, digital: false },
-    { key: "registration_cert", label: t.transaction.stepRegistrationCert, description: t.transaction.stepRegistrationCertDesc, digital: false },
+    { key: "plates_received", label: t.transaction.stepPlatesReceived, description: t.transaction.stepPlatesReceivedDesc, digital: false, deadlineKey: "plates_received" },
+    { key: "registration_cert", label: t.transaction.stepRegistrationCert, description: t.transaction.stepRegistrationCertDesc, digital: false, deadlineKey: "registration_cert" },
+    { key: "vehicle_handover", label: t.transaction.stepVehicleHandover, description: t.transaction.stepVehicleHandoverDesc, digital: false, deadlineKey: "vehicle_handover" },
   ];
 
   const [checkedSteps, setCheckedSteps] = useState<Record<string, boolean>>({});
