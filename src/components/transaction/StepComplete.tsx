@@ -105,6 +105,24 @@ const StepComplete: React.FC<Props> = ({
         setCheckedSteps(map);
         setDeadlines(dlMap);
       }
+      // Seed deadline records for manual steps that have deadlineKey but no record yet
+      const manualWithDeadline = ownershipSteps.filter(s => !s.digital && s.deadlineKey);
+      const missingDeadlines = manualWithDeadline.filter(s => !data?.find(d => d.step_type === s.key));
+      if (missingDeadlines.length > 0) {
+        const rows = missingDeadlines.map(s => ({
+          transaction_id: transactionId,
+          step_type: s.key,
+          label: s.label,
+          deadline_at: new Date(Date.now() + (DEADLINE_MAP[s.key] || 336) * 60 * 60 * 1000).toISOString(),
+          status: "pending",
+        }));
+        const { data: inserted } = await supabase.from("transaction_deadlines").insert(rows as any).select("step_type, deadline_at, id");
+        if (inserted) {
+          const newDlMap = { ...dlMap };
+          inserted.forEach((d: any) => { newDlMap[d.step_type] = { deadline_at: d.deadline_at, id: d.id }; });
+          setDeadlines(newDlMap);
+        }
+      }
     };
     load();
   }, [transactionId]);
