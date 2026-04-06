@@ -483,7 +483,7 @@ const AcquisitionOptions: React.FC = () => {
             )
           )}
 
-          {/* Step 5: Complete (both roles) */}
+          {/* Step 5: Complete (both roles) — includes read-only contract */}
           {step === 5 && completionMethod === "digital" && (
             <div className="space-y-6">
               <StepComplete
@@ -497,6 +497,23 @@ const AcquisitionOptions: React.FC = () => {
                 fairValuePrice={car?.fair_value_price}
                 onDashboard={() => navigate("/dashboard")}
                 onDownload={handleDownload}
+              />
+              {/* Full online contract (read-only, with Print/Save as PDF) */}
+              <StepContract
+                car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
+                agreedPrice={agreedPrice}
+                sellerCountry={sellerCountry}
+                buyerName={buyerName}
+                sellerName={sellerName}
+                transactionId={transactionId}
+                role={myRole}
+                contractSignedSeller={contractSignedSeller}
+                contractSignedBuyer={contractSignedBuyer}
+                buyerKycVerified={buyerKycVerified}
+                sellerKycVerified={sellerKycVerified}
+                sellerType={sellerType}
+                buyerType={buyerType}
+                workflow={workflow || undefined}
               />
               {transactionId && workflow && (
                 <DocumentChecklist transactionId={transactionId} documents={getAllDocuments(workflow)} role={myRole} />
