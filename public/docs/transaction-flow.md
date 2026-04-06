@@ -100,21 +100,21 @@ Embedded calculator for Austrian-specific premium estimates based on vehicle and
 
 All post-completion steps are consolidated into a single **Ownership Transfer Checklist**. This replaces the previous separate Document Checklist, Deadline Manager, and next-steps boxes.
 
-### Checklist Structure
+### Checklist Structure (Austrian Legal Order)
 
-| # | Step | Type | Deadline | Description |
-|---|------|------|----------|-------------|
+| # | Step | Responsible | Deadline | Description |
+|---|------|-------------|----------|-------------|
 | 1 | Government-issued ID (KYC) | Digital (Auto) | — | Identity verified through KYC process |
 | 2 | Purchase Contract Signed | Digital (Auto) | — | Contract type (Autozon/ÖAMTC/ADAC) |
 | 3 | Countersigned Contract Issued | Digital (Auto) | — | Both parties have signed |
 | 4 | Payment Completed | Digital/Manual | — | Method and amount displayed inline |
-| 5 | Insurance | Digital/Manual | — | Tier displayed, or "self-arranged" |
-| 6 | Vehicle Inspection | Manual | 72 hours | Buyer inspects the vehicle |
-| 7 | Vehicle Handover | Manual | 14 days | Keys, documents, vehicle handed over |
-| 8 | Seller Deregistration | Manual | — | Abmeldung at Zulassungsstelle |
-| 9 | Buyer Registration | Manual | 7 days | Anmeldung at Zulassungsstelle |
-| 10 | Registration Plates Received | Manual | — | New plates mounted |
-| 11 | Registration Certificate Part I & II | Manual | — | In buyer's name |
+| 5 | Vehicle Inspection Completed | Buyer | 72h after Step 5 begins | Physical or professional inspection (ÖAMTC/ARBÖ/mechanic) |
+| 6 | Buyer Arranges Insurance (Haftpflicht) | Buyer | 48h after inspection | eVB number required before registration |
+| 7 | Seller Deregistration (Abmeldung) | Seller | 48h after insurance confirmed | Skip if already deregistered |
+| 8 | Buyer Registration (Anmeldung) | Buyer | 7 days after deregistration | Requires eVB, Zulassungsschein I & II, COC, ID |
+| 9 | Registration Plates Received | Buyer | 24h after registration | Plates issued and mounted |
+| 10 | Registration Certificate Part I & II Issued | Buyer | Instant (at registration) | Part of the registration process |
+| 11 | Vehicle Handover | Buyer + Seller | 72h after registration | Keys, docs, service book, vehicle — digital handover protocol via Autozon |
 
 ### Features
 - **Digital steps** are system-managed, locked with a shield/check icon and "Auto" badge
