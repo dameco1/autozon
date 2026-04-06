@@ -369,71 +369,10 @@ const AcquisitionOptions: React.FC = () => {
 
         {/* Wizard content */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          {/* Seller sees contract signing view when at step 2+ */}
-          {isSeller ? (
-            step >= 2 && step <= 5 && completionMethod === "digital" ? (
-              myKycStatus !== "verified" && myKycStatus !== "approved" ? (
-                <div className="text-center py-12 space-y-4">
-                  <AlertTriangle className="h-12 w-12 text-orange mx-auto" />
-                  <h3 className="text-xl font-display font-bold text-foreground">{(t as any).kyc?.title || "Identity Verification Required"}</h3>
-                  <p className="text-muted-foreground max-w-md mx-auto">{(t as any).kyc?.subtitle || "You must verify your identity before signing a contract."}</p>
-                  <Button className="bg-primary text-primary-foreground" onClick={() => navigate("/kyc")}>
-                    <Shield className="mr-2 h-4 w-4" /> {(t as any).kyc?.startVerification || "Start Verification"}
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  <StepContract
-                    car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
-                    agreedPrice={agreedPrice}
-                    sellerCountry={sellerCountry}
-                    buyerName={buyerName}
-                    sellerName={sellerName}
-                    transactionId={transactionId}
-                    onContinue={handleContractDone}
-                    role="seller"
-                    contractSignedSeller={contractSignedSeller}
-                    contractSignedBuyer={contractSignedBuyer}
-                    buyerKycVerified={buyerKycVerified}
-                    sellerKycVerified={sellerKycVerified}
-                    sellerType={sellerType}
-                    buyerType={buyerType}
-                    workflow={workflow || undefined}
-                    onSellerSign={async () => {
-                      if (!transactionId) return;
-                      await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
-                      setContractSignedSeller(true);
-                      toast.success(t.transaction.contractSigned);
-                    }}
-                  />
-                  {/* Document checklist for seller */}
-                  {transactionId && workflow && (
-                    <DocumentChecklist
-                      transactionId={transactionId}
-                      documents={getAllDocuments(workflow)}
-                      role="seller"
-                    />
-                  )}
-                  {/* Deadline manager */}
-                  {transactionId && workflow && contractSignedAt && (
-                    <DeadlineManager
-                      transactionId={transactionId}
-                      deadlines={workflow.deadlines}
-                      contractSignedAt={contractSignedAt}
-                    />
-                  )}
-                </div>
-              )
-            ) : step === 99 ? (
-              <StepManualComplete
-                car={car}
-                agreedPrice={agreedPrice}
-                sellerCountry={sellerCountry}
-                carId={offer?.car_id}
-                fairValuePrice={car?.fair_value_price}
-                onDashboard={() => navigate("/dashboard")}
-                onDownload={handleDownload}
-              />
+          {/* Step 1: only buyer picks method */}
+          {step === 1 && (
+            isBuyer ? (
+              <StepMethod onSelect={handleMethodSelect} />
             ) : (
               <div className="text-center py-12">
                 <Package className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
@@ -443,112 +382,142 @@ const AcquisitionOptions: React.FC = () => {
                 </Button>
               </div>
             )
-          ) : (
-            <>
-              {step === 1 && <StepMethod onSelect={handleMethodSelect} />}
+          )}
 
-              {step === 2 && myKycStatus !== "verified" && myKycStatus !== "approved" ? (
-                <div className="text-center py-12 space-y-4">
-                  <AlertTriangle className="h-12 w-12 text-orange mx-auto" />
-                  <h3 className="text-xl font-display font-bold text-foreground">{(t as any).kyc?.title || "Identity Verification Required"}</h3>
-                  <p className="text-muted-foreground max-w-md mx-auto">{(t as any).kyc?.subtitle || "You must verify your identity before signing a contract."}</p>
-                  <Button className="bg-primary text-primary-foreground" onClick={() => navigate("/kyc")}>
-                    <Shield className="mr-2 h-4 w-4" /> {(t as any).kyc?.startVerification || "Start Verification"}
-                  </Button>
-                </div>
-              ) : step === 2 ? (
-                <div className="space-y-6">
-                  <StepContract
-                    car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
-                    agreedPrice={agreedPrice}
-                    sellerCountry={sellerCountry}
-                    buyerName={buyerName}
-                    sellerName={sellerName}
-                    transactionId={transactionId}
-                    onContinue={handleContractDone}
-                    role="buyer"
-                    contractSignedSeller={contractSignedSeller}
-                    contractSignedBuyer={contractSignedBuyer}
-                    buyerKycVerified={buyerKycVerified}
-                    sellerKycVerified={sellerKycVerified}
-                    sellerType={sellerType}
-                    buyerType={buyerType}
-                    workflow={workflow || undefined}
-                  />
-                  {/* Document checklist for buyer at contract step */}
-                  {transactionId && workflow && (
-                    <DocumentChecklist
-                      transactionId={transactionId}
-                      documents={getAllDocuments(workflow)}
-                      role="buyer"
-                    />
-                  )}
-                </div>
-              ) : null}
-
-              {step === 3 && (
-                <StepPayment
-                  agreedPrice={agreedPrice}
-                  partners={partners}
-                  onContinue={handlePaymentDone}
-                  onBack={() => setStep(2)}
-                />
-              )}
-
-              {step === 4 && (
-                <StepInsurance
-                  agreedPrice={agreedPrice}
-                  partners={partners}
-                  onContinue={handleInsuranceDone}
-                  onSkip={handleInsuranceSkip}
-                />
-              )}
-
-              {step === 5 && (
-                <div className="space-y-6">
-                  <StepComplete
-                    car={car}
-                    agreedPrice={agreedPrice}
-                    completionMethod={completionMethod || "digital"}
-                    contractType={contractType}
-                    paymentMethod={paymentMethod}
-                    insuranceTier={insuranceTier}
-                    carId={offer?.car_id}
-                    fairValuePrice={car?.fair_value_price}
-                    onDashboard={() => navigate("/dashboard")}
-                    onDownload={handleDownload}
-                  />
-                  {/* Document checklist in completion */}
-                  {transactionId && workflow && (
-                    <DocumentChecklist
-                      transactionId={transactionId}
-                      documents={getAllDocuments(workflow)}
-                      role="buyer"
-                    />
-                  )}
-                  {/* Deadline manager after completion */}
-                  {transactionId && workflow && (
-                    <DeadlineManager
-                      transactionId={transactionId}
-                      deadlines={workflow.deadlines}
-                      contractSignedAt={contractSignedAt || new Date().toISOString()}
-                    />
-                  )}
-                </div>
-              )}
-
-              {step === 99 && (
-                <StepManualComplete
-                  car={car}
+          {/* Step 2: Contract (both roles) */}
+          {step === 2 && completionMethod === "digital" && (
+            myKycStatus !== "verified" && myKycStatus !== "approved" ? (
+              <div className="text-center py-12 space-y-4">
+                <AlertTriangle className="h-12 w-12 text-orange mx-auto" />
+                <h3 className="text-xl font-display font-bold text-foreground">{(t as any).kyc?.title || "Identity Verification Required"}</h3>
+                <p className="text-muted-foreground max-w-md mx-auto">{(t as any).kyc?.subtitle || "You must verify your identity before signing a contract."}</p>
+                <Button className="bg-primary text-primary-foreground" onClick={() => navigate("/kyc")}>
+                  <Shield className="mr-2 h-4 w-4" /> {(t as any).kyc?.startVerification || "Start Verification"}
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <StepContract
+                  car={{ make: car.make, model: car.model, year: car.year, vin: car.vin || undefined }}
                   agreedPrice={agreedPrice}
                   sellerCountry={sellerCountry}
-                  carId={offer?.car_id}
-                  fairValuePrice={car?.fair_value_price}
-                  onDashboard={() => navigate("/dashboard")}
-                  onDownload={handleDownload}
+                  buyerName={buyerName}
+                  sellerName={sellerName}
+                  transactionId={transactionId}
+                  onContinue={isBuyer ? handleContractDone : undefined}
+                  role={myRole}
+                  contractSignedSeller={contractSignedSeller}
+                  contractSignedBuyer={contractSignedBuyer}
+                  buyerKycVerified={buyerKycVerified}
+                  sellerKycVerified={sellerKycVerified}
+                  sellerType={sellerType}
+                  buyerType={buyerType}
+                  workflow={workflow || undefined}
+                  onSellerSign={isSeller ? async () => {
+                    if (!transactionId) return;
+                    await supabase.rpc("transaction_seller_sign_contract", { _transaction_id: transactionId });
+                    setContractSignedSeller(true);
+                    toast.success(t.transaction.contractSigned);
+                  } : undefined}
                 />
+                {transactionId && workflow && (
+                  <DocumentChecklist
+                    transactionId={transactionId}
+                    documents={getAllDocuments(workflow)}
+                    role={myRole}
+                  />
+                )}
+              </div>
+            )
+          )}
+
+          {/* Step 3: Payment (both roles) */}
+          {step === 3 && completionMethod === "digital" && (
+            isBuyer ? (
+              <StepPayment
+                agreedPrice={agreedPrice}
+                partners={partners}
+                onContinue={handlePaymentDone}
+                onBack={() => setStep(2)}
+              />
+            ) : (
+              <div className="space-y-6">
+                <div className="text-center py-8">
+                  <CreditCard className="h-12 w-12 text-primary mx-auto mb-3" />
+                  <h3 className="text-xl font-display font-bold text-foreground">{t.transaction.stepPayment}</h3>
+                  <p className="text-muted-foreground text-sm mt-1">Waiting for buyer to complete payment selection.</p>
+                </div>
+                {transactionId && workflow && (
+                  <DocumentChecklist transactionId={transactionId} documents={getAllDocuments(workflow)} role="seller" />
+                )}
+                {transactionId && workflow && contractSignedAt && (
+                  <DeadlineManager transactionId={transactionId} deadlines={workflow.deadlines} contractSignedAt={contractSignedAt} />
+                )}
+              </div>
+            )
+          )}
+
+          {/* Step 4: Insurance (both roles) */}
+          {step === 4 && completionMethod === "digital" && (
+            isBuyer ? (
+              <StepInsurance
+                agreedPrice={agreedPrice}
+                partners={partners}
+                onContinue={handleInsuranceDone}
+                onSkip={handleInsuranceSkip}
+              />
+            ) : (
+              <div className="space-y-6">
+                <div className="text-center py-8">
+                  <Shield className="h-12 w-12 text-primary mx-auto mb-3" />
+                  <h3 className="text-xl font-display font-bold text-foreground">{t.transaction.stepInsurance}</h3>
+                  <p className="text-muted-foreground text-sm mt-1">Waiting for buyer to complete insurance selection.</p>
+                </div>
+                {transactionId && workflow && (
+                  <DocumentChecklist transactionId={transactionId} documents={getAllDocuments(workflow)} role="seller" />
+                )}
+                {transactionId && workflow && contractSignedAt && (
+                  <DeadlineManager transactionId={transactionId} deadlines={workflow.deadlines} contractSignedAt={contractSignedAt} />
+                )}
+              </div>
+            )
+          )}
+
+          {/* Step 5: Complete (both roles) */}
+          {step === 5 && completionMethod === "digital" && (
+            <div className="space-y-6">
+              <StepComplete
+                car={car}
+                agreedPrice={agreedPrice}
+                completionMethod={completionMethod || "digital"}
+                contractType={contractType}
+                paymentMethod={paymentMethod}
+                insuranceTier={insuranceTier}
+                carId={offer?.car_id}
+                fairValuePrice={car?.fair_value_price}
+                onDashboard={() => navigate("/dashboard")}
+                onDownload={handleDownload}
+              />
+              {transactionId && workflow && (
+                <DocumentChecklist transactionId={transactionId} documents={getAllDocuments(workflow)} role={myRole} />
               )}
-            </>
+              {transactionId && workflow && (
+                <DeadlineManager transactionId={transactionId} deadlines={workflow.deadlines} contractSignedAt={contractSignedAt || new Date().toISOString()} />
+              )}
+            </div>
+          )}
+
+          {/* Manual complete (both roles) */}
+          {step === 99 && (
+            <StepManualComplete
+              car={car}
+              agreedPrice={agreedPrice}
+              sellerCountry={sellerCountry}
+              carId={offer?.car_id}
+              fairValuePrice={car?.fair_value_price}
+              onDashboard={() => navigate("/dashboard")}
+              onDownload={handleDownload}
+            />
           )}
         </motion.div>
 
