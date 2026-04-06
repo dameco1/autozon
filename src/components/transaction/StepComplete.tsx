@@ -20,6 +20,7 @@ interface Props {
   carId?: string;
   fairValuePrice?: number | null;
   transactionId?: string | null;
+  role?: "buyer" | "seller";
   onDashboard: () => void;
   onDownload: () => void;
 }
