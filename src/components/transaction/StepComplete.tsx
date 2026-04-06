@@ -31,11 +31,27 @@ type OwnershipStep = {
   deadlineKey?: string;
 };
 
-const DEADLINE_MAP: Record<string, number> = {
+// Hours allowed per step (sequential — each step's deadline starts after previous is completed)
+const DEADLINE_HOURS: Record<string, number> = {
   vehicle_inspection: 72,
-  vehicle_handover: 336,
-  buyer_registration: 168,
+  buyer_insurance: 48,
+  deregistration: 48,
+  buyer_registration: 168, // 7 days
+  plates_received: 24,
+  registration_cert: 0, // instant (issued at registration)
+  vehicle_handover: 72,
 };
+
+// Ordered step keys for sequential deadline computation
+const MANUAL_STEP_ORDER = [
+  "vehicle_inspection",
+  "buyer_insurance",
+  "deregistration",
+  "buyer_registration",
+  "plates_received",
+  "registration_cert",
+  "vehicle_handover",
+];
 
 const StepComplete: React.FC<Props> = ({
   car, agreedPrice, completionMethod, contractType, paymentMethod, insuranceTier,
@@ -70,17 +86,19 @@ const StepComplete: React.FC<Props> = ({
     : t.transaction.stepPaymentBank;
 
   const ownershipSteps: OwnershipStep[] = [
+    // Digital steps (auto-completed)
     { key: "kyc_verified", label: t.transaction.stepKycVerified, description: t.transaction.stepKycVerifiedDesc, digital: true },
     { key: "contract_signed", label: `${t.transaction.stepContractSigned} — ${contractLabel}`, description: `${contractLabel} Kaufvertrag`, digital: true },
     { key: "countersigned", label: t.transaction.stepCountersigned, description: t.transaction.stepCountersignedDesc, digital: true },
     { key: "payment_done", label: `${t.transaction.stepPaymentDone} (${paymentLabel} — €${agreedPrice.toLocaleString()})`, description: paymentDesc, digital: paymentMethod === "card" },
-    { key: "insurance_arranged", label: `${t.transaction.insuranceLabel}: ${insuranceLabel}`, description: insuranceTier ? t.transaction.stepInsuranceActive : t.transaction.stepInsuranceSelf, digital: !!insuranceTier },
+    // Manual steps in Austrian legal order
     { key: "vehicle_inspection", label: t.transaction.stepVehicleInspection, description: t.transaction.stepVehicleInspectionDesc, digital: false, deadlineKey: "vehicle_inspection" },
-    { key: "vehicle_handover", label: t.transaction.stepVehicleHandover, description: t.transaction.stepVehicleHandoverDesc, digital: false, deadlineKey: "vehicle_handover" },
-    { key: "deregistration", label: t.transaction.stepDeregistration, description: t.transaction.stepDeregistrationDesc, digital: false },
+    { key: "buyer_insurance", label: t.transaction.stepBuyerInsurance, description: t.transaction.stepBuyerInsuranceDesc, digital: false, deadlineKey: "buyer_insurance" },
+    { key: "deregistration", label: t.transaction.stepDeregistration, description: t.transaction.stepDeregistrationDesc, digital: false, deadlineKey: "deregistration" },
     { key: "buyer_registration", label: t.transaction.stepBuyerRegistration, description: t.transaction.stepBuyerRegistrationDesc, digital: false, deadlineKey: "buyer_registration" },
-    { key: "plates_received", label: t.transaction.stepPlatesReceived, description: t.transaction.stepPlatesReceivedDesc, digital: false },
-    { key: "registration_cert", label: t.transaction.stepRegistrationCert, description: t.transaction.stepRegistrationCertDesc, digital: false },
+    { key: "plates_received", label: t.transaction.stepPlatesReceived, description: t.transaction.stepPlatesReceivedDesc, digital: false, deadlineKey: "plates_received" },
+    { key: "registration_cert", label: t.transaction.stepRegistrationCert, description: t.transaction.stepRegistrationCertDesc, digital: false, deadlineKey: "registration_cert" },
+    { key: "vehicle_handover", label: t.transaction.stepVehicleHandover, description: t.transaction.stepVehicleHandoverDesc, digital: false, deadlineKey: "vehicle_handover" },
   ];
 
   const [checkedSteps, setCheckedSteps] = useState<Record<string, boolean>>({});
@@ -111,21 +129,37 @@ const StepComplete: React.FC<Props> = ({
       setCheckedSteps(map);
       setDeadlines(dlMap);
 
+      // Seed missing deadlines sequentially: each step's deadline starts after the previous
       const manualWithDeadline = ownershipSteps.filter(s => !s.digital && s.deadlineKey);
       const missingDeadlines = manualWithDeadline.filter(s => !data?.find(d => d.step_type === s.key));
       if (missingDeadlines.length > 0) {
-        const rows = missingDeadlines.map(s => ({
-          transaction_id: transactionId,
-          step_type: s.key,
-          label: s.label,
-          deadline_at: new Date(Date.now() + (DEADLINE_MAP[s.key] || 336) * 60 * 60 * 1000).toISOString(),
-          status: "pending",
-        }));
-        const { data: inserted } = await supabase.from("transaction_deadlines").insert(rows as any).select("step_type, deadline_at, id");
-        if (inserted) {
-          const newDlMap = { ...dlMap };
-          inserted.forEach((d: any) => { newDlMap[d.step_type] = { deadline_at: d.deadline_at, id: d.id }; });
-          setDeadlines(newDlMap);
+        // Compute sequential deadlines: first step starts from now, each subsequent from previous deadline end
+        let cursor = Date.now();
+        const allRows: Array<{ transaction_id: string; step_type: string; label: string; deadline_at: string; status: string }> = [];
+        for (const stepKey of MANUAL_STEP_ORDER) {
+          const hours = DEADLINE_HOURS[stepKey] || 72;
+          const deadlineAt = new Date(cursor + hours * 60 * 60 * 1000);
+          // Only insert if this step is missing
+          if (missingDeadlines.find(s => s.key === stepKey)) {
+            allRows.push({
+              transaction_id: transactionId,
+              step_type: stepKey,
+              label: ownershipSteps.find(s => s.key === stepKey)?.label || stepKey,
+              deadline_at: deadlineAt.toISOString(),
+              status: "pending",
+            });
+          }
+          // Move cursor to end of this step (whether existing or new)
+          const existingDl = dlMap[stepKey];
+          cursor = existingDl ? new Date(existingDl.deadline_at).getTime() : deadlineAt.getTime();
+        }
+        if (allRows.length > 0) {
+          const { data: inserted } = await supabase.from("transaction_deadlines").insert(allRows as any).select("step_type, deadline_at, id");
+          if (inserted) {
+            const newDlMap = { ...dlMap };
+            inserted.forEach((d: any) => { newDlMap[d.step_type] = { deadline_at: d.deadline_at, id: d.id }; });
+            setDeadlines(newDlMap);
+          }
         }
       }
     };
@@ -172,7 +206,7 @@ const StepComplete: React.FC<Props> = ({
           transaction_id: transactionId,
           step_type: stepKey,
           label: ownershipSteps.find(s => s.key === stepKey)?.label || stepKey,
-          deadline_at: new Date(Date.now() + (DEADLINE_MAP[stepKey] || 336) * 60 * 60 * 1000).toISOString(),
+          deadline_at: new Date(Date.now() + (DEADLINE_HOURS[stepKey] || 72) * 60 * 60 * 1000).toISOString(),
           status: "completed",
           completed_at: new Date().toISOString(),
         } as any);
