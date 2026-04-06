@@ -164,9 +164,11 @@ const StepContract: React.FC<Props> = ({
         {/* ── Header with Autozon branding ── */}
         <div className="bg-[hsl(30_25%_97%)] border-b border-border px-6 py-6 sm:py-8">
           <div className="flex flex-col items-center text-center gap-3">
-            {/* Logo */}
-            <div className="flex items-center gap-2.5">
-              <img src={autozonLogo} alt="Autozon" className="h-16 w-auto" />
+            {/* Logo — matches Navbar */}
+            <div className="flex items-center">
+              <span className="text-3xl font-display font-bold tracking-tight text-foreground">
+                auto<span className="text-orange">zon</span>
+              </span>
             </div>
             {/* Title */}
             <h2 className="text-xl sm:text-2xl font-display font-black text-foreground">
