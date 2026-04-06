@@ -464,11 +464,68 @@ const AcquisitionOptions: React.FC = () => {
               />
             ) : (
               <div className="space-y-6">
-                <div className="text-center py-8">
+                {/* Seller payment status */}
+                <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 text-center">
                   <CreditCard className="h-12 w-12 text-primary mx-auto mb-3" />
-                  <h3 className="text-xl font-display font-bold text-foreground">{t.transaction.stepPayment}</h3>
-                  <p className="text-muted-foreground text-sm mt-1">Waiting for buyer to complete payment selection.</p>
+                  <h3 className="text-xl font-display font-bold text-foreground mb-1">
+                    {(t.transaction as any)?.sellerPaymentTitle || "Payment In Progress"}
+                  </h3>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    {(t.transaction as any)?.sellerPaymentDesc || "The buyer is completing their payment. Once confirmed, you'll be notified and can proceed with vehicle delivery."}
+                  </p>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/50 border border-accent text-accent-foreground text-xs font-medium">
+                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                    {(t.transaction as any)?.awaitingPayment || "Awaiting Buyer Payment"}
+                  </div>
                 </div>
+
+                {/* Delivery preparation checklist */}
+                <div className="bg-secondary/50 border border-border rounded-2xl p-6">
+                  <h4 className="font-display font-bold text-foreground mb-4 flex items-center gap-2">
+                    <Package className="h-5 w-5 text-primary" />
+                    {(t.transaction as any)?.deliveryPrep || "Prepare for Vehicle Delivery"}
+                  </h4>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    {(t.transaction as any)?.deliveryPrepDesc || "While waiting for the buyer's payment, prepare these items for a smooth handover:"}
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      { label: (t.transaction as any)?.prepKeys || "Gather all vehicle keys (main + spare)", icon: "🔑" },
+                      { label: (t.transaction as any)?.prepDocs || "Prepare registration documents (Zulassungsschein Teil I & II)", icon: "📄" },
+                      { label: (t.transaction as any)?.prepService || "Locate service book and maintenance receipts", icon: "📋" },
+                      { label: (t.transaction as any)?.prepInspection || "Ensure §57a Gutachten (Pickerl) is available", icon: "✅" },
+                      { label: (t.transaction as any)?.prepClean || "Clean the vehicle inside and out", icon: "🚗" },
+                      { label: (t.transaction as any)?.prepPersonal || "Remove all personal belongings from the vehicle", icon: "📦" },
+                      { label: (t.transaction as any)?.prepDeregister || "Plan visit to Zulassungsstelle for deregistration", icon: "🏛️" },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-start gap-3 p-3 bg-background/50 rounded-xl border border-border/50">
+                        <span className="text-lg flex-shrink-0">{item.icon}</span>
+                        <span className="text-sm text-foreground">{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Deal summary for seller */}
+                <div className="bg-secondary/50 border border-border rounded-2xl p-5">
+                  <h4 className="font-display font-bold text-foreground mb-3 text-sm">
+                    {(t.transaction as any)?.sellerPaymentSummary || "Payment Summary"}
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t.acquisition?.agreedPrice || "Agreed Price"}</span>
+                      <span className="text-primary font-bold text-lg">€{agreedPrice.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{(t.transaction as any)?.sellerReceives || "You Receive"}</span>
+                      <span className="text-foreground font-semibold">€{agreedPrice.toLocaleString()}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      💡 {(t.transaction as any)?.sellerNoDeductions || "You receive the full agreed price — all transaction fees are covered by the buyer."}
+                    </p>
+                  </div>
+                </div>
+
                 {transactionId && workflow && (
                   <DocumentChecklist transactionId={transactionId} documents={getAllDocuments(workflow)} role="seller" />
                 )}
