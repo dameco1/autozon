@@ -410,7 +410,7 @@ const StepContract: React.FC<Props> = ({
         )}
       </div>
 
-      <p className="text-[10px] text-muted-foreground text-center pt-2">{t.transaction.contractDisclaimer}</p>
+      <p className="text-[10px] text-muted-foreground text-center pt-2 print:hidden">{t.transaction.contractDisclaimer}</p>
     </div>
   );
 };
