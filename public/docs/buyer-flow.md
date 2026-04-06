@@ -76,7 +76,7 @@ flowchart TD
         T1 -->|Manual| TM["Manual Path\n- Download Template\n- Offline Checklist"]
         T2 --> T3["Step 3: Payment\n- Wire Transfer\n- Credit Card\n- Bank Financing\n- Leasing\n- Financing Calculator"]
         T3 --> T4["Step 4: Insurance\n- Haftpflicht / Teilkasko /\n  Vollkasko\n- Insurance Calculator\n- Integration Roadmap\n- Or Skip"]
-        T4 --> T5["Step 5: Complete\n- Summary of Deal\n- Next Steps\n- Car Marked SOLD"]
+        T4 --> T5["Step 5: Ownership Transfer\n- 11-Step Checklist\n- Austrian Legal Order\n- 7 Manual Steps\n- All Deadlines Parallel\n- Countdown Timers\n- Sell This Car (gated)"]
         TM --> T5
     end
 
@@ -108,5 +108,5 @@ flowchart TD
 | **Offer** | 1 | Submit offer amount + message |
 | **Negotiation** | 1-5 rounds | Counter-offers until agreement |
 | **KYC** | 3 | ID upload, selfie, address — required for contract signing |
-| **Transaction** | 5 | Method, contract, payment (with financing calculator), insurance (with estimate calculator), complete |
-| **Dashboard** | Ongoing | Manage offers, shortlists, acquisitions |
+| **Transaction** | 5 | Method, contract, payment (with financing calculator), insurance (with estimate calculator), ownership transfer checklist (11 steps, Austrian legal order, parallel deadlines) |
+| **Dashboard** | Ongoing | Manage offers, shortlists, acquisitions — "Sell This Car" gated behind 100% ownership transfer |
