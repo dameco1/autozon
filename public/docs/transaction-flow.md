@@ -239,6 +239,9 @@ The admin car card displays:
 Fully localized in EN and DE under `t.transaction.*` namespace, including:
 - All 11 ownership transfer checklist step labels and descriptions
 - Progress, countdown, overdue, and completion labels
-- Congratulations messages
+- Buyer congratulations messages (purchase-themed)
+- Seller congratulations messages (sale-themed)
+- Deadline warning labels with countdown placeholders
+- Info popover content explaining grace period, annulment process, and cost responsibilities
 - Document checklist labels (for seller views on earlier steps)
 - Warranty display
