@@ -21,7 +21,7 @@ interface Props {
   buyerName: string;
   sellerName: string;
   transactionId: string | null;
-  onContinue: (contractType: string) => void;
+  onContinue?: (contractType: string) => void;
   role?: "buyer" | "seller";
   contractSignedSeller?: boolean;
   contractSignedBuyer?: boolean;
