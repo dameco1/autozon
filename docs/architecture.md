@@ -104,7 +104,8 @@ supabase/
 │   ├── stripe-webhook/         # Stripe payment confirmation
 │   ├── verify-placement/       # Payment verification
 │   ├── get-placement-receipts/ # Stripe receipt retrieval
-│   ├── admin-actions/          # Admin API (user suspension, etc.)
+│   ├── admin-actions/          # Admin API (user suspension, transaction cancellation + Stripe refund)
+│   ├── check-deadlines/       # Scheduled deadline enforcement (pg_cron hourly)
 │   ├── seed-car-models/        # Static database seeder
 │   ├── seed-car-models-ai/     # AI-powered model seeder with MSRP (Gemini)
 │   ├── vin-decode/             # VINCARIO VIN decoder (4-endpoint: info + decode + OEM + stolen check)

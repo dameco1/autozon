@@ -62,12 +62,13 @@ flowchart TD
         T1 -->|Manual| TM["Manual Checklist\n- Download Contract Template\n- OEAMTC / ADAC Links\n- Deal Summary PDF"]
         T2 --> T3["Step 3: Payment\n- Wire Transfer\n- Credit Card max 10K EUR\n- Financing with Partners\n- Leasing with Partners"]
         T3 --> T4["Step 4: Insurance\n- Haftpflicht Liability\n- Teilkasko Partial\n- Vollkasko Comprehensive\n- Skip Option"]
-        T4 --> T5["Step 5: Complete\n- Full Summary\n- Next Steps Checklist\n- Car Status = SOLD"]
+        T4 --> T5["Step 5: Complete\n- Ownership Transfer Checklist\n- 7 Manual Steps (Austrian Order)\n- All Deadlines from Signing\n- Buyer + Seller in Parallel\n- Car Status = SOLD"]
         TM --> T5
     end
 
     subgraph SOLD["Post-Sale"]
         T5 --> SO1["Car Status: SOLD\n- Red SOLD Badge\n- No Edit / Delete\n- Transaction Link\n- Filtered from Active"]
+        SO1 --> SO2["Seller Completion View\n- Different congrats image\n- 'Find your next car'\n- Ownership badge"]
     end
 ```
 

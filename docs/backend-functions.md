@@ -84,9 +84,17 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Input**: Password string
 - **Output**: Boolean success
 
-### 11. `admin-actions`
-- **Purpose**: Admin-only operations (user suspension, car status changes)
+### 12. `admin-actions`
+- **Purpose**: Admin-only operations (user suspension, car status changes, transaction cancellation with Stripe refund)
 - **Auth**: Requires admin role
+- **Actions**: `suspend_user`, `reset_password`, `resend_invoice`, `cancel_transaction`
+- **Cancellation flow**: Sets status to `not_completed`, relists car, processes Stripe refund (buyer gets amount minus 50% of fees for card payments), notifies both parties
+
+### 13. `check-deadlines`
+- **Purpose**: Automated deadline enforcement for ownership transfer steps
+- **Auth**: Scheduled via `pg_cron` (hourly)
+- **Flow**: Calls `find_overdue_transactions()` → starts 24h grace period → escalates to `cancellation_pending` if unresolved → notifies admins
+- **Statuses**: `completed` → `grace_period` → `cancellation_pending`
 
 ## AI Integration Pattern
 
