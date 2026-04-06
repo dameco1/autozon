@@ -996,7 +996,8 @@ export const translations = {
     },
     dashboard: {
       title: "Dashboard",
-      subtitle: "Manage your cars, track valuations, and monitor matches",
+      subtitleGreeting: "Welcome",
+      subtitleBody: "here you can manage your cars, track valuations, and monitor matches.",
       listACar: "List a Car",
       addNew: "+ Add New",
       listedCars: "Listed Cars",
