@@ -24,6 +24,18 @@ export interface ContractData {
   buyerType?: PartyType;
 }
 
+// ── Brand colors ──
+const AMBER = { r: 217, g: 119, b: 6 };       // #D97706
+const AMBER_LIGHT = { r: 254, g: 243, b: 199 }; // #FEF3C7
+const AMBER_DARK = { r: 146, g: 64, b: 14 };    // #92400E
+const DARK = { r: 41, g: 37, b: 36 };            // #292524
+const GRAY = { r: 120, g: 113, b: 108 };         // #78716C
+const LIGHT_GRAY = { r: 214, g: 211, b: 209 };   // #D6D3D1
+const GREEN = { r: 22, g: 163, b: 74 };          // #16A34A
+const RED = { r: 220, g: 38, b: 38 };            // #DC2626
+const WHITE = { r: 255, g: 255, b: 255 };
+const CREAM = { r: 252, g: 250, b: 249 };        // #FCFAF9
+
 export function generateContractPdf(data: ContractData): jsPDF {
   const doc = new jsPDF();
   const {
@@ -36,145 +48,322 @@ export function generateContractPdf(data: ContractData): jsPDF {
 
   const workflow = getWorkflow(sellerType, buyerType);
   const pw = doc.internal.pageSize.getWidth();
+  const ph = doc.internal.pageSize.getHeight();
+  const margin = 20;
+  const contentW = pw - margin * 2;
   const dateStr = new Date(contractDate).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
+    day: "2-digit", month: "long", year: "numeric",
   });
-  let y = 20;
+  let y = 0;
 
   const checkPageBreak = (needed: number) => {
-    if (y + needed > 270) {
+    if (y + needed > ph - 30) {
+      addFooter();
       doc.addPage();
-      y = 20;
+      y = 25;
+      addPageHeader();
     }
   };
 
-  // ── Header ──
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.setTextColor(30);
-  doc.text("AUTOZON", pw / 2, y, { align: "center" });
-  y += 8;
-  doc.setFontSize(14);
-  doc.text("Vehicle Purchase Contract", pw / 2, y, { align: "center" });
-  y += 6;
-  doc.setFontSize(9);
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(100);
-  doc.text(`Kaufvertrag / Purchase Agreement`, pw / 2, y, { align: "center" });
-  y += 5;
-
-  // Role combo badge
-  const comboLabel = `${sellerType === "business" ? "Business" : "Private"} → ${buyerType === "business" ? "Business" : "Private"}`;
-  doc.text(`${comboLabel}  •  Ref: ${transactionId.slice(0, 8).toUpperCase()}  •  ${dateStr}`, pw / 2, y, { align: "center" });
-  y += 3;
-  doc.setDrawColor(200);
-  doc.line(20, y, pw - 20, y);
-  y += 10;
-
-  const section = (title: string) => {
-    checkPageBreak(20);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.setTextColor(30);
-    doc.text(title, 20, y);
-    y += 2;
-    doc.setDrawColor(220);
-    doc.line(20, y, pw - 20, y);
-    y += 7;
+  const setColor = (c: { r: number; g: number; b: number }) => {
+    doc.setTextColor(c.r, c.g, c.b);
   };
 
+  const formatSignDate = (d?: string) => {
+    if (!d) return dateStr;
+    return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
+  };
+
+  // ── Helper: rounded rect ──
+  const roundedRect = (x: number, ry: number, w: number, h: number, radius: number, fill: { r: number; g: number; b: number }, stroke?: { r: number; g: number; b: number }) => {
+    doc.setFillColor(fill.r, fill.g, fill.b);
+    if (stroke) {
+      doc.setDrawColor(stroke.r, stroke.g, stroke.b);
+      doc.setLineWidth(0.3);
+      doc.roundedRect(x, ry, w, h, radius, radius, "FD");
+    } else {
+      doc.roundedRect(x, ry, w, h, radius, radius, "F");
+    }
+  };
+
+  // ── Helper: digital stamp circle ──
+  const drawDigitalStamp = (cx: number, cy: number, radius: number, label: string, name: string, signed: boolean, signDate?: string) => {
+    // Outer circle
+    doc.setLineWidth(1.5);
+    doc.setDrawColor(signed ? GREEN.r : GRAY.r, signed ? GREEN.g : GRAY.g, signed ? GREEN.b : GRAY.b);
+    doc.circle(cx, cy, radius, "S");
+
+    // Inner circle
+    doc.setLineWidth(0.5);
+    doc.circle(cx, cy, radius - 2.5, "S");
+
+    // Top arc text
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(5.5);
+    setColor(signed ? GREEN : GRAY);
+    doc.text("AUTOZON", cx, cy - radius + 5.5, { align: "center" });
+
+    // Center content
+    doc.setFontSize(6);
+    setColor(signed ? GREEN : GRAY);
+    doc.text(signed ? "DIGITALLY" : "AWAITING", cx, cy - 3, { align: "center" });
+    doc.text(signed ? "SIGNED" : "SIGNATURE", cx, cy + 1, { align: "center" });
+
+    // Checkmark or clock icon
+    doc.setFontSize(10);
+    doc.text(signed ? "✓" : "○", cx, cy + 7, { align: "center" });
+
+    // Bottom arc text
+    doc.setFontSize(4.5);
+    doc.setFont("helvetica", "normal");
+    const shortName = name.length > 18 ? name.slice(0, 16) + "…" : name;
+    doc.text(shortName.toUpperCase(), cx, cy + radius - 4, { align: "center" });
+
+    // Label below stamp
+    doc.setFontSize(7);
+    doc.setFont("helvetica", "bold");
+    setColor(DARK);
+    doc.text(label, cx, cy + radius + 5, { align: "center" });
+
+    if (signed && signDate) {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(6);
+      setColor(GREEN);
+      doc.text(formatSignDate(signDate), cx, cy + radius + 9, { align: "center" });
+    } else if (!signed) {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(6);
+      setColor(GRAY);
+      doc.text("Pending / Ausstehend", cx, cy + radius + 9, { align: "center" });
+    }
+  };
+
+  // ── Helper: KYC verification badge ──
+  const drawKycBadge = (x: number, by: number, name: string, role: string, verified: boolean) => {
+    const badgeW = contentW / 2 - 5;
+    const badgeH = 18;
+    const bgColor = verified ? { r: 240, g: 253, b: 244 } : { r: 254, g: 242, b: 242 };
+    const borderColor = verified ? { r: 187, g: 247, b: 208 } : { r: 254, g: 202, b: 202 };
+
+    roundedRect(x, by, badgeW, badgeH, 2, bgColor, borderColor);
+
+    // Shield icon area
+    doc.setFontSize(10);
+    setColor(verified ? GREEN : RED);
+    doc.text(verified ? "✓" : "✗", x + 6, by + 7, { align: "center" });
+
+    // Text
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7);
+    setColor(verified ? GREEN : RED);
+    doc.text(verified ? "KYC VERIFIED" : "NOT VERIFIED", x + 12, by + 5.5);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(6.5);
+    setColor(DARK);
+    doc.text(`${role}: ${name}`, x + 12, by + 10);
+
+    doc.setFontSize(5.5);
+    setColor(GRAY);
+    doc.text(
+      verified
+        ? "Identity confirmed via Autozon KYC / Identität über Autozon KYC bestätigt"
+        : "Identity not yet verified / Identität noch nicht verifiziert",
+      x + 12, by + 14
+    );
+  };
+
+  // ── Page header for subsequent pages ──
+  const addPageHeader = () => {
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "bold");
+    setColor(AMBER);
+    doc.text("autozon", margin, 15);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(6);
+    setColor(GRAY);
+    doc.text(`Ref: ${transactionId.slice(0, 8).toUpperCase()}`, pw - margin, 15, { align: "right" });
+    doc.setDrawColor(AMBER.r, AMBER.g, AMBER.b);
+    doc.setLineWidth(0.3);
+    doc.line(margin, 18, pw - margin, 18);
+  };
+
+  // ── Footer ──
+  const addFooter = () => {
+    const fy = ph - 12;
+    doc.setDrawColor(LIGHT_GRAY.r, LIGHT_GRAY.g, LIGHT_GRAY.b);
+    doc.setLineWidth(0.2);
+    doc.line(margin, fy - 3, pw - margin, fy - 3);
+
+    doc.setFontSize(5.5);
+    doc.setFont("helvetica", "normal");
+    setColor(GRAY);
+    doc.text(
+      "This contract was generated and facilitated by Autozon. Autozon is not a party to this agreement. / Dieser Vertrag wurde von Autozon erstellt und vermittelt. Autozon ist nicht Vertragspartei.",
+      margin, fy
+    );
+    doc.text(`© ${new Date().getFullYear()} Autozon  •  autozon.lovable.app`, pw - margin, fy, { align: "right" });
+  };
+
+  // ── Section header ──
+  const section = (title: string) => {
+    checkPageBreak(20);
+    // Amber left bar
+    doc.setFillColor(AMBER.r, AMBER.g, AMBER.b);
+    doc.rect(margin, y - 1, 2, 7, "F");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    setColor(DARK);
+    doc.text(title, margin + 6, y + 4);
+    y += 10;
+  };
+
+  // ── Field row ──
   const field = (label: string, value: string) => {
     checkPageBreak(8);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(100);
-    doc.text(label, 24, y);
+    doc.setFontSize(7.5);
+    setColor(GRAY);
+    doc.text(label, margin + 6, y);
     doc.setFont("helvetica", "bold");
-    doc.setTextColor(30);
-    doc.text(value, 90, y);
-    y += 6;
+    doc.setFontSize(8);
+    setColor(DARK);
+    doc.text(value, margin + 65, y);
+    y += 5.5;
   };
 
-  // ── 1. Parties ──
+  // ════════════════════════════════════════════════════════════════
+  // PAGE 1 — HEADER
+  // ════════════════════════════════════════════════════════════════
+
+  // Amber top bar
+  doc.setFillColor(AMBER.r, AMBER.g, AMBER.b);
+  doc.rect(0, 0, pw, 4, "F");
+
+  // Header background
+  roundedRect(margin, 10, contentW, 42, 3, CREAM, LIGHT_GRAY);
+
+  // Logo
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(26);
+  setColor(AMBER);
+  doc.text("autozon", pw / 2, 25, { align: "center" });
+
+  // Title
+  doc.setFontSize(13);
+  setColor(DARK);
+  doc.text("Kaufvertrag / Purchase Agreement", pw / 2, 33, { align: "center" });
+
+  // Subtitle info
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7);
+  setColor(GRAY);
+  const comboLabel = `${sellerType === "business" ? "Business" : "Private"} → ${buyerType === "business" ? "Business" : "Private"}`;
+  doc.text(`${comboLabel}  •  Ref: ${transactionId.slice(0, 8).toUpperCase()}  •  ${dateStr}`, pw / 2, 40, { align: "center" });
+
+  // Thin amber accent line
+  doc.setDrawColor(AMBER.r, AMBER.g, AMBER.b);
+  doc.setLineWidth(0.5);
+  doc.line(pw / 2 - 30, 44, pw / 2 + 30, 44);
+
+  y = 60;
+
+  // ════════════════════════════════════════════════════════════════
+  // §1 — CONTRACTING PARTIES
+  // ════════════════════════════════════════════════════════════════
   section("§1 — Contracting Parties / Vertragsparteien");
   field("Seller / Verkäufer:", sellerName);
   field("Seller Type / Typ:", sellerType === "business" ? "Business / Unternehmen" : "Private / Privatperson");
   field("Country / Land:", sellerCountry);
   field("Buyer / Käufer:", buyerName);
   field("Buyer Type / Typ:", buyerType === "business" ? "Business / Unternehmen" : "Private / Privatperson");
-  y += 3;
+  y += 4;
 
-  // ── 2. Identity Verification ──
+  // ════════════════════════════════════════════════════════════════
+  // §2 — IDENTITY VERIFICATION (KYC BADGES)
+  // ════════════════════════════════════════════════════════════════
   section("§2 — Identity Verification / Identitätsprüfung");
+
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(60);
+  doc.setFontSize(7);
+  setColor(GRAY);
   const kycIntro = "Both parties have undergone digital identity verification (KYC) through Autozon's certified verification partner. / Beide Parteien haben eine digitale Identitätsprüfung (KYC) über den zertifizierten Verifizierungspartner von Autozon durchlaufen.";
-  const kycLines = doc.splitTextToSize(kycIntro, pw - 50);
-  doc.text(kycLines, 24, y);
-  y += kycLines.length * 4 + 4;
+  const kycLines = doc.splitTextToSize(kycIntro, contentW - 12);
+  doc.text(kycLines, margin + 6, y);
+  y += kycLines.length * 3.5 + 4;
 
-  // KYC badges
-  const kycBadge = (label: string, name: string, verified: boolean, xPos: number) => {
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8);
-    doc.setTextColor(verified ? 22 : 180, verified ? 163 : 50, verified ? 74 : 50);
-    doc.text(`${label}: ${name}`, xPos, y);
-    y += 4;
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(7);
-    doc.text(verified ? "✓ Identity Verified / Identität verifiziert" : "✗ Not Verified / Nicht verifiziert", xPos, y);
-  };
+  // KYC Badges side by side
+  checkPageBreak(25);
+  drawKycBadge(margin, y, sellerName, "Seller / Verkäufer", sellerKycVerified);
+  drawKycBadge(margin + contentW / 2 + 5, y, buyerName, "Buyer / Käufer", buyerKycVerified);
+  y += 24;
 
-  const savedY = y;
-  kycBadge("Seller / Verkäufer", sellerName, sellerKycVerified, 24);
-  y = savedY;
-  kycBadge("Buyer / Käufer", buyerName, buyerKycVerified, pw / 2 + 10);
-  y += 8;
-
-  // ── 3. Vehicle ──
+  // ════════════════════════════════════════════════════════════════
+  // §3 — VEHICLE
+  // ════════════════════════════════════════════════════════════════
   section("§3 — Vehicle / Fahrzeug");
-  field("Make / Marke:", car.make);
-  field("Model / Modell:", car.model);
-  field("Year / Baujahr:", String(car.year));
-  field("VIN / FIN:", car.vin || "—");
-  y += 3;
 
-  // ── 4. Purchase Price ──
-  section("§4 — Purchase Price / Kaufpreis");
+  // Vehicle info card
+  checkPageBreak(28);
+  roundedRect(margin, y, contentW, 22, 2, { r: 250, g: 250, b: 249 }, LIGHT_GRAY);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  setColor(DARK);
+  doc.text(`${car.year} ${car.make} ${car.model}`, margin + 6, y + 8);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7);
+  setColor(GRAY);
+  doc.text(`VIN / FIN: ${car.vin || "—"}`, margin + 6, y + 14);
+
+  // Price badge
+  const priceText = `€${agreedPrice.toLocaleString()}`;
+  const priceW = doc.getTextWidth(priceText) * 1.8 + 10;
+  roundedRect(pw - margin - priceW - 4, y + 3, priceW + 4, 16, 2, AMBER_LIGHT, AMBER);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.setTextColor(22, 163, 74);
-  doc.text(`€${agreedPrice.toLocaleString()}`, 24, y);
-  doc.setFontSize(9);
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(100);
-  doc.text("(agreed purchase price / vereinbarter Kaufpreis)", 80, y);
-  y += 10;
+  setColor(AMBER_DARK);
+  doc.text(priceText, pw - margin - priceW / 2 - 2, y + 13.5, { align: "center" });
 
-  // ── 5. Warranty / Gewährleistung ──
-  section("§5 — Warranty / Gewährleistung");
+  y += 28;
+
+  // ════════════════════════════════════════════════════════════════
+  // §4 — WARRANTY
+  // ════════════════════════════════════════════════════════════════
+  section("§4 — Warranty / Gewährleistung");
+
+  // Warranty badge
+  checkPageBreak(18);
+  const warrantyBg = workflow.warrantyConfig.type === "statutory_2y"
+    ? { r: 240, g: 253, b: 244 }
+    : workflow.warrantyConfig.type === "negotiable"
+      ? { r: 254, g: 252, b: 232 }
+      : { r: 245, g: 245, b: 244 };
+  const warrantyBorder = workflow.warrantyConfig.type === "statutory_2y"
+    ? GREEN
+    : workflow.warrantyConfig.type === "negotiable"
+      ? AMBER
+      : GRAY;
+
+  roundedRect(margin, y, contentW, 14, 2, warrantyBg, warrantyBorder);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.setTextColor(30);
-  doc.text(workflow.warrantyConfig.label, 24, y);
-  y += 5;
-  doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
-  doc.setTextColor(60);
-  const warrantyLines = doc.splitTextToSize(
-    `${workflow.warrantyConfig.description}\n${workflow.warrantyConfig.description_de}`,
-    pw - 50
-  );
-  doc.text(warrantyLines, 24, y);
-  y += warrantyLines.length * 4 + 5;
+  setColor(warrantyBorder);
+  doc.text(workflow.warrantyConfig.label, margin + 6, y + 5.5);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(6.5);
+  setColor(GRAY);
+  const wLines = doc.splitTextToSize(workflow.warrantyConfig.description, contentW - 16);
+  doc.text(wLines[0] || "", margin + 6, y + 10);
+  y += 19;
 
-  // ── 6. Terms and Conditions ──
-  section("§6 — Terms and Conditions / Vertragsbedingungen");
+  // ════════════════════════════════════════════════════════════════
+  // §5 — TERMS AND CONDITIONS
+  // ════════════════════════════════════════════════════════════════
+  section("§5 — Terms and Conditions / Vertragsbedingungen");
 
-  // Base clauses
   const baseClauses = [
     "The vehicle is sold as inspected and test-driven by the buyer. / Das Fahrzeug wird verkauft wie vom Käufer besichtigt und probegefahren.",
     "The seller warrants legal ownership and confirms no liens, encumbrances, or third-party claims exist on the vehicle. / Der Verkäufer garantiert das rechtliche Eigentum und bestätigt, dass keine Pfandrechte oder Ansprüche Dritter bestehen.",
@@ -186,121 +375,102 @@ export function generateContractPdf(data: ContractData): jsPDF {
     "Both contracting parties have been digitally identified and verified through Autozon's KYC process. / Beide Vertragsparteien wurden digital identifiziert und über den KYC-Prozess von Autozon verifiziert.",
   ];
 
-  // Add role-specific extra clauses
   const allClauses = [
     ...baseClauses,
     ...workflow.extraClauses.map((c) => `${c.en} / ${c.de}`),
   ];
 
-  doc.setFontSize(8);
-  doc.setTextColor(60);
+  doc.setFontSize(7);
   allClauses.forEach((c, i) => {
-    checkPageBreak(15);
+    checkPageBreak(14);
+
+    // Clause number badge
+    doc.setFillColor(AMBER_LIGHT.r, AMBER_LIGHT.g, AMBER_LIGHT.b);
+    doc.roundedRect(margin + 2, y - 3, 8, 5, 1, 1, "F");
     doc.setFont("helvetica", "bold");
-    doc.text(`${i + 1}.`, 24, y);
+    doc.setFontSize(6);
+    setColor(AMBER_DARK);
+    doc.text(`${i + 1}`, margin + 6, y, { align: "center" });
+
     doc.setFont("helvetica", "normal");
-    const lines = doc.splitTextToSize(c, pw - 60);
-    doc.text(lines, 30, y);
-    y += lines.length * 4 + 3;
+    doc.setFontSize(7);
+    setColor(DARK);
+    const lines = doc.splitTextToSize(c, contentW - 20);
+    doc.text(lines, margin + 14, y);
+    y += lines.length * 3.5 + 3;
   });
 
-  y += 5;
+  y += 4;
 
-  // ── 7. Required Documents ──
-  checkPageBreak(30);
-  section("§7 — Required Documents / Erforderliche Dokumente");
-  doc.setFontSize(8);
-  doc.setTextColor(60);
+  // ════════════════════════════════════════════════════════════════
+  // §6 — REQUIRED DOCUMENTS
+  // ════════════════════════════════════════════════════════════════
+  checkPageBreak(35);
+  section("§6 — Required Documents / Erforderliche Dokumente");
 
-  doc.setFont("helvetica", "bold");
-  doc.text("Seller Documents / Verkäuferunterlagen:", 24, y);
-  y += 5;
-  doc.setFont("helvetica", "normal");
-  workflow.sellerDocuments.filter(d => d.required).forEach((d) => {
-    checkPageBreak(6);
-    doc.text(`• ${d.label}`, 28, y);
-    y += 4;
-  });
-  y += 3;
+  const drawDocList = (title: string, docs: typeof workflow.sellerDocuments) => {
+    checkPageBreak(10);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.5);
+    setColor(AMBER_DARK);
+    doc.text(title, margin + 6, y);
+    y += 5;
 
-  doc.setFont("helvetica", "bold");
-  doc.text("Buyer Documents / Käuferunterlagen:", 24, y);
-  y += 5;
-  doc.setFont("helvetica", "normal");
-  workflow.buyerDocuments.filter(d => d.required).forEach((d) => {
-    checkPageBreak(6);
-    doc.text(`• ${d.label}`, 28, y);
-    y += 4;
-  });
-  y += 5;
-
-  // ── 8. Signatures ──
-  checkPageBreak(40);
-  section("§8 — Digital Signatures / Digitale Unterschriften");
-  doc.setFontSize(9);
-  doc.setTextColor(60);
-
-  const formatSignDate = (d?: string) => {
-    if (!d) return dateStr;
-    return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    setColor(DARK);
+    docs.filter(d => d.required).forEach((d) => {
+      checkPageBreak(5);
+      setColor(AMBER);
+      doc.text("•", margin + 8, y);
+      setColor(DARK);
+      doc.text(d.label, margin + 14, y);
+      y += 4;
+    });
+    y += 3;
   };
 
-  // Seller
-  doc.setFont("helvetica", "normal");
-  doc.text("Seller / Verkäufer:", 24, y);
-  y += 5;
-  doc.setDrawColor(180);
-  doc.line(24, y, 90, y);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(30);
-  doc.text(sellerName, 24, y + 5);
-  doc.setFont("helvetica", "normal");
-  if (contractSignedSeller) {
-    doc.setTextColor(22, 163, 74);
-    doc.text("Signed digitally / Digital unterzeichnet", 24, y + 10);
-    doc.setTextColor(100);
-    doc.text(formatSignDate(sellerSignedDate), 24, y + 15);
-  } else {
-    doc.setTextColor(200, 100, 0);
-    doc.text("Pending / Ausstehend", 24, y + 10);
-  }
+  drawDocList("Seller Documents / Verkäuferunterlagen:", workflow.sellerDocuments);
+  drawDocList("Buyer Documents / Käuferunterlagen:", workflow.buyerDocuments);
+  y += 2;
 
-  // Buyer
-  const bx = pw / 2 + 10;
-  doc.setTextColor(60);
-  doc.text("Buyer / Käufer:", bx, y - 5);
-  doc.line(bx, y, bx + 66, y);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(30);
-  doc.text(buyerName, bx, y + 5);
+  // ════════════════════════════════════════════════════════════════
+  // §7 — DIGITAL SIGNATURES (STAMPS)
+  // ════════════════════════════════════════════════════════════════
+  checkPageBreak(65);
+  section("§7 — Digital Signatures / Digitale Unterschriften");
+
   doc.setFont("helvetica", "normal");
-  if (contractSignedBuyer) {
-    doc.setTextColor(22, 163, 74);
-    doc.text("Signed digitally / Digital unterzeichnet", bx, y + 10);
-    doc.setTextColor(100);
-    doc.text(formatSignDate(buyerSignedDate), bx, y + 15);
-  } else {
-    doc.setTextColor(200, 100, 0);
-    doc.text("Pending / Ausstehend", bx, y + 10);
-  }
-
-  y += 25;
-
-  // ── Footer ──
-  const fy = doc.internal.pageSize.getHeight() - 15;
-  doc.setFontSize(7);
-  doc.setTextColor(160);
+  doc.setFontSize(6.5);
+  setColor(GRAY);
   doc.text(
-    "This contract was generated and facilitated by Autozon. Autozon is not a party to this agreement.",
-    20,
-    fy
+    "Digital signatures are recorded through Autozon's secure platform. Each stamp below confirms the signing party's digital consent. / Digitale Unterschriften werden über die sichere Autozon-Plattform erfasst.",
+    margin + 6, y
   );
-  doc.text(
-    "Dieser Vertrag wurde von Autozon erstellt und vermittelt. Autozon ist nicht Vertragspartei.",
-    20,
-    fy + 4
-  );
-  doc.text(`© ${new Date().getFullYear()} Autozon`, pw - 20, fy, { align: "right" });
+  y += 6;
+
+  // Signature stamps area with background
+  checkPageBreak(50);
+  const stampAreaY = y;
+  roundedRect(margin, stampAreaY, contentW, 48, 3, { r: 250, g: 250, b: 249 }, LIGHT_GRAY);
+
+  // Draw two digital stamp circles
+  const stampRadius = 16;
+  const sellerCx = margin + contentW / 4;
+  const buyerCx = margin + (contentW * 3) / 4;
+  const stampCy = stampAreaY + 20;
+
+  drawDigitalStamp(sellerCx, stampCy, stampRadius, "Seller / Verkäufer", sellerName, contractSignedSeller, sellerSignedDate);
+  drawDigitalStamp(buyerCx, stampCy, stampRadius, "Buyer / Käufer", buyerName, contractSignedBuyer, buyerSignedDate);
+
+  y = stampAreaY + 52;
+
+  // ── Add footer to last page ──
+  addFooter();
+
+  // ── Amber bottom bar ──
+  doc.setFillColor(AMBER.r, AMBER.g, AMBER.b);
+  doc.rect(0, ph - 4, pw, 4, "F");
 
   return doc;
 }
