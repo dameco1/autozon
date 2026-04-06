@@ -102,38 +102,49 @@ All post-completion steps are consolidated into a single **Ownership Transfer Ch
 
 ### Checklist Structure (Austrian Legal Order)
 
-| # | Step | Responsible | Deadline | Description |
-|---|------|-------------|----------|-------------|
+All manual step deadlines run **in parallel from contract signing** (Step 5 entry), allowing buyer and seller to work simultaneously.
+
+| # | Step | Responsible | Deadline (from signing) | Description |
+|---|------|-------------|------------------------|-------------|
 | 1 | Government-issued ID (KYC) | Digital (Auto) | — | Identity verified through KYC process |
 | 2 | Purchase Contract Signed | Digital (Auto) | — | Contract type (Autozon/ÖAMTC/ADAC) |
 | 3 | Countersigned Contract Issued | Digital (Auto) | — | Both parties have signed |
 | 4 | Payment Completed | Digital/Manual | — | Method and amount displayed inline |
-| 5 | Vehicle Inspection Completed | Buyer | 72h after Step 5 begins | Physical or professional inspection (ÖAMTC/ARBÖ/mechanic) |
-| 6 | Buyer Arranges Insurance (Haftpflicht) | Buyer | 48h after inspection | eVB number required before registration |
-| 7 | Seller Deregistration (Abmeldung) | Seller | 48h after insurance confirmed | Skip if already deregistered |
-| 8 | Buyer Registration (Anmeldung) | Buyer | 7 days after deregistration | Requires eVB, Zulassungsschein I & II, COC, ID |
-| 9 | Registration Plates Received | Buyer | 24h after registration | Plates issued and mounted |
-| 10 | Registration Certificate Part I & II Issued | Buyer | Instant (at registration) | Part of the registration process |
-| 11 | Vehicle Handover | Buyer + Seller | 72h after registration | Keys, docs, service book, vehicle — digital handover protocol via Autozon |
+| 5 | Vehicle Inspection Completed | Buyer | 72h (3 days) | Physical or professional inspection (ÖAMTC/ARBÖ/mechanic) |
+| 6 | Buyer Arranges Insurance (Haftpflicht) | Buyer | 120h (5 days) | Mandatory liability insurance — eVB number required before registration |
+| 7 | Seller Deregistration (Abmeldung) | Seller | 120h (5 days) | Deregisters vehicle at Zulassungsstelle (skip if already deregistered) |
+| 8 | Buyer Registration (Anmeldung) | Buyer | 288h (12 days) | Requires eVB, Zulassungsschein I & II, COC, ID |
+| 9 | Registration Plates Received | Buyer | 312h (13 days) | Plates issued and mounted |
+| 10 | Registration Certificate Part I & II Issued | Buyer | 312h (13 days) | Issued at registration — part of the process |
+| 11 | Vehicle Handover | Buyer + Seller | 384h (16 days) | Keys, docs, service book, vehicle — digital handover protocol via Autozon |
+
+### Deadline Enforcement
+
+- All manual step timers start simultaneously from contract signing (not sequentially)
+- **Countdown timers** appear inline next to each step with its deadline
+- **Warning labels** explain consequences of missed deadlines with an info (ℹ️) popover
+- **Overdue warnings** with red visual indicators when deadlines are missed
+- If a deadline expires → transaction enters **24h grace period** (Autozon support contacts both parties)
+- If unresolved → status changes to **cancellation_pending** → admin confirms annulment
+- Card payments: Stripe fees split 50/50 between buyer and seller
+- Other payments: full refund to buyer, no platform costs
 
 ### Features
 - **Digital steps** are system-managed, locked with a shield/check icon and "Auto" badge
-- **Manual steps** are buyer-controlled checkboxes; once checked, cannot be reversed
-- **Countdown timers** appear inline next to steps with deadlines (inspection: 72h, handover: 14d, registration: 7d)
-- **Overdue warnings** with red visual indicators when deadlines are missed
+- **Manual steps** are buyer/seller-controlled checkboxes; once checked, cannot be reversed
 - Progress bar shows completion percentage
 - All step completions persisted in `transaction_deadlines` table
 - Deadline records auto-seeded on first Step 5 load
 
 ### Completion
-When all 11 steps are checked, a **Congratulations** celebration section appears with:
-- Celebratory image
-- Personalized message with vehicle make/model
-- "Ownership Transfer Completed" badge
+When all 11 steps are checked:
+- **Buyer** sees: Congratulations celebration with purchase-themed image and "Enjoy the ride!" message
+- **Seller** sees: Congratulations with sale-themed image and "Use Autozon to find your next car!" message
+- Both see: "Ownership Transfer Completed" badge
 
 ### Post-Completion
 - Transaction record remains permanently in buyer's dashboard "Buying" tab
-- "Sell This Car" button allows converting the purchased vehicle into a new listing
+- **"Sell This Car" button is gated** — only clickable once all ownership transfer steps are 100% complete
 - Full contract remains viewable and printable
 
 ## Car Status After Completion
