@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, Download, ArrowRight, FileText, CreditCard, Shield, PartyPopper } from "lucide-react";
+import { CheckCircle2, Download, ArrowRight, FileText, CreditCard, Shield, PartyPopper, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import ValuationFeedback from "./ValuationFeedback";
