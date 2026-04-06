@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, ChevronDown, PartyPopper, FileText, Shield, Car, ClipboardCheck, Lock, ArrowRight } from "lucide-react";
+import { CheckCircle2, ChevronDown, PartyPopper, ClipboardCheck, Lock, AlertTriangle, Clock, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -26,7 +26,15 @@ type OwnershipStep = {
   key: string;
   label: string;
   description: string;
-  digital: boolean; // true = system-managed, false = manual
+  digital: boolean;
+  deadlineKey?: string; // maps to a deadline step_type for countdown
+};
+
+// Deadline config embedded (matching roleWorkflow STANDARD_DEADLINES minus NoVA)
+const DEADLINE_MAP: Record<string, number> = {
+  vehicle_inspection: 72,       // 3 days
+  vehicle_handover: 336,        // 14 days
+  buyer_registration: 168,      // 7 days
 };
 
 const StepComplete: React.FC<Props> = ({
@@ -53,57 +61,75 @@ const StepComplete: React.FC<Props> = ({
     ? t.acquisition.comprehensive
     : t.transaction.noInsurance;
 
-  // Ownership transfer steps
+  // Ownership transfer steps — everything in one checklist
   const ownershipSteps: OwnershipStep[] = [
-    { key: "contract_signed", label: "Purchase Contract Signed", description: `${contractLabel} Kaufvertrag`, digital: true },
+    { key: "kyc_verified", label: "Government-issued ID (verified via KYC)", description: "Identity verified through KYC process", digital: true },
+    { key: "contract_signed", label: `Purchase Contract Signed — ${contractLabel}`, description: `${contractLabel} Kaufvertrag`, digital: true },
     { key: "countersigned", label: "Countersigned Contract Issued", description: "Both parties have signed", digital: true },
     { key: "payment_done", label: `Payment Completed (${paymentLabel} — €${agreedPrice.toLocaleString()})`, description: paymentMethod === "card" ? "Stripe payment confirmed" : paymentMethod === "credit" ? "Financing partner confirmed" : paymentMethod === "leasing" ? "Leasing partner confirmed" : "Bank transfer confirmed", digital: paymentMethod === "card" },
     { key: "insurance_arranged", label: `Insurance: ${insuranceLabel}`, description: insuranceTier ? "Insurance coverage active" : "Buyer arranging independently", digital: !!insuranceTier },
-    { key: "vehicle_inspection", label: "Vehicle Inspection Completed", description: "Buyer has inspected the vehicle", digital: false },
-    { key: "vehicle_handover", label: "Vehicle Handover", description: "Keys, documents, and vehicle handed over", digital: false },
+    { key: "vehicle_inspection", label: "Vehicle Inspection Completed", description: "Buyer has inspected the vehicle", digital: false, deadlineKey: "vehicle_inspection" },
+    { key: "vehicle_handover", label: "Vehicle Handover", description: "Keys, documents, and vehicle handed over", digital: false, deadlineKey: "vehicle_handover" },
     { key: "deregistration", label: "Seller Deregistration (Abmeldung)", description: "Seller deregistered vehicle at Zulassungsstelle", digital: false },
-    { key: "buyer_registration", label: "Buyer Registration (Anmeldung)", description: "New registration at Zulassungsstelle", digital: false },
+    { key: "buyer_registration", label: "Buyer Registration (Anmeldung)", description: "New registration at Zulassungsstelle", digital: false, deadlineKey: "buyer_registration" },
     { key: "plates_received", label: "Registration Plates Received", description: "New plates mounted on vehicle", digital: false },
     { key: "registration_cert", label: "Registration Certificate Part I & II", description: "Zulassungsschein Teil I & II in buyer's name", digital: false },
   ];
 
-  // Track checked steps
   const [checkedSteps, setCheckedSteps] = useState<Record<string, boolean>>({});
+  const [deadlines, setDeadlines] = useState<Record<string, { deadline_at: string; id: string }>>({});
   const [saving, setSaving] = useState(false);
+  const [now, setNow] = useState(new Date());
 
-  // Load saved progress from transaction deadlines
+  // Tick every minute for countdowns
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Load saved progress and deadlines
   useEffect(() => {
     if (!transactionId) return;
     const load = async () => {
       const { data } = await supabase
         .from("transaction_deadlines")
-        .select("step_type, status")
+        .select("step_type, status, deadline_at, id")
         .eq("transaction_id", transactionId);
       if (data) {
         const map: Record<string, boolean> = {};
-        data.forEach(d => { map[d.step_type] = d.status === "completed"; });
+        const dlMap: Record<string, { deadline_at: string; id: string }> = {};
+        data.forEach(d => {
+          map[d.step_type] = d.status === "completed";
+          dlMap[d.step_type] = { deadline_at: d.deadline_at, id: d.id };
+        });
         setCheckedSteps(map);
+        setDeadlines(dlMap);
       }
     };
     load();
   }, [transactionId]);
 
-  // Digital steps are auto-checked
   const isStepChecked = (step: OwnershipStep) => {
     if (step.digital) return true;
     return !!checkedSteps[step.key];
   };
 
-  const allManualDone = ownershipSteps.filter(s => !s.digital).every(s => checkedSteps[s.key]);
   const ownershipComplete = ownershipSteps.every(s => isStepChecked(s));
+
+  const formatCountdown = (deadlineAt: string): { text: string; isOverdue: boolean } => {
+    const diff = new Date(deadlineAt).getTime() - now.getTime();
+    if (diff <= 0) return { text: "Overdue", isOverdue: true };
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(hours / 24);
+    const rem = hours % 24;
+    return { text: days > 0 ? `${days}d ${rem}h` : `${hours}h`, isOverdue: false };
+  };
 
   const handleCheckStep = async (stepKey: string) => {
     if (!transactionId) return;
-    // Cannot uncheck once checked
     if (checkedSteps[stepKey]) return;
 
     setSaving(true);
-    // Upsert into transaction_deadlines
     const { data: existing } = await supabase
       .from("transaction_deadlines")
       .select("id")
@@ -123,7 +149,7 @@ const StepComplete: React.FC<Props> = ({
           transaction_id: transactionId,
           step_type: stepKey,
           label: ownershipSteps.find(s => s.key === stepKey)?.label || stepKey,
-          deadline_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          deadline_at: new Date(Date.now() + (DEADLINE_MAP[stepKey] || 336) * 60 * 60 * 1000).toISOString(),
           status: "completed",
           completed_at: new Date().toISOString(),
         } as any);
@@ -171,7 +197,7 @@ const StepComplete: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* What Happens Next — Ownership Transfer Checklist */}
+      {/* Ownership Transfer Checklist — everything consolidated */}
       <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 text-left mb-6">
         <h3 className="font-display font-bold text-foreground mb-2 text-lg flex items-center gap-2">
           <ClipboardCheck className="h-5 w-5 text-primary" /> Ownership Transfer Checklist
@@ -181,9 +207,10 @@ const StepComplete: React.FC<Props> = ({
         </p>
 
         <div className="space-y-3">
-          {ownershipSteps.map((step, i) => {
+          {ownershipSteps.map((step) => {
             const checked = isStepChecked(step);
-            const isManual = !step.digital;
+            const dl = step.deadlineKey ? deadlines[step.deadlineKey] || deadlines[step.key] : null;
+            const countdown = dl && !checked ? formatCountdown(dl.deadline_at) : null;
 
             return (
               <div
@@ -191,13 +218,19 @@ const StepComplete: React.FC<Props> = ({
                 className={`flex items-start gap-3 p-3 rounded-xl border transition-colors ${
                   checked
                     ? "bg-emerald-500/5 border-emerald-500/20"
+                    : countdown?.isOverdue
+                    ? "bg-destructive/5 border-destructive/20"
                     : "bg-background/50 border-border/50"
                 }`}
               >
                 {step.digital ? (
                   <div className="mt-0.5 flex-shrink-0">
                     <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                      {step.key === "kyc_verified" ? (
+                        <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
+                      ) : (
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -211,7 +244,7 @@ const StepComplete: React.FC<Props> = ({
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className={`text-sm font-medium ${checked ? "text-emerald-600 line-through" : "text-foreground"}`}>
                       {step.label}
                     </span>
@@ -223,9 +256,22 @@ const StepComplete: React.FC<Props> = ({
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>
                 </div>
-                {checked && (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0 mt-1" />
-                )}
+                {/* Countdown timer or completed check */}
+                <div className="flex items-center gap-2 flex-shrink-0 mt-1">
+                  {checked ? (
+                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                  ) : countdown ? (
+                    countdown.isOverdue ? (
+                      <span className="flex items-center gap-1 text-xs font-semibold text-destructive">
+                        <AlertTriangle className="h-3 w-3" /> {countdown.text}
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground font-mono">
+                        <Clock className="h-3 w-3" /> {countdown.text}
+                      </span>
+                    )
+                  ) : null}
+                </div>
               </div>
             );
           })}
@@ -271,7 +317,7 @@ const StepComplete: React.FC<Props> = ({
             <p className="text-muted-foreground text-sm mb-4">
               Ownership transfer is complete. This vehicle is now officially yours. Enjoy the ride!
             </p>
-            <Badge status="complete" />
+            <CompleteBadge />
           </div>
         </motion.div>
       )}
@@ -279,7 +325,7 @@ const StepComplete: React.FC<Props> = ({
   );
 };
 
-const Badge: React.FC<{ status: string }> = ({ status }) => (
+const CompleteBadge: React.FC = () => (
   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-bold">
     <CheckCircle2 className="h-3.5 w-3.5" /> Ownership Transfer Completed
   </span>
