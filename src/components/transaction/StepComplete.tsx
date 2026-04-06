@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, Download, ArrowRight, FileText, CreditCard, Shield, PartyPopper } from "lucide-react";
+import { CheckCircle2, Download, ArrowRight, FileText, CreditCard, Shield, PartyPopper, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import ValuationFeedback from "./ValuationFeedback";
@@ -99,6 +99,18 @@ const StepComplete: React.FC<Props> = ({
           <li className="flex items-start gap-2"><span className="text-primary font-bold">4.</span> {t.transaction.nextStep4}</li>
         </ol>
       </div>
+
+      {/* Scroll to contract button */}
+      <Button
+        variant="outline"
+        className="w-full border-primary/30 text-primary hover:bg-primary/5 font-semibold py-6 rounded-xl"
+        onClick={() => {
+          const contractEl = document.getElementById("contract-printable");
+          if (contractEl) contractEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }}
+      >
+        <ChevronDown className="mr-2 h-5 w-5 animate-bounce" /> View Contract & Next Steps
+      </Button>
 
     </motion.div>
   );
