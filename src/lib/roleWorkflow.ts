@@ -70,17 +70,16 @@ const BUYER_DOCS_BUSINESS: DocumentRequirement[] = [
   { document_type: "proof_of_payment", label: "Proof of Payment / Bank Transfer", label_de: "Zahlungsnachweis / Überweisung", required: true, uploader_role: "buyer" },
 ];
 
-// ─── Deadlines (hours — sequential from previous step completion) ───
-// These are MAXIMUM windows per step, not cumulative from contract signing.
+// ─── Deadlines (hours from contract signing — all run in parallel) ───
 
 const STANDARD_DEADLINES: DeadlineConfig[] = [
   { step_type: "vehicle_inspection", label: "Vehicle Inspection", label_de: "Fahrzeuginspektion", hours: 72 },
-  { step_type: "buyer_insurance", label: "Buyer Insurance (eVB)", label_de: "Käufer-Versicherung (eVB)", hours: 48 },
-  { step_type: "deregistration", label: "Seller Deregistration", label_de: "Abmeldung durch Verkäufer", hours: 48 },
-  { step_type: "buyer_registration", label: "Buyer Registration", label_de: "Anmeldung durch Käufer", hours: 168 }, // 7 days
-  { step_type: "plates_received", label: "Registration Plates Received", label_de: "Kennzeichen erhalten", hours: 24 },
-  { step_type: "registration_cert", label: "Registration Certificate I & II", label_de: "Zulassungsschein Teil I & II", hours: 0 }, // instant at registration
-  { step_type: "vehicle_handover", label: "Vehicle Handover", label_de: "Fahrzeugübergabe", hours: 72 },
+  { step_type: "buyer_insurance", label: "Buyer Insurance (eVB)", label_de: "Käufer-Versicherung (eVB)", hours: 120 },
+  { step_type: "deregistration", label: "Seller Deregistration", label_de: "Abmeldung durch Verkäufer", hours: 120 },
+  { step_type: "buyer_registration", label: "Buyer Registration", label_de: "Anmeldung durch Käufer", hours: 288 },
+  { step_type: "plates_received", label: "Registration Plates Received", label_de: "Kennzeichen erhalten", hours: 312 },
+  { step_type: "registration_cert", label: "Registration Certificate I & II", label_de: "Zulassungsschein Teil I & II", hours: 312 },
+  { step_type: "vehicle_handover", label: "Vehicle Handover", label_de: "Fahrzeugübergabe", hours: 384 },
 ];
 
 // ─── Workflow definitions by role combo ───
