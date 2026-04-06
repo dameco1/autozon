@@ -31,27 +31,16 @@ type OwnershipStep = {
   deadlineKey?: string;
 };
 
-// Hours allowed per step (sequential — each step's deadline starts after previous is completed)
+// Hours from contract signing (Step 5 entry) — all timers run in parallel
 const DEADLINE_HOURS: Record<string, number> = {
-  vehicle_inspection: 72,
-  buyer_insurance: 48,
-  deregistration: 48,
-  buyer_registration: 168, // 7 days
-  plates_received: 24,
-  registration_cert: 0, // instant (issued at registration)
-  vehicle_handover: 72,
+  vehicle_inspection: 72,        // 3 days
+  buyer_insurance: 120,          // 5 days
+  deregistration: 120,           // 5 days
+  buyer_registration: 288,       // 12 days
+  plates_received: 312,          // 13 days
+  registration_cert: 312,        // 13 days (issued at registration)
+  vehicle_handover: 384,         // 16 days
 };
-
-// Ordered step keys for sequential deadline computation
-const MANUAL_STEP_ORDER = [
-  "vehicle_inspection",
-  "buyer_insurance",
-  "deregistration",
-  "buyer_registration",
-  "plates_received",
-  "registration_cert",
-  "vehicle_handover",
-];
 
 const StepComplete: React.FC<Props> = ({
   car, agreedPrice, completionMethod, contractType, paymentMethod, insuranceTier,
@@ -129,37 +118,23 @@ const StepComplete: React.FC<Props> = ({
       setCheckedSteps(map);
       setDeadlines(dlMap);
 
-      // Seed missing deadlines sequentially: each step's deadline starts after the previous
+      // Seed missing deadlines — all timers start from now (Step 5 entry / contract signing)
       const manualWithDeadline = ownershipSteps.filter(s => !s.digital && s.deadlineKey);
       const missingDeadlines = manualWithDeadline.filter(s => !data?.find(d => d.step_type === s.key));
       if (missingDeadlines.length > 0) {
-        // Compute sequential deadlines: first step starts from now, each subsequent from previous deadline end
-        let cursor = Date.now();
-        const allRows: Array<{ transaction_id: string; step_type: string; label: string; deadline_at: string; status: string }> = [];
-        for (const stepKey of MANUAL_STEP_ORDER) {
-          const hours = DEADLINE_HOURS[stepKey] || 72;
-          const deadlineAt = new Date(cursor + hours * 60 * 60 * 1000);
-          // Only insert if this step is missing
-          if (missingDeadlines.find(s => s.key === stepKey)) {
-            allRows.push({
-              transaction_id: transactionId,
-              step_type: stepKey,
-              label: ownershipSteps.find(s => s.key === stepKey)?.label || stepKey,
-              deadline_at: deadlineAt.toISOString(),
-              status: "pending",
-            });
-          }
-          // Move cursor to end of this step (whether existing or new)
-          const existingDl = dlMap[stepKey];
-          cursor = existingDl ? new Date(existingDl.deadline_at).getTime() : deadlineAt.getTime();
-        }
-        if (allRows.length > 0) {
-          const { data: inserted } = await supabase.from("transaction_deadlines").insert(allRows as any).select("step_type, deadline_at, id");
-          if (inserted) {
-            const newDlMap = { ...dlMap };
-            inserted.forEach((d: any) => { newDlMap[d.step_type] = { deadline_at: d.deadline_at, id: d.id }; });
-            setDeadlines(newDlMap);
-          }
+        const baseTime = Date.now();
+        const rows = missingDeadlines.map(s => ({
+          transaction_id: transactionId,
+          step_type: s.key,
+          label: s.label,
+          deadline_at: new Date(baseTime + (DEADLINE_HOURS[s.key] || 72) * 60 * 60 * 1000).toISOString(),
+          status: "pending",
+        }));
+        const { data: inserted } = await supabase.from("transaction_deadlines").insert(rows as any).select("step_type, deadline_at, id");
+        if (inserted) {
+          const newDlMap = { ...dlMap };
+          inserted.forEach((d: any) => { newDlMap[d.step_type] = { deadline_at: d.deadline_at, id: d.id }; });
+          setDeadlines(newDlMap);
         }
       }
     };
