@@ -574,6 +574,7 @@ const AcquisitionOptions: React.FC = () => {
                 insuranceTier={insuranceTier}
                 carId={offer?.car_id}
                 fairValuePrice={car?.fair_value_price}
+                transactionId={transactionId}
                 onDashboard={() => navigate("/dashboard")}
                 onDownload={handleDownload}
               />
