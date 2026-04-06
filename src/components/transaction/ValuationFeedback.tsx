@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThumbsUp, ThumbsDown, MessageSquare, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ const ValuationFeedback: React.FC<Props> = ({ carId, agreedPrice, fairValuePrice
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [showComment, setShowComment] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fb = (t as any).transaction?.valuationFeedback ?? {
     title: "Was our valuation accurate?",
@@ -35,9 +36,33 @@ const ValuationFeedback: React.FC<Props> = ({ carId, agreedPrice, fairValuePrice
     ? Math.round(((agreedPrice - fairValuePrice) / fairValuePrice) * 100)
     : null;
 
+  // Check if feedback was already submitted
+  useEffect(() => {
+    const checkExisting = async () => {
+      try {
+        const { data } = await supabase
+          .from("appraisal_feedback" as any)
+          .select("id, agreed_sale_price, deviation_pct")
+          .eq("car_id", carId)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (data && (data as any).agreed_sale_price != null) {
+          // Already submitted
+          setSubmitted(true);
+        }
+      } catch (e) {
+        console.error("Failed to check existing feedback:", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkExisting();
+  }, [carId]);
+
   const handleSubmit = async () => {
     try {
-      // Find the most recent feedback record for this car and update it
       const { data: existing } = await supabase
         .from("appraisal_feedback" as any)
         .select("id")
@@ -59,9 +84,11 @@ const ValuationFeedback: React.FC<Props> = ({ carId, agreedPrice, fairValuePrice
       setSubmitted(true);
     } catch (e) {
       console.error("Failed to submit feedback:", e);
-      setSubmitted(true); // Don't block user even if it fails
+      setSubmitted(true);
     }
   };
+
+  if (loading) return null;
 
   if (submitted) {
     return (
