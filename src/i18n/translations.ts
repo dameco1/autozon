@@ -766,6 +766,13 @@ export const translations = {
       ownershipTransferCompleted: "Ownership Transfer Completed",
       autoLabel: "Auto",
       cardPayment: "Card Payment",
+      deadlineWarning: "You have {countdown} to complete this step before the transaction is invalidated and you may bear some costs.",
+      deadlineOverdueWarning: "This step is overdue. Autozon support has 24h to verify with both parties before potential cancellation.",
+      deadlineInfoTitle: "What happens if the deadline passes?",
+      deadlineInfoBody: "If this step is not completed in time, Autozon support will contact both buyer and seller within 24 hours to resolve the issue. If the ownership transfer cannot be completed, the transaction will be annulled (status: Not Completed). The car will be relisted for the seller, and the buyer will receive a refund.",
+      deadlineInfoCostTitle: "Who bears the costs?",
+      deadlineInfoCostCard: "For credit card payments, Stripe processing fees are split equally — each party pays 50% of the transaction fee. The buyer receives their payment minus half of the processing fee.",
+      deadlineInfoCostOther: "For bank transfer, cash, credit, or leasing payments, no platform fees apply. The full amount is returned to the buyer.",
       // Checklist step labels
       stepKycVerified: "Government-issued ID (verified via KYC)",
       stepKycVerifiedDesc: "Identity verified through KYC process",
