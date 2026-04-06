@@ -182,7 +182,7 @@ export const SlideSolution = () => (
         { icon: Brain, title: "AI Fair-Value Engine", desc: "Photo analysis + condition scoring + 20-point inspection + live market comparison — your car's true worth in seconds" },
         { icon: ScanSearch, title: "VINCARIO VIN Intelligence", desc: "Commercial vehicle database: 4-endpoint decode (info + specs + OEM + stolen check) auto-fills specs, equipment, and blocks stolen vehicles" },
         { icon: Users, title: "Lifestyle-Aware Matching", desc: "Relationship, kids, purpose, current car, budget — 4D scoring algorithm finds the perfect car for every buyer" },
-        { icon: Handshake, title: "End-to-End Transactions", desc: "Contract generation, payment (wire/card/leasing), insurance, structured negotiation — fully digital or manual" },
+        { icon: Handshake, title: "End-to-End Transactions", desc: "Contract generation, payment (wire/card/leasing), insurance, 11-step Austrian ownership transfer checklist with parallel deadline enforcement — fully digital or manual" },
       ].map(({ icon: Icon, title, desc }) => (
         <div key={title} className={`${cardBg} flex items-start gap-6`}>
           <Icon className={accent} size={36} />
