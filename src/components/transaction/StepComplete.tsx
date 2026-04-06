@@ -8,6 +8,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import congratsImage from "@/assets/congratulations-vehicle.jpg";
+import congratsSoldImage from "@/assets/congratulations-sold.jpg";
 
 interface Props {
   car: { make: string; model: string; year: number };
