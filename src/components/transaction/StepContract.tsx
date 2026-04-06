@@ -4,7 +4,7 @@ import {
   FileText, CheckCircle2, Printer, MapPin, Edit2, Clock, User, Shield,
   ShieldCheck, ShieldX, Car, Scale, Stamp, Lock, AlertTriangle, File
 } from "lucide-react";
-import autozonLogo from "@/assets/autozon-logo.png";
+
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
