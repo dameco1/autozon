@@ -81,6 +81,26 @@ const AdminTransactions: React.FC = () => {
     }
   };
 
+  const handleCancelTransaction = async (transactionId: string) => {
+    if (!confirm("Are you sure you want to cancel this transaction? This will refund the buyer (minus half of Stripe fees for card payments), relist the car, and mark the transaction as Not Completed.")) return;
+    setCancelling(transactionId);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-actions", {
+        body: { action: "cancel_transaction", transaction_id: transactionId },
+      });
+      if (error || data?.error) throw new Error(data?.error || "Failed to cancel transaction");
+      const refundMsg = data?.refund
+        ? ` Refund of €${(data.refund.refunded_amount / 100).toFixed(2)} processed.`
+        : "";
+      toast.success(`Transaction cancelled.${refundMsg}`);
+      queryClient.invalidateQueries({ queryKey: ["admin-transactions"] });
+    } catch (e: any) {
+      toast.error(e.message || "Failed to cancel transaction");
+    } finally {
+      setCancelling(null);
+    }
+  };
+
   const filtered = transactions?.filter(t => {
     if (!search) return true;
     const q = search.toLowerCase();
