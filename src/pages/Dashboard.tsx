@@ -189,7 +189,9 @@ const Dashboard: React.FC = () => {
         >
           <div>
             <h1 className="text-3xl font-display font-black text-foreground">{t.dashboard.title}</h1>
-            <p className="text-muted-foreground text-sm mt-1">{t.dashboard.subtitle}</p>
+            <p className="text-muted-foreground text-sm mt-1">
+              {t.dashboard.subtitleGreeting}{profileName ? ` ${profileName}` : ""}, {t.dashboard.subtitleBody}
+            </p>
           </div>
           <Button
             className="mt-4 sm:mt-0 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
