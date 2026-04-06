@@ -428,20 +428,40 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
         </div>
         <div>
           <Label className="text-muted-foreground text-sm">{(t.carUpload as any).pickerlValid || "Pickerl Valid Until"}</Label>
-          <div className="grid grid-cols-2 gap-2 mt-1">
-            <Select value={data.pickerlValidMonth ? String(data.pickerlValidMonth) : ""} onValueChange={(v) => onChange({ pickerlValidMonth: Number(v) })}>
-              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Month" /></SelectTrigger>
-              <SelectContent>
-                {MONTHS.map((m) => <SelectItem key={m} value={String(m)}>{String(m).padStart(2, "0")}</SelectItem>)}
-              </SelectContent>
-            </Select>
-            <Select value={data.pickerlValidYear ? String(data.pickerlValidYear) : ""} onValueChange={(v) => onChange({ pickerlValidYear: Number(v) })}>
-              <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Year" /></SelectTrigger>
-              <SelectContent>
-                {Array.from({ length: 5 }, (_, i) => currentYear + i).map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
-              </SelectContent>
-            </Select>
+          <div className="flex items-center gap-2 mt-1.5 mb-1.5">
+            <input
+              type="checkbox"
+              id="no-pickerl"
+              checked={data.pickerlValidMonth === -1}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  onChange({ pickerlValidMonth: -1, pickerlValidYear: -1 });
+                } else {
+                  onChange({ pickerlValidMonth: null, pickerlValidYear: null });
+                }
+              }}
+              className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+            />
+            <label htmlFor="no-pickerl" className="text-sm text-muted-foreground cursor-pointer">
+              No valid Pickerl / Kein gültiges Pickerl
+            </label>
           </div>
+          {data.pickerlValidMonth !== -1 && (
+            <div className="grid grid-cols-2 gap-2">
+              <Select value={data.pickerlValidMonth ? String(data.pickerlValidMonth) : ""} onValueChange={(v) => onChange({ pickerlValidMonth: Number(v) })}>
+                <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Month" /></SelectTrigger>
+                <SelectContent>
+                  {MONTHS.map((m) => <SelectItem key={m} value={String(m)}>{String(m).padStart(2, "0")}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              <Select value={data.pickerlValidYear ? String(data.pickerlValidYear) : ""} onValueChange={(v) => onChange({ pickerlValidYear: Number(v) })}>
+                <SelectTrigger className="bg-background border-border text-foreground"><SelectValue placeholder="Year" /></SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 5 }, (_, i) => currentYear + i).map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </div>
       </div>
 
