@@ -1,169 +1,140 @@
-# Transaction Completion Flow
+# Transaction Flow
+
+> Full documentation of the vehicle purchase transaction wizard.
 
 ## Overview
 
-After buyer and seller agree on a price via the Negotiation engine, they proceed to the **Transaction Wizard** (`/acquire/:offerId`). This is a 5-step process that handles contract, payment, and insurance.
+The transaction flow begins after a buyer and seller reach an agreed price via negotiation. The buyer is redirected to `/acquire/:offerId` where a 5-step wizard guides them through completing the purchase.
 
 ## Prerequisites
 
 ### KYC Identity Verification (`/kyc`)
-
 Before signing a contract, users must complete identity verification:
-1. **ID Document Upload** — Front and back of government-issued ID (passport, driver's license, national ID)
-2. **Selfie Verification** — Photo holding ID next to face
-3. **Address Confirmation** — Street, postal code, city
-
-KYC status tracked in `profiles.kyc_status`: `none` → `pending` → `verified` / `rejected`. Documents stored securely in cloud storage. Typically reviewed in 1-2 business days.
+- Document upload (government-issued ID)
+- Selfie verification
+- Address confirmation
+- KYC status: `none` → `pending` → `in_progress` → `verified` / `rejected`
 
 ## Step 1: Choose Completion Method
 
 Users choose between:
-- **Digital Transaction (Recommended)**: Autozon handles contract, payment, and insurance digitally
-- **Manual Transaction**: User handles everything offline; Autozon provides a checklist and links to official contract templates
+- **Digital Transaction** (recommended): Full end-to-end digital flow with online contract, payment, and insurance
+- **Manual Transaction**: Offline flow with downloadable contract template and checklist
 
-### Manual Path
-If manual is chosen, the user sees:
-- A completion checklist (download contract, sign in person, arrange payment, handover, register, insure)
-- Direct links to **ÖAMTC** (Austria) or **ADAC** (Germany) official purchase contract templates
-- Option to download a deal summary PDF
-
-## Step 2: Digital Contract (Role-Based)
+## Step 2: Digital Contract
 
 ### Role-Based Contract Generation
-
-The contract is generated based on the seller/buyer type combination, which determines warranty rules, required clauses, and document requirements:
-
-| Combo | Warranty | Key Legal Basis |
-|---|---|---|
-| **Private → Private** | Gewährleistungsausschluss (excluded by mutual agreement) | §9 KSchG — non-consumer transaction |
-| **Business → Private** | 2-year statutory warranty (Gewährleistung) | KSchG consumer protection — cannot be excluded |
-| **Private → Business** | No warranty (as-is sale to professional buyer) | No consumer protection applies |
-| **Business → Business** | Negotiable / limited warranty | UGB §377 Rügepflicht applies |
+Contract terms vary based on seller/buyer combinations:
+- **Private → Private**: No warranty (Gewährleistungsausschluss)
+- **Business → Private**: Mandatory 24-month statutory warranty (Gewährleistung)
+- **Private → Business**: Warranty excluded, no consumer protection
+- **Business → Business**: Negotiable warranty (min. 12 months)
 
 ### Contract Preview
+Displays:
+- Vehicle details, VIN, price
+- Warranty type and description
+- Role-specific clauses
+- Required documents for both parties
+- Digital signature stamps
 
-The contract preview shows:
-- Seller & buyer names with party type badges (Private / Business)
-- Vehicle details (make, model, year, VIN)
-- Agreed purchase price
-- **Warranty section** — type and description based on role combo
-- Key contract clauses (base clauses + role-specific extra clauses)
-- Required documents list per role
+**Car status is set to `sold` immediately upon dual contract signing.**
 
-### Warranty Badge
+### Document Requirements
 
-A prominent warranty information badge is displayed at the top of the contract step, showing:
-- The applicable warranty type for the role combination
-- A description explaining the legal basis and implications
+**Private Seller:**
+- Registration Certificate Part I & II
+- Service Book (optional)
+- §57a Inspection Certificate (Pickerl)
+- Government-issued ID
 
-User signs digitally, then can download the contract PDF.
+**Business Seller:**
+- Registration Certificate Part I & II
+- Trade License (Gewerbeschein)
+- Invoice / Rechnung
+- Warranty Certificate (if applicable)
+- §57a Inspection Certificate
+- Service Book (optional)
 
-## Document Checklists (Role-Based)
+**Private Buyer:**
+- Government-issued ID (verified via KYC)
+- Proof of Payment
 
-Per role combination, different documents are required. The `DocumentChecklist` component displays required and optional documents with upload capability.
-
-### Private Seller Documents
-- Zulassungsschein Teil I (Registration Certificate Part I) ✱
-- Zulassungsschein Teil II (Registration Certificate Part II) ✱
-- §57a Gutachten / Pickerl (Inspection Certificate) ✱
-- Serviceheft (Service Book) — optional
-- Amtlicher Lichtbildausweis (Government-issued ID) ✱
-
-### Business Seller Documents
-- Zulassungsschein Teil I + II ✱
-- Gewerbeschein (Trade License) ✱
-- Rechnung / Invoice ✱
-- §57a Gutachten / Pickerl ✱
-- Garantiezertifikat (Warranty Certificate) — optional
-- Serviceheft — optional
-
-### Private Buyer Documents
-- Government-issued ID (verified via KYC) ✱
-- Zahlungsnachweis (Proof of Payment) ✱
-
-### Business Buyer Documents
-- Firmenbuchauszug (Commercial Register Extract) ✱
-- UID-Nummernbestätigung (UID Number Confirmation) ✱
-- Vollmacht des Vertretungsbefugten (Authorized Representative Proof) ✱
-- Zahlungsnachweis (Proof of Payment) ✱
-
-Documents are stored in the `transaction_documents` table with RLS policies ensuring only transaction participants and admins can access them.
+**Business Buyer:**
+- Commercial Register Extract (Firmenbuchauszug)
+- UID Number Confirmation
+- Authorized Representative Proof
+- Proof of Payment / Bank Transfer
 
 ## Step 3: Payment / Financing
 
-Three payment options:
-1. **Cash / Bank Transfer**: Direct payment with step-by-step instructions
-2. **Credit**: Configurable down payment and loan term with partner bank quotes (APR, monthly payment, total cost)
-3. **Leasing**: Configurable term and down payment with leasing partner quotes (monthly, residual value)
+Payment options:
+- **Cash / Bank Transfer**: Direct payment
+- **Credit**: Financing via partner banks with quote comparison
+- **Leasing**: Leasing via partner institutions
+- **Card Payment** (Stripe): Available for vehicles ≤ €10,000
 
-Financing partners are loaded from the `financing_partners` table.
-
-### Financing Calculator (`/financing/:offerId?`)
-
-A dedicated Austrian financing calculator is available with:
-- **Kredit** (standard annuity loan) — buyer owns the car
-- **Leasing** (operating lease) — return car at end of term
-- **3-Wege-Finanzierung** (balloon) — low monthly payments + 30% residual at end
-
-Inputs: vehicle price, down payment (0–40%), term (12–120 months), interest rate (1–12%), processing fee. Includes simulated Bonitätsindikator (creditworthiness indicator).
-
-Partner banks (Raiffeisen, UniCredit Bank Austria, Arval) shown as "Coming Soon" with placeholder cards.
+### Financing Calculator
+Austrian-specific calculator at `/financing/:offerId?` supports:
+- Kredit (standard loan)
+- Leasing
+- 3-Wege-Finanzierung (balloon financing)
 
 ## Step 4: Insurance
 
-Mandatory for vehicle registration. Three tiers:
-- **Haftpflicht (Liability)**: Legal minimum
-- **Teilkasko (Partial Cover)**: Adds theft, fire, glass, weather — recommended
-- **Vollkasko (Comprehensive)**: Full protection including own-fault collision
+### Insurance Tiers
+- **Haftpflicht** (Liability): Mandatory third-party coverage
+- **Teilkasko** (Partial): Covers theft, glass, weather, fire
+- **Vollkasko** (Comprehensive): Full coverage including collision
 
 ### Insurance Estimate Calculator
+Embedded calculator for Austrian-specific premium estimates based on vehicle and driver details.
 
-Embedded calculator with Austrian-specific formulas:
-- Inputs: vehicle value, power (kW), registration year, Bonus-Malus level (0–18), Kasko type, deductible, annual km
-- Outputs: Haftpflicht, Kasko, combined premium, optional GAP insurance, optional warranty extension — all per month
+### Integration Roadmap
+1. Compare-only mode (current)
+2. API integration with Austrian insurers
+3. Direct binding quotes via partner APIs
+4. Insurance brokerage services
 
-### Insurance Integration Roadmap
+## Step 5: Transaction Complete — Ownership Transfer Checklist
 
-| Milestone | Target | Description |
-|---|---|---|
-| Durchblicker API | Q3 2026 | Price comparison across Austrian insurers |
-| Direct Insurer Integration | Q4 2026 | Instant binding quotes from partner insurers |
-| Broker-as-a-Service | 2027 | Full insurance brokerage within the platform |
+All post-completion steps are consolidated into a single **Ownership Transfer Checklist**. This replaces the previous separate Document Checklist, Deadline Manager, and next-steps boxes.
 
-Users can also skip and arrange insurance themselves.
+### Checklist Structure
 
-Insurance providers loaded from `financing_partners` table (type = 'insurance').
+| # | Step | Type | Deadline | Description |
+|---|------|------|----------|-------------|
+| 1 | Government-issued ID (KYC) | Digital (Auto) | — | Identity verified through KYC process |
+| 2 | Purchase Contract Signed | Digital (Auto) | — | Contract type (Autozon/ÖAMTC/ADAC) |
+| 3 | Countersigned Contract Issued | Digital (Auto) | — | Both parties have signed |
+| 4 | Payment Completed | Digital/Manual | — | Method and amount displayed inline |
+| 5 | Insurance | Digital/Manual | — | Tier displayed, or "self-arranged" |
+| 6 | Vehicle Inspection | Manual | 72 hours | Buyer inspects the vehicle |
+| 7 | Vehicle Handover | Manual | 14 days | Keys, documents, vehicle handed over |
+| 8 | Seller Deregistration | Manual | — | Abmeldung at Zulassungsstelle |
+| 9 | Buyer Registration | Manual | 7 days | Anmeldung at Zulassungsstelle |
+| 10 | Registration Plates Received | Manual | — | New plates mounted |
+| 11 | Registration Certificate Part I & II | Manual | — | In buyer's name |
 
-## Step 5: Transaction Complete
+### Features
+- **Digital steps** are system-managed, locked with a shield/check icon and "Auto" badge
+- **Manual steps** are buyer-controlled checkboxes; once checked, cannot be reversed
+- **Countdown timers** appear inline next to steps with deadlines (inspection: 72h, handover: 14d, registration: 7d)
+- **Overdue warnings** with red visual indicators when deadlines are missed
+- Progress bar shows completion percentage
+- All step completions persisted in `transaction_deadlines` table
+- Deadline records auto-seeded on first Step 5 load
 
-Summary of:
-- Vehicle details
-- Agreed price
-- Contract type (Autozon Kaufvertrag)
-- Payment method chosen
-- Insurance tier selected
+### Completion
+When all 11 steps are checked, a **Congratulations** celebration section appears with:
+- Celebratory image
+- Personalized message with vehicle make/model
+- "Ownership Transfer Completed" badge
 
-### Offline Deadline Manager
-
-After the contract is signed, the **DeadlineManager** component tracks offline steps with countdown timers:
-
-| Step | Deadline | Description |
-|---|---|---|
-| Vehicle Inspection | 72 hours | Buyer inspects the vehicle |
-| Registration Transfer | 7 days | Ownership change at Zulassungsstelle |
-| Vehicle Handover | 14 days | Physical handover of vehicle and keys |
-| NoVA Payment | 15 days | Normverbrauchsabgabe (if applicable) |
-
-Features:
-- Live countdown timers (updated every minute)
-- Overdue warnings with visual indicators
-- Both parties can mark steps as completed
-- Completion date recorded for each step
-- Deadlines stored in `transaction_deadlines` table with RLS
-
-### Document Upload (Post-Completion)
-
-The document checklist remains visible after completion, allowing both parties to upload remaining required documents (proof of payment, registration confirmations, etc.).
+### Post-Completion
+- Transaction record remains permanently in buyer's dashboard "Buying" tab
+- "Sell This Car" button allows converting the purchased vehicle into a new listing
+- Full contract remains viewable and printable
 
 ## Car Status After Completion
 
@@ -198,7 +169,7 @@ Available on the car detail page before and during the transaction flow. VIN-bas
 ### `transactions` table
 - `completion_method`: 'digital' | 'manual'
 - `contract_type`: 'oeamtc' | 'adac' | 'autozon'
-- `payment_method`: 'cash' | 'credit' | 'leasing'
+- `payment_method`: 'cash' | 'credit' | 'leasing' | 'card'
 - `insurance_tier`: 'liability' | 'partial' | 'comprehensive'
 - `status`: initiated → contract_pending → payment_pending → insurance_pending → completed
 - `current_step`: 1-5 (wizard position, resumable)
@@ -211,9 +182,10 @@ Available on the car detail page before and during the transaction flow. VIN-bas
 - RLS: Participants can view/insert/update; admins have full access
 
 ### `transaction_deadlines` table
-- Tracks offline step deadlines after contract signing
+- Tracks ownership transfer step completions and deadlines
 - Columns: id, transaction_id, step_type, label, deadline_at, completed_at, status
-- RLS: Participants can view/update; admins have full access
+- Used by both the Ownership Transfer Checklist (Step 5) and admin dashboard
+- RLS: Participants can view/insert/update; admins have full access
 
 RLS: Buyers and sellers can view/update their own transactions. Admins have full access.
 
@@ -228,11 +200,20 @@ Each workflow includes:
 - `warrantyConfig` — type, labels (EN/DE), descriptions
 - `sellerDocuments` / `buyerDocuments` — required/optional document specs
 - `extraClauses` — role-specific contract clauses (EN/DE)
-- `deadlines` — offline step deadlines with hours from signing
+- `deadlines` — offline step deadlines (inspection: 72h, registration: 7d, handover: 14d)
+
+## Admin Dashboard Integration
+
+The admin car card displays:
+- Transaction history with payment method, insurance tier, completion method, contract type
+- **Ownership Transfer Progress** with completion count and per-step status badges
+- Direct link to view the full transaction at `/acquire/:offerId`
 
 ## Localization
 
 Fully localized in EN and DE under `t.transaction.*` namespace, including:
-- Document checklist labels (`documentChecklist`, `yourDocuments`, `otherPartyDocuments`)
-- Deadline manager labels (`offlineSteps`, `overdue`, `stepCompleted`, `done`)
-- Warranty display (`warranty`)
+- All 11 ownership transfer checklist step labels and descriptions
+- Progress, countdown, overdue, and completion labels
+- Congratulations messages
+- Document checklist labels (for seller views on earlier steps)
+- Warranty display
