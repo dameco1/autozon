@@ -31,27 +31,16 @@ type OwnershipStep = {
   deadlineKey?: string;
 };
 
-// Hours allowed per step (sequential — each step's deadline starts after previous is completed)
+// Hours from contract signing (Step 5 entry) — all timers run in parallel
 const DEADLINE_HOURS: Record<string, number> = {
-  vehicle_inspection: 72,
-  buyer_insurance: 48,
-  deregistration: 48,
-  buyer_registration: 168, // 7 days
-  plates_received: 24,
-  registration_cert: 0, // instant (issued at registration)
-  vehicle_handover: 72,
+  vehicle_inspection: 72,        // 3 days
+  buyer_insurance: 120,          // 5 days
+  deregistration: 120,           // 5 days
+  buyer_registration: 288,       // 12 days
+  plates_received: 312,          // 13 days
+  registration_cert: 312,        // 13 days (issued at registration)
+  vehicle_handover: 384,         // 16 days
 };
-
-// Ordered step keys for sequential deadline computation
-const MANUAL_STEP_ORDER = [
-  "vehicle_inspection",
-  "buyer_insurance",
-  "deregistration",
-  "buyer_registration",
-  "plates_received",
-  "registration_cert",
-  "vehicle_handover",
-];
 
 const StepComplete: React.FC<Props> = ({
   car, agreedPrice, completionMethod, contractType, paymentMethod, insuranceTier,
