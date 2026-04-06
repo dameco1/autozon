@@ -48,6 +48,7 @@ const StepContract: React.FC<Props> = ({
   const [editingCountry, setEditingCountry] = useState(false);
   const [buyerSignedDate] = useState<string | null>(contractSignedBuyer ? new Date().toISOString() : null);
   const [sellerSignedDate] = useState<string | null>(contractSignedSeller ? new Date().toISOString() : null);
+  const contractRef = useRef<HTMLDivElement>(null);
 
   const bothSigned = (contractSignedBuyer || (signed && role === "buyer")) && (contractSignedSeller || (signed && role === "seller"));
   const isLocked = bothSigned;
