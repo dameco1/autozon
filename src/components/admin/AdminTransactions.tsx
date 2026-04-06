@@ -6,13 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Receipt, Send, CheckCircle2, XCircle, Clock, Search, ExternalLink, Loader2 } from "lucide-react";
+import { Receipt, Send, CheckCircle2, XCircle, Clock, Search, ExternalLink, Loader2, AlertTriangle, Ban } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const statusBadge = (status: string) => {
   switch (status) {
     case "completed": return <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">Completed</Badge>;
     case "initiated": return <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20">Initiated</Badge>;
     case "in_progress": return <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20">In Progress</Badge>;
+    case "grace_period": return <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 animate-pulse">⚠️ Grace Period</Badge>;
+    case "cancellation_pending": return <Badge className="bg-destructive/10 text-destructive border-destructive/20 animate-pulse">🚨 Cancel Pending</Badge>;
+    case "not_completed": return <Badge variant="destructive">Not Completed</Badge>;
     case "cancelled": return <Badge variant="destructive">Cancelled</Badge>;
     default: return <Badge variant="secondary">{status}</Badge>;
   }
