@@ -481,17 +481,19 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                       >
                         <FileCheck className="h-3 w-3" /> View Transaction
                       </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs gap-1 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/5"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/upload?from_car=${tx.car_id}`);
-                        }}
-                      >
-                        <Car className="h-3 w-3" /> Sell This Car
-                      </Button>
+                      {ownershipComplete[tx.id] && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs gap-1 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/5"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/upload?from_car=${tx.car_id}`);
+                          }}
+                        >
+                          <Car className="h-3 w-3" /> Sell This Car
+                        </Button>
+                      )}
                     </div>
                   </div>
                 ))}
