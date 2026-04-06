@@ -206,7 +206,7 @@ const StepComplete: React.FC<Props> = ({
           transaction_id: transactionId,
           step_type: stepKey,
           label: ownershipSteps.find(s => s.key === stepKey)?.label || stepKey,
-          deadline_at: new Date(Date.now() + (DEADLINE_MAP[stepKey] || 336) * 60 * 60 * 1000).toISOString(),
+          deadline_at: new Date(Date.now() + (DEADLINE_HOURS[stepKey] || 72) * 60 * 60 * 1000).toISOString(),
           status: "completed",
           completed_at: new Date().toISOString(),
         } as any);
