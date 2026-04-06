@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Car, User, Calendar, Gauge, Fuel, Cog, Palette, Zap, Check, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Handshake, Receipt, Camera } from "lucide-react";
+import { Car, User, Calendar, Gauge, Fuel, Cog, Palette, Zap, Check, CheckCircle2, XCircle, HelpCircle, ClipboardCheck, Handshake, Receipt, Camera, CreditCard, Shield, ExternalLink } from "lucide-react";
 import { INSPECTION_CATEGORIES, type InspectionChecklist } from "@/components/car-upload/inspectionChecklist";
 
 interface AdminCarCardProps {
@@ -49,7 +49,7 @@ const AdminCarCard: React.FC<AdminCarCardProps> = ({ carId, onClose }) => {
       if (!carId) return null;
       const [offersRes, txRes] = await Promise.all([
         supabase.from("offers").select("id, amount, counter_amount, agreed_price, status, current_round, max_rounds, created_at, buyer_id").eq("car_id", carId).order("created_at", { ascending: false }),
-        supabase.from("transactions").select("id, agreed_price, status, buyer_id, current_step, created_at").eq("car_id", carId).order("created_at", { ascending: false }),
+        supabase.from("transactions").select("id, offer_id, agreed_price, status, buyer_id, seller_id, current_step, payment_method, payment_confirmed, completion_method, contract_type, insurance_tier, insurance_confirmed, created_at, updated_at").eq("car_id", carId).order("created_at", { ascending: false }),
       ]);
 
       // Fetch buyer names
@@ -252,15 +252,63 @@ const AdminCarCard: React.FC<AdminCarCardProps> = ({ carId, onClose }) => {
                       <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
                         <Receipt className="h-3.5 w-3.5" /> Transactions ({history.transactions.length})
                       </h4>
-                      <div className="space-y-1.5">
-                        {history.transactions.map(t => (
-                          <div key={t.id} className="flex items-center justify-between bg-muted/50 rounded-lg px-3 py-2 text-xs">
-                            <span className="text-foreground font-medium">{t.buyer_name}</span>
-                            <span className="font-semibold">€{Number(t.agreed_price).toLocaleString()}</span>
-                            <Badge variant={t.status === "completed" ? "default" : "secondary"} className="text-[10px]">{t.status}</Badge>
-                            <span className="text-muted-foreground">{new Date(t.created_at).toLocaleDateString()}</span>
-                          </div>
-                        ))}
+                      <div className="space-y-3">
+                        {history.transactions.map((tx: any) => {
+                          const paymentLabel = tx.payment_method === "card" ? "💳 Credit Card" :
+                            tx.payment_method === "wire" || tx.payment_method === "cash" ? "🏦 Wire Transfer" :
+                            tx.payment_method === "credit" ? "🏛️ Credit Financing" :
+                            tx.payment_method === "leasing" ? "📄 Leasing" :
+                            tx.payment_method || "—";
+                          const insuranceLabel = tx.insurance_tier === "comprehensive" ? "🛡️ Vollkasko" :
+                            tx.insurance_tier === "partial" ? "🛡️ Teilkasko" :
+                            tx.insurance_tier === "liability" ? "🛡️ Haftpflicht" :
+                            tx.insurance_tier ? tx.insurance_tier : "Skipped";
+                          return (
+                            <div key={tx.id} className="bg-muted/50 rounded-lg p-3 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-foreground font-medium text-sm">{tx.buyer_name}</span>
+                                <Badge variant={tx.status === "completed" ? "default" : "secondary"} className="text-[10px]">{tx.status}</Badge>
+                              </div>
+                              <div className="grid grid-cols-2 gap-2 text-xs">
+                                <div>
+                                  <span className="text-muted-foreground">Agreed Price</span>
+                                  <p className="text-foreground font-semibold">€{Number(tx.agreed_price).toLocaleString()}</p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Step</span>
+                                  <p className="text-foreground font-semibold">{tx.current_step}/5</p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Payment</span>
+                                  <p className="text-foreground font-semibold">{paymentLabel} {tx.payment_confirmed ? "✅" : "⏳"}</p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Insurance</span>
+                                  <p className="text-foreground font-semibold">{insuranceLabel}</p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Method</span>
+                                  <p className="text-foreground font-semibold">{tx.completion_method === "digital" ? "🖥️ Digital" : tx.completion_method === "manual" ? "📝 Manual" : "—"}</p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Contract</span>
+                                  <p className="text-foreground font-semibold">{tx.contract_type || "—"}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between pt-1 border-t border-border/50">
+                                <span className="text-[10px] text-muted-foreground">{new Date(tx.created_at).toLocaleDateString()} — {new Date(tx.updated_at).toLocaleDateString()}</span>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-6 text-[10px] text-primary"
+                                  onClick={() => window.open(`/acquire/${tx.offer_id}`, "_blank")}
+                                >
+                                  <ExternalLink className="h-3 w-3 mr-1" /> View Transaction
+                                </Button>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}

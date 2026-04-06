@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { CreditCard, Banknote, FileText, Building2, Star, CheckCircle2, ArrowLeft, Send, ShieldCheck, AlertTriangle, TestTube2, Loader2 } from "lucide-react";
+import { CreditCard, Banknote, FileText, Building2, Star, CheckCircle2, ArrowLeft, Send, ShieldCheck, AlertTriangle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -33,7 +33,6 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
   const [loanTerm, setLoanTerm] = useState(48);
   const [leaseDown, setLeaseDown] = useState(3000);
   const [leaseTerm, setLeaseTerm] = useState(36);
-  const [testMode, setTestMode] = useState(false);
   const [cardLoading, setCardLoading] = useState(false);
 
   const handleCardPayment = async () => {
@@ -82,7 +81,6 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
   const stripeFee = Math.round(agreedPrice * 0.029 + 0.25);
   const platformFee = Math.round(agreedPrice * 0.02);
   const totalCardCost = agreedPrice + stripeFee + platformFee;
-  const sellerReceives = agreedPrice;
 
   const tabs: { id: PaymentTab; label: string; icon: React.ReactNode; disabled?: boolean; tooltip?: string }[] = [
     { id: "wire", label: t.transaction?.wireTransfer || "Wire Transfer", icon: <Send className="h-4 w-4" /> },
@@ -91,28 +89,8 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
     { id: "leasing", label: t.acquisition.leasingTab, icon: <FileText className="h-4 w-4" /> },
   ];
 
-  const handleTestPay = (method: string, partnerId?: string) => {
-    toast.success("🧪 Test payment simulated successfully!");
-    onContinue(method, partnerId);
-  };
-
   return (
     <div className="space-y-6">
-      {/* Test mode toggle */}
-      <div className="flex items-center justify-end">
-        <button
-          onClick={() => setTestMode(!testMode)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-            testMode
-              ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"
-              : "bg-secondary/50 text-muted-foreground border border-border hover:text-muted-foreground"
-          }`}
-        >
-          <TestTube2 className="h-3 w-3" />
-          {testMode ? "Test Mode ON" : "Test Mode"}
-        </button>
-      </div>
-
       {/* Tab selector */}
       <div className="grid grid-cols-4 bg-secondary/50 border border-border rounded-xl p-1 gap-1">
         {tabs.map((t) => (
@@ -194,9 +172,8 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
 
           <Button
             className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
-            onClick={() => testMode ? handleTestPay("wire") : onContinue("wire")}
+            onClick={() => onContinue("wire")}
           >
-            {testMode && <TestTube2 className="mr-2 h-4 w-4" />}
             <CheckCircle2 className="mr-2 h-5 w-5" />
             {t.transaction?.confirmWire || "Confirm Wire Transfer"}
           </Button>
@@ -270,11 +247,11 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
                 </div>
               </div>
 
-              <div className="mt-3 p-3 bg-yellow-500/5 border border-yellow-500/20 rounded-lg">
+              <div className="mt-3 p-3 bg-accent/50 border border-accent rounded-lg">
                 <p className="text-xs text-muted-foreground flex items-start gap-2">
-                  <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0 mt-0.5" />
+                  <AlertTriangle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-yellow-400">{t.transaction?.cardNote || "Important"}</strong> — {t.transaction?.cardNoteDesc || "Credit card payment is only available for vehicles priced at €10,000 or below. For higher amounts, please use wire transfer or financing options."}
+                    <strong className="text-foreground">{t.transaction?.cardNote || "Important"}</strong> — {t.transaction?.cardNoteDesc || "Credit card payment is only available for vehicles priced at €10,000 or below. For higher amounts, please use wire transfer or financing options."}
                   </span>
                 </p>
               </div>
@@ -289,11 +266,11 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
 
           <Button
             className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
-            onClick={() => testMode ? handleTestPay("card") : handleCardPayment()}
+            onClick={handleCardPayment}
             disabled={cardLoading}
           >
-            {cardLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : testMode ? <TestTube2 className="mr-2 h-4 w-4" /> : <CreditCard className="mr-2 h-5 w-5" />}
-            {cardLoading ? "Redirecting to payment..." : testMode ? "Simulate Card Payment" : (t.transaction?.payWithCard || "Pay with Credit Card")}
+            {cardLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <CreditCard className="mr-2 h-5 w-5" />}
+            {cardLoading ? "Redirecting to payment..." : (t.transaction?.payWithCard || "Pay with Credit Card")}
           </Button>
         </motion.div>
       )}
@@ -353,9 +330,8 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
                 </div>
                 <Button
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-                  onClick={() => testMode ? handleTestPay("credit", bank.id) : onContinue("credit", bank.id)}
+                  onClick={() => onContinue("credit", bank.id)}
                 >
-                  {testMode && <TestTube2 className="mr-2 h-4 w-4" />}
                   {t.transaction.selectFinancing}
                 </Button>
               </motion.div>
@@ -413,9 +389,8 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
                 </div>
                 <Button
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-                  onClick={() => testMode ? handleTestPay("leasing", co.id) : onContinue("leasing", co.id)}
+                  onClick={() => onContinue("leasing", co.id)}
                 >
-                  {testMode && <TestTube2 className="mr-2 h-4 w-4" />}
                   {t.transaction.selectFinancing}
                 </Button>
               </motion.div>
