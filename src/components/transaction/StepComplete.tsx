@@ -100,21 +100,6 @@ const StepComplete: React.FC<Props> = ({
         </ol>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Button
-          variant="outline"
-          className="flex-1 border-border text-muted-foreground hover:bg-secondary font-semibold py-6 rounded-xl"
-          onClick={onDownload}
-        >
-          <Download className="mr-2 h-5 w-5" /> {t.transaction.downloadSummary}
-        </Button>
-        <Button
-          className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl"
-          onClick={onDashboard}
-        >
-          {t.transaction.backToDashboard} <ArrowRight className="ml-2 h-5 w-5" />
-        </Button>
-      </div>
     </motion.div>
   );
 };
