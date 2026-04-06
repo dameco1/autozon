@@ -152,7 +152,9 @@ const StepContract: React.FC<Props> = ({
 
       {/* ═══════ ONLINE CONTRACT DOCUMENT ═══════ */}
       <motion.div
-        className="border border-border rounded-2xl overflow-hidden shadow-lg bg-background"
+        ref={contractRef}
+        id="contract-printable"
+        className="border border-border rounded-2xl overflow-hidden shadow-lg bg-background print:shadow-none print:border-none print:rounded-none"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
