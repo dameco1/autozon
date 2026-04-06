@@ -46,7 +46,7 @@ const DEADLINE_HOURS: Record<string, number> = {
 
 const StepComplete: React.FC<Props> = ({
   car, agreedPrice, completionMethod, contractType, paymentMethod, insuranceTier,
-  carId, fairValuePrice, transactionId, onDashboard, onDownload,
+  carId, fairValuePrice, transactionId, role = "buyer", onDashboard, onDownload,
 }) => {
   const { t } = useLanguage();
 
