@@ -439,6 +439,9 @@ const AcquisitionOptions: React.FC = () => {
                 partners={partners}
                 onContinue={handlePaymentDone}
                 onBack={() => setStep(2)}
+                carId={offer?.car_id}
+                transactionId={transactionId || undefined}
+                carTitle={car ? `${car.year} ${car.make} ${car.model}` : undefined}
               />
             ) : (
               <div className="space-y-6">
