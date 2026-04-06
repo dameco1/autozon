@@ -344,7 +344,7 @@ const CarUpload: React.FC = () => {
         if (formData.mileage <= 0) return "Please enter a valid mileage";
         if (formData.price <= 0) return "Please enter a valid price";
         if (!formData.firstRegistrationMonth || !formData.firstRegistrationYear) return language === "de" ? "Bitte Erstzulassung angeben" : "Please enter first registration date";
-        if (!formData.pickerlValidMonth || !formData.pickerlValidYear) return language === "de" ? "Bitte Pickerl-Gültigkeit angeben" : "Please enter Pickerl validity date";
+        if (formData.pickerlValidMonth === null || formData.pickerlValidYear === null) return language === "de" ? "Bitte Pickerl-Gültigkeit angeben oder 'Kein gültiges Pickerl' auswählen" : "Please enter Pickerl validity or select 'No valid Pickerl'";
         return null;
       case 2: {
         const missingSlots = PHOTO_SLOTS.filter((s) => s.required && !formData.photoSlots[s.id]);

@@ -256,9 +256,11 @@ const CarDetail: React.FC = () => {
     ? `${String(car.first_registration_month).padStart(2, "0")}/${car.first_registration_year}`
     : "—";
 
-  const pickerlLabel = car.pickerl_valid_month && car.pickerl_valid_year
-    ? `${String(car.pickerl_valid_month).padStart(2, "0")}/${car.pickerl_valid_year}`
-    : "—";
+  const pickerlLabel = car.pickerl_valid_month === -1
+    ? "No valid Pickerl / Kein gültiges Pickerl"
+    : car.pickerl_valid_month && car.pickerl_valid_year
+      ? `${String(car.pickerl_valid_month).padStart(2, "0")}/${car.pickerl_valid_year}`
+      : "—";
 
   const specs = [
     { icon: Calendar, label: t.carDetail.year, value: car.year },
