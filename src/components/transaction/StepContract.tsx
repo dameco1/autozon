@@ -392,9 +392,9 @@ const StepContract: React.FC<Props> = ({
           </Button>
         ) : (
           <>
-            <Button variant="outline" className="flex-1" onClick={handleDownload}>
-              <Download className="mr-2 h-4 w-4" />
-              {language === "de" ? "PDF herunterladen" : "Download PDF"}
+            <Button variant="outline" className="flex-1 print:hidden" onClick={handlePrint}>
+              <Printer className="mr-2 h-4 w-4" />
+              {language === "de" ? "Vertrag drucken / als PDF speichern" : "Print / Save as PDF"}
             </Button>
             {role === "buyer" && (
               <Button className="flex-1 font-bold py-6" onClick={() => onContinue("autozon")}>
