@@ -8,6 +8,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import congratsImage from "@/assets/congratulations-vehicle.jpg";
+import congratsSoldImage from "@/assets/congratulations-sold.jpg";
 
 interface Props {
   car: { make: string; model: string; year: number };
@@ -19,6 +20,7 @@ interface Props {
   carId?: string;
   fairValuePrice?: number | null;
   transactionId?: string | null;
+  role?: "buyer" | "seller";
   onDashboard: () => void;
   onDownload: () => void;
 }
@@ -44,7 +46,7 @@ const DEADLINE_HOURS: Record<string, number> = {
 
 const StepComplete: React.FC<Props> = ({
   car, agreedPrice, completionMethod, contractType, paymentMethod, insuranceTier,
-  carId, fairValuePrice, transactionId, onDashboard, onDownload,
+  carId, fairValuePrice, transactionId, role = "buyer", onDashboard, onDownload,
 }) => {
   const { t } = useLanguage();
 
@@ -358,18 +360,18 @@ const StepComplete: React.FC<Props> = ({
         >
           <div className="bg-gradient-to-br from-primary/10 via-amber-50/50 to-emerald-50/50 border border-primary/20 rounded-2xl p-6 text-center">
             <img
-              src={congratsImage}
-              alt="Congratulations on your new vehicle purchase"
+              src={role === "seller" ? congratsSoldImage : congratsImage}
+              alt={role === "seller" ? "Congratulations on selling your vehicle" : "Congratulations on your new vehicle purchase"}
               className="w-full max-w-md mx-auto rounded-xl mb-4"
               loading="lazy"
               width={1024}
               height={512}
             />
             <h3 className="text-2xl font-display font-black text-foreground mb-2">
-              🎉 {t.transaction.congratsTitle} {car.make} {car.model}!
+              🎉 {role === "seller" ? t.transaction.congratsSellerTitle : t.transaction.congratsTitle} {car.make} {car.model}!
             </h3>
             <p className="text-muted-foreground text-sm mb-4">
-              {t.transaction.congratsSubtitle}
+              {role === "seller" ? t.transaction.congratsSellerSubtitle : t.transaction.congratsSubtitle}
             </p>
             <CompleteBadge label={t.transaction.ownershipTransferCompleted} />
           </div>

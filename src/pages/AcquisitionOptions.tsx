@@ -575,6 +575,7 @@ const AcquisitionOptions: React.FC = () => {
                 carId={offer?.car_id}
                 fairValuePrice={car?.fair_value_price}
                 transactionId={transactionId}
+                role={myRole as "buyer" | "seller"}
                 onDashboard={() => navigate("/dashboard")}
                 onDownload={handleDownload}
               />
