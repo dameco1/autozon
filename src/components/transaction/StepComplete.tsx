@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, ChevronDown, PartyPopper, ClipboardCheck, Lock, AlertTriangle, Clock, ShieldCheck } from "lucide-react";
+import { CheckCircle2, ChevronDown, PartyPopper, ClipboardCheck, Lock, AlertTriangle, Clock, ShieldCheck, Info } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/i18n/LanguageContext";
