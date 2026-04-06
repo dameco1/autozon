@@ -178,6 +178,25 @@ const AcquisitionOptions: React.FC = () => {
         setStep(tx.current_step || 1);
       }
 
+      // Handle payment=success redirect from Stripe
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("payment") === "success" && txData) {
+        const tx = txData as any;
+        if (tx.current_step === 3 || tx.payment_method === null) {
+          // Auto-advance: save card payment and move to insurance step
+          await supabase.rpc("transaction_set_payment", {
+            _transaction_id: tx.id,
+            _payment_method: "card",
+            _financing_partner_id: null,
+          });
+          setPaymentMethod("card");
+          setStep(4);
+          toast.success("Payment completed successfully!");
+          // Clean up URL
+          window.history.replaceState({}, "", window.location.pathname);
+        }
+      }
+
       setLoading(false);
     };
     init();
@@ -439,6 +458,9 @@ const AcquisitionOptions: React.FC = () => {
                 partners={partners}
                 onContinue={handlePaymentDone}
                 onBack={() => setStep(2)}
+                carId={offer?.car_id}
+                transactionId={transactionId || undefined}
+                carTitle={car ? `${car.year} ${car.make} ${car.model}` : undefined}
               />
             ) : (
               <div className="space-y-6">

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { CreditCard, Banknote, FileText, Building2, Star, CheckCircle2, ArrowLeft, Send, ShieldCheck, AlertTriangle, TestTube2 } from "lucide-react";
+import { CreditCard, Banknote, FileText, Building2, Star, CheckCircle2, ArrowLeft, Send, ShieldCheck, AlertTriangle, TestTube2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { toast } from "sonner";
-
+import { supabase } from "@/integrations/supabase/client";
 interface Partner {
   id: string;
   name: string;
@@ -19,11 +19,14 @@ interface Props {
   partners: Partner[];
   onContinue: (method: string, partnerId?: string) => void;
   onBack?: () => void;
+  carId?: string;
+  transactionId?: string;
+  carTitle?: string;
 }
 
 type PaymentTab = "wire" | "card" | "credit" | "leasing";
 
-const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBack }) => {
+const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBack, carId, transactionId, carTitle }) => {
   const { t } = useLanguage();
   const [tab, setTab] = useState<PaymentTab>("wire");
   const [downPayment, setDownPayment] = useState(5000);
@@ -31,6 +34,31 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
   const [leaseDown, setLeaseDown] = useState(3000);
   const [leaseTerm, setLeaseTerm] = useState(36);
   const [testMode, setTestMode] = useState(false);
+  const [cardLoading, setCardLoading] = useState(false);
+
+  const handleCardPayment = async () => {
+    if (!carId || !transactionId) {
+      toast.error("Missing transaction details. Please try again.");
+      return;
+    }
+    setCardLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-car-payment", {
+        body: { transactionId, carId, agreedPrice, carTitle },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err: any) {
+      console.error("Card payment error:", err);
+      toast.error(err.message || "Failed to start card payment. Please try again.");
+    } finally {
+      setCardLoading(false);
+    }
+  };
 
   const cardEligible = agreedPrice <= 10000;
   const banks = partners.filter((p) => p.type === "bank");
@@ -261,11 +289,11 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
 
           <Button
             className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
-            onClick={() => testMode ? handleTestPay("card") : onContinue("card")}
+            onClick={() => testMode ? handleTestPay("card") : handleCardPayment()}
+            disabled={cardLoading}
           >
-            {testMode && <TestTube2 className="mr-2 h-4 w-4" />}
-            <CreditCard className="mr-2 h-5 w-5" />
-            {testMode ? "Simulate Card Payment" : (t.transaction?.payWithCard || "Pay with Credit Card")}
+            {cardLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : testMode ? <TestTube2 className="mr-2 h-4 w-4" /> : <CreditCard className="mr-2 h-5 w-5" />}
+            {cardLoading ? "Redirecting to payment..." : testMode ? "Simulate Card Payment" : (t.transaction?.payWithCard || "Pay with Credit Card")}
           </Button>
         </motion.div>
       )}
