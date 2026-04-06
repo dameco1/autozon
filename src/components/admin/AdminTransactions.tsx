@@ -6,13 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Receipt, Send, CheckCircle2, XCircle, Clock, Search, ExternalLink, Loader2 } from "lucide-react";
+import { Receipt, Send, CheckCircle2, XCircle, Clock, Search, ExternalLink, Loader2, AlertTriangle, Ban } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const statusBadge = (status: string) => {
   switch (status) {
     case "completed": return <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">Completed</Badge>;
     case "initiated": return <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20">Initiated</Badge>;
     case "in_progress": return <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20">In Progress</Badge>;
+    case "grace_period": return <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 animate-pulse">⚠️ Grace Period</Badge>;
+    case "cancellation_pending": return <Badge className="bg-destructive/10 text-destructive border-destructive/20 animate-pulse">🚨 Cancel Pending</Badge>;
+    case "not_completed": return <Badge variant="destructive">Not Completed</Badge>;
     case "cancelled": return <Badge variant="destructive">Cancelled</Badge>;
     default: return <Badge variant="secondary">{status}</Badge>;
   }
@@ -26,6 +30,8 @@ const stepLabel = (step: number) => {
 const AdminTransactions: React.FC = () => {
   const [search, setSearch] = useState("");
   const [sendingInvoice, setSendingInvoice] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["admin-transactions"],
@@ -72,6 +78,26 @@ const AdminTransactions: React.FC = () => {
       toast.error(e.message || "Failed to resend invoice");
     } finally {
       setSendingInvoice(null);
+    }
+  };
+
+  const handleCancelTransaction = async (transactionId: string) => {
+    if (!confirm("Are you sure you want to cancel this transaction? This will refund the buyer (minus half of Stripe fees for card payments), relist the car, and mark the transaction as Not Completed.")) return;
+    setCancelling(transactionId);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-actions", {
+        body: { action: "cancel_transaction", transaction_id: transactionId },
+      });
+      if (error || data?.error) throw new Error(data?.error || "Failed to cancel transaction");
+      const refundMsg = data?.refund
+        ? ` Refund of €${(data.refund.refunded_amount / 100).toFixed(2)} processed.`
+        : "";
+      toast.success(`Transaction cancelled.${refundMsg}`);
+      queryClient.invalidateQueries({ queryKey: ["admin-transactions"] });
+    } catch (e: any) {
+      toast.error(e.message || "Failed to cancel transaction");
+    } finally {
+      setCancelling(null);
     }
   };
 
@@ -190,6 +216,22 @@ const AdminTransactions: React.FC = () => {
                         <Send className="h-3.5 w-3.5" />
                       )}
                     </Button>
+                    {["completed", "grace_period", "cancellation_pending"].includes(tx.status) && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        title="Cancel transaction & refund"
+                        disabled={cancelling === tx.id}
+                        onClick={() => handleCancelTransaction(tx.id)}
+                      >
+                        {cancelling === tx.id ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Ban className="h-3.5 w-3.5" />
+                        )}
+                      </Button>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>

@@ -87,6 +87,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
   const [editingPrefs, setEditingPrefs] = useState(false);
   const [editPrefs, setEditPrefs] = useState<UserPrefs | null>(null);
   const [savingPrefs, setSavingPrefs] = useState(false);
+  const [ownershipComplete, setOwnershipComplete] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -109,6 +110,32 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
         const cache: Record<string, any> = {};
         (carsData || []).forEach(c => { cache[c.id] = c; });
         setCarCache(cache);
+      }
+
+      // Check ownership transfer completion for completed transactions
+      const completedTxIds = (txRes.data || []).filter(tx => tx.status === "completed" && tx.current_step === 5).map(tx => tx.id);
+      if (completedTxIds.length > 0) {
+        // Count total manual steps vs completed for each transaction
+        const { data: deadlinesData } = await supabase
+          .from("transaction_deadlines")
+          .select("transaction_id, status")
+          .in("transaction_id", completedTxIds);
+        if (deadlinesData) {
+          const txDeadlines: Record<string, { total: number; done: number }> = {};
+          deadlinesData.forEach(d => {
+            if (!txDeadlines[d.transaction_id]) txDeadlines[d.transaction_id] = { total: 0, done: 0 };
+            txDeadlines[d.transaction_id].total++;
+            if (d.status === "completed") txDeadlines[d.transaction_id].done++;
+          });
+          // A transaction's ownership is complete when ALL manual steps (6 manual steps in the checklist) are done
+          // We check if deadlines exist and all are completed
+          const completeMap: Record<string, boolean> = {};
+          Object.entries(txDeadlines).forEach(([txId, counts]) => {
+            // All recorded deadlines must be completed (minimum 6 manual steps)
+            completeMap[txId] = counts.total >= 6 && counts.done === counts.total;
+          });
+          setOwnershipComplete(completeMap);
+        }
       }
 
       setLoading(false);
@@ -454,17 +481,19 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
                       >
                         <FileCheck className="h-3 w-3" /> View Transaction
                       </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs gap-1 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/5"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/upload?from_car=${tx.car_id}`);
-                        }}
-                      >
-                        <Car className="h-3 w-3" /> Sell This Car
-                      </Button>
+                      {ownershipComplete[tx.id] && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs gap-1 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/5"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/upload?from_car=${tx.car_id}`);
+                          }}
+                        >
+                          <Car className="h-3 w-3" /> Sell This Car
+                        </Button>
+                      )}
                     </div>
                   </div>
                 ))}

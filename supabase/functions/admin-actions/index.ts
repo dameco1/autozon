@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
+import Stripe from "https://esm.sh/stripe@18.5.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -127,6 +128,106 @@ serve(async (req) => {
       });
 
       return new Response(JSON.stringify({ success: true, message: `Invoice notification sent to ${buyerAuth.user.email}` }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (action === "cancel_transaction") {
+      const { transaction_id } = params;
+      if (!transaction_id) throw new Error("transaction_id required");
+
+      const { data: tx, error: txErr } = await supabaseAdmin
+        .from("transactions")
+        .select("*")
+        .eq("id", transaction_id)
+        .single();
+      if (txErr || !tx) throw new Error("Transaction not found");
+
+      if (!["grace_period", "cancellation_pending", "completed"].includes(tx.status)) {
+        throw new Error(`Cannot cancel transaction in status: ${tx.status}`);
+      }
+
+      let refundResult: any = null;
+
+      // Handle Stripe refund for card payments
+      if (tx.payment_method === "card" && tx.stripe_payment_intent_id) {
+        const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
+          apiVersion: "2025-08-27.basil",
+        });
+
+        // Get the payment intent to find the fee
+        const paymentIntent = await stripe.paymentIntents.retrieve(tx.stripe_payment_intent_id, {
+          expand: ["latest_charge"],
+        });
+
+        const charge = paymentIntent.latest_charge as Stripe.Charge;
+        const totalAmount = paymentIntent.amount; // in cents
+        const stripeFee = charge?.balance_transaction
+          ? 0 // we'll calculate below
+          : Math.round(totalAmount * 0.029 + 30); // estimate: 2.9% + 30c
+
+        // If we have balance transaction, get exact fee
+        let actualFee = stripeFee;
+        if (charge?.balance_transaction && typeof charge.balance_transaction === "string") {
+          const bt = await stripe.balanceTransactions.retrieve(charge.balance_transaction);
+          actualFee = bt.fee;
+        }
+
+        // Buyer gets: total paid - half of Stripe fee
+        const halfFee = Math.ceil(actualFee / 2);
+        const refundAmount = totalAmount - halfFee;
+
+        const refund = await stripe.refunds.create({
+          payment_intent: tx.stripe_payment_intent_id,
+          amount: refundAmount,
+          reason: "requested_by_customer",
+        });
+
+        refundResult = {
+          refund_id: refund.id,
+          total_paid: totalAmount,
+          stripe_fee: actualFee,
+          buyer_bears: halfFee,
+          seller_bears: halfFee,
+          refunded_amount: refundAmount,
+        };
+      }
+
+      // Update transaction status
+      await supabaseAdmin
+        .from("transactions")
+        .update({
+          status: "not_completed",
+          cancellation_reason: "deadline_expired",
+        })
+        .eq("id", transaction_id);
+
+      // Put car back on sale
+      await supabaseAdmin
+        .from("cars")
+        .update({ status: "available" })
+        .eq("id", tx.car_id);
+
+      // Notify both parties
+      const { data: car } = await supabaseAdmin
+        .from("cars")
+        .select("make, model, year")
+        .eq("id", tx.car_id)
+        .single();
+      const carLabel = car ? `${car.year} ${car.make} ${car.model}` : "Vehicle";
+
+      const buyerMsg = tx.payment_method === "card" && refundResult
+        ? `The transaction for ${carLabel} has been cancelled due to missed deadlines. A refund of €${(refundResult.refunded_amount / 100).toFixed(2)} has been issued (original amount minus half of processing fees).`
+        : `The transaction for ${carLabel} has been cancelled due to missed deadlines. Please contact your payment provider for refund arrangements.`;
+
+      const sellerMsg = `The transaction for ${carLabel} has been cancelled due to missed ownership transfer deadlines. Your car has been relisted as available.`;
+
+      await supabaseAdmin.from("notifications").insert([
+        { user_id: tx.buyer_id, title: "Transaction Cancelled", message: buyerMsg, type: "warning", link: `/dashboard` },
+        { user_id: tx.seller_id, title: "Transaction Cancelled — Car Relisted", message: sellerMsg, type: "info", link: `/dashboard` },
+      ]);
+
+      return new Response(JSON.stringify({ success: true, refund: refundResult }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
