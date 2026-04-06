@@ -30,6 +30,8 @@ const stepLabel = (step: number) => {
 const AdminTransactions: React.FC = () => {
   const [search, setSearch] = useState("");
   const [sendingInvoice, setSendingInvoice] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["admin-transactions"],
