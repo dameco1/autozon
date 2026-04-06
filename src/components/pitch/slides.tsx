@@ -710,6 +710,7 @@ export const SlideMoatRoadmap = () => (
           { phase: "V1", desc: "Transactions, concierge, MFA, i18n, admin ✅" },
           { phase: "V1.5", desc: "Lifestyle matching, brand-specific damage costs ✅" },
           { phase: "V2", desc: "VINCARIO VIN decode + stolen check, 20-pt inspection scoring ✅" },
+          { phase: "V2.5", desc: "Austrian legal ownership transfer, deadline enforcement, cancellation flow ✅" },
           { phase: "V3", desc: "Dealer network, logistics, fleet tools, lifecycle platform" },
         ].map(({ phase, desc }) => (
           <div key={phase} className="flex items-center gap-4 mb-4">
