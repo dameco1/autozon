@@ -595,12 +595,6 @@ const AcquisitionOptions: React.FC = () => {
                 buyerType={buyerType}
                 workflow={workflow || undefined}
               />
-              {transactionId && workflow && (
-                <DocumentChecklist transactionId={transactionId} documents={getAllDocuments(workflow)} role={myRole} />
-              )}
-              {transactionId && workflow && (
-                <DeadlineManager transactionId={transactionId} deadlines={workflow.deadlines} contractSignedAt={contractSignedAt || new Date().toISOString()} />
-              )}
             </div>
           )}
 

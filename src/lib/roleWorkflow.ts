@@ -76,7 +76,6 @@ const STANDARD_DEADLINES: DeadlineConfig[] = [
   { step_type: "inspection", label: "Vehicle Inspection", label_de: "Fahrzeuginspektion", hours: 72 },
   { step_type: "registration", label: "Registration Transfer", label_de: "Ummeldung", hours: 168 }, // 7 days
   { step_type: "handover", label: "Vehicle Handover", label_de: "Fahrzeugübergabe", hours: 336 }, // 14 days
-  { step_type: "nova_payment", label: "NoVA Payment (if applicable)", label_de: "NoVA-Zahlung (falls zutreffend)", hours: 360 }, // 15 days
 ];
 
 // ─── Workflow definitions by role combo ───
