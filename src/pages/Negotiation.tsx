@@ -15,6 +15,7 @@ import {
   MessageSquare, ShieldCheck, AlertTriangle, Download, User,
 } from "lucide-react";
 import { generateNegotiationPdf } from "@/lib/generateNegotiationPdf";
+import ValuationFeedback from "@/components/transaction/ValuationFeedback";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface OfferRow {
@@ -529,6 +530,11 @@ const Negotiation: React.FC = () => {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Valuation feedback — shown once after deal */}
+            <div className="mb-6">
+              <ValuationFeedback carId={offer.car_id} agreedPrice={offer.agreed_price} fairValuePrice={car.fair_value_price} />
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

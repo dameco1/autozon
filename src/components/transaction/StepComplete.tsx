@@ -1,9 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, Download, ArrowRight, FileText, CreditCard, Shield, PartyPopper, ChevronDown } from "lucide-react";
+import { CheckCircle2, Download, ArrowRight, FileText, CreditCard, Shield, PartyPopper, ChevronDown, Banknote, Building2, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
-import ValuationFeedback from "./ValuationFeedback";
 
 interface Props {
   car: { make: string; model: string; year: number };
@@ -92,12 +91,44 @@ const StepComplete: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Valuation feedback prompt */}
-      {carId && (
-        <div className="mb-6">
-          <ValuationFeedback carId={carId} agreedPrice={agreedPrice} fairValuePrice={fairValuePrice ?? null} />
+      {/* Payment details section */}
+      <div className="bg-secondary/50 border border-border rounded-2xl p-6 text-left mb-6">
+        <h3 className="font-display font-bold text-foreground mb-4 text-sm flex items-center gap-2">
+          <Banknote className="h-4 w-4 text-primary" /> Payment Details
+        </h3>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Method</span>
+            <span className="text-foreground font-medium">{paymentLabel}</span>
+          </div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Amount Due</span>
+            <span className="text-primary font-display font-bold">€{agreedPrice.toLocaleString()}</span>
+          </div>
+          {paymentMethod === "cash" && (
+            <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 text-sm text-muted-foreground space-y-1.5">
+              <p className="flex items-center gap-2"><Building2 className="h-4 w-4 text-primary flex-shrink-0" /> Transfer to the seller's bank account provided in the contract.</p>
+              <p className="text-xs">Reference your transaction ID in the payment description.</p>
+            </div>
+          )}
+          {paymentMethod === "credit" && (
+            <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 text-sm text-muted-foreground space-y-1.5">
+              <p className="flex items-center gap-2"><CreditCard className="h-4 w-4 text-primary flex-shrink-0" /> Your financing partner will contact you to finalize the loan agreement.</p>
+              <p className="text-xs">Monthly payments begin after the vehicle handover.</p>
+            </div>
+          )}
+          {paymentMethod === "leasing" && (
+            <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 text-sm text-muted-foreground space-y-1.5">
+              <p className="flex items-center gap-2"><Car className="h-4 w-4 text-primary flex-shrink-0" /> Your leasing partner will send you the leasing contract for signature.</p>
+              <p className="text-xs">First monthly payment due after vehicle registration.</p>
+            </div>
+          )}
+          <div className="flex items-center gap-2 text-xs text-muted-foreground pt-2">
+            <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+            <span>Payment confirmation will be recorded once completed.</span>
+          </div>
         </div>
-      )}
+      </div>
 
       {/* Next steps */}
       <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 text-left mb-6">
