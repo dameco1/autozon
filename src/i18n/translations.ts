@@ -1925,6 +1925,8 @@ export const translations = {
       overdue: "Überfällig",
       congratsTitle: "Herzlichen Glückwunsch zu Ihrem neuen",
       congratsSubtitle: "Die Eigentumsübertragung ist abgeschlossen. Dieses Fahrzeug gehört jetzt offiziell Ihnen. Gute Fahrt!",
+      congratsSellerTitle: "Herzlichen Glückwunsch zum Verkauf Ihres",
+      congratsSellerSubtitle: "Die Eigentumsübertragung ist abgeschlossen. Nutzen Sie Autozon, um Ihr nächstes Auto zu finden!",
       ownershipTransferCompleted: "Eigentumsübertragung abgeschlossen",
       autoLabel: "Auto",
       cardPayment: "Kartenzahlung",
