@@ -289,11 +289,11 @@ const StepPayment: React.FC<Props> = ({ agreedPrice, partners, onContinue, onBac
 
           <Button
             className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6"
-            onClick={() => testMode ? handleTestPay("card") : onContinue("card")}
+            onClick={() => testMode ? handleTestPay("card") : handleCardPayment()}
+            disabled={cardLoading}
           >
-            {testMode && <TestTube2 className="mr-2 h-4 w-4" />}
-            <CreditCard className="mr-2 h-5 w-5" />
-            {testMode ? "Simulate Card Payment" : (t.transaction?.payWithCard || "Pay with Credit Card")}
+            {cardLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : testMode ? <TestTube2 className="mr-2 h-4 w-4" /> : <CreditCard className="mr-2 h-5 w-5" />}
+            {cardLoading ? "Redirecting to payment..." : testMode ? "Simulate Card Payment" : (t.transaction?.payWithCard || "Pay with Credit Card")}
           </Button>
         </motion.div>
       )}
