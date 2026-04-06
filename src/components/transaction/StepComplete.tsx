@@ -95,16 +95,17 @@ const StepComplete: React.FC<Props> = ({
         .from("transaction_deadlines")
         .select("step_type, status, deadline_at, id")
         .eq("transaction_id", transactionId);
+      const map: Record<string, boolean> = {};
+      const dlMap: Record<string, { deadline_at: string; id: string }> = {};
       if (data) {
-        const map: Record<string, boolean> = {};
-        const dlMap: Record<string, { deadline_at: string; id: string }> = {};
         data.forEach(d => {
           map[d.step_type] = d.status === "completed";
           dlMap[d.step_type] = { deadline_at: d.deadline_at, id: d.id };
         });
-        setCheckedSteps(map);
-        setDeadlines(dlMap);
       }
+      setCheckedSteps(map);
+      setDeadlines(dlMap);
+
       // Seed deadline records for manual steps that have deadlineKey but no record yet
       const manualWithDeadline = ownershipSteps.filter(s => !s.digital && s.deadlineKey);
       const missingDeadlines = manualWithDeadline.filter(s => !data?.find(d => d.step_type === s.key));
