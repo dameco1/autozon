@@ -216,6 +216,22 @@ const AdminTransactions: React.FC = () => {
                         <Send className="h-3.5 w-3.5" />
                       )}
                     </Button>
+                    {["completed", "grace_period", "cancellation_pending"].includes(tx.status) && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        title="Cancel transaction & refund"
+                        disabled={cancelling === tx.id}
+                        onClick={() => handleCancelTransaction(tx.id)}
+                      >
+                        {cancelling === tx.id ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Ban className="h-3.5 w-3.5" />
+                        )}
+                      </Button>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>

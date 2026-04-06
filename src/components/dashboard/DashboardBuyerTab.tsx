@@ -87,6 +87,7 @@ const DashboardBuyerTab: React.FC<Props> = ({ userId }) => {
   const [editingPrefs, setEditingPrefs] = useState(false);
   const [editPrefs, setEditPrefs] = useState<UserPrefs | null>(null);
   const [savingPrefs, setSavingPrefs] = useState(false);
+  const [ownershipComplete, setOwnershipComplete] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
