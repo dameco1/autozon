@@ -831,7 +831,6 @@ export const translations = {
       complete: "Complete",
       // Deadline manager
       offlineSteps: "Offline Steps & Deadlines",
-      overdue: "Overdue",
       stepCompleted: "Step completed",
       completed: "Completed",
       done: "Done",
