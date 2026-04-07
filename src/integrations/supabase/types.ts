@@ -1327,6 +1327,18 @@ export type Database = {
           transaction_id: string
         }[]
       }
+      get_counterparty_profile: {
+        Args: { _user_id: string }
+        Returns: {
+          city: string
+          company_name: string
+          country: string
+          full_name: string
+          kyc_status: string
+          user_id: string
+          user_type: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
