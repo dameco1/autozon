@@ -58,6 +58,21 @@ const sections: Section[] = [
     ],
   },
   {
+    id: "flows",
+    title: "2.1 — Interactive Flow Diagrams",
+    icon: Map,
+    docs: [
+      { title: "Seller Flow", desc: "Complete seller journey — sign-up, upload, valuation, negotiation, sale", icon: Map, file: "seller-flow.md", status: "ready" },
+      { title: "Buyer Flow", desc: "Complete buyer journey — onboarding, selection, comparison, acquisition", icon: Map, file: "buyer-flow.md", status: "ready" },
+      { title: "Dealer / Business Flow", desc: "Business seller registration, B2P/B2B legal frameworks, role-specific contracts", icon: Building2, file: "dealer-flow.md", status: "ready" },
+      { title: "Authentication Flow", desc: "Registration, email verification, MFA enrollment, RBAC, password recovery", icon: Lock, file: "authentication-flow.md", status: "ready" },
+      { title: "Negotiation Flow", desc: "Multi-round offer engine — counter-offers, fair value reference, PDF export", icon: FileText, file: "negotiation-flow.md", status: "ready" },
+      { title: "Transaction Flow Diagram", desc: "5-step acquisition wizard — method, contract, payment, insurance, transfer", icon: FileText, file: "transaction-flow.md", status: "ready" },
+      { title: "System Overview", desc: "Backend services, security layers, admin tools, and cross-cutting features", icon: Server, file: "system-overview.md", status: "ready" },
+      { title: "Public Access Flow", desc: "Anonymous vs authenticated visibility, RLS data access rules", icon: Globe, file: "public-access-flow.md", status: "ready" },
+    ],
+  },
+  {
     id: "financials",
     title: "3.0 — Financials & Metrics",
     icon: BarChart3,
