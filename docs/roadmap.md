@@ -151,7 +151,7 @@ Migration planning begins when **any two** of these thresholds are met:
 
 ## Revenue Model
 
-1. **Listing fees** — €49 Basic / €99 Premium (Stripe checkout)
+1. **Listing fees** — €9.99 Private / €19.99 Business (Stripe checkout)
 2. **Full Service commission** — 2.5% of completed sales, capped at €499 (planned V2)
 3. **Financing referrals** — Commission from partner banks/leasers (planned)
 4. **Advertising & Sponsored Content** — Display ads, sponsored listings, partner promotions (planned V1.5+)

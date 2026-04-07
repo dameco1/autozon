@@ -159,7 +159,7 @@ Computer vision-based damage scanning from uploaded photos provides objective co
 
 ### 5. Seller-First Business Model
 
-At €49 flat fee, autozon charges a fraction of what dealers extract (15–30% margin). The model aligns platform incentives with seller outcomes — simple, transparent pricing regardless of car value.
+At €9.99 (Private) / €19.99 (Business) per listing, autozon charges a fraction of what dealers extract (15–30% margin). The model aligns platform incentives with seller outcomes — simple, transparent pricing regardless of car value.
 
 **Moat depth:** Low-Medium — pricing is replicable, but the full-stack experience is not.
 
