@@ -48,9 +48,6 @@ const sections: Section[] = [
     docs: [
       { title: "Architecture Overview", desc: "System design, tech stack, infrastructure, and project structure", icon: Server, file: "architecture.md", status: "ready" },
       { title: "Sitemap & Routes", desc: "All pages, routes, and user flow diagrams", icon: Map, file: "sitemap.md", status: "ready" },
-      { title: "Seller Flow Diagram", desc: "Complete seller journey wireframe — upload to sale", icon: Map, file: "seller-flow.md", status: "ready" },
-      { title: "Buyer Flow Diagram", desc: "Complete buyer journey wireframe — onboarding to acquisition", icon: Map, file: "buyer-flow.md", status: "ready" },
-      { title: "System Overview Diagram", desc: "Backend services, security, admin, and cross-cutting features", icon: Server, file: "system-overview.md", status: "ready" },
       { title: "Database Schema", desc: "Tables, relationships, RLS policies, and triggers", icon: Database, file: "database-schema.md", status: "ready" },
       { title: "Backend Functions", desc: "Edge functions, AI integrations, Stripe webhooks", icon: Server, file: "backend-functions.md", status: "ready" },
       { title: "Core Business Logic", desc: "Fair value algorithm, matching engine, negotiation", icon: Brain, file: "business-logic.md", status: "ready" },
@@ -58,6 +55,21 @@ const sections: Section[] = [
       { title: "Transaction Flow", desc: "Role-based contracts, document checklists, deadline manager, warranty rules", icon: FileText, file: "transaction-flow.md", status: "ready" },
       { title: "Product Roadmap", desc: "Phase planning, revenue model, geographic expansion", icon: BookOpen, file: "roadmap.md", status: "ready" },
       { title: "SEO & Social Sharing", desc: "Meta tags, JSON-LD, Open Graph, sitemap, robots.txt", icon: Search, file: "seo.md", status: "ready" },
+    ],
+  },
+  {
+    id: "flows",
+    title: "2.1 — Interactive Flow Diagrams",
+    icon: Map,
+    docs: [
+      { title: "Seller Flow", desc: "Complete seller journey — sign-up, upload, valuation, negotiation, sale", icon: Map, file: "seller-flow.md", status: "ready" },
+      { title: "Buyer Flow", desc: "Complete buyer journey — onboarding, selection, comparison, acquisition", icon: Map, file: "buyer-flow.md", status: "ready" },
+      { title: "Dealer / Business Flow", desc: "Business seller registration, B2P/B2B legal frameworks, role-specific contracts", icon: Building2, file: "dealer-flow.md", status: "ready" },
+      { title: "Authentication Flow", desc: "Registration, email verification, MFA enrollment, RBAC, password recovery", icon: Lock, file: "authentication-flow.md", status: "ready" },
+      { title: "Negotiation Flow", desc: "Multi-round offer engine — counter-offers, fair value reference, PDF export", icon: FileText, file: "negotiation-flow.md", status: "ready" },
+      { title: "Transaction Flow Diagram", desc: "5-step acquisition wizard — method, contract, payment, insurance, transfer", icon: FileText, file: "transaction-flow.md", status: "ready" },
+      { title: "System Overview", desc: "Backend services, security layers, admin tools, and cross-cutting features", icon: Server, file: "system-overview.md", status: "ready" },
+      { title: "Public Access Flow", desc: "Anonymous vs authenticated visibility, RLS data access rules", icon: Globe, file: "public-access-flow.md", status: "ready" },
     ],
   },
   {
