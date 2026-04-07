@@ -84,14 +84,14 @@ Private-to-private sales (excluding dealer-to-dealer and fleet):
 |---|---|---|
 | **Buyers** | Free | Maximize liquidity — every buyer makes the platform more valuable for sellers |
 | **Sellers** | 2.5% success fee (capped at €499) | Aligned incentives — autozon earns only when the seller earns |
-| **Placement** | €49 per listing (optional) | Commitment signal + premium matching visibility |
+| **Placement** | €9.99/€19.99 per listing (optional) | Commitment signal + premium matching visibility |
 
 ### Revenue Streams
 
 | Stream | Status | Phase |
 |---|---|---|
 | Seller Success Fee (2.5%, capped €499) | ✅ Live | V1 |
-| Placement Fee (€49) | ✅ Live | V1 |
+| Placement Fee (€9.99/€19.99) | ✅ Live | V1 |
 | Dealer Lead Fees | 🔜 Planned | V1.5 |
 | Financing & Insurance Referrals | 🔜 Planned | V2 |
 | Logistics Add-ons | 🔜 Planned | V2 |

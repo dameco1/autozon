@@ -4,9 +4,9 @@
 
 All projections are based on:
 - **Launch market**: Austria + Germany (Y1), expanding to DACH + CEE (Y2), full European rollout (Y3)
-- **Listing fees**: €49 (Basic) / €99 (Premium)
+- **Listing fees**: €9.99 (Private) / €19.99 (Business)
 - **Premium uptake**: 50% in Y1, rising to 60% by Y3
-- **Blended average revenue per listing**: €74 (Y1), €79 (Y2), €84 (Y3)
+- **Blended average revenue per listing: €14.99 (Y1), €16 (Y2), €17 (Y3)
 - **Full Service (V2+)**: 2.5% of sale price, capped at €499 — additive revenue from Y2
 - **Incorporation costs**: €1,000–€2,000 + €5,000 share capital (Gründungsprivilegierte GmbH)
 - **Annual corporate costs**: €1,500–€2,700/year (accounting + Chamber of Commerce)
@@ -18,8 +18,8 @@ All projections are based on:
 
 | Revenue Stream | Y1 | Y2 | Y3 |
 |---|---|---|---|
-| Basic Listing Fee (€49) | Primary | Primary | Primary |
-| Premium Listing Fee (€99) | Primary | Primary | Primary |
+| Private Listing (€9.99) | Primary | Primary | Primary |
+| Business Listing (€19.99) | Primary | Primary | Primary |
 | Full Service Fee (2.5%, capped €499) | — | Launch | Scale |
 | Dealer Lead Fees | Launch | Scale | Major |
 | Financing/Insurance Referrals | Pilot | Scale | Major |
@@ -36,8 +36,8 @@ All projections are based on:
 | Metric | Conservative | Base Case | Optimistic |
 |---|---|---|---|
 | **Listings** | 1,500 | 3,000 | 5,000 |
-| **Basic (50%)** | 750 × €49 = €36,750 | 1,500 × €49 = €73,500 | 2,000 × €49 = €98,000 |
-| **Premium (50%)** | 750 × €99 = €74,250 | 1,500 × €99 = €148,500 | 3,000 × €99 = €297,000 |
+| **Private (50%)** | 750 × €9.99 = €7,493 | 1,500 × €9.99 = €14,985 | 2,000 × €9.99 = €19,980 |
+| **Business (50%)** | 750 × €19.99 = €14,993 | 1,500 × €19.99 = €29,985 | 3,000 × €19.99 = €59,970 |
 | **Dealer Lead Fees** | €10,000 | €25,000 | €50,000 |
 | **Financing Referrals** | €5,000 | €15,000 | €30,000 |
 | **Advertising & Sponsored Content** | €50,000 | €100,000 | €175,000 |

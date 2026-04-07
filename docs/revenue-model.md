@@ -12,8 +12,8 @@ Autozon operates an **asymmetric marketplace model**: buyers use the platform fo
 
 | Tier | Price | Includes |
 |---|---|---|
-| **Basic** | €49 | Fair-value appraisal, market demand score, self-service listing |
-| **Premium** | €99 | Everything in Basic + buyer matching, AI concierge support, priority visibility |
+| **Private Seller** | €9.99 | Fair-value appraisal, market demand score, self-service listing |
+| **Business / Dealer** | €19.99 | Everything in Basic + buyer matching, AI concierge support, priority visibility |
 
 | Component | Details |
 |---|---|
@@ -38,8 +38,8 @@ Autozon operates an **asymmetric marketplace model**: buyers use the platform fo
 
 | Stream | Model | Status |
 |---|---|---|
-| Basic Listing Fee | €49 flat fee | ✅ Live |
-| Premium Listing Fee | €99 flat fee | ✅ Live |
+| Basic Listing Fee | €9.99 (Private) / €19.99 (Business) per listing | ✅ Live |
+| Business/Dealer Listing | €19.99 flat fee | ✅ Live |
 | Dealer Lead Fees | Per-lead fee for dealer partners | ✅ Live |
 | Financing Referrals | Commission on funded deals | ✅ Live |
 | **Advertising & Sponsored Content** | Display ads, sponsored listings, partner promotions | ✅ Live |
@@ -165,9 +165,9 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 
 ### Per-Transaction Economics (Seller Side)
 
-| Metric | Basic (€49) | Premium (€99) | Blended Average |
+| Metric | Private (€9.99) | Business (€19.99) | Blended Average |
 |---|---|---|---|
-| **Listing Fee** | €49 | €99 | €74 |
+| **Listing Fee** | €9.99 | €19.99 | €14.99 |
 | **Estimated COGS** | ~€8 | ~€12 | ~€10 |
 | **Gross Profit** | €41 | €87 | €64 |
 | **Gross Margin** | 84% | 88% | 86% |
@@ -204,7 +204,7 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 | **GMV** | Gross Merchandise Value (total value of cars sold) | €22.5M |
 | **Listings** | Total cars listed on platform | 3,000+ |
 | **Seller Conversion** | Listed cars → sold cars | 40%+ |
-| **Premium Uptake** | % of sellers choosing Premium (€99) | 50%+ |
+| **Premium Uptake** | % of sellers choosing Business (€19.99) | 50%+ |
 
 ### Efficiency Metrics
 
@@ -221,8 +221,8 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 ## Pricing Philosophy
 
 1. **Simple, transparent pricing** — flat fees are easy to understand and don't penalize sellers of higher-value cars
-2. **Low barrier to entry** — €49 Basic is accessible to all sellers, from a €3,000 Opel to a €50,000 Porsche
-3. **Value-based upsell** — Premium at €99 delivers measurable additional value (matching, concierge, visibility)
+2. **Low barrier to entry** — €9.99 Private is accessible to all sellers, from a €3,000 Opel to a €50,000 Porsche
+3. **Value-based upsell** — Business at €19.99 delivers measurable additional value (matching, concierge, visibility)
 4. **Buyers pay nothing** — this is critical for marketplace liquidity; every additional buyer makes the platform more valuable for sellers
 5. **Revenue at listing, not at sale** — reduces revenue risk and cash flow uncertainty compared to success-based models
 
@@ -235,8 +235,8 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 | Metric | Value |
 |---|---|
 | Listings/month | 125 |
-| Basic (50%) | 62 × €49 = €3,038 |
-| Premium (50%) | 63 × €99 = €6,237 |
+| Private (50%) | 62 × €9.99 = €619 |
+| Business (50%) | 63 × €19.99 = €1,259 |
 | Dealer/Financing/Ads | €5,400 |
 | **Monthly Revenue** | ~€14,675 |
 | **Annual Revenue** | ~€175,000 |
@@ -246,8 +246,8 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 | Metric | Value |
 |---|---|
 | Listings/month | 250 |
-| Basic (50%) | 125 × €49 = €6,125 |
-| Premium (50%) | 125 × €99 = €12,375 |
+| Private (50%) | 125 × €9.99 = €1,249 |
+| Business (50%) | 125 × €19.99 = €2,499 |
 | Dealer/Financing/Ads | €20,400 |
 | **Monthly Revenue** | ~€38,900 |
 | **Annual Revenue** | ~€467,000 |
@@ -257,8 +257,8 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 | Metric | Value |
 |---|---|
 | Listings/month | 420 |
-| Basic (40%) | 168 × €49 = €8,232 |
-| Premium (60%) | 252 × €99 = €24,948 |
+| Private (40%) | 168 × €9.99 = €1,678 |
+| Business (60%) | 252 × €19.99 = €5,037 |
 | Dealer/Financing/Ads | €29,300 |
 | **Monthly Revenue** | ~€62,480 |
 | **Annual Revenue** | ~€750,000 |
