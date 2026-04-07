@@ -135,26 +135,35 @@ const AcquisitionOptions: React.FC = () => {
       if (carData) setCar(carData as CarInfo);
 
       // Fetch names, seller country, user types, and current user KYC
-      const [profileRes, buyerRes, myProfileRes] = await Promise.all([
-        supabase.from("profiles").select("full_name, country, kyc_status, user_type").eq("user_id", o.seller_id).maybeSingle(),
-        supabase.from("profiles").select("full_name, kyc_status, user_type").eq("user_id", o.buyer_id).maybeSingle(),
-        supabase.from("profiles").select("kyc_status").eq("user_id", session.user.id).maybeSingle(),
+      const isSeller = o.seller_id === session.user.id;
+      const isBuyer = o.buyer_id === session.user.id;
+      const counterpartyId = isSeller ? o.buyer_id : o.seller_id;
+
+      const [counterpartyRes, myProfileRes] = await Promise.all([
+        supabase.rpc("get_counterparty_profile", { _user_id: counterpartyId }),
+        supabase.from("profiles").select("full_name, country, kyc_status, user_type").eq("user_id", session.user.id).maybeSingle(),
       ]);
-      if (profileRes.data?.full_name) setSellerName(profileRes.data.full_name);
-      if (profileRes.data?.country) setSellerCountry(profileRes.data.country);
-      if (buyerRes.data?.full_name) setBuyerName(buyerRes.data.full_name);
-      if (myProfileRes.data) setMyKycStatus((myProfileRes.data as any).kyc_status || "none");
+      const counterparty = counterpartyRes.data?.[0] || null;
+      const myProfile = myProfileRes.data;
+
+      // Build profileRes/buyerRes equivalents from counterparty + own profile
+      const sellerProfile = isSeller ? myProfile : counterparty;
+      const buyerProfile = isBuyer ? myProfile : counterparty;
+      if (sellerProfile?.full_name) setSellerName(sellerProfile.full_name);
+      if (sellerProfile?.country) setSellerCountry(sellerProfile.country);
+      if (buyerProfile?.full_name) setBuyerName(buyerProfile.full_name);
+      if (myProfile) setMyKycStatus((myProfile as any).kyc_status || "none");
 
       // Set party types
-      const sType = ((profileRes.data as any)?.user_type === "business" ? "business" : "private") as PartyType;
-      const bType = ((buyerRes.data as any)?.user_type === "business" ? "business" : "private") as PartyType;
+      const sType = ((sellerProfile as any)?.user_type === "business" ? "business" : "private") as PartyType;
+      const bType = ((buyerProfile as any)?.user_type === "business" ? "business" : "private") as PartyType;
       setSellerType(sType);
       setBuyerType(bType);
       setWorkflow(getWorkflow(sType, bType));
 
       // Set KYC verification statuses
-      const sellerKyc = (profileRes.data as any)?.kyc_status;
-      const buyerKyc = (buyerRes.data as any)?.kyc_status;
+      const sellerKyc = (sellerProfile as any)?.kyc_status;
+      const buyerKyc = (buyerProfile as any)?.kyc_status;
       setSellerKycVerified(sellerKyc === "verified" || sellerKyc === "approved");
       setBuyerKycVerified(buyerKyc === "verified" || buyerKyc === "approved");
 
