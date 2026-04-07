@@ -70,6 +70,7 @@ const sections: Section[] = [
       { title: "Transaction Flow Diagram", desc: "5-step acquisition wizard — method, contract, payment, insurance, transfer", icon: FileText, file: "transaction-flow.md", status: "ready" },
       { title: "System Overview", desc: "Backend services, security layers, admin tools, and cross-cutting features", icon: Server, file: "system-overview.md", status: "ready" },
       { title: "Public Access Flow", desc: "Anonymous vs authenticated visibility, RLS data access rules", icon: Globe, file: "public-access-flow.md", status: "ready" },
+      { title: "KYC Verification Flow", desc: "Didit SDK identity verification — document upload, selfie, webhook sync", icon: Shield, file: "kyc-flow.md", status: "ready" },
     ],
   },
   {
