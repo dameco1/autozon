@@ -76,7 +76,7 @@ export const SlideCover = () => (
       {[
         { value: "€300B+", label: "EU used-car market" },
         { value: "~30%", label: "Lost to dealer margins" },
-        { value: "€49", label: "Flat listing fee" },
+        { value: "€9.99", label: "From per listing" },
         { value: "10 days", label: "Avg. time to sale target" },
       ].map(({ value, label }) => (
         <div key={label} className="text-center">
