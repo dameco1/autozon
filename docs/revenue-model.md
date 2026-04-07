@@ -165,9 +165,9 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 
 ### Per-Transaction Economics (Seller Side)
 
-| Metric | Basic (€49) | Premium (€99) | Blended Average |
+| Metric | Private (€9.99) | Business (€19.99) | Blended Average |
 |---|---|---|---|
-| **Listing Fee** | €49 | €99 | €74 |
+| **Listing Fee** | €9.99 | €19.99 | €14.99 |
 | **Estimated COGS** | ~€8 | ~€12 | ~€10 |
 | **Gross Profit** | €41 | €87 | €64 |
 | **Gross Margin** | 84% | 88% | 86% |
@@ -204,7 +204,7 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 | **GMV** | Gross Merchandise Value (total value of cars sold) | €22.5M |
 | **Listings** | Total cars listed on platform | 3,000+ |
 | **Seller Conversion** | Listed cars → sold cars | 40%+ |
-| **Premium Uptake** | % of sellers choosing Premium (€99) | 50%+ |
+| **Premium Uptake** | % of sellers choosing Business (€19.99) | 50%+ |
 
 ### Efficiency Metrics
 
@@ -257,8 +257,8 @@ Autozon's high-intent automotive audience is uniquely valuable to advertisers. E
 | Metric | Value |
 |---|---|
 | Listings/month | 420 |
-| Basic (40%) | 168 × €49 = €8,232 |
-| Premium (60%) | 252 × €99 = €24,948 |
+| Private (40%) | 168 × €9.99 = €1,678 |
+| Business (60%) | 252 × €19.99 = €5,037 |
 | Dealer/Financing/Ads | €29,300 |
 | **Monthly Revenue** | ~€62,480 |
 | **Annual Revenue** | ~€750,000 |
