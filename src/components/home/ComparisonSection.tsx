@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, XCircle, ChevronDown, Scale } from "lucide-react";
+import { CheckCircle2, XCircle, ChevronDown, Scale, ListChecks } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -44,14 +44,17 @@ const ComparisonSection: React.FC = () => {
                   const highlightRows = (t.comparison as any).highlightRows || [];
                   const isHighlighted = highlightRows.includes(fi);
                   const isLegalRow = fi === 6;
+                  const isGuideRow = fi === 7;
+                  const isSpecialRow = isLegalRow || isGuideRow;
                   return (
-                    <tr key={fi} className={`border-b border-border/50 last:border-0 ${isLegalRow ? "bg-orange/[0.12] ring-1 ring-inset ring-orange/20" : isHighlighted ? "bg-orange/[0.06]" : ""}`}>
-                      <td className={`p-4 ${isLegalRow ? "text-orange font-bold flex items-center gap-2" : isHighlighted ? "text-foreground font-semibold" : "text-muted-foreground"}`}>
+                    <tr key={fi} className={`border-b border-border/50 last:border-0 ${isSpecialRow ? "bg-orange/[0.12] ring-1 ring-inset ring-orange/20" : isHighlighted ? "bg-orange/[0.06]" : ""}`}>
+                      <td className={`p-4 ${isSpecialRow ? "text-orange font-bold flex items-center gap-2" : isHighlighted ? "text-foreground font-semibold" : "text-muted-foreground"}`}>
                         {isLegalRow && <Scale className="h-4 w-4 text-orange shrink-0" />}
+                        {isGuideRow && <ListChecks className="h-4 w-4 text-orange shrink-0" />}
                         {feature}
-                        {isLegalRow && <span className="ml-1 text-[10px] bg-orange text-white px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide">New</span>}
+                        {isSpecialRow && <span className="ml-1 text-[10px] bg-orange text-white px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide">New</span>}
                       </td>
-                      <td className={`p-4 text-center ${isLegalRow ? "bg-orange/[0.15]" : isHighlighted ? "bg-orange/[0.08]" : ""}`}>
+                      <td className={`p-4 text-center ${isSpecialRow ? "bg-orange/[0.15]" : isHighlighted ? "bg-orange/[0.08]" : ""}`}>
                         <CheckCircle2 className="h-5 w-5 mx-auto text-orange" />
                       </td>
                       {t.comparison.competitorData[fi].map((has, ci) => (
