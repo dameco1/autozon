@@ -599,7 +599,7 @@ export const SlideAppendix = () => (
 
     <p className="text-[24px] text-muted-foreground leading-relaxed mb-8 max-w-[1200px]">
       A <span className="text-foreground font-semibold">comprehensive, password-protected data room</span> is ready for your due diligence — accessible online at{" "}
-      <span className={`${accent} font-bold`}>autozon.lovable.app/docs</span>.
+      <span className={`${accent} font-bold`}>www.autozon.at/pitch</span>.
     </p>
 
     <div className="grid grid-cols-3 gap-4 mb-8">
