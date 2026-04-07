@@ -43,7 +43,7 @@ This document defines the key performance indicators (KPIs) that autozon tracks 
 |---|---|---|---|---|---|---|
 | **Monthly Revenue** | Total platform revenue (success fees + placement) | Stripe + DB | Monthly | €5K | €50K | €200K |
 | **Success Fee Revenue** | 2.5% commission on completed sales | `offers` (agreed_price × 0.025) | Monthly | €3K | €40K | €170K |
-| **Placement Fee Revenue** | €49 per premium listing | `cars` (placement_paid = true) | Monthly | €2K | €10K | €30K |
+| **Placement Fee Revenue** | €9.99/€19.99 per listing | `cars` (placement_paid = true) | Monthly | €2K | €10K | €30K |
 | **Average Revenue Per Transaction (ARPT)** | Revenue earned per completed sale | Revenue / completed sales | Monthly | €100 | €160 | €200 |
 | **Take Rate** | Revenue as % of GMV | Revenue / GMV | Monthly | 2.8% | 3.0% | 3.2% |
 | **Monthly Recurring Revenue (MRR)** | Recurring subscription revenue (future) | Stripe subscriptions | Monthly | €0 | €5K | €25K |
