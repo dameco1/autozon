@@ -1,0 +1,1 @@
+CREATE POLICY "Public can read car models" ON public.car_models FOR SELECT TO anon USING (true);
