@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
     init();
   }, [navigate]);
 
-  const totalValue = cars.reduce((sum, c) => sum + (c.fair_value_price || c.price || 0), 0);
+  const totalValue = cars.reduce((sum, c) => sum + Number(c.price || 0), 0);
   const avgCondition = cars.length > 0
     ? Math.round(cars.reduce((sum, c) => sum + (c.condition_score || 0), 0) / cars.length)
     : 0;
@@ -292,7 +292,7 @@ const Dashboard: React.FC = () => {
                         </p>
                          <div className="flex items-center gap-3 mt-0.5">
                            <span className="text-xs text-primary font-semibold">
-                             €{(car.fair_value_price || car.price).toLocaleString()}
+                              €{car.price.toLocaleString()}
                            </span>
                            {car.status === "sold" ? (
                               <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-red-500/10 text-red-400 flex items-center gap-1">
