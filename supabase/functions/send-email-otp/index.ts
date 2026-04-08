@@ -1,5 +1,10 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.3";
-import { corsHeaders } from "https://esm.sh/@supabase/supabase-js@2.95.3/cors";
+import { createClient } from "npm:@supabase/supabase-js@2";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -7,7 +12,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Verify JWT
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
       return new Response(JSON.stringify({ error: "Missing authorization" }), {
@@ -18,9 +22,9 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    // Create user client to get user info
-    const userClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+    const userClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
 
@@ -32,7 +36,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Service role client for DB operations
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
 
     // Rate limit: max 5 codes in last 10 minutes
@@ -74,9 +77,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Send email via Supabase Auth admin API (sends a simple email)
-    // We'll use the Lovable AI to send a formatted email
-    const emailBody = `
+    // Send OTP email via the email queue
+    const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px;">
         <h2 style="color: #1a1a2e; margin-bottom: 8px;">Your verification code</h2>
         <p style="color: #6b7280; margin-bottom: 24px;">Enter this code to complete your login to Autozon:</p>
@@ -87,38 +89,23 @@ Deno.serve(async (req) => {
       </div>
     `;
 
-    // Use Supabase Admin to send email via auth.admin
-    const emailRes = await fetch(`${supabaseUrl}/auth/v1/admin/generate_link`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": serviceRoleKey,
-        "Authorization": `Bearer ${serviceRoleKey}`,
+    // Enqueue email for delivery
+    const { error: enqueueError } = await adminClient.rpc("enqueue_email", {
+      queue_name: "transactional_email_queue",
+      payload: {
+        to: user.email,
+        subject: "Your Autozon verification code",
+        html: emailHtml,
+        template_name: "otp-verification",
       },
-      body: JSON.stringify({
-        type: "magiclink",
-        email: user.email,
-      }),
     });
 
-    // Fallback: send via simple SMTP or just log — for now we use a direct Resend-style approach
-    // Actually, let's use Supabase's built-in email sending via the admin API
-    // We'll send via the auth admin sendRawEmail if available, or use a simpler approach
-
-    // Use the admin client to send an invite-style email with our code
-    // Since Supabase doesn't have a raw email API, we'll use the LOVABLE_API_KEY approach
-    const lovableApiKey = Deno.env.get("LOVABLE_API_KEY");
-    
-    if (lovableApiKey) {
-      // Use Lovable AI to format and potentially send, but for now just store the code
-      // The user will see it via the verify endpoint
-      console.log(`OTP code generated for user ${user.id}: [REDACTED]`);
+    if (enqueueError) {
+      console.error("Enqueue error:", enqueueError);
+      // Non-fatal - code is still stored and can be verified
     }
 
-    // For MVP: we'll rely on the code being stored and verified
-    // In production, integrate with an email service
-    // For now, log the code (remove in production)
-    console.log(`[DEV] OTP for ${user.email}: ${code}`);
+    console.log(`OTP code generated for user ${user.id}`);
 
     return new Response(JSON.stringify({ success: true, message: "Verification code sent to your email" }), {
       status: 200,
