@@ -28,7 +28,7 @@ const WelcomeEmail = ({ name }: WelcomeEmailProps) => (
     <Preview>Willkommen bei {SITE_NAME}!</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Img src={LOGO_URL} alt="Autozon" width="40" height="40" style={logo} />
+        <Img src={LOGO_URL} alt="Autozon" width="140" height="40" style={logo} />
         <Heading style={h1}>
           {name ? `Willkommen, ${name}!` : 'Willkommen bei Autozon!'}
         </Heading>

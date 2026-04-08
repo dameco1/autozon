@@ -35,7 +35,7 @@ export const SignupEmail = ({
     <Preview>Bestätige deine E-Mail für {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Img src={LOGO_URL} alt="Autozon" width="40" height="40" style={{ margin: '0 0 20px' }} />
+        <Img src={LOGO_URL} alt="Autozon" width="140" height="40" style={{ margin: '0 0 20px' }} />
         <Heading style={h1}>Willkommen bei Autozon!</Heading>
         <Text style={text}>
           Danke für deine Registrierung bei{' '}

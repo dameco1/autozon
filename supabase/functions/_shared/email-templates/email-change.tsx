@@ -35,7 +35,7 @@ export const EmailChangeEmail = ({
     <Preview>E-Mail-Änderung bestätigen für {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Img src={LOGO_URL} alt="Autozon" width="40" height="40" style={{ margin: '0 0 20px' }} />
+        <Img src={LOGO_URL} alt="Autozon" width="140" height="40" style={{ margin: '0 0 20px' }} />
         <Heading style={h1}>E-Mail-Änderung bestätigen</Heading>
         <Text style={text}>
           Du hast beantragt, deine E-Mail-Adresse für {siteName} von{' '}
