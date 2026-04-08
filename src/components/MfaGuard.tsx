@@ -15,25 +15,40 @@ const MfaGuard: React.FC<MfaGuardProps> = ({ children }) => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+
     const check = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      if (cancelled) return;
+
       if (!session) {
-        navigate("/login");
+        navigate("/login", { replace: true });
         return;
       }
 
-      // Check if email OTP has been verified (stored in app_metadata by the verify edge function)
+      // Check if email OTP has been verified (stored in app_metadata)
       const otpVerifiedAt = session.user.app_metadata?.email_otp_verified_at;
       if (otpVerifiedAt) {
         setReady(true);
         return;
       }
 
-      // Not verified yet — redirect to OTP page
-      navigate("/verify-otp");
+      // Try refreshing the session to get updated app_metadata
+      const { data: refreshed } = await supabase.auth.refreshSession();
+      if (cancelled) return;
+
+      if (refreshed.session?.user.app_metadata?.email_otp_verified_at) {
+        setReady(true);
+        return;
+      }
+
+      // Not verified — redirect to OTP page
+      navigate("/verify-otp", { replace: true });
     };
 
     check();
+
+    return () => { cancelled = true; };
   }, [navigate]);
 
   if (!ready) {
