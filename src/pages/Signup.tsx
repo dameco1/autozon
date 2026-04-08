@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -48,6 +48,16 @@ const Signup: React.FC = () => {
   const [registryNumber, setRegistryNumber] = useState("");
   const [representative, setRepresentative] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [detectedCountry, setDetectedCountry] = useState("Germany");
+  const [detectedCity, setDetectedCity] = useState("");
+
+  // Auto-detect location from IP on mount
+  useEffect(() => {
+    supabase.functions.invoke("detect-location").then(({ data }) => {
+      if (data?.country) setDetectedCountry(data.country);
+      if (data?.city) setDetectedCity(data.city);
+    }).catch(() => {});
+  }, []);
 
   // Buyer preferences (all optional)
   const [prefBrands, setPrefBrands] = useState<string[]>([]);
@@ -102,6 +112,8 @@ const Signup: React.FC = () => {
           authorized_representative: representative || null,
         } : {}),
         ...(dateOfBirth ? { date_of_birth: dateOfBirth } : {}),
+        country: detectedCountry,
+        city: detectedCity || null,
       } as any).eq("user_id", data.user.id);
 
       // Save buyer preferences if any were filled
