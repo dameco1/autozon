@@ -79,6 +79,18 @@ const Dashboard: React.FC = () => {
       }
       setUser(session.user);
 
+      // Check if onboarding is completed — redirect OAuth users if not
+      const { data: prefData } = await supabase
+        .from("user_preferences")
+        .select("onboarding_completed")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+
+      if (!prefData?.onboarding_completed) {
+        navigate("/onboarding");
+        return;
+      }
+
       // Fetch profile for greeting
       const { data: profileData } = await supabase
         .from("profiles")
