@@ -40,6 +40,7 @@ const Signup: React.FC = () => {
   const [budgetMax, setBudgetMax] = useState("");
   const [currentCar, setCurrentCar] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [showPrefs, setShowPrefs] = useState(false);
   const [userType, setUserType] = useState("private");
   const [companyName, setCompanyName] = useState("");
@@ -169,7 +170,17 @@ const Signup: React.FC = () => {
           </div>
           <div className="space-y-2">
             <Label className="text-muted-foreground">{t.auth.password}</Label>
-            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="bg-background border-border text-foreground placeholder:text-muted-foreground/50" placeholder="••••••••" />
+            <div className="relative">
+              <Input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="bg-background border-border text-foreground placeholder:text-muted-foreground/50 pr-10" placeholder="••••••••" />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
 
           {/* Account Type */}
