@@ -89,14 +89,23 @@ Deno.serve(async (req) => {
       </div>
     `;
 
+    const messageId = crypto.randomUUID();
+
     // Enqueue email for delivery
     const { error: enqueueError } = await adminClient.rpc("enqueue_email", {
-      queue_name: "transactional_email_queue",
+      queue_name: "transactional_emails",
       payload: {
+        message_id: messageId,
         to: user.email,
+        from: "autozon <noreply@autozon.at>",
+        sender_domain: "notify.autozon.at",
         subject: "Your Autozon verification code",
         html: emailHtml,
-        template_name: "otp-verification",
+        text: `Your Autozon verification code is: ${code}. This code expires in 5 minutes.`,
+        purpose: "transactional",
+        label: "otp-verification",
+        idempotency_key: messageId,
+        queued_at: new Date().toISOString(),
       },
     });
 
