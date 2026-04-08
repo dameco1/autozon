@@ -337,7 +337,6 @@ const CarUpload: React.FC = () => {
   const validateStep = (s: number): string | null => {
     switch (s) {
       case 1:
-        if (!formData.vin || formData.vin.length < 11) return language === "de" ? "Bitte geben Sie eine gültige FIN ein (mind. 11 Zeichen)" : "Please enter a valid VIN (at least 11 characters)";
         if (!formData.make) return "Please select a make";
         if (!formData.model) return "Please select a model";
         if (!formData.color) return "Please select a color";
