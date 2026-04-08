@@ -36,6 +36,7 @@ interface CarData {
   vin: string | null;
   description: string | null;
   detected_damages?: any[] | null;
+  market_blended?: boolean;
 }
 
 const FairValueResult: React.FC = () => {
@@ -70,11 +71,46 @@ const FairValueResult: React.FC = () => {
 
   // Fetch market comparison and blend with formula value — only if not already blended
   const fetchAndBlend = useCallback(async (carData: CarData) => {
-    if ((carData as any).market_blended) {
+    if (carData.market_blended) {
       setMarketLoading(false);
       return;
     }
+
     try {
+      const { data: existingFeedback, error: existingFeedbackError } = await supabase
+        .from("appraisal_feedback" as any)
+        .select("blended_value")
+        .eq("car_id", carData.id)
+        .not("blended_value", "is", null)
+        .order("created_at", { ascending: true })
+        .limit(1)
+        .maybeSingle();
+
+      if (existingFeedbackError) throw existingFeedbackError;
+
+      const lockedBlendedValue = Number(existingFeedback?.blended_value ?? 0);
+      if (lockedBlendedValue > 0) {
+        setBlendedValue(lockedBlendedValue);
+
+        if (!carData.market_blended || carData.fair_value_price !== lockedBlendedValue) {
+          const { error: lockError } = await supabase.rpc("lock_fair_value", {
+            _car_id: carData.id,
+            _fair_value_price: lockedBlendedValue,
+            _market_blended: true,
+          });
+
+          if (lockError) throw lockError;
+        }
+
+        setCar((prev) => prev ? {
+          ...prev,
+          fair_value_price: lockedBlendedValue,
+          market_blended: true,
+        } : prev);
+        setMarketLoading(false);
+        return;
+      }
+
       const { data: result, error: fnError } = await supabase.functions.invoke("market-comparison", {
         body: {
           make: carData.make,
@@ -113,15 +149,22 @@ const FairValueResult: React.FC = () => {
       setBlendedValue(blended);
 
       // Persist via SECURITY DEFINER function (bypasses system-field trigger)
-      await supabase.rpc("lock_fair_value", {
+      const { error: lockError } = await supabase.rpc("lock_fair_value", {
         _car_id: carData.id,
         _fair_value_price: blended,
         _market_blended: true,
       });
-      setCar((prev) => prev ? { ...prev, fair_value_price: blended } : prev);
+
+      if (lockError) throw lockError;
+
+      setCar((prev) => prev ? {
+        ...prev,
+        fair_value_price: blended,
+        market_blended: true,
+      } : prev);
 
       // Record appraisal feedback for future calibration
-      await supabase.from("appraisal_feedback" as any).insert({
+      const { error: feedbackInsertError } = await supabase.from("appraisal_feedback" as any).insert({
         car_id: carData.id,
         make: carData.make,
         model: carData.model,
@@ -135,6 +178,8 @@ const FairValueResult: React.FC = () => {
         blended_value: blended,
         deviation_pct: Math.round(deviation * 100),
       } as any);
+
+      if (feedbackInsertError) throw feedbackInsertError;
     } catch (e) {
       console.error("Market comparison error:", e);
       setMarketError(true);
