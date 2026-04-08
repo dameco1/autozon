@@ -305,8 +305,26 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
         </div>
       </div>
 
-      {/* Transmission + Price */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Fuel Type, Transmission, Price */}
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <Label className="text-muted-foreground text-sm flex items-center">
+            {t.carUpload.fuelType || "Fuel Type"}
+            <VinLockIndicator field="fuelType" label="fuel type" />
+          </Label>
+          {isFieldLocked("fuelType") ? (
+            <div className="mt-1 bg-muted/50 border border-border rounded-md px-3 py-2 text-sm text-foreground font-medium">
+              {data.fuelType}
+            </div>
+          ) : (
+            <Select value={data.fuelType} onValueChange={(v) => onChange({ fuelType: v })}>
+              <SelectTrigger className="bg-background border-border text-foreground mt-1"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {FUEL_TYPES.map((f) => <SelectItem key={f} value={f}>{f}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
         <div>
           <Label className="text-muted-foreground text-sm flex items-center">
             {t.carUpload.transmission || "Transmission"}
