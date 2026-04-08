@@ -1,34 +1,27 @@
 project_id = "heykhsoumvklotycuzya"
 
-[functions.seed-car-models]
-verify_jwt = false
-
-[functions.concierge-chat]
-verify_jwt = false
-
-[functions.detect-damage]
-verify_jwt = false
-
-[functions.market-comparison]
-verify_jwt = false
-
-[functions.create-placement-checkout]
-verify_jwt = false
-
-[functions.verify-placement]
-verify_jwt = false
-
-[functions.stripe-webhook]
-verify_jwt = false
-
-[functions.verify-docs-password]
-verify_jwt = false
-
-[functions.admin-actions]
-verify_jwt = false
-
-[functions.seed-car-models-ai]
-verify_jwt = false
-
-[functions.process-email-queue]
-verify_jwt = true
+[functions]
+  [functions.admin-actions]
+    verify_jwt = false
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.concierge-chat]
+    verify_jwt = false
+  [functions.create-placement-checkout]
+    verify_jwt = false
+  [functions.detect-damage]
+    verify_jwt = false
+  [functions.market-comparison]
+    verify_jwt = false
+  [functions.process-email-queue]
+    verify_jwt = true
+  [functions.seed-car-models]
+    verify_jwt = false
+  [functions.seed-car-models-ai]
+    verify_jwt = false
+  [functions.stripe-webhook]
+    verify_jwt = false
+  [functions.verify-docs-password]
+    verify_jwt = false
+  [functions.verify-placement]
+    verify_jwt = false
