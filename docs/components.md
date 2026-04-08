@@ -69,7 +69,7 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 | `StepBasicInfo` | Make/model selection with DB-backed autocomplete |
 | `StepPhotos` | 7 mandatory photo slots with compression |
 | `StepEquipment` | Categorized equipment checklist |
-| `StepCondition` | 1–4 grade condition selector (Heavy Wear/Fair/Like New/Excellent) + accident history |
+| `StepCondition` | 1–4 grade condition selector + accident history + documentation/accessories toggles + **prominent AI description generator** (CTA card with explanation when empty, inline regenerate button when filled) |
 | `StepInspection` | 20-point inspection checklist (transparent disclosure) |
 | `StepDamageReview` | AI damage detection results |
 | `AppraisalDisclaimer` | Legal disclaimer before appraisal |
@@ -85,7 +85,7 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 | `NotificationBell` | Real-time notification indicator |
 | `SEO` | Dynamic meta tags, OG, JSON-LD |
 | `CookieConsent` | GDPR cookie consent banner |
-| `MfaGuard` | Enforces TOTP 2FA on all protected routes |
+| `MfaGuard` | Enforces Email OTP 2FA on all protected routes |
 
 ### Admin Command Center (`src/components/admin/`)
 | Component | Purpose |
@@ -103,15 +103,16 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 |---|---|
 | `useAdminAuth` | Checks `user_roles` table for admin role; redirects non-admins |
 | `useIsAdmin` | Lightweight boolean check for conditional UI (e.g. navbar admin link) |
-| `useMfaStatus` | Checks user's MFA enrollment/verification status |
+| `useMfaStatus` | Checks user's Email OTP verification status |
 | `useCarModels` | Paginated car model data fetching (handles 2,500+ entries) |
 
-### MFA & Auth Components
+### Auth Components
 | Component | Purpose |
 |---|---|
-| `MfaGuard` | Wrapper that enforces AAL2 (TOTP verified) on all protected routes |
-| `MfaEnroll` (page) | QR code setup with MS Authenticator recommendation + manual key fallback |
-| `MfaVerify` (page) | 6-digit TOTP input for session verification |
+| `MfaGuard` | Wrapper that enforces Email OTP verification on all protected routes |
+| `EmailOtpVerify` (page) | 6-digit Email OTP input for session verification (`/verify-otp`) |
+| `Login` (page) | Email/password login + Google OAuth + Apple OAuth |
+| `Signup` (page) | Email/password registration with password visibility toggle (no OAuth — ensures lifestyle profiling) |
 | `ResetPassword` (page) | Email-based password reset flow (send link + update password) |
 
 ---
