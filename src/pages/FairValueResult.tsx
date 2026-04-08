@@ -88,7 +88,8 @@ const FairValueResult: React.FC = () => {
 
       if (existingFeedbackError) throw existingFeedbackError;
 
-      const lockedBlendedValue = Number(existingFeedback?.blended_value ?? 0);
+      const lockedFeedback = existingFeedback as { blended_value: number | null } | null;
+      const lockedBlendedValue = Number(lockedFeedback?.blended_value ?? 0);
       if (lockedBlendedValue > 0) {
         setBlendedValue(lockedBlendedValue);
 
