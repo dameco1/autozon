@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { HelmetProvider } from "react-helmet-async";
-import MfaGuard from "@/components/MfaGuard";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -69,24 +68,24 @@ const App = () => (
               <Route path="/about" element={<AboutUs />} />
               <Route path="/unsubscribe" element={<Unsubscribe />} />
 
-              {/* MFA-protected routes */}
-              <Route path="/dashboard" element={<MfaGuard><Dashboard /></MfaGuard>} />
-              <Route path="/onboarding" element={<MfaGuard><Onboarding /></MfaGuard>} />
-              <Route path="/car-upload" element={<MfaGuard><CarUpload /></MfaGuard>} />
-              <Route path="/fair-value/:id" element={<MfaGuard><FairValueResult /></MfaGuard>} />
-              <Route path="/buyer-matches/:carId" element={<MfaGuard><BuyerMatches /></MfaGuard>} />
-              <Route path="/recommendations" element={<MfaGuard><NextCarRecommendations /></MfaGuard>} />
+              {/* Auth-protected routes handle session checks inside each page */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/car-upload" element={<CarUpload />} />
+              <Route path="/fair-value/:id" element={<FairValueResult />} />
+              <Route path="/buyer-matches/:carId" element={<BuyerMatches />} />
+              <Route path="/recommendations" element={<NextCarRecommendations />} />
               <Route path="/car/:id" element={<CarDetail />} />
-              <Route path="/intent" element={<MfaGuard><IntentSelection /></MfaGuard>} />
-              <Route path="/buyer-questionnaire" element={<MfaGuard><BuyerQuestionnaire /></MfaGuard>} />
+              <Route path="/intent" element={<IntentSelection />} />
+              <Route path="/buyer-questionnaire" element={<BuyerQuestionnaire />} />
               <Route path="/cars" element={<CarSelection />} />
               <Route path="/car-selection" element={<CarSelection />} />
-              <Route path="/compare" element={<MfaGuard><CarComparison /></MfaGuard>} />
-              <Route path="/negotiate/:offerId" element={<MfaGuard><Negotiation /></MfaGuard>} />
-              <Route path="/acquire/:offerId" element={<MfaGuard><AcquisitionOptions /></MfaGuard>} />
-              <Route path="/admin" element={<MfaGuard><AdminDashboard /></MfaGuard>} />
-              <Route path="/financing/:offerId?" element={<MfaGuard><FinancingCalculator /></MfaGuard>} />
-              <Route path="/kyc" element={<MfaGuard><KycVerification /></MfaGuard>} />
+              <Route path="/compare" element={<CarComparison />} />
+              <Route path="/negotiate/:offerId" element={<Negotiation />} />
+              <Route path="/acquire/:offerId" element={<AcquisitionOptions />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/financing/:offerId?" element={<FinancingCalculator />} />
+              <Route path="/kyc" element={<KycVerification />} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>
