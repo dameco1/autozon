@@ -19,26 +19,15 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
       toast.error(error.message);
       return;
     }
 
-    // Check MFA status after login
-    const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-    if (aalData?.nextLevel === "aal2" && aalData?.currentLevel !== "aal2") {
-      navigate("/mfa-verify");
-    } else {
-      // Check if user has any TOTP factors enrolled
-      const { data: factorsData } = await supabase.auth.mfa.listFactors();
-      if (!factorsData?.totp || factorsData.totp.length === 0) {
-        navigate("/mfa-enroll");
-      } else {
-        navigate("/intent");
-      }
-    }
+    // After login, always go to verify-otp (the guard/page will check if already verified)
+    navigate("/verify-otp");
   };
 
   return (
