@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import EmailOtpVerify from "./pages/EmailOtpVerify";
+import CheckEmail from "./pages/CheckEmail";
 import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
 import CarUpload from "./pages/CarUpload";
@@ -55,6 +56,7 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/verify-otp" element={<EmailOtpVerify />} />
+              <Route path="/check-email" element={<CheckEmail />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/cookie-policy" element={<CookiePolicy />} />
