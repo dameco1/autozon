@@ -14,19 +14,12 @@ export function useMfaStatus() {
         return;
       }
 
-      const { data, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-      if (error) {
-        setStatus("unenrolled");
-        return;
-      }
-
-      if (data.currentLevel === "aal2") {
+      // Check email OTP verification from app_metadata
+      const otpVerifiedAt = session.user.app_metadata?.email_otp_verified_at;
+      if (otpVerifiedAt) {
         setStatus("verified");
-      } else if (data.nextLevel === "aal2") {
-        // Has enrolled factor but hasn't verified this session
-        setStatus("unverified");
       } else {
-        setStatus("unenrolled");
+        setStatus("unverified");
       }
     };
 

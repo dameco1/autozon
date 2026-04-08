@@ -9,8 +9,7 @@ import MfaGuard from "@/components/MfaGuard";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import MfaEnroll from "./pages/MfaEnroll";
-import MfaVerify from "./pages/MfaVerify";
+import EmailOtpVerify from "./pages/EmailOtpVerify";
 import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
 import CarUpload from "./pages/CarUpload";
@@ -55,8 +54,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/mfa-enroll" element={<MfaEnroll />} />
-              <Route path="/mfa-verify" element={<MfaVerify />} />
+              <Route path="/verify-otp" element={<EmailOtpVerify />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/cookie-policy" element={<CookiePolicy />} />

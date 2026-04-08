@@ -7,8 +7,8 @@ interface MfaGuardProps {
 }
 
 /**
- * Wraps protected routes to enforce MFA.
- * Redirects unenrolled users to /mfa-enroll and unverified users to /mfa-verify.
+ * Wraps protected routes to enforce email OTP verification.
+ * Redirects unauthenticated users to /login and unverified users to /verify-otp.
  */
 const MfaGuard: React.FC<MfaGuardProps> = ({ children }) => {
   const navigate = useNavigate();
@@ -22,21 +22,15 @@ const MfaGuard: React.FC<MfaGuardProps> = ({ children }) => {
         return;
       }
 
-      const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-
-      if (data?.currentLevel === "aal2") {
+      // Check if email OTP has been verified (stored in app_metadata by the verify edge function)
+      const otpVerifiedAt = session.user.app_metadata?.email_otp_verified_at;
+      if (otpVerifiedAt) {
         setReady(true);
         return;
       }
 
-      if (data?.nextLevel === "aal2") {
-        // Has factor but needs verification this session
-        navigate("/mfa-verify");
-        return;
-      }
-
-      // No factor enrolled yet
-      navigate("/mfa-enroll");
+      // Not verified yet — redirect to OTP page
+      navigate("/verify-otp");
     };
 
     check();
