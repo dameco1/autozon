@@ -125,6 +125,18 @@ const Signup: React.FC = () => {
       }
     }
 
+    // Send welcome email
+    if (data.user) {
+      supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "welcome-email",
+          recipientEmail: email,
+          idempotencyKey: `welcome-${data.user.id}`,
+          templateData: { name: fullName || undefined },
+        },
+      });
+    }
+
     setLoading(false);
     toast.success(t.auth.checkEmail);
   };
