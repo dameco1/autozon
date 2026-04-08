@@ -1,5 +1,10 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.3";
-import { corsHeaders } from "https://esm.sh/@supabase/supabase-js@2.95.3/cors";
+import { createClient } from "npm:@supabase/supabase-js@2";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -17,8 +22,9 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    const userClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+    const userClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
 
@@ -30,7 +36,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Parse body
     const body = await req.json();
     const code = String(body.code || "").trim();
 
@@ -75,7 +80,7 @@ Deno.serve(async (req) => {
       .update({ verified: true })
       .eq("id", otpRecords[0].id);
 
-    // Set user app_metadata flag to track OTP verification
+    // Set user app_metadata flag
     const { error: updateError } = await adminClient.auth.admin.updateUserById(user.id, {
       app_metadata: {
         ...user.app_metadata,
