@@ -91,10 +91,11 @@ Deno.serve(async (req) => {
 
     const messageId = crypto.randomUUID();
 
-    // Enqueue as an auth/security email so it is handled like other login emails
+    // Enqueue as an auth/security email so it bypasses app-email unsubscribe requirements
     const { error: enqueueError } = await adminClient.rpc("enqueue_email", {
       queue_name: "auth_emails",
       payload: {
+        run_id: messageId,
         message_id: messageId,
         to: user.email,
         from: "autozon <noreply@autozon.at>",
