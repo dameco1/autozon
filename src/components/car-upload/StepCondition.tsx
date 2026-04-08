@@ -214,27 +214,60 @@ const StepCondition: React.FC<Props> = ({ data, onChange }) => {
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-1">
-          <Label className="text-muted-foreground text-sm">{t.carUpload.description}</Label>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="text-primary hover:text-primary/80 text-xs gap-1.5 h-7"
-            onClick={generateDescription}
-            disabled={generating || !data.make}
-          >
-            {generating ? (
-              <><Loader2 className="h-3 w-3 animate-spin" /> {t.carUpload.generatingDescription}</>
-            ) : (
-              <><Sparkles className="h-3 w-3" /> {t.carUpload.generateDescription}</>
-            )}
-          </Button>
-        </div>
+        <Label className="text-muted-foreground text-sm mb-2 block">{t.carUpload.description}</Label>
+
+        {!data.description && (
+          <div className="rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 p-5 mb-3 text-center space-y-3">
+            <Sparkles className="h-8 w-8 text-primary mx-auto" />
+            <p className="text-sm font-semibold text-foreground">
+              {language === "de"
+                ? "Lassen Sie KI Ihre Anzeige schreiben"
+                : "Let AI write your listing"}
+            </p>
+            <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">
+              {language === "de"
+                ? "Basierend auf Ihren Fahrzeugdaten erstellt unsere KI eine professionelle, verkaufsfördernde Beschreibung – in Sekunden."
+                : "Based on your vehicle details, our AI creates a professional, sales-ready description in seconds."}
+            </p>
+            <Button
+              type="button"
+              size="lg"
+              className="gap-2 px-8"
+              onClick={generateDescription}
+              disabled={generating || !data.make}
+            >
+              {generating ? (
+                <><Loader2 className="h-4 w-4 animate-spin" /> {t.carUpload.generatingDescription}</>
+              ) : (
+                <><Sparkles className="h-4 w-4" /> {t.carUpload.generateDescription}</>
+              )}
+            </Button>
+          </div>
+        )}
+
+        {data.description && (
+          <div className="flex justify-end mb-1">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="text-xs gap-1.5 h-7"
+              onClick={generateDescription}
+              disabled={generating || !data.make}
+            >
+              {generating ? (
+                <><Loader2 className="h-3 w-3 animate-spin" /> {t.carUpload.generatingDescription}</>
+              ) : (
+                <><Sparkles className="h-3 w-3" /> {language === "de" ? "Neu generieren" : "Regenerate"}</>
+              )}
+            </Button>
+          </div>
+        )}
+
         <Textarea
           value={data.description}
           onChange={(e) => onChange({ description: e.target.value })}
-          className="bg-background border-border text-foreground mt-1"
+          className="bg-background border-border text-foreground"
           rows={5}
           placeholder={language === "de" ? "Beschreiben Sie Ihr Fahrzeug oder lassen Sie KI eine Beschreibung generieren..." : "Describe your vehicle or let AI generate a description..."}
         />
