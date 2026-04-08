@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Car, ArrowLeft, ChevronDown, ChevronUp, Building2, User } from "lucide-react";
+import { Car, ArrowLeft, ChevronDown, ChevronUp, Building2, User, Eye, EyeOff } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import SEO from "@/components/SEO";
