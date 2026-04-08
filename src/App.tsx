@@ -38,6 +38,7 @@ import QA from "./pages/QA";
 import AboutUs from "./pages/AboutUs";
 import FinancingCalculator from "./pages/FinancingCalculator";
 import KycVerification from "./pages/KycVerification";
+import Unsubscribe from "./pages/Unsubscribe";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/qa" element={<QA />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/unsubscribe" element={<Unsubscribe />} />
 
               {/* MFA-protected routes */}
               <Route path="/dashboard" element={<MfaGuard><Dashboard /></MfaGuard>} />
