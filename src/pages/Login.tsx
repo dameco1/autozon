@@ -76,7 +76,7 @@ const Login: React.FC = () => {
 
           <div className="relative my-2">
             <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
-            <div className="relative flex justify-center text-xs"><span className="bg-card px-2 text-muted-foreground">{t.auth.orContinueWith ?? "or"}</span></div>
+            <div className="relative flex justify-center text-xs"><span className="bg-card px-2 text-muted-foreground">{t.auth.orContinueWith}</span></div>
           </div>
 
           <Button
