@@ -8,9 +8,12 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
+
+const LOGO_URL = 'https://heykhsoumvklotycuzya.supabase.co/storage/v1/object/public/email-assets/logo.png'
 
 interface ReauthenticationEmailProps {
   token: string
@@ -22,6 +25,7 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
     <Preview>Dein Bestätigungscode</Preview>
     <Body style={main}>
       <Container style={container}>
+        <Img src={LOGO_URL} alt="Autozon" width="40" height="40" style={{ margin: '0 0 20px' }} />
         <Heading style={h1}>Identität bestätigen</Heading>
         <Text style={text}>Verwende den folgenden Code, um deine Identität zu bestätigen:</Text>
         <Text style={codeStyle}>{token}</Text>

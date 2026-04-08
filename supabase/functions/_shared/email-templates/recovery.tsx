@@ -9,9 +9,12 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
+
+const LOGO_URL = 'https://heykhsoumvklotycuzya.supabase.co/storage/v1/object/public/email-assets/logo.png'
 
 interface RecoveryEmailProps {
   siteName: string
@@ -27,6 +30,7 @@ export const RecoveryEmail = ({
     <Preview>Passwort zurücksetzen für {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
+        <Img src={LOGO_URL} alt="Autozon" width="40" height="40" style={{ margin: '0 0 20px' }} />
         <Heading style={h1}>Passwort zurücksetzen</Heading>
         <Text style={text}>
           Wir haben eine Anfrage erhalten, dein Passwort für {siteName} zurückzusetzen. Klicke auf den Button, um ein neues Passwort zu wählen.

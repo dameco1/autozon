@@ -10,62 +10,50 @@ import {
   Heading,
   Html,
   Img,
-  Link,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
+import type { TemplateEntry } from './registry.ts'
 
+const SITE_NAME = 'Autozon'
 const LOGO_URL = 'https://heykhsoumvklotycuzya.supabase.co/storage/v1/object/public/email-assets/logo.png'
 
-interface SignupEmailProps {
-  siteName: string
-  siteUrl: string
-  recipient: string
-  confirmationUrl: string
+interface WelcomeEmailProps {
+  name?: string
 }
 
-export const SignupEmail = ({
-  siteName,
-  siteUrl,
-  recipient,
-  confirmationUrl,
-}: SignupEmailProps) => (
+const WelcomeEmail = ({ name }: WelcomeEmailProps) => (
   <Html lang="de" dir="ltr">
     <Head />
-    <Preview>Bestätige deine E-Mail für {siteName}</Preview>
+    <Preview>Willkommen bei {SITE_NAME}!</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Img src={LOGO_URL} alt="Autozon" width="40" height="40" style={{ margin: '0 0 20px' }} />
-        <Heading style={h1}>Willkommen bei Autozon!</Heading>
+        <Img src={LOGO_URL} alt="Autozon" width="40" height="40" style={logo} />
+        <Heading style={h1}>
+          {name ? `Willkommen, ${name}!` : 'Willkommen bei Autozon!'}
+        </Heading>
         <Text style={text}>
-          Danke für deine Registrierung bei{' '}
-          <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
-          !
+          Schön, dass du dabei bist! Mit Autozon findest du dein nächstes Auto oder verkaufst dein aktuelles – fair, transparent und mit KI-Unterstützung.
         </Text>
-        <Text style={text}>
-          Bitte bestätige deine E-Mail-Adresse (
-          <Link href={`mailto:${recipient}`} style={link}>
-            {recipient}
-          </Link>
-          ), indem du auf den Button klickst:
-        </Text>
-        <Button style={button} href={confirmationUrl}>
-          E-Mail bestätigen
+        <Button style={button} href="https://autozon.lovable.app/dashboard">
+          Jetzt loslegen
         </Button>
-        <Text style={footer}>
-          Falls du kein Konto erstellt hast, kannst du diese E-Mail ignorieren.
-        </Text>
+        <Text style={footer}>Beste Grüße, dein {SITE_NAME}-Team</Text>
       </Container>
     </Body>
   </Html>
 )
 
-export default SignupEmail
+export const template = {
+  component: WelcomeEmail,
+  subject: 'Willkommen bei Autozon!',
+  displayName: 'Willkommens-E-Mail',
+  previewData: { name: 'Max' },
+} satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: 'Inter, Arial, sans-serif' }
 const container = { padding: '32px 28px' }
+const logo = { margin: '0 0 20px' }
 const h1 = {
   fontSize: '24px',
   fontWeight: 'bold' as const,
@@ -78,7 +66,6 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 25px',
 }
-const link = { color: 'hsl(24, 85%, 48%)', textDecoration: 'underline' }
 const button = {
   backgroundColor: 'hsl(24, 85%, 48%)',
   color: '#ffffff',
