@@ -91,9 +91,9 @@ Deno.serve(async (req) => {
 
     const messageId = crypto.randomUUID();
 
-    // Enqueue email for delivery
+    // Enqueue as an auth/security email so it is handled like other login emails
     const { error: enqueueError } = await adminClient.rpc("enqueue_email", {
-      queue_name: "transactional_emails",
+      queue_name: "auth_emails",
       payload: {
         message_id: messageId,
         to: user.email,
@@ -102,7 +102,7 @@ Deno.serve(async (req) => {
         subject: "Your Autozon verification code",
         html: emailHtml,
         text: `Your Autozon verification code is: ${code}. This code expires in 5 minutes.`,
-        purpose: "transactional",
+        purpose: "auth",
         label: "otp-verification",
         idempotency_key: messageId,
         queued_at: new Date().toISOString(),
