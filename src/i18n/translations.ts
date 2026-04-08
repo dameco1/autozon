@@ -1143,7 +1143,7 @@ export const translations = {
       vehicleType: "Vehicle Type",
     },
     lifestyle: {
-      sectionTitle: "Your Lifestyle",
+      sectionTitle: "Your Lifestyle & Buying Preferences",
       relationship: "Status",
       relationships: {
         single: "Single",
@@ -2328,7 +2328,7 @@ export const translations = {
       vehicleType: "Fahrzeugtyp",
     },
     lifestyle: {
-      sectionTitle: "Dein Lebensstil",
+      sectionTitle: "Dein Lebensstil & Kaufpräferenzen",
       relationship: "Status",
       relationships: {
         single: "Ledig",
