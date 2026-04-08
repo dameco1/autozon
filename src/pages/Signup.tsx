@@ -75,7 +75,7 @@ const Signup: React.FC = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/mfa-enroll`,
+        emailRedirectTo: `${window.location.origin}/login`,
         data: { full_name: fullName },
       },
     });
@@ -138,7 +138,7 @@ const Signup: React.FC = () => {
     }
 
     setLoading(false);
-    toast.success(t.auth.checkEmail);
+    navigate(`/check-email?email=${encodeURIComponent(email)}`);
   };
 
   const renderChipSelect = (options: string[], selected: string[], setter: (v: string[]) => void) => (
