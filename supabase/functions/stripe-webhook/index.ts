@@ -8,6 +8,14 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version, stripe-signature",
 };
 
+function formatEur(cents: number): string {
+  return `€${(cents / 100).toFixed(2).replace(".", ",")}`;
+}
+
+function formatDate(date: Date): string {
+  return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -43,19 +51,30 @@ serve(async (req) => {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
-    if (session.payment_status === "paid" && session.metadata?.car_id) {
+    if (session.payment_status !== "paid") {
+      return new Response(JSON.stringify({ received: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+      { auth: { persistSession: false } },
+    );
+
+    const paymentType = session.metadata?.payment_type;
+    const customerEmail = session.customer_details?.email || session.customer_email;
+    const now = formatDate(new Date());
+
+    // ── Placement payment ──
+    if (session.metadata?.car_id && !paymentType) {
       const carId = session.metadata.car_id;
       const userId = session.metadata.user_id;
 
-      console.log(`[STRIPE-WEBHOOK] Payment confirmed for car ${carId}, user ${userId}`);
+      console.log(`[STRIPE-WEBHOOK] Placement payment for car ${carId}, user ${userId}`);
 
-      const supabase = createClient(
-        Deno.env.get("SUPABASE_URL") ?? "",
-        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-        { auth: { persistSession: false } },
-      );
-
-      // Fetch car details for notification message
       const [updateResult, carResult] = await Promise.all([
         supabase.from("cars").update({ placement_paid: true }).eq("id", carId),
         supabase.from("cars").select("make, model, year").eq("id", carId).single(),
@@ -68,25 +87,110 @@ serve(async (req) => {
 
       console.log(`[STRIPE-WEBHOOK] Car ${carId} placement_paid set to true`);
 
-      // Create notification for the seller
-      if (userId) {
-        const carLabel = carResult.data
-          ? `${carResult.data.year} ${carResult.data.make} ${carResult.data.model}`
-          : "Your car";
+      const carLabel = carResult.data
+        ? `${carResult.data.year} ${carResult.data.make} ${carResult.data.model}`
+        : "Your car";
 
-        const { error: notifError } = await supabase.from("notifications").insert({
+      // Notification
+      if (userId) {
+        await supabase.from("notifications").insert({
           user_id: userId,
           title: "Placement Confirmed ✅",
           message: `Payment received — ${carLabel} is now live and visible to matched buyers.`,
           type: "payment",
           link: `/buyer-matches/${carId}`,
         });
+      }
 
-        if (notifError) {
-          console.error(`[STRIPE-WEBHOOK] Notification insert failed:`, notifError);
-        } else {
-          console.log(`[STRIPE-WEBHOOK] Notification created for user ${userId}`);
+      // Receipt email
+      if (customerEmail) {
+        const amountTotal = session.amount_total;
+        await supabase.functions.invoke("send-transactional-email", {
+          body: {
+            templateName: "placement-receipt",
+            recipientEmail: customerEmail,
+            idempotencyKey: `placement-receipt-${session.id}`,
+            templateData: {
+              carTitle: carLabel,
+              amount: amountTotal ? formatEur(amountTotal) : "–",
+              date: now,
+            },
+          },
+        });
+        console.log(`[STRIPE-WEBHOOK] Placement receipt sent to ${customerEmail}`);
+      }
+    }
+
+    // ── Car purchase payment ──
+    if (paymentType === "car_purchase") {
+      const transactionId = session.metadata?.transaction_id;
+      const carId = session.metadata?.car_id;
+      const userId = session.metadata?.user_id;
+      const agreedPrice = session.metadata?.agreed_price;
+
+      console.log(`[STRIPE-WEBHOOK] Car purchase payment for transaction ${transactionId}`);
+
+      // Update transaction
+      if (transactionId) {
+        const { error: txError } = await supabase
+          .from("transactions")
+          .update({
+            payment_confirmed: true,
+            stripe_payment_intent_id: session.payment_intent as string,
+          })
+          .eq("id", transactionId);
+
+        if (txError) {
+          console.error(`[STRIPE-WEBHOOK] Transaction update failed:`, txError);
         }
+      }
+
+      // Fetch car details
+      let carLabel = "Fahrzeug";
+      if (carId) {
+        const { data: carData } = await supabase
+          .from("cars")
+          .select("make, model, year")
+          .eq("id", carId)
+          .single();
+        if (carData) {
+          carLabel = `${carData.year} ${carData.make} ${carData.model}`;
+        }
+      }
+
+      // Notification
+      if (userId) {
+        await supabase.from("notifications").insert({
+          user_id: userId,
+          title: "Zahlung bestätigt ✅",
+          message: `Deine Zahlung für ${carLabel} wurde bestätigt. Weiter zur Eigentumsübertragung.`,
+          type: "payment",
+          link: transactionId ? `/acquire/${transactionId}` : "/dashboard",
+        });
+      }
+
+      // Receipt email
+      if (customerEmail) {
+        const amountTotal = session.amount_total;
+        const agreedPriceCents = agreedPrice ? Math.round(Number(agreedPrice) * 100) : null;
+        const feesCents = amountTotal && agreedPriceCents ? amountTotal - agreedPriceCents : null;
+
+        await supabase.functions.invoke("send-transactional-email", {
+          body: {
+            templateName: "car-purchase-receipt",
+            recipientEmail: customerEmail,
+            idempotencyKey: `car-purchase-receipt-${session.id}`,
+            templateData: {
+              carTitle: carLabel,
+              agreedPrice: agreedPriceCents ? formatEur(agreedPriceCents) : "–",
+              fees: feesCents ? formatEur(feesCents) : "–",
+              totalAmount: amountTotal ? formatEur(amountTotal) : "–",
+              date: now,
+              transactionId: transactionId ? transactionId.slice(0, 8) : undefined,
+            },
+          },
+        });
+        console.log(`[STRIPE-WEBHOOK] Car purchase receipt sent to ${customerEmail}`);
       }
     }
   }
