@@ -91,10 +91,11 @@ Deno.serve(async (req) => {
 
     const messageId = crypto.randomUUID();
 
-    // Enqueue email for delivery
+    // Enqueue as an auth/security email so it bypasses app-email unsubscribe requirements
     const { error: enqueueError } = await adminClient.rpc("enqueue_email", {
-      queue_name: "transactional_emails",
+      queue_name: "auth_emails",
       payload: {
+        run_id: messageId,
         message_id: messageId,
         to: user.email,
         from: "autozon <noreply@autozon.at>",
@@ -102,7 +103,7 @@ Deno.serve(async (req) => {
         subject: "Your Autozon verification code",
         html: emailHtml,
         text: `Your Autozon verification code is: ${code}. This code expires in 5 minutes.`,
-        purpose: "transactional",
+        purpose: "auth",
         label: "otp-verification",
         idempotency_key: messageId,
         queued_at: new Date().toISOString(),
