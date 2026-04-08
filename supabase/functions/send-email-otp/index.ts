@@ -1,5 +1,11 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
+function generateToken(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -91,11 +97,45 @@ Deno.serve(async (req) => {
 
     const messageId = crypto.randomUUID();
 
-    // Enqueue as an auth/security email so it bypasses app-email unsubscribe requirements
+    // Get or create an unsubscribe token for this recipient (required by email API)
+    const normalizedEmail = (user.email as string).toLowerCase();
+    let unsubscribeToken: string;
+
+    const { data: existingToken } = await adminClient
+      .from("email_unsubscribe_tokens")
+      .select("token, used_at")
+      .eq("email", normalizedEmail)
+      .maybeSingle();
+
+    if (existingToken && !existingToken.used_at) {
+      unsubscribeToken = existingToken.token;
+    } else if (!existingToken) {
+      unsubscribeToken = generateToken();
+      await adminClient
+        .from("email_unsubscribe_tokens")
+        .upsert(
+          { token: unsubscribeToken, email: normalizedEmail },
+          { onConflict: "email", ignoreDuplicates: true }
+        );
+      const { data: storedToken } = await adminClient
+        .from("email_unsubscribe_tokens")
+        .select("token")
+        .eq("email", normalizedEmail)
+        .maybeSingle();
+      if (storedToken) unsubscribeToken = storedToken.token;
+    } else {
+      // Token exists but was used (user unsubscribed) — create a fresh one
+      unsubscribeToken = generateToken();
+      await adminClient
+        .from("email_unsubscribe_tokens")
+        .update({ token: unsubscribeToken, used_at: null })
+        .eq("email", normalizedEmail);
+    }
+
+    // Enqueue email for delivery via the transactional queue
     const { error: enqueueError } = await adminClient.rpc("enqueue_email", {
-      queue_name: "auth_emails",
+      queue_name: "transactional_emails",
       payload: {
-        run_id: messageId,
         message_id: messageId,
         to: user.email,
         from: "autozon <noreply@autozon.at>",
@@ -103,9 +143,10 @@ Deno.serve(async (req) => {
         subject: "Your Autozon verification code",
         html: emailHtml,
         text: `Your Autozon verification code is: ${code}. This code expires in 5 minutes.`,
-        purpose: "auth",
+        purpose: "transactional",
         label: "otp-verification",
         idempotency_key: messageId,
+        unsubscribe_token: unsubscribeToken,
         queued_at: new Date().toISOString(),
       },
     });
