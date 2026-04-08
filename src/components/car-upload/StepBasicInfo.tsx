@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { COLORS, TRANSMISSIONS } from "./constants";
+import { COLORS, TRANSMISSIONS, FUEL_TYPES } from "./constants";
 import { useCarMakes, useCarModels, useCarVariants } from "@/hooks/useCarModels";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -176,82 +176,6 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
 
   return (
     <div className="space-y-5">
-      {/* VIN Decode Section — prominent placement */}
-      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-        <Label className="text-muted-foreground text-sm flex items-center gap-2 mb-2">
-          <ScanSearch className="h-4 w-4 text-primary" />
-          {t.carUpload.vin} — Auto-fill from VIN
-        </Label>
-        {isEdit && data.vin ? (
-          <div>
-            <div className="bg-muted/50 border border-border rounded-md px-3 py-2 text-sm text-foreground font-mono tracking-wider flex items-center gap-2">
-              <Lock className="h-4 w-4 text-muted-foreground" />
-              {data.vin}
-            </div>
-            <p className="text-muted-foreground text-xs mt-1.5">
-              {(t.carUpload as any).vinImmutableHint}
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="flex gap-2">
-              <Input
-                value={data.vin}
-                onChange={(e) => {
-                  onChange({ vin: e.target.value.toUpperCase() });
-                  setVinDecoded(false);
-                  setVinFields(new Set());
-                  setOverriddenFields(new Set());
-                }}
-                className="bg-background border-border text-foreground font-mono tracking-wider"
-                placeholder="WVWZZZ3CZWE123456"
-                maxLength={17}
-              />
-              <Button
-                type="button"
-                onClick={handleVinDecode}
-                disabled={vinDecoding || !data.vin || data.vin.length < 11}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-4 whitespace-nowrap"
-              >
-                {vinDecoding ? (
-                  <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Decoding...</>
-                ) : vinDecoded ? (
-                  <><CheckCircle2 className="h-4 w-4 mr-1.5" /> Decoded</>
-                ) : (
-                  <><ScanSearch className="h-4 w-4 mr-1.5" /> Decode VIN</>
-                )}
-              </Button>
-            </div>
-            <p className="text-muted-foreground text-xs mt-1.5">
-              Enter your 17-character VIN to auto-fill make, model, year, specs, color, and suggested equipment
-            </p>
-          </>
-        )}
-      </div>
-
-      {/* Stolen vehicle warning */}
-      {stolenWarning.stolen && (
-        <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
-          <ShieldAlert className="h-5 w-5" />
-          <AlertTitle className="font-bold">Stolen Vehicle Alert</AlertTitle>
-          <AlertDescription>
-            {stolenWarning.details || "This VIN has been flagged in a stolen vehicle database."}
-            <span className="block mt-1 text-xs font-medium">This vehicle cannot be listed on Autozon. If you believe this is an error, please contact support.</span>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {/* VIN decoded summary banner */}
-      {vinDecoded && vinFields.size > 0 && (
-        <div className="flex items-center gap-2 bg-primary/5 border border-primary/20 rounded-lg px-3 py-2">
-          <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-          <p className="text-sm text-muted-foreground">
-            <span className="text-foreground font-medium">{vinFields.size} fields</span> auto-filled from VIN.
-            Fields marked with <Lock className="h-3 w-3 inline text-primary mx-0.5" /> are VIN-decoded — click to override.
-          </p>
-        </div>
-      )}
-
       {/* Make → Model → Variant cascade */}
       <div className="grid grid-cols-3 gap-4">
         <div>
@@ -381,8 +305,26 @@ const StepBasicInfo: React.FC<Props> = ({ data, onChange, onVinEquipmentSuggeste
         </div>
       </div>
 
-      {/* Transmission + Price */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Fuel Type, Transmission, Price */}
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <Label className="text-muted-foreground text-sm flex items-center">
+            {t.carUpload.fuelType || "Fuel Type"}
+            <VinLockIndicator field="fuelType" label="fuel type" />
+          </Label>
+          {isFieldLocked("fuelType") ? (
+            <div className="mt-1 bg-muted/50 border border-border rounded-md px-3 py-2 text-sm text-foreground font-medium">
+              {data.fuelType}
+            </div>
+          ) : (
+            <Select value={data.fuelType} onValueChange={(v) => onChange({ fuelType: v })}>
+              <SelectTrigger className="bg-background border-border text-foreground mt-1"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {FUEL_TYPES.map((f) => <SelectItem key={f} value={f}>{f}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
         <div>
           <Label className="text-muted-foreground text-sm flex items-center">
             {t.carUpload.transmission || "Transmission"}

@@ -3,7 +3,11 @@ export const COLORS = [
   "Brown", "Beige", "Yellow", "Orange", "Navy", "Burgundy",
 ];
 
-export const FUEL_TYPES = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
+export const FUEL_TYPES = [
+  "Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid",
+  "Mild Hybrid (Petrol)", "Mild Hybrid (Diesel)", "CNG (Natural Gas)",
+  "LPG (Autogas)", "Hydrogen", "Ethanol (E85)", "Biodiesel",
+];
 export const TRANSMISSIONS = ["Manual", "Automatic", "Semi-Automatic", "CVT"];
 export const BODY_TYPES = ["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Convertible", "Van", "Pickup"];
 
