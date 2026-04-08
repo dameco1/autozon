@@ -9,8 +9,8 @@ const corsHeaders = {
 };
 
 // Price IDs by user type
-const PRICE_PRIVATE = "price_1TJsSoCSiWiq069jWHlst8BA"; // €9.99 — Private Seller
-const PRICE_BUSINESS = "price_1TJsTKCSiWiq069j4ZmrFjBV"; // €19.99 — Business / Dealer
+const PRICE_PRIVATE = "price_1TJsvIC2FADzrXl0aSH3wmZQ"; // €9.99 — Private Seller
+const PRICE_BUSINESS = "price_1TJsvIC2FADzrXl008RjzyFx"; // €19.99 — Business / Dealer
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
