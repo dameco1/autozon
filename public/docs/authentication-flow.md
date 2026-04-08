@@ -1,6 +1,6 @@
 # Authentication Flow — Registration, Login & Security
 
-This diagram maps the complete authentication journey including registration, email verification, MFA enrollment, and role-based access control.
+This diagram maps the complete authentication journey including registration, email verification, Email OTP 2FA, social login, onboarding guard, and role-based access control.
 
 ```mermaid
 flowchart TD
@@ -8,9 +8,9 @@ flowchart TD
         R1[Landing Page] --> R2{New or Returning?}
         R2 -->|New| R3["Sign Up Page /signup"]
         R2 -->|Returning| R4["Login Page /login"]
-        R3 --> R5["Enter Details\n- Full Name\n- Email\n- Password\n- Relationship Status\n- Number of Kids\n- Car Purpose\n- Current Car"]
+        R3 --> R5["Enter Details\n- Full Name\n- Email\n- Password (with visibility toggle)\n- Account Type (Private / Business)\n- Lifestyle Questions\n- Optional Buyer Preferences"]
         R5 --> R6{User Type?}
-        R6 -->|Private Person| R7["Standard Registration"]
+        R6 -->|Private Person| R7["Standard Registration\n+ Date of Birth"]
         R6 -->|Business Entity| R8["Business Registration\n- Company Name\n- UID Number\n- Commercial Registry\n- Authorized Representative"]
         R7 --> R9[Email Sent]
         R8 --> R9
@@ -20,29 +20,29 @@ flowchart TD
         R9 --> V1["Check Email Inbox"]
         V1 --> V2["Click Verification Link"]
         V2 --> V3["Email Confirmed"]
-        V3 --> V4["Redirect to MFA Enrollment"]
+        V3 --> V4["Redirect to Email OTP Verification"]
     end
 
-    subgraph MFA["Multi-Factor Authentication"]
-        V4 --> M1["MFA Enrollment /mfa-enroll"]
-        M1 --> M2["Scan QR Code\nwith Authenticator App"]
-        M2 --> M3["Enter 6-Digit TOTP Code"]
-        M3 -->|Valid| M4["MFA Enrolled Successfully"]
-        M3 -->|Invalid| M5["Try Again"]
+    subgraph MFA["Two-Factor Authentication (Email OTP)"]
+        V4 --> M1["Email OTP Verification /verify-otp"]
+        M1 --> M2["6-digit code sent to email\n(5-minute TTL)"]
+        M2 --> M3["Enter 6-Digit Code"]
+        M3 -->|Valid| M4["Email OTP Verified\n(persisted in app_metadata)"]
+        M3 -->|Invalid/Expired| M5["Try Again or Resend"]
         M5 --> M3
     end
 
     subgraph LOGIN["Login Flow"]
-        R4 --> L1["Enter Email + Password"]
-        L1 -->|Valid| L2{MFA Enrolled?}
+        R4 --> L0{Login Method?}
+        L0 -->|Email + Password| L1["Enter Email + Password"]
+        L0 -->|Google OAuth| L_G["Sign in with Google"]
+        L0 -->|Apple OAuth| L_A["Sign in with Apple"]
+        L1 -->|Valid| L2["Redirect to /verify-otp"]
         L1 -->|Invalid| L3["Error: Invalid Credentials"]
         L3 --> L1
-        L2 -->|Yes| L4["MFA Verify /mfa-verify"]
-        L2 -->|No| L5["MFA Enrollment /mfa-enroll"]
-        L4 --> L6["Enter TOTP Code"]
-        L6 -->|Valid| L7["Authenticated"]
-        L6 -->|Invalid| L8["Try Again"]
-        L8 --> L6
+        L_G --> L2
+        L_A --> L2
+        L2 --> M1
     end
 
     subgraph PASSWORD["Password Recovery"]
@@ -54,10 +54,16 @@ flowchart TD
         P5 --> L1
     end
 
+    subgraph ONBOARDING["Onboarding Guard"]
+        M4 --> OB1{Onboarding Complete?}
+        OB1 -->|No| OB2["Redirect to /onboarding\n(Lifestyle, Financial, Timing)"]
+        OB2 --> OB3["Complete Preferences"]
+        OB3 --> A1
+        OB1 -->|Yes| A1
+    end
+
     subgraph ACCESS["Post-Authentication"]
-        M4 --> A1[Intent Selection]
-        L7 --> A1
-        A1 -->|Buying| A2[Buyer Onboarding]
+        A1[Dashboard] -->|Buying| A2[Buyer Onboarding]
         A1 -->|Selling| A3[Seller Dashboard]
     end
 
@@ -70,14 +76,30 @@ flowchart TD
 
 ---
 
+## Authentication Methods
+
+| Method | Page | Details |
+|--------|------|---------|
+| **Email + Password** | Signup (`/signup`) | Standard registration with password visibility toggle |
+| **Email + Password** | Login (`/login`) | Credentials-based login |
+| **Google OAuth** | Login (`/login`) | Social sign-in via Google |
+| **Apple OAuth** | Login (`/login`) | Social sign-in via Apple |
+
+> **Note:** OAuth buttons (Google, Apple) are only available on the **Login** page. The **Signup** page uses email/password only to ensure users complete lifestyle profiling during registration.
+
+## Onboarding Guard
+
+All users — including those signing in via Google or Apple — must complete the onboarding questionnaire before accessing the dashboard. The guard checks the `user_preferences` table for `onboarding_completed = true`. If not complete, the user is redirected to `/onboarding`.
+
 ## Security Features Summary
 
 | Feature | Implementation |
 |---------|---------------|
-| **Password** | Secure hashing via auth provider |
+| **Password** | Secure hashing via auth provider; visibility toggle on signup |
 | **Email Verification** | Required before first login |
-| **MFA (TOTP)** | Required for all users, authenticator app |
-| **Session Management** | JWT tokens with refresh |
-| **Rate Limiting** | Brute-force protection on login |
+| **2FA (Email OTP)** | 6-digit code via email, 5-minute TTL, rate-limited (5 requests / 10 min) |
+| **Session Management** | JWT tokens with refresh; OTP verified status in `app_metadata` |
+| **Rate Limiting** | Brute-force protection on login + OTP rate limiting |
 | **Password Reset** | Email-based secure reset flow |
-| **RBAC** | Separate user_roles table, security definer function |
+| **RBAC** | Separate `user_roles` table, `has_role()` security definer function |
+| **Social Auth** | Google + Apple OAuth on login page |
