@@ -276,8 +276,9 @@ const Dashboard: React.FC = () => {
               ) : (
                 <div className="divide-y divide-border">
                   {cars.map((car) => (
-                    <div key={car.id} className="flex items-center gap-4 px-6 py-4 hover:bg-muted/40 transition-colors">
-                      <div className="w-16 h-12 rounded-lg bg-muted overflow-hidden shrink-0">
+                    <div key={car.id} className="px-4 sm:px-6 py-4 hover:bg-muted/40 transition-colors space-y-3">
+                      <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="w-14 h-10 sm:w-16 sm:h-12 rounded-lg bg-muted overflow-hidden shrink-0">
                         {car.image_url ? (
                           <img src={car.image_url} alt={`${car.make} ${car.model}`} className="w-full h-full object-cover" />
                         ) : (
@@ -290,8 +291,8 @@ const Dashboard: React.FC = () => {
                         <p className="text-sm font-semibold text-foreground truncate">
                           {car.year} {car.make} {car.model}
                         </p>
-                         <div className="flex items-center gap-3 mt-0.5">
-                           <span className="text-xs text-primary font-semibold">
+                         <div className="flex items-center gap-2 sm:gap-3 mt-0.5 flex-wrap">
+                           <span className="text-xs text-primary font-semibold whitespace-nowrap">
                               €{car.price.toLocaleString()}
                            </span>
                            {car.status === "sold" ? (
@@ -312,8 +313,7 @@ const Dashboard: React.FC = () => {
                               </span>
                             )}
                         </div>
-                        {/* Engagement Stats */}
-                        <div className="flex items-center gap-3 mt-1.5">
+                        <div className="flex items-center gap-2 sm:gap-3 mt-1.5">
                           <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
                             <Eye className="h-3 w-3" /> {carStats[car.id]?.views ?? 0}
                           </span>
@@ -325,9 +325,11 @@ const Dashboard: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="flex gap-1 shrink-0">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" title={t.dashboard.viewAd} onClick={() => navigate(`/car/${car.id}`)}>
-                          <ExternalLink className="h-4 w-4" />
+                      </div>
+                      {/* Action buttons — wrap on mobile */}
+                      <div className="flex flex-wrap gap-1 pl-0 sm:pl-[calc(3.5rem+0.75rem)]">
+                        <Button variant="ghost" size="sm" className="h-8 text-muted-foreground text-xs gap-1" title={t.dashboard.viewAd} onClick={() => navigate(`/car/${car.id}`)}>
+                          <ExternalLink className="h-3.5 w-3.5" /> <span className="hidden sm:inline">View</span>
                         </Button>
                         {car.status === "sold" ? (
                           <>
@@ -335,7 +337,7 @@ const Dashboard: React.FC = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-8 text-primary hover:text-primary/80 text-xs font-semibold gap-1"
+                                className="h-8 text-primary hover:text-primary/80 text-xs font-semibold gap-1 whitespace-nowrap"
                                 onClick={() => navigate(`/acquire/${soldCarTxMap[car.id].offer_id}`)}
                               >
                                 <FileText className="h-3.5 w-3.5" /> {(t.dashboard as any).viewTransaction || "Transaction"}
@@ -347,13 +349,13 @@ const Dashboard: React.FC = () => {
                             {acceptedOfferMap[car.id] ? (
                               /* Car has an accepted offer — show acquisition button, no delete */
                               <>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
-                                  <BarChart3 className="h-4 w-4" />
+                                <Button variant="ghost" size="sm" className="h-8 text-muted-foreground text-xs gap-1" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
+                                  <BarChart3 className="h-3.5 w-3.5" />
                                 </Button>
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="h-8 text-primary hover:text-primary/80 text-xs font-semibold gap-1"
+                                  className="h-8 text-primary hover:text-primary/80 text-xs font-semibold gap-1 whitespace-nowrap"
                                   onClick={() => navigate(`/acquire/${acceptedOfferMap[car.id]}`)}
                                 >
                                   <FileText className="h-3.5 w-3.5" /> {(t.dashboard as any).acquisition || "Acquisition"}
@@ -362,21 +364,21 @@ const Dashboard: React.FC = () => {
                             ) : (
                               /* Normal available car — full actions including delete */
                               <>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
-                                  <BarChart3 className="h-4 w-4" />
+                                <Button variant="ghost" size="sm" className="h-8 text-muted-foreground text-xs gap-1" title={t.dashboard.valuation} onClick={() => navigate(`/fair-value/${car.id}`)}>
+                                  <BarChart3 className="h-3.5 w-3.5" />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
-                                  <Pencil className="h-4 w-4" />
+                                <Button variant="ghost" size="sm" className="h-8 text-muted-foreground text-xs gap-1" onClick={() => navigate(`/car-upload?edit=${car.id}`)}>
+                                  <Pencil className="h-3.5 w-3.5" />
                                 </Button>
                                 {car.placement_paid ? (
-                                  <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
-                                    <Users className="h-4 w-4" />
+                                  <Button variant="ghost" size="sm" className="h-8 text-muted-foreground text-xs gap-1" onClick={() => navigate(`/buyer-matches/${car.id}`)}>
+                                    <Users className="h-3.5 w-3.5" />
                                   </Button>
                                 ) : (
                                   <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="h-8 text-amber-400 hover:text-amber-300 text-xs font-semibold gap-1"
+                                    className="h-8 text-amber-400 hover:text-amber-300 text-xs font-semibold gap-1 whitespace-nowrap"
                                     disabled={placingCarId === car.id}
                                     onClick={async () => {
                                       setPlacingCarId(car.id);
@@ -424,8 +426,8 @@ const Dashboard: React.FC = () => {
                                 )}
                                 <AlertDialog>
                                   <AlertDialogTrigger asChild>
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive/60 hover:text-destructive">
-                                      <Trash2 className="h-4 w-4" />
+                                    <Button variant="ghost" size="sm" className="h-8 text-destructive/60 hover:text-destructive text-xs gap-1">
+                                      <Trash2 className="h-3.5 w-3.5" />
                                     </Button>
                                   </AlertDialogTrigger>
                                   <AlertDialogContent className="bg-secondary border-border">
