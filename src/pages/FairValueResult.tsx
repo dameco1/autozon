@@ -78,18 +78,16 @@ const FairValueResult: React.FC = () => {
 
     try {
       const { data: existingFeedback, error: existingFeedbackError } = await supabase
-        .from("appraisal_feedback" as any)
+        .from("appraisal_feedback")
         .select("blended_value")
         .eq("car_id", carData.id)
         .not("blended_value", "is", null)
         .order("created_at", { ascending: true })
-        .limit(1)
-        .maybeSingle();
+        .limit(1);
 
       if (existingFeedbackError) throw existingFeedbackError;
 
-      const lockedFeedback = existingFeedback as { blended_value: number | null } | null;
-      const lockedBlendedValue = Number(lockedFeedback?.blended_value ?? 0);
+      const lockedBlendedValue = Number(existingFeedback?.[0]?.blended_value ?? 0);
       if (lockedBlendedValue > 0) {
         setBlendedValue(lockedBlendedValue);
 
