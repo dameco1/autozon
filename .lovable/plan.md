@@ -1,54 +1,58 @@
 
 
-# Rewrite Investor Pitch Deck -- 14 Slides
+# Simplify 2FA: Replace TOTP with Email OTP
 
-## Overview
+## Summary
+Replace the current authenticator-app-based TOTP flow with a simpler email-based OTP. After login, users receive a 6-digit code to their email — no app installation or QR code scanning required.
 
-Full rewrite of `src/components/pitch/slides.tsx` replacing the current 24 slides with 14 investor-focused slides matching the provided content outline. All existing infrastructure (SlideLayout, InvestorPitch page, PDF export) remains unchanged.
+## Why this is better for users
+- No need to install Google Authenticator or any app
+- No QR code scanning
+- Users just check their email — something they already know how to do
 
-## New Slide Order
+## Technical approach
 
-| # | Component | Headline |
-|---|-----------|----------|
-| 1 | SlideCover | Autozon -- Fair Value. Full Transaction. |
-| 2 | SlideExecutiveSummary | One platform that turns used-car friction into predictable, high-margin transactions. |
-| 3 | SlideWhyNow | Market forces and regulation create a rare window to capture massive share. |
-| 4 | SlideProblem | Sellers lose thousands; buyers face friction; platforms capture little of the transaction value. |
-| 5 | SlideProduct | Live product: AI valuation, VIN intelligence, structured negotiation, and transaction orchestration. |
-| 6 | SlideReturnDrivers | Multiple, compounding revenue streams and clear scale economics. |
-| 7 | SlideMoat | Data, integrations, and execution create a durable competitive advantage. |
-| 8 | SlideGTM | A repeatable funnel to seed liquidity and scale across DACH to Europe. |
-| 9 | SlideTraction | Live MVP with measurable seller uplift and transaction flow validation. |
-| 10 | SlideFinancials | Conservative projections with clear scaling levers and high gross margins. |
-| 11 | SlideTeam | Founders with deep domain experience and execution track record. |
-| 12 | SlideRisk | Practical approach to legal, compliance and operational risks. |
-| 13 | SlideAsk | Seed raise to scale product, liquidity, and DACH expansion. |
-| 14 | SlideAppendix | Full diligence materials and live demo access. |
+Since the backend doesn't natively support email-based MFA, we'll build a lightweight custom flow:
 
-## Technical Details
+### 1. New database table: `email_otp`
+- `id`, `user_id`, `code` (6-digit), `expires_at` (5 min TTL), `verified` (boolean), `created_at`
+- RLS: users can only read/verify their own codes
+- Validation trigger for expiry instead of CHECK constraint
 
-### Single file change: `src/components/pitch/slides.tsx`
+### 2. New edge function: `send-email-otp`
+- Accepts authenticated user request (JWT)
+- Generates a random 6-digit code, stores it in `email_otp` table
+- Sends the code to the user's email via Lovable AI (or a simple email function)
+- Invalidates any previous unused codes for that user
+- Rate-limited to prevent abuse
 
-- Keep all existing imports (icons, photos, car images) and design tokens
-- Replace all 24 slide components with 14 new ones
-- Update `allSlides` array to the new 14-element order
-- Same 1920x1080 coordinate system, same CSS classes (`heading`, `subheading`, `body`, `cardBg`, `accent`, etc.)
+### 3. New edge function: `verify-email-otp`
+- Accepts `{ code }` from authenticated user
+- Checks against `email_otp` table (not expired, not already used)
+- On success, marks as verified and sets a session flag (custom claim or app_metadata)
 
-### Preserved content
-- **SlideTeam**: Reuses existing 3-column photo card layout with Emina, Damir, Nenad bios and photos
-- **SlideAsk**: Includes cap table bar chart and investment details (EUR 300K / 23.08% / EUR 1.3M post-money)
-- **SlideAppendix**: Carries forward data room module grid
+### 4. Update existing pages
+- **Remove** `MfaEnroll.tsx` and `MfaVerify.tsx` (TOTP pages)
+- **Create** new `EmailOtpVerify.tsx` — simple page with a 6-digit input field
+- **Update** `Login.tsx` — after successful password login, redirect to `/verify-otp` instead of MFA pages
+- **Update** `MfaGuard.tsx` — check the email OTP verification status instead of AAL2 level
+- **Update** `App.tsx` — replace `/mfa-enroll` and `/mfa-verify` routes with `/verify-otp`
 
-### Slide design patterns
-- Cover: logo + headline + 3 bullet points + key stats row
-- Content slides: icon + headline header, 3 bullet cards with icons, consistent `px-40 py-16` padding
-- Financials: table/card grid with Y1-Y3 projections
-- Team: 3-column photo cards (existing layout)
-- Ask: stacked bar cap table + 3 metric cards + use-of-funds breakdown
+### 5. Update Signup flow
+- After email verification + first login, user goes straight to `/verify-otp` (receives code automatically)
+- No enrollment step needed — email OTP works with their existing email
 
-### No changes to
-- `src/components/pitch/SlideLayout.tsx`
-- `src/pages/InvestorPitch.tsx`
-- `src/lib/exportPitchPdf.ts`
-- Any image assets
+### 6. Translations
+- Update `translations.ts` — replace TOTP-related strings with email OTP strings (EN + DE)
+
+## Files changed
+- **New**: `supabase/functions/send-email-otp/index.ts`
+- **New**: `supabase/functions/verify-email-otp/index.ts`
+- **New**: `src/pages/EmailOtpVerify.tsx`
+- **Modified**: `src/App.tsx` (routes)
+- **Modified**: `src/pages/Login.tsx` (redirect logic)
+- **Modified**: `src/components/MfaGuard.tsx` (check OTP instead of AAL2)
+- **Modified**: `src/i18n/translations.ts`
+- **Removed/unused**: `src/pages/MfaEnroll.tsx`, `src/pages/MfaVerify.tsx`
+- **DB migration**: Create `email_otp` table with RLS
 
