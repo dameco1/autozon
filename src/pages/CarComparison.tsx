@@ -7,9 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Car, Trophy, CreditCard, Building, ArrowLeftRight, CheckCircle, ArrowLeft, LayoutDashboard } from "lucide-react";
+import { Car, Trophy, CreditCard, Building, ArrowLeftRight, CheckCircle, ArrowLeft, LayoutDashboard, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import carPlaceholder from "@/assets/car-placeholder.jpg";
 
 type CarRow = {
   id: string;
@@ -27,6 +28,9 @@ type CarRow = {
   equipment: string[] | null;
   condition_score: number | null;
   demand_score: number | null;
+  description: string | null;
+  photos: string[] | null;
+  image_url: string | null;
 };
 
 const CarComparison: React.FC = () => {
