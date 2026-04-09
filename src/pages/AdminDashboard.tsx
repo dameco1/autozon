@@ -13,6 +13,7 @@ import AdminContracts from "@/components/admin/AdminContracts";
 import AdminReports from "@/components/admin/AdminReports";
 import AdminFinancingRequests from "@/components/admin/AdminFinancingRequests";
 import AdminInsuranceRequests from "@/components/admin/AdminInsuranceRequests";
+import AdminAgentTab from "@/components/admin/AdminAgentTab";
 
 const AdminDashboard: React.FC = () => {
   const { loading } = useAdminAuth();
