@@ -321,18 +321,61 @@ const CarDetail: React.FC = () => {
             {car.year} {car.make} {car.model}
           </h1>
 
-          {/* Price row */}
-          <div className="flex items-center gap-6 mt-4">
-            <div>
-              <div className="text-xs text-muted-foreground">{t.carDetail.price}</div>
-              <div className="text-3xl font-display font-black text-foreground">€{car.price.toLocaleString()}</div>
-            </div>
-            {car.fair_value_price > 0 && (
+          {/* Price + Preisbewertung + CTAs row */}
+          <div className="flex flex-col lg:flex-row lg:items-end gap-6 mt-4">
+            {/* Prices */}
+            <div className="flex items-center gap-6">
               <div>
-                <div className="text-xs text-muted-foreground">{t.carDetail.fairValue}</div>
-                <div className="text-3xl font-display font-black text-primary">€{car.fair_value_price.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">{t.carDetail.price}</div>
+                <div className="text-3xl font-display font-black text-foreground">€{car.price.toLocaleString()}</div>
               </div>
-            )}
+              {car.fair_value_price > 0 && (
+                <div>
+                  <div className="text-xs text-muted-foreground">{t.carDetail.fairValue}</div>
+                  <div className="text-3xl font-display font-black text-primary">€{car.fair_value_price.toLocaleString()}</div>
+                </div>
+              )}
+            </div>
+
+            {/* Preisbewertung badge */}
+            {car.fair_value_price > 0 && (() => {
+              const ratio = car.price / car.fair_value_price;
+              const level = ratio <= 0.92 ? "top" : ratio <= 1.05 ? "good" : "fair";
+              const labelMap = { top: language === "de" ? "Top Angebot" : "Top Deal", good: language === "de" ? "Gutes Angebot" : "Good Deal", fair: language === "de" ? "Faires Angebot" : "Fair Deal" };
+              const colorMap = { top: "bg-primary text-primary-foreground", good: "bg-primary/80 text-primary-foreground", fair: "bg-yellow-500 text-white" };
+              const barMap = { top: "100%", good: "66%", fair: "33%" };
+              return (
+                <div className="flex flex-col gap-1.5 min-w-[160px]">
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Preisbewertung</div>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${colorMap[level]}`}>{labelMap[level]}</span>
+                    <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                      <div className={`h-full rounded-full transition-all ${level === "fair" ? "bg-yellow-500" : "bg-primary"}`} style={{ width: barMap[level] }} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* CTA buttons */}
+            <div className="flex gap-3 lg:ml-auto">
+              <Button
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-6 py-5 rounded-xl"
+                onClick={handleStartTrade}
+                disabled={offerLoading}
+              >
+                {t.carDetail.startTrade}
+              </Button>
+              <Button
+                variant="outline"
+                className={`px-5 py-5 rounded-xl ${shortlisted ? "text-primary border-primary" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
+                onClick={handleToggleShortlist}
+                disabled={shortlistLoading}
+              >
+                {shortlisted ? <BookmarkCheck className="mr-2 h-4 w-4" /> : <Bookmark className="mr-2 h-4 w-4" />}
+                {shortlisted ? t.carDetail.removeFromShortlist : t.carDetail.addToShortlist}
+              </Button>
+            </div>
           </div>
         </motion.div>
 
