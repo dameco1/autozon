@@ -76,6 +76,9 @@ const CarComparison: React.FC = () => {
           setFinancing(finInit);
           setLeasing(leaseInit);
           setActiveTab(tabInit);
+          const photoInit: any = {};
+          data.forEach((c) => { photoInit[c.id] = 0; });
+          setActivePhoto(photoInit);
         }
       });
   }, [searchParams, navigate]);
