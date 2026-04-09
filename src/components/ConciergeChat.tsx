@@ -39,7 +39,6 @@ const ConciergeChat: React.FC = () => {
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
-  const { language } = useLanguage();
 
   useEffect(() => {
     if (scrollRef.current) {
