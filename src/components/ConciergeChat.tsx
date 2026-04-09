@@ -1,23 +1,40 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Bot, User, Loader2, X, MessageCircle } from "lucide-react";
+import { Send, Bot, User, Loader2, X, MessageCircle, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { streamChat } from "@/lib/chatStream";
+import { streamChat, ChatContext } from "@/lib/chatStream";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/i18n/LanguageContext";
+import ReactMarkdown from "react-markdown";
 
 type Msg = { role: "user" | "assistant"; content: string };
+
+// Parse navigate_user actions from assistant messages
+function extractActions(content: string): { text: string; actions: Array<{ destination: string; label: string }> } {
+  const actionRegex = /\[NAV:([^\]]+)\|([^\]]+)\]/g;
+  const actions: Array<{ destination: string; label: string }> = [];
+  const text = content.replace(actionRegex, (_match, dest, label) => {
+    actions.push({ destination: dest.trim(), label: label.trim() });
+    return "";
+  });
+  return { text: text.trim(), actions };
+}
 
 const ConciergeChat: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
-    { role: "assistant", content: "👋 Hi! I'm your Autozon Concierge. I can help you with car valuations, buying advice, selling tips, and navigating the platform. How can I help?" },
+    { role: "assistant", content: "👋 Hi! I'm your Autozon AI Agent. I can help you find cars, manage listings, check valuations, report issues, and guide you through every step. How can I help?" },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { language } = useLanguage();
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -30,6 +47,12 @@ const ConciergeChat: React.FC = () => {
       inputRef.current.focus();
     }
   }, [open]);
+
+  const getContext = (): ChatContext => ({
+    currentPath: location.pathname + location.search,
+    locale: language,
+    role: "user",
+  });
 
   const send = async () => {
     const text = input.trim();
@@ -54,6 +77,7 @@ const ConciergeChat: React.FC = () => {
 
     await streamChat({
       messages: [...messages, userMsg].filter((m) => m.role === "user" || m.role === "assistant"),
+      context: getContext(),
       onDelta: (chunk) => upsertAssistant(chunk),
       onDone: () => setIsLoading(false),
       onError: (error) => {
@@ -61,6 +85,11 @@ const ConciergeChat: React.FC = () => {
         toast({ variant: "destructive", title: "Chat Error", description: error });
       },
     });
+  };
+
+  const handleNavigate = (destination: string) => {
+    navigate(destination);
+    setOpen(false);
   };
 
   return (
@@ -97,40 +126,68 @@ const ConciergeChat: React.FC = () => {
                   <Bot className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-display font-bold text-foreground">Autozon Concierge</h3>
+                  <h3 className="text-sm font-display font-bold text-foreground">Autozon AI Agent</h3>
                   <span className="text-[10px] text-primary">Online</span>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-muted-foreground transition-colors">
+              <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Messages */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
-              {messages.map((msg, i) => (
-                <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  {msg.role === "assistant" && (
-                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                      <Bot className="h-3 w-3 text-primary" />
+              {messages.map((msg, i) => {
+                const { text, actions } = msg.role === "assistant" ? extractActions(msg.content) : { text: msg.content, actions: [] };
+
+                return (
+                  <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                    {msg.role === "assistant" && (
+                      <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                        <Bot className="h-3 w-3 text-primary" />
+                      </div>
+                    )}
+                    <div className="max-w-[80%] space-y-2">
+                      <div
+                        className={`rounded-xl px-3 py-2 text-sm leading-relaxed ${
+                          msg.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground border border-border"
+                        }`}
+                      >
+                        {msg.role === "assistant" ? (
+                          <div className="prose prose-sm prose-invert max-w-none [&>p]:m-0 [&>ul]:my-1 [&>ol]:my-1 [&_li]:my-0">
+                            <ReactMarkdown>{text}</ReactMarkdown>
+                          </div>
+                        ) : (
+                          msg.content
+                        )}
+                      </div>
+                      {actions.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {actions.map((action, ai) => (
+                            <Button
+                              key={ai}
+                              size="sm"
+                              variant="outline"
+                              className="h-7 text-xs gap-1"
+                              onClick={() => handleNavigate(action.destination)}
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              {action.label}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  )}
-                  <div
-                    className={`max-w-[80%] rounded-xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
-                      msg.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground border border-border"
-                    }`}
-                  >
-                    {msg.content}
+                    {msg.role === "user" && (
+                      <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 mt-1">
+                        <User className="h-3 w-3 text-muted-foreground" />
+                      </div>
+                    )}
                   </div>
-                  {msg.role === "user" && (
-                    <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 mt-1">
-                      <User className="h-3 w-3 text-muted-foreground" />
-                    </div>
-                  )}
-                </div>
-              ))}
+                );
+              })}
               {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex gap-2">
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -153,7 +210,7 @@ const ConciergeChat: React.FC = () => {
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything about cars..."
+                  placeholder="Ask me anything..."
                   className="bg-muted border-border text-muted-foreground text-sm"
                   disabled={isLoading}
                 />

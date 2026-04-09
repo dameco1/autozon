@@ -2,15 +2,24 @@ import { supabase } from "@/integrations/supabase/client";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
+export interface ChatContext {
+  currentPath?: string;
+  locale?: string;
+  role?: string;
+  carId?: string;
+}
+
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/concierge-chat`;
 
 export async function streamChat({
   messages,
+  context,
   onDelta,
   onDone,
   onError,
 }: {
   messages: Msg[];
+  context?: ChatContext;
   onDelta: (deltaText: string) => void;
   onDone: () => void;
   onError: (error: string) => void;
@@ -25,7 +34,7 @@ export async function streamChat({
         Authorization: `Bearer ${session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
       },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({ messages, context }),
     });
 
     if (!resp.ok) {
