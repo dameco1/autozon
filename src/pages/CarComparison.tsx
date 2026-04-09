@@ -7,9 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Car, Trophy, CreditCard, Building, ArrowLeftRight, CheckCircle, ArrowLeft, LayoutDashboard } from "lucide-react";
+import { Car, Trophy, CreditCard, Building, ArrowLeftRight, CheckCircle, ArrowLeft, LayoutDashboard, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import carPlaceholder from "@/assets/car-placeholder.jpg";
 
 type CarRow = {
   id: string;
@@ -27,6 +28,9 @@ type CarRow = {
   equipment: string[] | null;
   condition_score: number | null;
   demand_score: number | null;
+  description: string | null;
+  photos: string[] | null;
+  image_url: string | null;
 };
 
 const CarComparison: React.FC = () => {
@@ -38,10 +42,9 @@ const CarComparison: React.FC = () => {
 
   // Financing state per car
   const [financing, setFinancing] = useState<{ [key: string]: { downPayment: number; term: number; rate: number } }>({});
-  // Leasing state per car
   const [leasing, setLeasing] = useState<{ [key: string]: { term: number; residualPct: number } }>({});
-  // Active tab per car
   const [activeTab, setActiveTab] = useState<{ [key: string]: string }>({});
+  const [activePhoto, setActivePhoto] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     const carIds = searchParams.get("cars")?.split(",") || [];
@@ -73,6 +76,9 @@ const CarComparison: React.FC = () => {
           setFinancing(finInit);
           setLeasing(leaseInit);
           setActiveTab(tabInit);
+          const photoInit: any = {};
+          data.forEach((c) => { photoInit[c.id] = 0; });
+          setActivePhoto(photoInit);
         }
       });
   }, [searchParams, navigate]);
@@ -140,21 +146,93 @@ const CarComparison: React.FC = () => {
           </Button>
         </div>
 
+        {/* Photo Galleries Side by Side */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {cars.map((car) => {
+            const photos = car.photos && car.photos.length > 0 ? car.photos : (car.image_url ? [car.image_url] : []);
+            const photoIdx = activePhoto[car.id] || 0;
+            return (
+              <div key={car.id} className="bg-secondary/50 border border-border rounded-2xl overflow-hidden">
+                {/* Photo */}
+                <div className="relative aspect-[16/9] bg-muted">
+                  <img
+                    src={photos[photoIdx] || carPlaceholder}
+                    alt={`${car.make} ${car.model}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).src = carPlaceholder; }}
+                  />
+                  {photos.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => setActivePhoto((p) => ({ ...p, [car.id]: (photoIdx - 1 + photos.length) % photos.length }))}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-muted/90 border border-border flex items-center justify-center text-foreground hover:bg-background"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => setActivePhoto((p) => ({ ...p, [car.id]: (photoIdx + 1) % photos.length }))}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-muted/90 border border-border flex items-center justify-center text-foreground hover:bg-background"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+                        {photos.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setActivePhoto((p) => ({ ...p, [car.id]: i }))}
+                            className={`w-2 h-2 rounded-full transition-all ${i === photoIdx ? "bg-primary w-4" : "bg-white/40"}`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+                {/* Thumbnails */}
+                {photos.length > 1 && (
+                  <div className="flex gap-1 p-2 overflow-x-auto">
+                    {photos.map((url, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActivePhoto((p) => ({ ...p, [car.id]: i }))}
+                        className={`w-16 h-11 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${i === photoIdx ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"}`}
+                      >
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {/* Title & Price */}
+                <div className="p-4 text-center">
+                  <h3 className="text-foreground font-display font-bold text-lg">{car.make} {car.model}</h3>
+                  <p className="text-primary font-bold text-2xl mt-1">€{car.price.toLocaleString()}</p>
+                  {car.fair_value_price && (
+                    <p className="text-muted-foreground text-sm">{t.compare.fairValue}: €{car.fair_value_price.toLocaleString()}</p>
+                  )}
+                </div>
+                {/* Description */}
+                {car.description && (
+                  <div className="px-4 pb-4">
+                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-4">{car.description}</p>
+                  </div>
+                )}
+                {/* Equipment */}
+                {car.equipment && car.equipment.length > 0 && (
+                  <div className="px-4 pb-4">
+                    <div className="flex flex-wrap gap-1">
+                      {car.equipment.map((eq) => (
+                        <Badge key={eq} variant="secondary" className="text-xs">{eq}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
         {/* Spec Comparison Grid */}
         <div className="bg-secondary/50 border border-border rounded-2xl overflow-hidden mb-8">
           <div className="grid" style={{ gridTemplateColumns: `200px repeat(${cars.length}, 1fr)` }}>
-            {/* Header */}
-            <div className="p-4 border-b border-border" />
-            {cars.map((car) => (
-              <div key={car.id} className="p-4 border-b border-border text-center">
-                <h3 className="text-foreground font-display font-bold text-lg">{car.make} {car.model}</h3>
-                <p className="text-primary font-bold text-2xl mt-1">€{car.price.toLocaleString()}</p>
-                {car.fair_value_price && (
-                  <p className="text-muted-foreground text-sm">{t.compare.fairValue}: €{car.fair_value_price.toLocaleString()}</p>
-                )}
-              </div>
-            ))}
-
             {/* Spec Rows */}
             {specRows.map((spec, idx) => (
               <React.Fragment key={spec.key}>
@@ -170,21 +248,6 @@ const CarComparison: React.FC = () => {
                   );
                 })}
               </React.Fragment>
-            ))}
-
-            {/* Equipment Row */}
-            <div className="p-3 text-sm text-muted-foreground bg-muted/60">{t.compare.equipment}</div>
-            {cars.map((car) => (
-              <div key={car.id} className="p-3 bg-muted/60">
-                <div className="flex flex-wrap gap-1 justify-center">
-                  {(car.equipment || []).slice(0, 6).map((eq) => (
-                    <Badge key={eq} variant="secondary" className="text-xs">{eq}</Badge>
-                  ))}
-                  {(car.equipment || []).length > 6 && (
-                    <Badge variant="outline" className="text-xs text-muted-foreground">+{(car.equipment || []).length - 6}</Badge>
-                  )}
-                </div>
-              </div>
             ))}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,8 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 const EmailOtpVerify: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/intent";
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
@@ -27,7 +29,7 @@ const EmailOtpVerify: React.FC = () => {
       // Check if already verified
       const otpVerified = session.user.app_metadata?.email_otp_verified_at;
       if (otpVerified) {
-        navigate("/intent");
+        navigate(redirectTo);
         return;
       }
       // Auto-send OTP on page load
@@ -71,7 +73,7 @@ const EmailOtpVerify: React.FC = () => {
         // Refresh session to pick up updated app_metadata
         await supabase.auth.refreshSession();
         toast.success(t.mfa.verifySuccess);
-        navigate("/intent");
+        navigate(redirectTo);
       } else {
         toast.error(t.mfa.invalidCode);
         setCode("");

@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard } from "lucide-react";
+import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import carPlaceholder from "@/assets/car-placeholder.jpg";
@@ -137,7 +137,7 @@ const CarSelection: React.FC = () => {
   const toggleLike = async (carId: string) => {
     if (!userId) {
       toast.error("Please log in to save favorites");
-      navigate("/login");
+      navigate(`/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`);
       return;
     }
     const isLiked = liked.has(carId);
@@ -178,19 +178,23 @@ const CarSelection: React.FC = () => {
   };
 
   const handleShowMore = async () => {
-    if (!userId) return;
-
     const keptCars = cars.filter((c) => liked.has(c.id));
+
     const keptIds = keptCars.map((c) => c.id);
 
     setLoading(true);
 
-    const [prefsRes, profileRes] = await Promise.all([
-      supabase.from("user_preferences").select("*").eq("user_id", userId).maybeSingle(),
-      supabase.from("profiles").select("relationship_status, has_kids, num_kids, car_purpose, current_car, budget_max").eq("user_id", userId).maybeSingle(),
-    ]);
-    const prefs = prefsRes.data as PreferenceSignals | null;
-    const profile = profileRes.data as ProfileSignals | null;
+    let prefs: PreferenceSignals | null = null;
+    let profile: ProfileSignals | null = null;
+
+    if (userId) {
+      const [prefsRes, profileRes] = await Promise.all([
+        supabase.from("user_preferences").select("*").eq("user_id", userId).maybeSingle(),
+        supabase.from("profiles").select("relationship_status, has_kids, num_kids, car_purpose, current_car, budget_max").eq("user_id", userId).maybeSingle(),
+      ]);
+      prefs = prefsRes.data as PreferenceSignals | null;
+      profile = profileRes.data as ProfileSignals | null;
+    }
 
     let query = supabase
       .from("cars")
@@ -269,7 +273,7 @@ const CarSelection: React.FC = () => {
         {cars.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-muted-foreground text-lg">{t.carSelection.noCars}</p>
-            <Button className="mt-4" onClick={() => navigate("/buyer-questionnaire")}>
+            <Button className="mt-4" variant="outline" onClick={() => navigate("/")}>
               {t.carSelection.adjustCriteria}
             </Button>
           </div>
@@ -287,12 +291,11 @@ const CarSelection: React.FC = () => {
                     transition={{ duration: 0.2 }}
                   >
                     <Card
-                      className={`bg-secondary/50 border-2 transition-all cursor-pointer ${
+                      className={`bg-secondary/50 border-2 transition-all ${
                         liked.has(car.id) ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
                       }`}
-                      onClick={() => toggleLike(car.id)}
                     >
-                      <CardContent className="p-0">
+                      <CardContent className="p-0 cursor-pointer" onClick={() => navigate(`/car/${car.id}`)}>
                         {/* Car Image */}
                         <div className="relative w-full h-40 overflow-hidden rounded-t-lg">
                           <img
@@ -360,6 +363,26 @@ const CarSelection: React.FC = () => {
                                 {t.carSelection.condition}: {car.condition_score}/100
                               </Badge>
                             )}
+                          </div>
+
+                          {/* View Details + Like buttons */}
+                          <div className="flex gap-2 mt-3">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1 text-xs"
+                              onClick={(e) => { e.stopPropagation(); navigate(`/car/${car.id}`); }}
+                            >
+                              <Eye className="h-3 w-3 mr-1" /> View Details
+                            </Button>
+                            <Button
+                              variant={liked.has(car.id) ? "default" : "outline"}
+                              size="sm"
+                              className="text-xs"
+                              onClick={(e) => { e.stopPropagation(); toggleLike(car.id); }}
+                            >
+                              <Heart className={`h-3 w-3 ${liked.has(car.id) ? "fill-current" : ""}`} />
+                            </Button>
                           </div>
                         </div>
                       </CardContent>
