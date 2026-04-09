@@ -30,7 +30,7 @@ const Impressum: React.FC = () => {
           <section>
             <h2 className="text-xl font-display font-bold text-foreground">Contact</h2>
             <p>
-              Email: <a href="mailto:info@autozon.app" className="text-primary hover:underline">info@autozon.app</a><br />
+              Email: <a href="mailto:info@autozon.at" className="text-primary hover:underline">info@autozon.at</a><br />
               Phone: <a href="tel:+436649171627" className="text-primary hover:underline">+43 664 917 1627</a>
             </p>
           </section>
