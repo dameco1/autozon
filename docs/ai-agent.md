@@ -2,7 +2,7 @@
 
 ## Overview
 
-Zoni is the Autozon AI Agent (V2), a context-aware, tool-calling AI assistant embedded in the platform. It replaces the simple Concierge Chat with a full agent capable of executing real actions against the database, guiding users through workflows, and monitoring for suspicious activity. Zoni supports full English and German localization.
+Zoni is the Autozon AI Agent (V2), a context-aware, tool-calling AI assistant embedded in the platform. It executes real actions against the database, guides users through workflows, monitors for suspicious activity, and answers common questions from an embedded FAQ knowledge base. Zoni supports full English and German localization.
 
 ## Architecture
 
@@ -12,6 +12,7 @@ Zoni is the Autozon AI Agent (V2), a context-aware, tool-calling AI assistant em
 │                                               │
 │  ConciergeChat.tsx                            │
 │  ├── Zoni avatar (zoni-avatar.png)           │
+│  ├── Animated mascot trigger (framer-motion) │
 │  ├── Context Provider (page, locale, role)   │
 │  ├── Markdown rendering (react-markdown)     │
 │  ├── Navigation action buttons               │
@@ -25,11 +26,13 @@ Zoni is the Autozon AI Agent (V2), a context-aware, tool-calling AI assistant em
 ┌──────────────▼───────────────────────────────┐
 │      EDGE FUNCTION: concierge-chat            │
 │                                               │
-│  1. JWT authentication                        │
+│  1. JWT authentication (+ guest support)     │
 │  2. User profile loading (role, KYC, name)   │
-│  3. Dynamic system prompt (with locale)      │
-│  4. Tool-calling loop (up to 5 rounds)       │
-│  5. Final streamed response                   │
+│  3. Intent classification (simple/complex)   │
+│  4. Model routing (fast vs full)             │
+│  5. Dynamic system prompt (with locale)      │
+│  6. Tool-calling loop (up to 3 rounds)       │
+│  7. Final streamed response                   │
 │                                               │
 │  TOOLS:                                       │
 │  ├── search_cars (marketplace search)        │
@@ -50,6 +53,43 @@ Zoni is the Autozon AI Agent (V2), a context-aware, tool-calling AI assistant em
 │  + existing: cars, profiles, offers, etc.    │
 └──────────────────────────────────────────────┘
 ```
+
+## Performance Optimizations
+
+### Two-Tier Model Routing
+Zoni classifies each user message as **simple** or **complex** and routes to the appropriate model:
+
+| Complexity | Model | Use Case |
+|-----------|-------|----------|
+| Simple | `google/gemini-2.5-flash` | FAQ, pricing, greetings, general questions |
+| Complex | `google/gemini-3-flash-preview` | Car searches, tool-calling, multi-step tasks |
+
+**Simple query detection** uses regex patterns (pricing keywords, greetings, "how does it work", etc.) and message length. Simple queries skip the tool-calling loop entirely and stream directly — cutting latency by ~50%.
+
+### Reduced Tool Rounds
+Max tool-calling rounds reduced from 5 to **3**. Analysis showed most queries need only 1-2 rounds. This reduces worst-case latency significantly.
+
+### Embedded FAQ Knowledge Base
+Common questions from [autozon.at/qa](https://autozon.at/qa) are embedded directly in the system prompt:
+- "How does Autozon solve the trade-off between fast and more?"
+- "How is Autozon different from Autotrader/Mobile.de?"
+- "In some markets, trade-ins offer tax benefits. How does Autozon compete?"
+- "What's different from posting photos and waiting?"
+- "Why use Autozon instead of free/paid private ads?"
+- "What more does Autozon offer beyond valuation tools?"
+- "How is Autozon different from car apps?"
+
+This means Zoni can answer these questions **instantly** without tool calls.
+
+### Few-Shot Examples
+The system prompt includes 4 example interactions showing Zoni the ideal response pattern:
+1. Pricing question → Direct answer, no tools
+2. Sell intent → Brief guidance + navigate_user link
+3. Car search → Call search_cars with filters
+4. Differentiator question → Answer from FAQ knowledge
+
+### Conversational Continuity
+Zoni never re-greets or re-introduces itself. The system prompt states: "You are already mid-conversation." This creates a natural, flowing chat experience.
 
 ## Database Tables
 
@@ -81,18 +121,20 @@ Zoni is the Autozon AI Agent (V2), a context-aware, tool-calling AI assistant em
 
 1. User sends message with page context
 2. Edge function authenticates user, loads profile
-3. System prompt is built with user context and locale
-4. Message sent to Gemini with tool definitions
-5. If Gemini returns `tool_calls`:
-   - Each tool is executed server-side
-   - Results are fed back into conversation
-   - Loop continues (max 5 rounds)
-6. When no more tools needed, final response is streamed via SSE
+3. **Intent classifier** determines simple vs complex
+4. **Simple path**: Stream response directly with fast model (no tools)
+5. **Complex path**:
+   a. System prompt built with user context and locale
+   b. Message sent to full model with tool definitions
+   c. If model returns `tool_calls`: execute server-side, feed results back
+   d. Loop continues (max 3 rounds)
+   e. Final response streamed via SSE
 
-## Model
+## Models
 
 - **Name**: Zoni
-- **Primary model**: `google/gemini-3-flash-preview`
+- **Fast model**: `google/gemini-2.5-flash` (FAQ, pricing, simple questions)
+- **Full model**: `google/gemini-3-flash-preview` (tool-calling, searches, complex tasks)
 - **Gateway**: Lovable AI (`https://ai.gateway.lovable.dev/v1/chat/completions`)
 - **Auth**: `LOVABLE_API_KEY` (auto-provisioned)
 
