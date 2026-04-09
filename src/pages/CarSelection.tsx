@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard, Eye } from "lucide-react";
+import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard, Eye, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import carPlaceholder from "@/assets/car-placeholder.jpg";
@@ -33,7 +33,7 @@ type CarRow = {
 };
 
 const CarSelection: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [userId, setUserId] = useState<string | null>(null);
@@ -257,7 +257,21 @@ const CarSelection: React.FC = () => {
   return (
     <div className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-between items-center mb-4">
+          <Button
+            variant="outline"
+            className="border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground font-semibold"
+            onClick={() => {
+              if (!userId) {
+                navigate(`/login?redirect=${encodeURIComponent("/buyer-questionnaire")}`);
+              } else {
+                navigate("/buyer-questionnaire");
+              }
+            }}
+          >
+            <Sparkles className="mr-2 h-4 w-4" />
+            {language === "de" ? "Personalisierte Empfehlungen" : "Get Personalized Matches"}
+          </Button>
           <Button variant="ghost" className="text-muted-foreground hover:text-foreground" onClick={() => navigate("/dashboard")}>
             <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
           </Button>
