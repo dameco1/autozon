@@ -52,6 +52,8 @@ const CarDetail: React.FC = () => {
    const [userId, setUserId] = useState<string | null>(null);
    const [shortlisted, setShortlisted] = useState(false);
    const [shortlistLoading, setShortlistLoading] = useState(false);
+   const [marketData, setMarketData] = useState<{ avg_price: number; min_price: number; max_price: number; market_position: string; confidence: string } | null>(null);
+   const [marketLoading, setMarketLoading] = useState(false);
 
    const openLightbox = useCallback((index: number) => {
      setActivePhoto(index);
