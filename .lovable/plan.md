@@ -1,58 +1,119 @@
 
 
-# Simplify 2FA: Replace TOTP with Email OTP
+# Autozon AI Agent V2 — Implementation Plan
 
 ## Summary
-Replace the current authenticator-app-based TOTP flow with a simpler email-based OTP. After login, users receive a 6-digit code to their email — no app installation or QR code scanning required.
+Upgrade the existing Concierge Chat into a full AI Agent with tool-calling capabilities, context awareness, support ticket collection, and admin monitoring. This merges the previously discussed architecture with the detailed workflow specifications you provided.
 
-## Why this is better for users
-- No need to install Google Authenticator or any app
-- No QR code scanning
-- Users just check their email — something they already know how to do
+## What Gets Built
 
-## Technical approach
+### 1. Database — Two New Tables
 
-Since the backend doesn't natively support email-based MFA, we'll build a lightweight custom flow:
+**`support_tickets`** — stores bug reports and feedback collected by the AI agent
+- `id`, `user_id`, `category` (bug/question/feedback/ux_suggestion), `subject`, `description`, `page_context`, `severity` (low/medium/high/critical), `status` (open/in_progress/resolved/closed), `created_at`
+- RLS: users see own tickets, admins see all
 
-### 1. New database table: `email_otp`
-- `id`, `user_id`, `code` (6-digit), `expires_at` (5 min TTL), `verified` (boolean), `created_at`
-- RLS: users can only read/verify their own codes
-- Validation trigger for expiry instead of CHECK constraint
+**`agent_activity_log`** — audit trail for all tool calls the agent makes
+- `id`, `user_id`, `action_type`, `tool_name`, `details` (jsonb), `page_context`, `created_at`
+- RLS: admins only for SELECT; service_role for INSERT
 
-### 2. New edge function: `send-email-otp`
-- Accepts authenticated user request (JWT)
-- Generates a random 6-digit code, stores it in `email_otp` table
-- Sends the code to the user's email via Lovable AI (or a simple email function)
-- Invalidates any previous unused codes for that user
-- Rate-limited to prevent abuse
+### 2. Edge Function — Rewrite `concierge-chat`
 
-### 3. New edge function: `verify-email-otp`
-- Accepts `{ code }` from authenticated user
-- Checks against `email_otp` table (not expired, not already used)
-- On success, marks as verified and sets a session flag (custom claim or app_metadata)
+Major upgrade from simple prompt-relay to a tool-calling agent loop:
 
-### 4. Update existing pages
-- **Remove** `MfaEnroll.tsx` and `MfaVerify.tsx` (TOTP pages)
-- **Create** new `EmailOtpVerify.tsx` — simple page with a 6-digit input field
-- **Update** `Login.tsx` — after successful password login, redirect to `/verify-otp` instead of MFA pages
-- **Update** `MfaGuard.tsx` — check the email OTP verification status instead of AAL2 level
-- **Update** `App.tsx` — replace `/mfa-enroll` and `/mfa-verify` routes with `/verify-otp`
+**Input changes** — accept `context` object alongside messages:
+```
+{ messages, context: { currentPath, locale, role, carId? } }
+```
 
-### 5. Update Signup flow
-- After email verification + first login, user goes straight to `/verify-otp` (receives code automatically)
-- No enrollment step needed — email OTP works with their existing email
+**Dynamic system prompt** — the production-ready prompt you provided, enhanced with:
+- User's profile data (role, KYC status, user_type) fetched server-side
+- Current page context injected automatically
+- Language detection from locale field
 
-### 6. Translations
-- Update `translations.ts` — replace TOTP-related strings with email OTP strings (EN + DE)
+**Tool definitions** (native Gemini function calling):
 
-## Files changed
-- **New**: `supabase/functions/send-email-otp/index.ts`
-- **New**: `supabase/functions/verify-email-otp/index.ts`
-- **New**: `src/pages/EmailOtpVerify.tsx`
-- **Modified**: `src/App.tsx` (routes)
-- **Modified**: `src/pages/Login.tsx` (redirect logic)
-- **Modified**: `src/components/MfaGuard.tsx` (check OTP instead of AAL2)
-- **Modified**: `src/i18n/translations.ts`
-- **Removed/unused**: `src/pages/MfaEnroll.tsx`, `src/pages/MfaVerify.tsx`
-- **DB migration**: Create `email_otp` table with RLS
+| Tool | Maps To | Description |
+|------|---------|-------------|
+| `search_cars` | SELECT from `cars` with filters | Buyer car search |
+| `lookup_my_cars` | SELECT from `cars` WHERE owner_id | Seller's listings |
+| `lookup_car_value` | SELECT fair_value from `cars` | Car valuation lookup |
+| `lookup_matches` | SELECT from `matches` | Buyer matches for a car |
+| `lookup_offers` | SELECT from `offers` | Active negotiations |
+| `create_support_ticket` | INSERT into `support_tickets` | Bug/issue reporting |
+| `log_feedback` | INSERT into `support_tickets` (category=feedback) | UX suggestions |
+| `navigate_user` | Returns structured link | Deep-link guidance |
+| `flag_suspicious` | INSERT into `agent_activity_log` + notification | Fraud alerts |
+
+**Tool execution loop**: When Gemini returns `tool_calls`, execute them server-side against the database, feed results back into the conversation, then stream the final natural-language response to the user.
+
+**All tool calls are logged** to `agent_activity_log` for admin visibility.
+
+### 3. Frontend — Upgrade `ConciergeChat.tsx`
+
+- **Context injection**: Use `useLocation()` to detect current page/step, send as `context` field
+- **Markdown rendering**: Add `react-markdown` to render formatted AI responses (bold, lists, links)
+- **Action buttons**: When AI returns `navigate_user` results, render clickable buttons in chat
+- **Ticket confirmation**: When AI calls `create_support_ticket`, show a confirmation card before submitting
+- **Role/locale awareness**: Pass user role and language from existing contexts
+
+### 4. Frontend — Update `chatStream.ts`
+
+- Send `context` alongside `messages` in the request body
+- Handle new response format (tool-call interleaving during stream)
+
+### 5. Admin Dashboard — New "AI Agent" Tab
+
+Add to `AdminDashboard.tsx`:
+- **Support Tickets table**: filterable by status, severity, category
+- **Agent Activity Log**: recent tool calls and suspicious activity flags
+- **Stats cards**: open tickets, flagged users, tool call volume
+
+### 6. Documentation Updates
+
+- Update `docs/backend-functions.md` with new tool-calling architecture
+- Create `docs/ai-agent.md` with full architecture reference
+- Update roadmap to mark Smart Concierge V2 as in-progress
+
+## Technical Decisions
+
+| Decision | Choice | Why |
+|----------|--------|-----|
+| Model | `google/gemini-3-flash-preview` | Best speed + tool-calling support |
+| Tool calling | Native Gemini function calling | No orchestration framework needed |
+| Listing drafts | Not a separate table — use existing `cars` INSERT | Avoids data duplication; agent can help fill car-upload form via `navigate_user` instead |
+| Streaming | SSE with tool-call pause | User sees "thinking..." while tools execute |
+| Feedback vs tickets | Same table, different `category` | Simpler schema, unified admin view |
+
+## Buyer Workflow (via Agent)
+1. Agent detects BUY intent from message
+2. Asks 2-4 smart questions (budget, fuel, family, usage)
+3. Calls `search_cars` with built filters
+4. Presents results with thumbnails in formatted markdown
+5. Offers to compare, save, or navigate to car detail
+
+## Seller Workflow (via Agent)
+1. Agent detects SELL intent
+2. Guides through key details step-by-step
+3. Calls `navigate_user("/car-upload")` to direct them to the wizard
+4. Can call `lookup_car_value` to help with pricing questions
+5. Follows up on missing fields or suggests description improvements
+
+## Files Changed
+
+- **New migration**: `support_tickets` + `agent_activity_log` tables with RLS
+- **Rewrite**: `supabase/functions/concierge-chat/index.ts` (tool-calling loop)
+- **Modify**: `src/components/ConciergeChat.tsx` (context, markdown, action buttons)
+- **Modify**: `src/lib/chatStream.ts` (send context)
+- **New**: `src/components/admin/AdminAgentTab.tsx` (tickets + activity log)
+- **Modify**: `src/pages/AdminDashboard.tsx` (add Agent tab)
+- **New**: `docs/ai-agent.md`
+- **Modify**: `docs/backend-functions.md`, `docs/roadmap.md`, `public/docs/roadmap.md`
+
+## Implementation Order
+1. Database migration (tables + RLS)
+2. Edge function rewrite (tool-calling loop)
+3. Frontend chat upgrade (context + markdown + actions)
+4. Admin tab
+5. Documentation
 
