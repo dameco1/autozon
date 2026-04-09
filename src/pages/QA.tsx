@@ -93,6 +93,83 @@ Autozon transforms valuation into actionable liquidity — something traditional
 
 Autozon is not a browsing tool. It is a transaction engine that matches, verifies, facilitates, and executes. For buyers, it means curated cars that fit their exact criteria. For sellers, it means fast liquidity without the noise of traditional platforms.`,
   },
+  {
+    q: "How much does it cost to list a car on Autozon?",
+    a: `Autozon uses simple, transparent pricing with no subscriptions and no recurring fees:
+
+• Private Seller: €9.99 per car — one-time payment
+• Business / Dealer: €19.99 per car — one-time payment
+
+Both plans include AI valuation, unlimited photos, a full car description, AI-matched buyer outreach, built-in negotiation tools, and secure buyer contact. Unlike AutoScout24, willhaben, and mobile.de — your ad never expires. You pay once, and your listing stays live until your car is sold.
+
+Buying a car on Autozon is always 100% free.`,
+  },
+  {
+    q: "How does the AI damage detection work?",
+    a: `When you upload photos of your car, Autozon's AI scans every image for visible damage — scratches, dents, cracks, paint chips, and tire wear. For each issue detected, the system estimates the actual repair cost.
+
+This matters because dealers typically apply flat deductions of €2,000+ for damages, even if the real repair cost is far less. Autozon's AI calculates the exact repair cost and deducts only that amount from the fair value.
+
+For example, if the AI detects 5 issues totaling €910 in repairs, only €910 is deducted — not a €5,500 dealer penalty. That difference goes back into the seller's pocket.`,
+  },
+  {
+    q: "How does the AI fair value engine calculate my car's price?",
+    a: `Autozon's AI reads 50+ live market signals and cross-references your car's photos, specs, mileage, condition, and equipment against thousands of live market listings. In under 60 seconds, it returns your car's true market value.
+
+The price reflects what real buyers are currently paying — not a dealer's estimate or a theoretical book value. Every AI decision is transparent: you can see exactly how your price was calculated, what factors influenced it, and how it compares to similar cars on the market.`,
+  },
+  {
+    q: "Can buyers pay by credit card on Autozon?",
+    a: `Yes. Buyers can pay up to €10,000 by credit card directly on Autozon. No bank transfers, no waiting, no friction. This makes closing a deal faster and simpler than on any other car platform.
+
+For purchases above €10,000, Autozon supports structured payment flows including bank transfers and financing options through partner institutions.`,
+  },
+  {
+    q: "How does online negotiation work on Autozon?",
+    a: `Autozon replaces messy back-and-forth emails and phone calls with structured, on-platform negotiations:
+
+• Buyer and seller negotiate directly with structured rounds
+• The AI fair value serves as a neutral reference point
+• Both parties can make offers and counter-offers in real time
+• Once a price is agreed, the deal can be closed instantly
+
+Everything happens in one place — no external messaging, no lost threads, no miscommunication.`,
+  },
+  {
+    q: "What is the step-by-step process to sell my car?",
+    a: `Selling on Autozon takes 5 simple steps:
+
+1. Upload — Snap a few photos. Add make, model, mileage, and condition. Takes under 3 minutes.
+2. Price — Our AI analyzes your photos, specs, and condition against live market data and returns your car's true value in under 60 seconds.
+3. List — Your ad goes live from €9.99. It stays online until your car is sold — no time limits, no re-listing fees.
+4. Match — AI connects you with verified buyers who are actively looking for a car like yours.
+5. Close — Negotiate directly. Agree on a price. If under €10,000, the buyer can pay by card right on Autozon.
+
+You handle the car. Our AI handles everything else.`,
+  },
+  {
+    q: "Is buying a car on Autozon free?",
+    a: `Yes, buying a car on Autozon is always 100% free. There are no fees, no commissions, and no hidden charges for buyers.
+
+You can browse AI-matched recommendations, view verified car details with transparent pricing, negotiate directly with sellers, and even pay by credit card up to €10,000 — all without paying anything to Autozon.`,
+  },
+  {
+    q: "What makes Autozon's AI different from traditional car search tools?",
+    a: `Traditional search tools let you filter by make, model, and price. Autozon goes much further with AI-native capabilities built from day one:
+
+• AI Smart Matching — Connects you with verified buyers or sellers based on preferences, budget, and lifestyle, not just keyword filters
+• AI Car Discovery — Predictive modeling curates 3–7 handpicked recommendations tailored to your lifestyle
+• AI Depreciation Radar — Predictive analytics monitor market shifts and alert you when to sell, before your car loses value
+• AI Concierge (Zoni) — A personal assistant that helps with searches, valuations, and platform navigation in real time
+
+Every AI decision is transparent, fast, and fair — protecting both buyers and sellers equally.`,
+  },
+  {
+    q: "Does my listing expire after a certain time?",
+    a: `No. Unlike AutoScout24, willhaben, and mobile.de, your Autozon listing never expires. You pay once per car (from €9.99), and your ad stays live until your car is sold.
+
+There are no time limits, no re-listing fees, and no tricks. Autozon works until the deal is done.`,
+  },
 ];
 
 const qaContentDE = [
@@ -176,6 +253,83 @@ Autozon verwandelt Bewertung in umsetzbare Liquidität — etwas, das traditione
 • Transaktionsausführung
 
 Autozon ist kein Browsing-Tool. Es ist eine Transaktions-Engine, die matcht, verifiziert, vermittelt und ausführt. Für Käufer bedeutet es kuratierte Autos, die genau ihren Kriterien entsprechen. Für Verkäufer bedeutet es schnelle Liquidität ohne den Lärm traditioneller Plattformen.`,
+  },
+  {
+    q: "Was kostet es, ein Auto auf Autozon einzustellen?",
+    a: `Autozon verwendet eine einfache, transparente Preisgestaltung ohne Abonnements und ohne wiederkehrende Gebühren:
+
+• Privatverkäufer: €9,99 pro Auto — einmalige Zahlung
+• Gewerbe / Händler: €19,99 pro Auto — einmalige Zahlung
+
+Beide Pläne beinhalten KI-Bewertung, unbegrenzte Fotos, eine vollständige Fahrzeugbeschreibung, KI-gestütztes Käufer-Matching, integrierte Verhandlungstools und sicheren Käuferkontakt. Anders als bei AutoScout24, willhaben und mobile.de läuft Ihr Inserat nie ab. Sie zahlen einmal, und Ihr Inserat bleibt online, bis Ihr Auto verkauft ist.
+
+Der Kauf eines Autos auf Autozon ist immer 100% kostenlos.`,
+  },
+  {
+    q: "Wie funktioniert die KI-Schadenserkennung?",
+    a: `Wenn Sie Fotos Ihres Autos hochladen, scannt die KI von Autozon jedes Bild auf sichtbare Schäden — Kratzer, Dellen, Risse, Lackschäden und Reifenverschleiß. Für jedes erkannte Problem wird der tatsächliche Reparaturaufwand geschätzt.
+
+Das ist wichtig, weil Händler typischerweise pauschale Abzüge von €2.000+ für Schäden ansetzen, auch wenn die realen Reparaturkosten deutlich niedriger sind. Autozons KI berechnet die genauen Reparaturkosten und zieht nur diesen Betrag vom Marktwert ab.
+
+Beispiel: Erkennt die KI 5 Probleme mit insgesamt €910 Reparaturkosten, werden nur €910 abgezogen — nicht eine Händlerstrafe von €5.500. Die Differenz bleibt beim Verkäufer.`,
+  },
+  {
+    q: "Wie berechnet die KI-Fair-Value-Engine den Preis meines Autos?",
+    a: `Autozons KI liest über 50 Live-Marktsignale und vergleicht Fotos, Spezifikationen, Kilometerstand, Zustand und Ausstattung Ihres Autos mit tausenden aktuellen Marktangeboten. In unter 60 Sekunden erhalten Sie den wahren Marktwert Ihres Fahrzeugs.
+
+Der Preis spiegelt wider, was echte Käufer aktuell zahlen — keine Händlerschätzung und kein theoretischer Buchwert. Jede KI-Entscheidung ist transparent: Sie sehen genau, wie Ihr Preis berechnet wurde, welche Faktoren ihn beeinflusst haben und wie er sich im Vergleich zu ähnlichen Fahrzeugen verhält.`,
+  },
+  {
+    q: "Können Käufer auf Autozon per Kreditkarte bezahlen?",
+    a: `Ja. Käufer können bis zu €10.000 per Kreditkarte direkt auf Autozon bezahlen. Keine Banküberweisungen, kein Warten, keine Reibung. Das macht den Abschluss schneller und einfacher als auf jeder anderen Auto-Plattform.
+
+Für Käufe über €10.000 unterstützt Autozon strukturierte Zahlungsabläufe einschließlich Banküberweisungen und Finanzierungsoptionen über Partnerinstitute.`,
+  },
+  {
+    q: "Wie funktioniert die Online-Verhandlung auf Autozon?",
+    a: `Autozon ersetzt unübersichtliche E-Mails und Telefonanrufe durch strukturierte Verhandlungen direkt auf der Plattform:
+
+• Käufer und Verkäufer verhandeln direkt in strukturierten Runden
+• Der KI-Fair-Value dient als neutraler Referenzpunkt
+• Beide Parteien können Angebote und Gegenangebote in Echtzeit abgeben
+• Sobald ein Preis vereinbart ist, kann der Deal sofort abgeschlossen werden
+
+Alles passiert an einem Ort — kein externes Messaging, keine verlorenen Threads, keine Missverständnisse.`,
+  },
+  {
+    q: "Was ist der Schritt-für-Schritt-Prozess, um mein Auto zu verkaufen?",
+    a: `Der Verkauf auf Autozon erfolgt in 5 einfachen Schritten:
+
+1. Hochladen — Machen Sie ein paar Fotos. Geben Sie Marke, Modell, Kilometerstand und Zustand ein. Dauert unter 3 Minuten.
+2. Bewerten — Unsere KI analysiert Ihre Fotos, Daten und den Zustand gegen Live-Marktdaten und liefert den wahren Wert Ihres Autos in unter 60 Sekunden.
+3. Inserieren — Ihr Inserat geht ab €9,99 online. Es bleibt aktiv, bis Ihr Auto verkauft ist — ohne Zeitlimit, ohne Gebühren für erneutes Einstellen.
+4. Matchen — Die KI verbindet Sie mit verifizierten Käufern, die aktiv nach einem Auto wie Ihrem suchen.
+5. Abschließen — Verhandeln Sie direkt. Einigen Sie sich auf einen Preis. Liegt er unter €10.000, kann der Käufer per Karte direkt auf Autozon bezahlen.
+
+Sie kümmern sich um das Auto. Unsere KI kümmert sich um alles andere.`,
+  },
+  {
+    q: "Ist der Kauf eines Autos auf Autozon kostenlos?",
+    a: `Ja, der Kauf eines Autos auf Autozon ist immer 100% kostenlos. Es gibt keine Gebühren, keine Provisionen und keine versteckten Kosten für Käufer.
+
+Sie können KI-gestützte Empfehlungen durchsuchen, verifizierte Fahrzeugdetails mit transparenter Preisgestaltung einsehen, direkt mit Verkäufern verhandeln und sogar per Kreditkarte bis zu €10.000 bezahlen — alles ohne einen Cent an Autozon zu zahlen.`,
+  },
+  {
+    q: "Was macht Autozons KI anders als traditionelle Auto-Suchtools?",
+    a: `Traditionelle Suchtools lassen Sie nach Marke, Modell und Preis filtern. Autozon geht mit von Anfang an integrierten KI-Funktionen viel weiter:
+
+• KI Smart Matching — Verbindet Sie mit verifizierten Käufern oder Verkäufern basierend auf Präferenzen, Budget und Lebensstil, nicht nur Schlagwort-Filtern
+• KI Car Discovery — Prädiktive Modellierung kuratiert 3–7 handverlesene Empfehlungen, zugeschnitten auf Ihren Lebensstil
+• KI Depreciation Radar — Prädiktive Analytik überwacht Marktveränderungen und warnt Sie, wann Sie verkaufen sollten, bevor Ihr Auto an Wert verliert
+• KI-Concierge (Zoni) — Ein persönlicher Assistent, der Ihnen bei Suchen, Bewertungen und Plattform-Navigation in Echtzeit hilft
+
+Jede KI-Entscheidung ist transparent, schnell und fair — und schützt Käufer und Verkäufer gleichermaßen.`,
+  },
+  {
+    q: "Läuft mein Inserat nach einer bestimmten Zeit ab?",
+    a: `Nein. Anders als bei AutoScout24, willhaben und mobile.de läuft Ihr Autozon-Inserat nie ab. Sie zahlen einmal pro Auto (ab €9,99), und Ihr Inserat bleibt online, bis Ihr Auto verkauft ist.
+
+Keine Zeitlimits, keine Gebühren für erneutes Einstellen, keine Tricks. Autozon arbeitet, bis der Deal abgeschlossen ist.`,
   },
 ];
 
