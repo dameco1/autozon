@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard } from "lucide-react";
+import { Car, Heart, X, ArrowRight, RefreshCw, Fuel, Gauge, Calendar, ShieldCheck, LayoutDashboard, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import carPlaceholder from "@/assets/car-placeholder.jpg";
@@ -137,7 +137,7 @@ const CarSelection: React.FC = () => {
   const toggleLike = async (carId: string) => {
     if (!userId) {
       toast.error("Please log in to save favorites");
-      navigate("/login");
+      navigate(`/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`);
       return;
     }
     const isLiked = liked.has(carId);
@@ -178,25 +178,25 @@ const CarSelection: React.FC = () => {
   };
 
   const handleShowMore = async () => {
-    if (!userId) return;
-
     const keptCars = cars.filter((c) => liked.has(c.id));
+
     const keptIds = keptCars.map((c) => c.id);
 
     setLoading(true);
 
-    const [prefsRes, profileRes] = await Promise.all([
-      supabase.from("user_preferences").select("*").eq("user_id", userId).maybeSingle(),
-      supabase.from("profiles").select("relationship_status, has_kids, num_kids, car_purpose, current_car, budget_max").eq("user_id", userId).maybeSingle(),
-    ]);
-    const prefs = prefsRes.data as PreferenceSignals | null;
-    const profile = profileRes.data as ProfileSignals | null;
+    let prefs: PreferenceSignals | null = null;
+    let profile: ProfileSignals | null = null;
 
-    let query = supabase
-      .from("cars")
-      .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, photos, detected_damages")
-      .eq("status", "available")
-      .limit(30);
+    if (userId) {
+      const [prefsRes, profileRes] = await Promise.all([
+        supabase.from("user_preferences").select("*").eq("user_id", userId).maybeSingle(),
+        supabase.from("profiles").select("relationship_status, has_kids, num_kids, car_purpose, current_car, budget_max").eq("user_id", userId).maybeSingle(),
+      ]);
+      prefs = prefsRes.data as PreferenceSignals | null;
+      profile = profileRes.data as ProfileSignals | null;
+    }
+
+    // Remove the old preference fetching block since we already fetched above
 
     if (keptIds.length > 0) {
       query = query.not("id", "in", `(${keptIds.join(",")})`);

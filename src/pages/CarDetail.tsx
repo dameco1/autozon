@@ -142,7 +142,7 @@ const CarDetail: React.FC = () => {
   const [offerLoading, setOfferLoading] = useState(false);
 
   const handleStartTrade = async () => {
-    if (!userId) { navigate("/login"); return; }
+    if (!userId) { navigate(`/login?redirect=${encodeURIComponent(`/car/${id}`)}`); return; }
     if (car?.owner_id === userId) { navigate(`/fair-value/${id}`); return; }
     if (!car || !id) return;
 
