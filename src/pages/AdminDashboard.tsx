@@ -13,6 +13,7 @@ import AdminContracts from "@/components/admin/AdminContracts";
 import AdminReports from "@/components/admin/AdminReports";
 import AdminFinancingRequests from "@/components/admin/AdminFinancingRequests";
 import AdminInsuranceRequests from "@/components/admin/AdminInsuranceRequests";
+import AdminAgentTab from "@/components/admin/AdminAgentTab";
 
 const AdminDashboard: React.FC = () => {
   const { loading } = useAdminAuth();
@@ -49,6 +50,7 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="insurance">Insurance</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="agent">AI Agent</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview"><AdminOverview /></TabsContent>
@@ -62,6 +64,7 @@ const AdminDashboard: React.FC = () => {
           <TabsContent value="insurance"><AdminInsuranceRequests /></TabsContent>
           <TabsContent value="reports"><AdminReports /></TabsContent>
           <TabsContent value="activity"><AdminActivityFeed /></TabsContent>
+          <TabsContent value="agent"><AdminAgentTab /></TabsContent>
         </Tabs>
       </div>
     </div>
