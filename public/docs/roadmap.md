@@ -65,6 +65,7 @@
 - [ ] **PWA (Progressive Web App)** — installable from browser to home screen (iOS + Android), offline support, ~1.5 hours setup
 - [ ] **VIN Equipment API Integration** — Connect CarsXE or VINdecoder.eu for OEM equipment auto-population from VIN (replaces AI-only decode)
 - [ ] **Equipment Option Pricing** — AI-seeded or API-sourced original option prices per equipment item, enabling residual-value-based equipment scoring
+- [ ] **Smart Concierge Chat V2** — Context-aware AI assistant that guides users step-by-step through car listing and buying flows, answers technical/mechanical questions, collects and submits bug reports to support, suggests relevant actions based on current page/step, and links to platform features (upload, matches, KYC, negotiations)
 - [ ] **Qover Embedded Insurance API** — Real-time motor insurance quotes (Haftpflicht, Teilkasko, Vollkasko) in transaction flow via REST API
 - [ ] **finAPI Open Banking** — PSD2-compliant SEPA instant payments + identity verification for seller KYC (AT/DE)
 - [ ] **Bank Referral Tracking** — BAWAG/Santander click-through attribution and conversion tracking with UTM links
