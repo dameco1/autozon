@@ -364,6 +364,26 @@ const CarSelection: React.FC = () => {
                               </Badge>
                             )}
                           </div>
+
+                          {/* View Details + Like buttons */}
+                          <div className="flex gap-2 mt-3">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1 text-xs"
+                              onClick={(e) => { e.stopPropagation(); navigate(`/car/${car.id}`); }}
+                            >
+                              <Eye className="h-3 w-3 mr-1" /> View Details
+                            </Button>
+                            <Button
+                              variant={liked.has(car.id) ? "default" : "outline"}
+                              size="sm"
+                              className="text-xs"
+                              onClick={(e) => { e.stopPropagation(); toggleLike(car.id); }}
+                            >
+                              <Heart className={`h-3 w-3 ${liked.has(car.id) ? "fill-current" : ""}`} />
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
