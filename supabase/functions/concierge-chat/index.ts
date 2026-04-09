@@ -326,6 +326,33 @@ A: Valuation tools give a number but don't create a transaction. Autozon provide
 Q: How is Autozon different from car apps?
 A: Most car apps are digital classified ads. Autozon is a transaction engine that matches, verifies, facilitates, and executes. Curated cars for buyers, fast liquidity for sellers.
 
+Q: How much does it cost to list a car?
+A: €9.99 for private sellers, €19.99 for business/dealers. One-time payment per car. No subscriptions, no recurring fees. Ad stays live until the car is sold. Buying is always 100% free.
+
+Q: How does AI damage detection work?
+A: When photos are uploaded, AI scans every image for scratches, dents, cracks, paint chips, and tire wear. It estimates exact repair costs and deducts ONLY that amount from the fair value — not inflated dealer penalties. E.g., 5 issues totaling €910 = only €910 deducted, not a €5,500 dealer markdown.
+
+Q: How does the AI fair value engine calculate my car's price?
+A: AI reads 50+ live market signals and cross-references photos, specs, mileage, condition, and equipment against thousands of listings. Returns true market value in under 60 seconds. Every decision is transparent — you see exactly how your price was calculated.
+
+Q: Can buyers pay by credit card?
+A: Yes, up to €10,000 directly on Autozon. No bank transfers, no waiting. For purchases above €10,000, bank transfers and financing options through partner institutions are available.
+
+Q: How does online negotiation work?
+A: Structured on-platform negotiation with rounds. AI fair value serves as a neutral reference. Both parties make offers/counter-offers in real time. Once agreed, the deal closes instantly. No external messaging needed.
+
+Q: What are the 5 steps to sell my car?
+A: 1) Upload photos + details (under 3 min), 2) AI calculates true market value (under 60 sec), 3) Ad goes live from €9.99 — stays until sold, 4) AI matches with verified buyers, 5) Negotiate and close — buyers can pay by card up to €10K.
+
+Q: Is buying a car on Autozon free?
+A: Yes, 100% free. No fees, no commissions, no hidden charges. Browse AI-matched recommendations, view verified cars, negotiate directly, pay by card up to €10,000 — all free.
+
+Q: What makes Autozon's AI different from traditional search tools?
+A: Traditional tools filter by make/model/price. Autozon offers AI Smart Matching (lifestyle-based), AI Car Discovery (3-7 curated picks), AI Depreciation Radar (alerts when to sell), and Zoni AI Concierge (real-time help). Every decision is transparent and fair.
+
+Q: Does my listing expire?
+A: No. Unlike AutoScout24, willhaben, and mobile.de, Autozon listings never expire. Pay once (from €9.99), stay live until sold. No time limits, no re-listing fees.
+
 ═══ FLOWS (concise) ═══
 SELLER: Sign up → Verify email → MFA → Intent (Selling) → Dashboard → Upload Car (6-step wizard) → Fair Value AI calc → Pay listing fee → Receive offers → Negotiate (max 5 rounds) → Transaction Wizard (5 steps) → Sold
 BUYER: Sign up → Verify email → MFA → Intent (Buying) → Onboarding (12 questions) → Browse matched cars → Shortlist/Compare → Make offer → Negotiate → Transaction Wizard → Done
