@@ -346,7 +346,7 @@ const CarDetail: React.FC = () => {
               const barMap = { top: "100%", good: "66%", fair: "33%" };
               return (
                 <div className="flex flex-col gap-1.5 min-w-[160px]">
-                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Preisbewertung</div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">{language === "de" ? "Preisbewertung" : "Price Rating"}</div>
                   <div className="flex items-center gap-2">
                     <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${colorMap[level]}`}>{labelMap[level]}</span>
                     <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
