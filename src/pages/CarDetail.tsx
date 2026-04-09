@@ -607,24 +607,6 @@ const CarDetail: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* CTAs */}
-            <div className="space-y-3">
-              <Button
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 rounded-xl"
-                onClick={handleStartTrade}
-              >
-                {t.carDetail.startTrade}
-              </Button>
-              <Button
-                variant="outline"
-                className={`w-full border-border py-6 rounded-xl ${shortlisted ? "text-primary border-primary" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
-                onClick={handleToggleShortlist}
-                disabled={shortlistLoading}
-              >
-                {shortlisted ? <BookmarkCheck className="mr-2 h-4 w-4" /> : <Bookmark className="mr-2 h-4 w-4" />}
-                {shortlisted ? t.carDetail.removeFromShortlist : t.carDetail.addToShortlist}
-              </Button>
-            </div>
 
             {/* Vincario Data Card */}
             <VincarioDataCard vin={car.vin} carId={car.id} />
