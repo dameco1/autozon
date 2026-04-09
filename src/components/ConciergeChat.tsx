@@ -25,8 +25,12 @@ function extractActions(content: string): { text: string; actions: Array<{ desti
 
 const ConciergeChat: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const { language } = useLanguage();
+  const greeting = language === "de"
+    ? "👋 Hi! Ich bin Zoni, dein Autozon Auto-Assistent. Ich kann dir helfen, Autos zu finden, Inserate zu verwalten, Bewertungen abzurufen, Probleme zu melden und dich durch jeden Schritt zu begleiten. Wie kann ich helfen?"
+    : "👋 Hi! I'm Zoni, your Autozon car assistant. I can help you find cars, manage listings, check valuations, report issues, and guide you through every step. How can I help?";
   const [messages, setMessages] = useState<Msg[]>([
-    { role: "assistant", content: "👋 Hi! I'm Zoni, your Autozon car assistant. I can help you find cars, manage listings, check valuations, report issues, and guide you through every step. How can I help?" },
+    { role: "assistant", content: greeting },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +39,6 @@ const ConciergeChat: React.FC = () => {
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
-  const { language } = useLanguage();
 
   useEffect(() => {
     if (scrollRef.current) {

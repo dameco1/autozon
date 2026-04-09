@@ -1,8 +1,8 @@
-# Autozon AI Agent — Architecture Reference
+# Zoni — Autozon AI Agent Architecture Reference
 
 ## Overview
 
-The Autozon AI Agent (V2) is a context-aware, tool-calling AI assistant embedded in the platform. It replaces the simple Concierge Chat with a full agent capable of executing real actions against the database, guiding users through workflows, and monitoring for suspicious activity.
+Zoni is the Autozon AI Agent (V2), a context-aware, tool-calling AI assistant embedded in the platform. It replaces the simple Concierge Chat with a full agent capable of executing real actions against the database, guiding users through workflows, and monitoring for suspicious activity. Zoni supports full English and German localization.
 
 ## Architecture
 
@@ -11,9 +11,11 @@ The Autozon AI Agent (V2) is a context-aware, tool-calling AI assistant embedded
 │              FRONTEND (React)                 │
 │                                               │
 │  ConciergeChat.tsx                            │
+│  ├── Zoni avatar (zoni-avatar.png)           │
 │  ├── Context Provider (page, locale, role)   │
 │  ├── Markdown rendering (react-markdown)     │
 │  ├── Navigation action buttons               │
+│  ├── Localized greeting (EN/DE)              │
 │  └── Streaming SSE display                   │
 │                                               │
 │  chatStream.ts                                │
@@ -25,7 +27,7 @@ The Autozon AI Agent (V2) is a context-aware, tool-calling AI assistant embedded
 │                                               │
 │  1. JWT authentication                        │
 │  2. User profile loading (role, KYC, name)   │
-│  3. Dynamic system prompt                     │
+│  3. Dynamic system prompt (with locale)      │
 │  4. Tool-calling loop (up to 5 rounds)       │
 │  5. Final streamed response                   │
 │                                               │
@@ -79,7 +81,7 @@ The Autozon AI Agent (V2) is a context-aware, tool-calling AI assistant embedded
 
 1. User sends message with page context
 2. Edge function authenticates user, loads profile
-3. System prompt is built with user context
+3. System prompt is built with user context and locale
 4. Message sent to Gemini with tool definitions
 5. If Gemini returns `tool_calls`:
    - Each tool is executed server-side
@@ -89,9 +91,28 @@ The Autozon AI Agent (V2) is a context-aware, tool-calling AI assistant embedded
 
 ## Model
 
-- **Primary**: `google/gemini-3-flash-preview`
+- **Name**: Zoni
+- **Primary model**: `google/gemini-3-flash-preview`
 - **Gateway**: Lovable AI (`https://ai.gateway.lovable.dev/v1/chat/completions`)
 - **Auth**: `LOVABLE_API_KEY` (auto-provisioned)
+
+## Localization
+
+- Zoni detects the user's language from locale context and message content
+- When locale is `de` or user writes in German, Zoni responds entirely in German
+- When locale is `en` or user writes in English, Zoni responds in English
+- Also supports Bosnian/Serbian/Croatian if detected
+- Initial greeting in ConciergeChat.tsx is localized (EN/DE)
+
+## Business Knowledge (Source of Truth)
+
+Zoni's system prompt includes mandatory business facts to prevent hallucination:
+
+- **Private Sellers**: €9.99 one-time listing fee
+- **Business/Dealers**: €19.99 one-time listing fee
+- **Buyers**: FREE
+- No subscriptions, no monthly fees, no hidden charges
+- Listing fee paid via Stripe after completing the car upload wizard
 
 ## Security
 
@@ -109,19 +130,25 @@ The "AI Agent" tab in the Admin Dashboard provides:
 - **Agent Activity**: Recent tool calls with arguments
 - **Suspicious Flags**: Fraud alerts with reason and context
 
+## Navigation Behavior
+
+- The `navigate_user` tool does NOT actually navigate the user — it provides a clickable link/button in the chat
+- Zoni uses `[NAV:/path|Label]` format for inline navigation suggestions
+- Zoni never says "I've opened..." — instead says "Here's a link:" or "You can go here:"
+
 ## Workflows
 
 ### Buyer Flow
-1. Agent detects BUY intent → asks smart questions
+1. Zoni detects BUY intent → asks smart questions
 2. Calls `search_cars` with filters → presents results in markdown
 3. Offers to navigate to car detail or comparison
 
 ### Seller Flow
-1. Agent detects SELL intent → guides through process
+1. Zoni detects SELL intent → guides through process
 2. Calls `navigate_user("/car-upload")` → links to wizard
 3. Can call `lookup_car_value` for pricing help
 
 ### Support Flow
-1. Agent tries to resolve issue directly
+1. Zoni tries to resolve issue directly
 2. If real bug → calls `create_support_ticket`
 3. Ticket appears in admin dashboard immediately
