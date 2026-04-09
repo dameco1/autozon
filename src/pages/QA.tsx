@@ -254,6 +254,83 @@ Autozon verwandelt Bewertung in umsetzbare Liquidität — etwas, das traditione
 
 Autozon ist kein Browsing-Tool. Es ist eine Transaktions-Engine, die matcht, verifiziert, vermittelt und ausführt. Für Käufer bedeutet es kuratierte Autos, die genau ihren Kriterien entsprechen. Für Verkäufer bedeutet es schnelle Liquidität ohne den Lärm traditioneller Plattformen.`,
   },
+  {
+    q: "Was kostet es, ein Auto auf Autozon einzustellen?",
+    a: `Autozon verwendet eine einfache, transparente Preisgestaltung ohne Abonnements und ohne wiederkehrende Gebühren:
+
+• Privatverkäufer: €9,99 pro Auto — einmalige Zahlung
+• Gewerbe / Händler: €19,99 pro Auto — einmalige Zahlung
+
+Beide Pläne beinhalten KI-Bewertung, unbegrenzte Fotos, eine vollständige Fahrzeugbeschreibung, KI-gestütztes Käufer-Matching, integrierte Verhandlungstools und sicheren Käuferkontakt. Anders als bei AutoScout24, willhaben und mobile.de läuft Ihr Inserat nie ab. Sie zahlen einmal, und Ihr Inserat bleibt online, bis Ihr Auto verkauft ist.
+
+Der Kauf eines Autos auf Autozon ist immer 100% kostenlos.`,
+  },
+  {
+    q: "Wie funktioniert die KI-Schadenserkennung?",
+    a: `Wenn Sie Fotos Ihres Autos hochladen, scannt die KI von Autozon jedes Bild auf sichtbare Schäden — Kratzer, Dellen, Risse, Lackschäden und Reifenverschleiß. Für jedes erkannte Problem wird der tatsächliche Reparaturaufwand geschätzt.
+
+Das ist wichtig, weil Händler typischerweise pauschale Abzüge von €2.000+ für Schäden ansetzen, auch wenn die realen Reparaturkosten deutlich niedriger sind. Autozons KI berechnet die genauen Reparaturkosten und zieht nur diesen Betrag vom Marktwert ab.
+
+Beispiel: Erkennt die KI 5 Probleme mit insgesamt €910 Reparaturkosten, werden nur €910 abgezogen — nicht eine Händlerstrafe von €5.500. Die Differenz bleibt beim Verkäufer.`,
+  },
+  {
+    q: "Wie berechnet die KI-Fair-Value-Engine den Preis meines Autos?",
+    a: `Autozons KI liest über 50 Live-Marktsignale und vergleicht Fotos, Spezifikationen, Kilometerstand, Zustand und Ausstattung Ihres Autos mit tausenden aktuellen Marktangeboten. In unter 60 Sekunden erhalten Sie den wahren Marktwert Ihres Fahrzeugs.
+
+Der Preis spiegelt wider, was echte Käufer aktuell zahlen — keine Händlerschätzung und kein theoretischer Buchwert. Jede KI-Entscheidung ist transparent: Sie sehen genau, wie Ihr Preis berechnet wurde, welche Faktoren ihn beeinflusst haben und wie er sich im Vergleich zu ähnlichen Fahrzeugen verhält.`,
+  },
+  {
+    q: "Können Käufer auf Autozon per Kreditkarte bezahlen?",
+    a: `Ja. Käufer können bis zu €10.000 per Kreditkarte direkt auf Autozon bezahlen. Keine Banküberweisungen, kein Warten, keine Reibung. Das macht den Abschluss schneller und einfacher als auf jeder anderen Auto-Plattform.
+
+Für Käufe über €10.000 unterstützt Autozon strukturierte Zahlungsabläufe einschließlich Banküberweisungen und Finanzierungsoptionen über Partnerinstitute.`,
+  },
+  {
+    q: "Wie funktioniert die Online-Verhandlung auf Autozon?",
+    a: `Autozon ersetzt unübersichtliche E-Mails und Telefonanrufe durch strukturierte Verhandlungen direkt auf der Plattform:
+
+• Käufer und Verkäufer verhandeln direkt in strukturierten Runden
+• Der KI-Fair-Value dient als neutraler Referenzpunkt
+• Beide Parteien können Angebote und Gegenangebote in Echtzeit abgeben
+• Sobald ein Preis vereinbart ist, kann der Deal sofort abgeschlossen werden
+
+Alles passiert an einem Ort — kein externes Messaging, keine verlorenen Threads, keine Missverständnisse.`,
+  },
+  {
+    q: "Was ist der Schritt-für-Schritt-Prozess, um mein Auto zu verkaufen?",
+    a: `Der Verkauf auf Autozon erfolgt in 5 einfachen Schritten:
+
+1. Hochladen — Machen Sie ein paar Fotos. Geben Sie Marke, Modell, Kilometerstand und Zustand ein. Dauert unter 3 Minuten.
+2. Bewerten — Unsere KI analysiert Ihre Fotos, Daten und den Zustand gegen Live-Marktdaten und liefert den wahren Wert Ihres Autos in unter 60 Sekunden.
+3. Inserieren — Ihr Inserat geht ab €9,99 online. Es bleibt aktiv, bis Ihr Auto verkauft ist — ohne Zeitlimit, ohne Gebühren für erneutes Einstellen.
+4. Matchen — Die KI verbindet Sie mit verifizierten Käufern, die aktiv nach einem Auto wie Ihrem suchen.
+5. Abschließen — Verhandeln Sie direkt. Einigen Sie sich auf einen Preis. Liegt er unter €10.000, kann der Käufer per Karte direkt auf Autozon bezahlen.
+
+Sie kümmern sich um das Auto. Unsere KI kümmert sich um alles andere.`,
+  },
+  {
+    q: "Ist der Kauf eines Autos auf Autozon kostenlos?",
+    a: `Ja, der Kauf eines Autos auf Autozon ist immer 100% kostenlos. Es gibt keine Gebühren, keine Provisionen und keine versteckten Kosten für Käufer.
+
+Sie können KI-gestützte Empfehlungen durchsuchen, verifizierte Fahrzeugdetails mit transparenter Preisgestaltung einsehen, direkt mit Verkäufern verhandeln und sogar per Kreditkarte bis zu €10.000 bezahlen — alles ohne einen Cent an Autozon zu zahlen.`,
+  },
+  {
+    q: "Was macht Autozons KI anders als traditionelle Auto-Suchtools?",
+    a: `Traditionelle Suchtools lassen Sie nach Marke, Modell und Preis filtern. Autozon geht mit von Anfang an integrierten KI-Funktionen viel weiter:
+
+• KI Smart Matching — Verbindet Sie mit verifizierten Käufern oder Verkäufern basierend auf Präferenzen, Budget und Lebensstil, nicht nur Schlagwort-Filtern
+• KI Car Discovery — Prädiktive Modellierung kuratiert 3–7 handverlesene Empfehlungen, zugeschnitten auf Ihren Lebensstil
+• KI Depreciation Radar — Prädiktive Analytik überwacht Marktveränderungen und warnt Sie, wann Sie verkaufen sollten, bevor Ihr Auto an Wert verliert
+• KI-Concierge (Zoni) — Ein persönlicher Assistent, der Ihnen bei Suchen, Bewertungen und Plattform-Navigation in Echtzeit hilft
+
+Jede KI-Entscheidung ist transparent, schnell und fair — und schützt Käufer und Verkäufer gleichermaßen.`,
+  },
+  {
+    q: "Läuft mein Inserat nach einer bestimmten Zeit ab?",
+    a: `Nein. Anders als bei AutoScout24, willhaben und mobile.de läuft Ihr Autozon-Inserat nie ab. Sie zahlen einmal pro Auto (ab €9,99), und Ihr Inserat bleibt online, bis Ihr Auto verkauft ist.
+
+Keine Zeitlimits, keine Gebühren für erneutes Einstellen, keine Tricks. Autozon arbeitet, bis der Deal abgeschlossen ist.`,
+  },
 ];
 
 const QA = () => {
