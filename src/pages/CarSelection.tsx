@@ -273,7 +273,7 @@ const CarSelection: React.FC = () => {
         {cars.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-muted-foreground text-lg">{t.carSelection.noCars}</p>
-            <Button className="mt-4" onClick={() => navigate("/buyer-questionnaire")}>
+            <Button className="mt-4" variant="outline" onClick={() => navigate("/")}>
               {t.carSelection.adjustCriteria}
             </Button>
           </div>
@@ -291,12 +291,11 @@ const CarSelection: React.FC = () => {
                     transition={{ duration: 0.2 }}
                   >
                     <Card
-                      className={`bg-secondary/50 border-2 transition-all cursor-pointer ${
+                      className={`bg-secondary/50 border-2 transition-all ${
                         liked.has(car.id) ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
                       }`}
-                      onClick={() => toggleLike(car.id)}
                     >
-                      <CardContent className="p-0">
+                      <CardContent className="p-0 cursor-pointer" onClick={() => navigate(`/car/${car.id}`)}>
                         {/* Car Image */}
                         <div className="relative w-full h-40 overflow-hidden rounded-t-lg">
                           <img
