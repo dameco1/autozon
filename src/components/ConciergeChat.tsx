@@ -120,7 +120,7 @@ const ConciergeChat: React.FC = () => {
               transition={{ delay: 0.5, duration: 0.4 }}
               className="relative bg-primary text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap"
             >
-              It's me, Zoni — ready to help!
+              {language === "de" ? "Ich bin Zoni — bereit zu helfen!" : "It's me, Zoni — ready to help!"}
               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-primary rotate-45" />
             </motion.div>
             <motion.button
