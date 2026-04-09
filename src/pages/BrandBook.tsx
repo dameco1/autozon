@@ -583,10 +583,6 @@ const BrandBook = () => {
               <h4 className="font-display font-bold text-foreground text-sm">URLs</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Website</span>
-                  <span className="font-mono text-foreground">autozon.lovable.app</span>
-                </div>
-                <div className="flex justify-between">
                   <span className="text-muted-foreground">Brand domain</span>
                   <span className="font-mono text-foreground">www.autozon.at</span>
                 </div>
