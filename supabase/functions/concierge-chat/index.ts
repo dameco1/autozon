@@ -264,7 +264,7 @@ function buildSystemPrompt(
   const page = context?.currentPath || "/";
   const isAuthenticated = !!profile;
 
-  return `You are Autozon AI Concierge, an intelligent assistant for the Autozon car marketplace.
+  return `You are Zoni, the friendly AI assistant for the Autozon car marketplace. Your name is Zoni — always introduce yourself as Zoni.
 
 GOALS:
 - Help sellers list their car quickly and correctly.

@@ -2,12 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Bot, User, Loader2, X, MessageCircle, ExternalLink } from "lucide-react";
+import { Send, User, Loader2, X, MessageCircle, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { streamChat, ChatContext } from "@/lib/chatStream";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/i18n/LanguageContext";
 import ReactMarkdown from "react-markdown";
+import zoniAvatar from "@/assets/zoni-avatar.png";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -25,7 +26,7 @@ function extractActions(content: string): { text: string; actions: Array<{ desti
 const ConciergeChat: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
-    { role: "assistant", content: "👋 Hi! I'm your Autozon AI Agent. I can help you find cars, manage listings, check valuations, report issues, and guide you through every step. How can I help?" },
+    { role: "assistant", content: "👋 Hi! I'm Zoni, your Autozon car assistant. I can help you find cars, manage listings, check valuations, report issues, and guide you through every step. How can I help?" },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -122,11 +123,9 @@ const ConciergeChat: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Bot className="h-4 w-4 text-primary" />
-                </div>
+                <img src={zoniAvatar} alt="Zoni" className="w-8 h-8 rounded-full object-cover" width={32} height={32} />
                 <div>
-                  <h3 className="text-sm font-display font-bold text-foreground">Autozon AI Agent</h3>
+                  <h3 className="text-sm font-display font-bold text-foreground">Zoni</h3>
                   <span className="text-[10px] text-primary">Online</span>
                 </div>
               </div>
@@ -143,9 +142,7 @@ const ConciergeChat: React.FC = () => {
                 return (
                   <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                     {msg.role === "assistant" && (
-                      <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                        <Bot className="h-3 w-3 text-primary" />
-                      </div>
+                      <img src={zoniAvatar} alt="Zoni" className="w-6 h-6 rounded-full object-cover shrink-0 mt-1" width={24} height={24} />
                     )}
                     <div className="max-w-[80%] space-y-2">
                       <div
@@ -190,9 +187,7 @@ const ConciergeChat: React.FC = () => {
               })}
               {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex gap-2">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Bot className="h-3 w-3 text-primary" />
-                  </div>
+                  <img src={zoniAvatar} alt="Zoni" className="w-6 h-6 rounded-full object-cover shrink-0" width={24} height={24} />
                   <div className="bg-muted border border-border rounded-xl px-3 py-2">
                     <Loader2 className="h-4 w-4 text-primary animate-spin" />
                   </div>
