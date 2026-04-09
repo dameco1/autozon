@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import CookieConsent from "@/components/CookieConsent";
+import ConciergeChat from "@/components/ConciergeChat";
 import SEO from "@/components/SEO";
 import HeroSection from "@/components/home/HeroSection";
 import CarSearchSection from "@/components/home/CarSearchSection";
@@ -46,6 +47,7 @@ const Index: React.FC = () => {
       <CtaSection />
       <FooterSection />
       <CookieConsent />
+      <ConciergeChat />
     </div>
   );
 };

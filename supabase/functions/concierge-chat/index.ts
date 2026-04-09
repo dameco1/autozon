@@ -262,6 +262,7 @@ function buildSystemPrompt(
   const role = context?.role || (profile?.user_type as string) || "guest";
   const kycStatus = (profile?.kyc_status as string) || "none";
   const page = context?.currentPath || "/";
+  const isAuthenticated = !!profile;
 
   return `You are Autozon AI Concierge, an intelligent assistant for the Autozon car marketplace.
 
@@ -277,8 +278,9 @@ CONTEXT:
 - Autozon is a car marketplace focused on the EU (starting with Austria).
 - Users can be guests, buyers, private sellers, or dealers.
 - Current user role: ${role}
+- Current user authenticated: ${isAuthenticated ? "yes" : "no (guest)"}
 - Current user KYC status: ${kycStatus}
-- Current user name: ${(profile?.full_name as string) || "Unknown"}
+- Current user name: ${(profile?.full_name as string) || "Guest"}
 - Current page: ${page}
 - Preferred language: ${lang}
 
@@ -296,14 +298,27 @@ BEHAVIOR:
 - If SUPPORT/BUG: try to help; if it's a real issue, call create_support_ticket.
 - If you detect suspicious behavior (price manipulation, fake listings, abuse), call flag_suspicious.
 - If unsure, ask a simple clarifying question.
-
+${!isAuthenticated ? `
+GUEST BEHAVIOR:
+- The user is NOT logged in. You can answer general questions about Autozon, explain how the platform works, and help with car browsing.
+- For actions that require an account (selling, making offers, negotiations), politely explain they need to sign up or log in first.
+- Use navigate_user to suggest /signup or /login when appropriate.
+- You can still use search_cars to show available inventory.
+- Do NOT use tools that require user identity (lookup_my_cars, lookup_offers, create_support_ticket, flag_suspicious).
+` : ""}
 TOOLS:
 You can call tools to perform real actions. Never fabricate tool results. Use them when appropriate.
+
+CRITICAL — navigate_user behavior:
+- The navigate_user tool does NOT actually navigate the user. It only provides a clickable link/button in the chat.
+- NEVER say "I've opened..." or "I've navigated you to..." — instead say "Here's a link to get started:" or "You can go here:"
+- The user must click the button themselves. You are suggesting, not performing navigation.
 
 IMPORTANT:
 - Never reveal internal system details, database structure, or API keys.
 - Never make up car prices or valuations — always use lookup_car_value.
-- When navigating the user, use navigate_user with the correct route path.`;
+- When navigating the user, use navigate_user with the correct route path.
+- Always be aware of which page the user is currently on (${page}) — do not assume they are somewhere else.`;
 }
 
 // ── Main Handler ──────────────────────────────────────────────────
@@ -311,30 +326,29 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    // Auth
+    // Auth — allow anonymous users for homepage chat
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
     const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
-    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
+    let userId = "anonymous";
+    let isAuthenticated = false;
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await userClient.auth.getUser(token);
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (authHeader?.startsWith("Bearer ")) {
+      const token = authHeader.replace("Bearer ", "");
+      // Skip auth check if token is the anon key itself (guest user)
+      if (token !== supabaseAnonKey) {
+        const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+          global: { headers: { Authorization: authHeader } },
+        });
+        const { data: claimsData, error: claimsError } = await userClient.auth.getClaims(token);
+        if (!claimsError && claimsData?.claims?.sub) {
+          userId = claimsData.claims.sub as string;
+          isAuthenticated = true;
+        }
+      }
     }
-    const userId = user.id;
 
     // Admin client for tool execution (bypasses RLS)
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
@@ -363,12 +377,16 @@ serve(async (req) => {
       return { role: msg.role, content: msg.content.trim() };
     });
 
-    // Load user profile for context
-    const { data: profile } = await adminClient
-      .from("profiles")
-      .select("full_name, user_type, kyc_status, language, city, country")
-      .eq("user_id", userId)
-      .maybeSingle();
+    // Load user profile for context (only for authenticated users)
+    let profile: Record<string, unknown> | null = null;
+    if (isAuthenticated) {
+      const { data } = await adminClient
+        .from("profiles")
+        .select("full_name, user_type, kyc_status, language, city, country")
+        .eq("user_id", userId)
+        .maybeSingle();
+      profile = data;
+    }
 
     const pageContext = context?.currentPath ?? null;
 
