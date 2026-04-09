@@ -101,7 +101,7 @@ const ConciergeChat: React.FC = () => {
       {/* FAB */}
       <AnimatePresence>
         {!open && (
-          <motion.button
+          <motion.div
             initial={{ scale: 0 }}
             animate={{ 
               scale: 1,
@@ -112,13 +112,26 @@ const ConciergeChat: React.FC = () => {
               scale: { duration: 0.3 },
               y: { duration: 2, repeat: Infinity, ease: "easeInOut" },
             }}
-            whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-lg flex items-center justify-center overflow-hidden border-2 border-primary/30 bg-background"
+            className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-1.5"
           >
-            <img src={zoniAvatar} alt="Zoni" className="w-14 h-14 object-cover rounded-full" width={56} height={56} />
-          </motion.button>
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+              className="relative bg-primary text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap"
+            >
+              It's me, Zoni — ready to help!
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-primary rotate-45" />
+            </motion.div>
+            <motion.button
+              whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setOpen(true)}
+              className="w-16 h-16 rounded-full shadow-lg flex items-center justify-center overflow-hidden border-2 border-primary/30 bg-background"
+            >
+              <img src={zoniAvatar} alt="Zoni" className="w-14 h-14 object-cover rounded-full" width={56} height={56} />
+            </motion.button>
+          </motion.div>
         )}
       </AnimatePresence>
 
