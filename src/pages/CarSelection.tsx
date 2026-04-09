@@ -33,7 +33,7 @@ type CarRow = {
 };
 
 const CarSelection: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [userId, setUserId] = useState<string | null>(null);
