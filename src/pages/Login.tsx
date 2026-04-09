@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -13,6 +13,8 @@ import SEO from "@/components/SEO";
 const Login: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/verify-otp";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,8 +29,9 @@ const Login: React.FC = () => {
       return;
     }
 
-    // After login, always go to verify-otp (the guard/page will check if already verified)
-    navigate("/verify-otp");
+    // After login, go to verify-otp passing redirect through
+    const otpRedirect = redirectTo === "/verify-otp" ? "/verify-otp" : `/verify-otp?redirect=${encodeURIComponent(redirectTo)}`;
+    navigate(otpRedirect);
   };
 
   return (
@@ -94,7 +97,7 @@ const Login: React.FC = () => {
                 return;
               }
               if (result.redirected) return;
-              navigate("/verify-otp");
+              navigate(redirectTo === "/verify-otp" ? "/verify-otp" : `/verify-otp?redirect=${encodeURIComponent(redirectTo)}`);
             }}
             className="w-full py-6 rounded-xl font-medium"
           >
@@ -117,7 +120,7 @@ const Login: React.FC = () => {
                 return;
               }
               if (result.redirected) return;
-              navigate("/verify-otp");
+              navigate(redirectTo === "/verify-otp" ? "/verify-otp" : `/verify-otp?redirect=${encodeURIComponent(redirectTo)}`);
             }}
             className="w-full py-6 rounded-xl font-medium"
           >
