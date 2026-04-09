@@ -1,119 +1,55 @@
 
 
-# Autozon AI Agent V2 — Implementation Plan
+# Fix Browsing Workflow — Let Users Browse Freely
 
-## Summary
-Upgrade the existing Concierge Chat into a full AI Agent with tool-calling capabilities, context awareness, support ticket collection, and admin monitoring. This merges the previously discussed architecture with the detailed workflow specifications you provided.
+## Problems Identified
 
-## What Gets Built
+1. **Broken continuity after login**: Clicking a car → redirected to login → after login goes to `/verify-otp` → then intent selection, losing the car the user wanted to see
+2. **Car cards in selection only toggle like** — no way to preview individual cars before committing
+3. **Comparison page shows limited specs** — no full car details or photos
+4. **"No cars found" pushes users to buyer-questionnaire** — wearing down casual browsers
+5. **CarSelection requires login for "Show More"** — blocks anonymous browsing
 
-### 1. Database — Two New Tables
+## Plan
 
-**`support_tickets`** — stores bug reports and feedback collected by the AI agent
-- `id`, `user_id`, `category` (bug/question/feedback/ux_suggestion), `subject`, `description`, `page_context`, `severity` (low/medium/high/critical), `status` (open/in_progress/resolved/closed), `created_at`
-- RLS: users see own tickets, admins see all
+### 1. Preserve return URL through login flow
+- **Login.tsx**: Accept a `?redirect=` query param. After successful login + OTP, redirect to that URL instead of always going to `/verify-otp` → intent selection.
+- **EmailOtpVerify.tsx**: Pass through the `redirect` param; after verification, navigate to the stored redirect URL.
+- **CarDetail.tsx** (`handleStartTrade`): When redirecting to login, include `?redirect=/car/${id}` so the user returns to the car they clicked.
+- **CarSelection.tsx** (`toggleLike`): Same — include redirect param when sending unauthenticated users to login.
 
-**`agent_activity_log`** — audit trail for all tool calls the agent makes
-- `id`, `user_id`, `action_type`, `tool_name`, `details` (jsonb), `page_context`, `created_at`
-- RLS: admins only for SELECT; service_role for INSERT
+### 2. Add "View Details" button on car cards in CarSelection
+- Each car card currently only toggles like on click. Add a **"View" icon/button** (e.g., eye icon) that navigates to `/car/${car.id}` so users can preview the full ad without losing their selection state.
+- Keep the heart/like toggle as a separate action on the card.
+- Remove the whole-card click = like behavior; make card click navigate to detail instead, and keep heart icon for liking.
 
-### 2. Edge Function — Rewrite `concierge-chat`
+### 3. Make CarSelection fully browsable without login
+- Remove the login requirement for basic browsing. The `toggleLike` and `handleShowMore` functions currently require auth — keep like behind auth (with redirect), but allow "Show More" for anonymous users by running the query without user preferences.
+- Change "no cars found" CTA from "buyer-questionnaire" to just adjusting filters or going back to search.
 
-Major upgrade from simple prompt-relay to a tool-calling agent loop:
+### 4. Improve CarComparison to show full car details
+- Update `CarComparison.tsx` to display full car photos (gallery/carousel), description, equipment, and inspection data for each car side by side — not just the spec rows table.
+- Each car column should function as a mini version of the CarDetail page.
 
-**Input changes** — accept `context` object alongside messages:
-```
-{ messages, context: { currentPath, locale, role, carId? } }
-```
+### 5. Defer preference collection to serious engagement
+- Remove the automatic redirect to intent selection / buyer-questionnaire after login.
+- Only prompt for preferences when the user explicitly clicks "Get Personalized Matches" or similar — not as a gate to browsing.
+- After login (with redirect param), go straight back to where the user was.
 
-**Dynamic system prompt** — the production-ready prompt you provided, enhanced with:
-- User's profile data (role, KYC status, user_type) fetched server-side
-- Current page context injected automatically
-- Language detection from locale field
+## Files to Modify
 
-**Tool definitions** (native Gemini function calling):
+| File | Change |
+|------|--------|
+| `src/pages/Login.tsx` | Accept `redirect` query param, pass it through OTP flow |
+| `src/pages/EmailOtpVerify.tsx` | Honor `redirect` param after verification |
+| `src/pages/CarSelection.tsx` | Add "View" button on cards; allow anonymous "Show More"; fix "no cars" CTA |
+| `src/pages/CarDetail.tsx` | Pass redirect URL when sending to login |
+| `src/pages/CarComparison.tsx` | Expand to show full photos, description, equipment per car |
+| `src/i18n/translations.ts` | Add any new translation keys (view details, etc.) |
 
-| Tool | Maps To | Description |
-|------|---------|-------------|
-| `search_cars` | SELECT from `cars` with filters | Buyer car search |
-| `lookup_my_cars` | SELECT from `cars` WHERE owner_id | Seller's listings |
-| `lookup_car_value` | SELECT fair_value from `cars` | Car valuation lookup |
-| `lookup_matches` | SELECT from `matches` | Buyer matches for a car |
-| `lookup_offers` | SELECT from `offers` | Active negotiations |
-| `create_support_ticket` | INSERT into `support_tickets` | Bug/issue reporting |
-| `log_feedback` | INSERT into `support_tickets` (category=feedback) | UX suggestions |
-| `navigate_user` | Returns structured link | Deep-link guidance |
-| `flag_suspicious` | INSERT into `agent_activity_log` + notification | Fraud alerts |
+## Technical Notes
 
-**Tool execution loop**: When Gemini returns `tool_calls`, execute them server-side against the database, feed results back into the conversation, then stream the final natural-language response to the user.
-
-**All tool calls are logged** to `agent_activity_log` for admin visibility.
-
-### 3. Frontend — Upgrade `ConciergeChat.tsx`
-
-- **Context injection**: Use `useLocation()` to detect current page/step, send as `context` field
-- **Markdown rendering**: Add `react-markdown` to render formatted AI responses (bold, lists, links)
-- **Action buttons**: When AI returns `navigate_user` results, render clickable buttons in chat
-- **Ticket confirmation**: When AI calls `create_support_ticket`, show a confirmation card before submitting
-- **Role/locale awareness**: Pass user role and language from existing contexts
-
-### 4. Frontend — Update `chatStream.ts`
-
-- Send `context` alongside `messages` in the request body
-- Handle new response format (tool-call interleaving during stream)
-
-### 5. Admin Dashboard — New "AI Agent" Tab
-
-Add to `AdminDashboard.tsx`:
-- **Support Tickets table**: filterable by status, severity, category
-- **Agent Activity Log**: recent tool calls and suspicious activity flags
-- **Stats cards**: open tickets, flagged users, tool call volume
-
-### 6. Documentation Updates
-
-- Update `docs/backend-functions.md` with new tool-calling architecture
-- Create `docs/ai-agent.md` with full architecture reference
-- Update roadmap to mark Smart Concierge V2 as in-progress
-
-## Technical Decisions
-
-| Decision | Choice | Why |
-|----------|--------|-----|
-| Model | `google/gemini-3-flash-preview` | Best speed + tool-calling support |
-| Tool calling | Native Gemini function calling | No orchestration framework needed |
-| Listing drafts | Not a separate table — use existing `cars` INSERT | Avoids data duplication; agent can help fill car-upload form via `navigate_user` instead |
-| Streaming | SSE with tool-call pause | User sees "thinking..." while tools execute |
-| Feedback vs tickets | Same table, different `category` | Simpler schema, unified admin view |
-
-## Buyer Workflow (via Agent)
-1. Agent detects BUY intent from message
-2. Asks 2-4 smart questions (budget, fuel, family, usage)
-3. Calls `search_cars` with built filters
-4. Presents results with thumbnails in formatted markdown
-5. Offers to compare, save, or navigate to car detail
-
-## Seller Workflow (via Agent)
-1. Agent detects SELL intent
-2. Guides through key details step-by-step
-3. Calls `navigate_user("/car-upload")` to direct them to the wizard
-4. Can call `lookup_car_value` to help with pricing questions
-5. Follows up on missing fields or suggests description improvements
-
-## Files Changed
-
-- **New migration**: `support_tickets` + `agent_activity_log` tables with RLS
-- **Rewrite**: `supabase/functions/concierge-chat/index.ts` (tool-calling loop)
-- **Modify**: `src/components/ConciergeChat.tsx` (context, markdown, action buttons)
-- **Modify**: `src/lib/chatStream.ts` (send context)
-- **New**: `src/components/admin/AdminAgentTab.tsx` (tickets + activity log)
-- **Modify**: `src/pages/AdminDashboard.tsx` (add Agent tab)
-- **New**: `docs/ai-agent.md`
-- **Modify**: `docs/backend-functions.md`, `docs/roadmap.md`, `public/docs/roadmap.md`
-
-## Implementation Order
-1. Database migration (tables + RLS)
-2. Edge function rewrite (tool-calling loop)
-3. Frontend chat upgrade (context + markdown + actions)
-4. Admin tab
-5. Documentation
+- The `redirect` param will be URL-encoded and passed as `?redirect=/car/abc-123` through login → OTP → final destination.
+- Anonymous browsing already works for car queries (RLS policy for `anon` role exists). The frontend just needs to stop gating UI on `userId`.
+- CarComparison will use a carousel component (already in the project) for photo galleries.
 
