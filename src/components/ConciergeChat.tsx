@@ -103,12 +103,21 @@ const ConciergeChat: React.FC = () => {
         {!open && (
           <motion.button
             initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
+            animate={{ 
+              scale: 1,
+              y: [0, -6, 0],
+            }}
             exit={{ scale: 0 }}
+            transition={{
+              scale: { duration: 0.3 },
+              y: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+            }}
+            whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 flex items-center justify-center transition-colors"
+            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-lg flex items-center justify-center overflow-hidden border-2 border-primary/30 bg-background"
           >
-            <MessageCircle className="h-6 w-6" />
+            <img src={zoniAvatar} alt="Zoni" className="w-14 h-14 object-cover rounded-full" width={56} height={56} />
           </motion.button>
         )}
       </AnimatePresence>
