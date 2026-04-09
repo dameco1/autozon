@@ -196,7 +196,11 @@ const CarSelection: React.FC = () => {
       profile = profileRes.data as ProfileSignals | null;
     }
 
-    // Remove the old preference fetching block since we already fetched above
+    let query = supabase
+      .from("cars")
+      .select("id, make, model, year, mileage, price, fair_value_price, fuel_type, transmission, body_type, color, power_hp, equipment, condition_score, demand_score, image_url, photos, detected_damages")
+      .eq("status", "available")
+      .limit(30);
 
     if (keptIds.length > 0) {
       query = query.not("id", "in", `(${keptIds.join(",")})`);
