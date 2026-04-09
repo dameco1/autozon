@@ -42,10 +42,9 @@ const CarComparison: React.FC = () => {
 
   // Financing state per car
   const [financing, setFinancing] = useState<{ [key: string]: { downPayment: number; term: number; rate: number } }>({});
-  // Leasing state per car
   const [leasing, setLeasing] = useState<{ [key: string]: { term: number; residualPct: number } }>({});
-  // Active tab per car
   const [activeTab, setActiveTab] = useState<{ [key: string]: string }>({});
+  const [activePhoto, setActivePhoto] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     const carIds = searchParams.get("cars")?.split(",") || [];
