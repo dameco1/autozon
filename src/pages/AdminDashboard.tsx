@@ -50,6 +50,7 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="insurance">Insurance</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="agent">AI Agent</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview"><AdminOverview /></TabsContent>
@@ -63,6 +64,7 @@ const AdminDashboard: React.FC = () => {
           <TabsContent value="insurance"><AdminInsuranceRequests /></TabsContent>
           <TabsContent value="reports"><AdminReports /></TabsContent>
           <TabsContent value="activity"><AdminActivityFeed /></TabsContent>
+          <TabsContent value="agent"><AdminAgentTab /></TabsContent>
         </Tabs>
       </div>
     </div>
