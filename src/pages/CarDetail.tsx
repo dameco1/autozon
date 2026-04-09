@@ -106,7 +106,6 @@ const CarDetail: React.FC = () => {
       .then(async ({ data }) => {
         if (data) {
           let vinValue: string | null = null;
-          // Only fetch VIN for the car owner
           const { data: { user } } = await supabase.auth.getUser();
           if (user && (data as any).owner_id === user.id) {
             const { data: vinData } = await supabase
@@ -116,8 +115,30 @@ const CarDetail: React.FC = () => {
               .single();
             vinValue = vinData?.vin ?? null;
           }
-          setCar({ ...data, vin: vinValue } as unknown as CarFull);
+          const carData = { ...data, vin: vinValue } as unknown as CarFull;
+          setCar(carData);
           setDownPayment(Math.round((data as any).price * 0.2));
+
+          // Fetch market comparison for Preisbewertung
+          setMarketLoading(true);
+          try {
+            const { data: mkt, error: mktErr } = await supabase.functions.invoke("market-comparison", {
+              body: {
+                make: carData.make,
+                model: carData.model,
+                year: carData.year,
+                mileage: carData.mileage,
+                fuel_type: carData.fuel_type,
+                body_type: carData.body_type,
+                power_hp: carData.power_hp,
+                transmission: carData.transmission,
+              },
+            });
+            if (!mktErr && mkt) setMarketData(mkt);
+          } catch {
+            // silently fail — badge falls back to fair_value ratio
+          }
+          setMarketLoading(false);
         }
         setLoading(false);
       });
