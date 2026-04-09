@@ -7,8 +7,39 @@ const corsHeaders = {
 };
 
 const AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
-const MODEL = "google/gemini-3-flash-preview";
-const MAX_TOOL_ROUNDS = 5;
+const MODEL_FAST = "google/gemini-2.5-flash";
+const MODEL_FULL = "google/gemini-3-flash-preview";
+const MAX_TOOL_ROUNDS = 3; // Reduced from 5 — most queries need 1-2 rounds
+
+// ── Simple intent classifier for model routing ───────────────────
+function classifyComplexity(lastMessage: string): "simple" | "complex" {
+  const lower = lastMessage.toLowerCase();
+  const simplePatterns = [
+    /how much|cost|price|pricing|preis|kosten|gebühr/i,
+    /what is autozon|was ist autozon/i,
+    /how does.*(work|function)|wie funktioniert/i,
+    /can i|kann ich/i,
+    /sign up|register|anmeld/i,
+    /thank|danke|thanks/i,
+    /hello|hi|hey|hallo|servus|grüß/i,
+    /who are you|wer bist du/i,
+    /free|kostenlos/i,
+  ];
+  if (simplePatterns.some((p) => p.test(lower)) && lower.length < 200) {
+    return "simple";
+  }
+  // Complex: car search, tool-needing queries, multi-step requests
+  const complexPatterns = [
+    /search|find|show me|such|zeig|finde/i,
+    /my car|mein auto|my listing/i,
+    /offer|angebot|negotiate|verhandl/i,
+    /bug|error|problem|fehler|issue/i,
+    /compare|vergleich/i,
+    /value|wert|bewert/i,
+  ];
+  if (complexPatterns.some((p) => p.test(lower))) return "complex";
+  return lower.length > 150 ? "complex" : "simple";
+}
 
 // ── Tool Definitions ──────────────────────────────────────────────
 const tools = [
@@ -16,18 +47,18 @@ const tools = [
     type: "function",
     function: {
       name: "search_cars",
-      description: "Search available cars on the Autozon marketplace using filters. Use when a buyer is looking for a car.",
+      description: "Search available cars on the Autozon marketplace. Use ONLY when a user actively wants to find/browse specific cars.",
       parameters: {
         type: "object",
         properties: {
-          budget_max_eur: { type: "number", description: "Maximum budget in EUR" },
-          budget_min_eur: { type: "number", description: "Minimum budget in EUR" },
+          budget_max_eur: { type: "number", description: "Max budget EUR" },
+          budget_min_eur: { type: "number", description: "Min budget EUR" },
           fuel: { type: "array", items: { type: "string" }, description: "Fuel types: Petrol, Diesel, Electric, Hybrid, Plug-in Hybrid" },
-          transmission: { type: "array", items: { type: "string" }, description: "Transmission: Manual, Automatic" },
-          body_type: { type: "array", items: { type: "string" }, description: "Body types: Sedan, SUV, Wagon, Hatchback, Coupe, Convertible, Van" },
-          make: { type: "array", items: { type: "string" }, description: "Car makes/brands" },
-          max_mileage: { type: "number", description: "Maximum mileage in km" },
-          min_year: { type: "number", description: "Minimum year" },
+          transmission: { type: "array", items: { type: "string" }, description: "Manual or Automatic" },
+          body_type: { type: "array", items: { type: "string" }, description: "Sedan, SUV, Wagon, Hatchback, Coupe, Convertible, Van" },
+          make: { type: "array", items: { type: "string" }, description: "Car brands" },
+          max_mileage: { type: "number", description: "Max mileage km" },
+          min_year: { type: "number", description: "Min year" },
         },
         required: [],
       },
@@ -37,7 +68,7 @@ const tools = [
     type: "function",
     function: {
       name: "lookup_my_cars",
-      description: "Look up the current user's listed cars with status and pricing info. Use when a seller asks about their listings.",
+      description: "Look up the current user's listed cars. Use ONLY when a seller asks about THEIR OWN listings.",
       parameters: { type: "object", properties: {}, required: [] },
     },
   },
@@ -45,7 +76,7 @@ const tools = [
     type: "function",
     function: {
       name: "lookup_car_value",
-      description: "Look up the fair value and details of a specific car by its ID.",
+      description: "Look up fair value of a specific car by ID. Use when user asks about a specific car's valuation.",
       parameters: {
         type: "object",
         properties: { car_id: { type: "string", description: "UUID of the car" } },
@@ -57,7 +88,7 @@ const tools = [
     type: "function",
     function: {
       name: "lookup_matches",
-      description: "Look up buyer matches for a specific car. Use when a seller asks who is interested in their car.",
+      description: "Look up buyer matches for a car. Use when a seller asks who is interested.",
       parameters: {
         type: "object",
         properties: { car_id: { type: "string", description: "UUID of the car" } },
@@ -69,7 +100,7 @@ const tools = [
     type: "function",
     function: {
       name: "lookup_offers",
-      description: "Look up active offers/negotiations for the current user (as buyer or seller).",
+      description: "Look up active offers/negotiations for the current user.",
       parameters: { type: "object", properties: {}, required: [] },
     },
   },
@@ -77,14 +108,14 @@ const tools = [
     type: "function",
     function: {
       name: "create_support_ticket",
-      description: "Create a support ticket or bug report. Use when user reports an issue, bug, or needs help from the team.",
+      description: "Create a support ticket. Use ONLY for real bugs or issues that cannot be resolved in chat.",
       parameters: {
         type: "object",
         properties: {
-          category: { type: "string", enum: ["bug", "question", "feedback", "ux_suggestion"], description: "Type of ticket" },
-          subject: { type: "string", description: "Brief subject line" },
-          description: { type: "string", description: "Detailed description of the issue" },
-          severity: { type: "string", enum: ["low", "medium", "high", "critical"], description: "How severe the issue is" },
+          category: { type: "string", enum: ["bug", "question", "feedback", "ux_suggestion"] },
+          subject: { type: "string", description: "Brief subject" },
+          description: { type: "string", description: "Details" },
+          severity: { type: "string", enum: ["low", "medium", "high", "critical"] },
         },
         required: ["category", "subject", "description"],
       },
@@ -94,12 +125,12 @@ const tools = [
     type: "function",
     function: {
       name: "navigate_user",
-      description: "Suggest a page or action for the user to navigate to. Returns a link the user can click.",
+      description: "Suggest a page link. Does NOT navigate — provides a clickable link.",
       parameters: {
         type: "object",
         properties: {
-          destination: { type: "string", description: "The route path, e.g. /car-upload, /dashboard, /cars, /negotiate/:id" },
-          label: { type: "string", description: "Human-readable label for the link" },
+          destination: { type: "string", description: "Route path e.g. /car-upload" },
+          label: { type: "string", description: "Link label" },
         },
         required: ["destination", "label"],
       },
@@ -109,12 +140,12 @@ const tools = [
     type: "function",
     function: {
       name: "flag_suspicious",
-      description: "Flag suspicious activity for admin review. Use when you detect potential fraud, abuse, or policy violations.",
+      description: "Flag suspicious activity for admin review.",
       parameters: {
         type: "object",
         properties: {
-          reason: { type: "string", description: "Why this activity is suspicious" },
-          details: { type: "string", description: "Additional context and evidence" },
+          reason: { type: "string", description: "Why suspicious" },
+          details: { type: "string", description: "Context" },
         },
         required: ["reason"],
       },
@@ -130,7 +161,6 @@ async function executeTool(
   pageContext: string | null,
   adminClient: ReturnType<typeof createClient>,
 ): Promise<unknown> {
-  // Log every tool call
   await adminClient.from("agent_activity_log").insert({
     user_id: userId,
     action_type: "tool_call",
@@ -228,9 +258,8 @@ async function executeTool(
     }
 
     case "flag_suspicious": {
-      // Create admin notification
       await adminClient.from("notifications").insert({
-        user_id: userId, // will be overridden — we need an admin target
+        user_id: userId,
         title: "🚨 Suspicious Activity Flagged",
         message: `AI Agent flagged user ${userId}: ${args.reason}`,
         type: "security",
@@ -264,135 +293,72 @@ function buildSystemPrompt(
   const page = context?.currentPath || "/";
   const isAuthenticated = !!profile;
 
-  return `You are Zoni, the friendly AI assistant for the Autozon car marketplace. Your name is Zoni.
-IMPORTANT: The user has ALREADY been greeted when they opened the chat window. Do NOT greet them again, do NOT introduce yourself again, and do NOT say "Hi" or "Hello" at the start of each reply. Just respond naturally and directly to their question or message, like a real conversation between two people.
+  return `You are Zoni, Autozon's AI assistant. You are already mid-conversation — NEVER greet, introduce yourself, or say "Hi/Hello."
 
-GOALS:
-- Help sellers list their car quickly and correctly.
-- Help buyers find the right car for their needs and budget.
-- Help users with technical issues and report bugs to support.
-- Explain Autozon processes clearly and concisely.
-- Always act safely, honestly, and never invent system actions.
-- Monitor for suspicious activity (repeated VIN lookups, price manipulation, impersonation, abuse).
+ROLE: Help buyers find cars, help sellers list cars, answer platform questions, report bugs.
 
-═══════════════════════════════════════════════════════
-AUTOZON BUSINESS KNOWLEDGE — USE THIS AS THE SOURCE OF TRUTH
-═══════════════════════════════════════════════════════
+═══ PRICING (NEVER invent prices) ═══
+• Private Sellers: €9.99 one-time listing fee (unlimited duration)
+• Business/Dealers: €19.99 one-time listing fee (unlimited duration)
+• Buyers: FREE (browsing, offers, transactions — all free)
+• NO subscriptions, NO monthly fees, NO hidden charges
+• Fee paid via Stripe after car upload wizard; car visible only after payment
 
-PRICING (MANDATORY — never invent pricing):
-- Private Sellers: €9.99 one-time fee per car listing (unlimited duration until sold).
-- Business/Dealers: €19.99 one-time fee per car listing (unlimited duration until sold).
-- Buyers: FREE — browsing, searching, shortlisting, making offers, and completing transactions costs nothing.
-- There are NO subscription fees. There are NO monthly fees. There are NO hidden charges.
-- The listing fee is paid via Stripe checkout after completing the car upload wizard.
-- A car is only visible to other users AFTER the placement fee is paid.
+═══ FAQ KNOWLEDGE BASE ═══
+Q: How does Autozon solve the trade-off between selling fast (dealer) and selling for more (private)?
+A: Autozon removes the forced choice by creating a verified cross-border buyer network. It delivers dealer-level speed through instant matching, private-sale pricing through broader liquidity, and zero hassle because Autozon handles verification, documentation, and buyer qualification. It's a matching engine, not a listing site.
 
-USER TYPES:
-- Private Person: Standard individual seller or buyer. Requires KYC identity verification for transactions.
-- Business Seller (Unternehmen/Händler): Must provide UID number, Commercial Registry number, and authorized representative during registration.
-- Business Buyer: Same business registration requirements.
+Q: How is Autozon different from Autotrader or Mobile.de?
+A: Those are classified ad marketplaces (post and wait). Autozon is transactional infrastructure: AI-driven matching, cross-border liquidity, end-to-end transaction support, and built-in fraud prevention. No listings, no waiting.
 
-SELLER FLOW (6 steps):
-1. Sign up and verify email → MFA enrollment → Intent selection (Selling)
-2. Go to Dashboard → Click "Upload Car"
-3. Car Upload Wizard (6 steps): Basic Info → Equipment → Photos (AI damage detection) → Condition → Inspection Checklist → Damage Review
-4. Fair Value Calculation: AI-powered 10-factor model calculates a fair market price. The seller can accept or adjust.
-5. Pay Placement Fee (€9.99 private / €19.99 business) via Stripe → Car becomes visible to all users.
-6. Receive offers → Negotiate (up to 5 rounds) → Accept → Transaction Wizard (5 steps) → Car sold.
+Q: In some markets, trade-ins offer tax benefits. How does Autozon compete?
+A: In markets without trade-in tax credits, sellers lose money with trade-ins. Autozon offers dealer-level convenience without the financial penalty, giving sellers a better net outcome.
 
-BUYER FLOW:
-1. Sign up and verify email → MFA enrollment → Intent selection (Buying)
-2. Complete Onboarding (12 lifestyle + car preference questions for AI matching)
-3. Browse Car Selection page with 5-dimension match scoring
-4. View Car Detail → Shortlist favorites → Compare cars side-by-side
-5. Make an Offer on a car → Negotiate with seller (1-5 rounds, counter/accept/reject)
-6. Once accepted → Transaction Wizard (5 steps): Method → Contract → Payment → Insurance → Complete
+Q: There are many websites where you post photos and wait for buyers. What's different?
+A: That's exactly what Autozon replaces. The system matches both sides based on verified data. The transaction is guided, structured, and secure. Think "Tinder for cars" with verification and logistics built in.
 
-TRANSACTION WIZARD (5 steps, applies to both buyer and seller):
-Step 1 — Method: Choose digital or manual completion
-Step 2 — Contract: Auto-generated legal contract based on party types (P2P, B2P, B2B with appropriate Austrian law)
-Step 3 — Payment: Wire transfer, Stripe CC (under €10K), Credit, or Leasing
-Step 4 — Insurance: Optional insurance selection
-Step 5 — Complete: Ownership transfer checklist (11 items), congratulations screen
+Q: People already post free or paid ads to sell privately. Why use Autozon?
+A: Private ads require photos, descriptions, handling calls, negotiating with strangers, managing test drives, fraud risks, and paperwork. Autozon removes ALL of this. Provide vehicle details once, Autozon handles the rest.
 
-NEGOTIATION:
-- Maximum 5 rounds per offer
-- Actions: Initial offer → Counter → Accept / Reject
-- Both parties see the full round history
-- Once accepted, the agreed price is locked and feeds into the Transaction Wizard
+Q: Valuation tools already tell you retail value. What more does Autozon offer?
+A: Valuation tools give a number but don't create a transaction. Autozon provides dynamic pricing based on real demand, instant buyer matching, real offers, and full transaction execution.
 
-KEY FEATURES:
-- AI-powered fair value calculation (10-factor model)
-- AI damage detection from uploaded photos
-- VIN decoding for automatic car data prefill
-- 5-dimension buyer-car matching algorithm
-- Real-time notifications for offers, counters, and deal updates
-- KYC identity verification (via Didit) required before transactions
-- Email OTP two-factor authentication
-- Legal contract generation (Gewährleistungsausschluss for P2P, KSchG for B2P, §377 UGB for B2B)
+Q: How is Autozon different from car apps?
+A: Most car apps are digital classified ads. Autozon is a transaction engine that matches, verifies, facilitates, and executes. Curated cars for buyers, fast liquidity for sellers.
 
-IMPORTANT ROUTES:
-- / → Homepage
-- /signup → Create account
-- /login → Sign in
-- /dashboard → User dashboard (requires auth)
-- /car-upload → Upload a car for sale (requires auth)
-- /car-selection or /cars → Browse available cars
-- /car/:id → View car details
-- /onboarding → Buyer preference questionnaire (requires auth)
-- /negotiate/:offerId → Negotiation page (requires auth)
-- /financing/:offerId → Financing calculator (requires auth)
+═══ FLOWS (concise) ═══
+SELLER: Sign up → Verify email → MFA → Intent (Selling) → Dashboard → Upload Car (6-step wizard) → Fair Value AI calc → Pay listing fee → Receive offers → Negotiate (max 5 rounds) → Transaction Wizard (5 steps) → Sold
+BUYER: Sign up → Verify email → MFA → Intent (Buying) → Onboarding (12 questions) → Browse matched cars → Shortlist/Compare → Make offer → Negotiate → Transaction Wizard → Done
+TRANSACTION: Method → Contract → Payment → Insurance → Complete (ownership transfer checklist)
 
-═══════════════════════════════════════════════════════
+═══ KEY ROUTES ═══
+/ (Home), /signup, /login, /dashboard, /car-upload, /cars (browse), /car/:id, /onboarding, /negotiate/:offerId, /financing/:offerId, /qa (FAQ)
 
-CONTEXT:
-- Current user role: ${role}
-- Current user authenticated: ${isAuthenticated ? "yes" : "no (guest)"}
-- Current user KYC status: ${kycStatus}
-- Current user name: ${(profile?.full_name as string) || "Guest"}
-- Current page: ${page}
-- Preferred language: ${lang}
+═══ CONTEXT ═══
+User: ${(profile?.full_name as string) || "Guest"} | Role: ${role} | Auth: ${isAuthenticated ? "yes" : "no"} | KYC: ${kycStatus} | Page: ${page} | Lang: ${lang}
 
-STYLE:
-- Be concise, practical, and direct.
-- Ask clarifying questions only when needed.
-- CRITICAL: Always respond in the user's preferred language. If locale is "de" or user writes in German, respond ENTIRELY in German. If locale is "en" or user writes in English, respond in English. Also support Bosnian/Serbian/Croatian if detected.
-- When guiding through a process, go step-by-step and confirm key data.
-- Use markdown formatting: **bold** for emphasis, bullet points for lists, links where helpful.
+═══ RULES ═══
+• Respond in the user's language. If locale="${lang}" or user writes in German → respond in German. English → English. Also support Bosnian/Serbian/Croatian.
+• Be concise and direct. Use **bold** and bullets for clarity.
+• NEVER invent pricing, features, or car data. Use tools for real data.
+• navigate_user provides a clickable link — NEVER say "I've opened" or "I've navigated you."
+• For guests: answer general questions, suggest /signup or /login for actions requiring auth.
+• For suspicious behavior: call flag_suspicious.
+• Only call tools when truly needed. For FAQ/pricing/process questions, answer directly from your knowledge.
+${!isAuthenticated ? "• Guest user — do NOT use: lookup_my_cars, lookup_offers, create_support_ticket, flag_suspicious." : ""}
 
-BEHAVIOR:
-- First, determine the user's intent (sell, buy, support, general).
-- If SELL: guide them through collecting car details, then suggest navigating to car-upload. Use lookup_my_cars to show their listings.
-- If BUY: ask 2-4 smart questions (budget, fuel, family, usage), then call search_cars. Present results clearly.
-- If SUPPORT/BUG: try to help; if it's a real issue, call create_support_ticket.
-- If you detect suspicious behavior (price manipulation, fake listings, abuse), call flag_suspicious.
-- If unsure, ask a simple clarifying question.
-${!isAuthenticated ? `
-GUEST BEHAVIOR:
-- The user is NOT logged in. You can answer general questions about Autozon, explain how the platform works, and help with car browsing.
-- For actions that require an account (selling, making offers, negotiations), politely explain they need to sign up or log in first.
-- Use navigate_user to suggest /signup or /login when appropriate.
-- You can still use search_cars to show available inventory.
-- Do NOT use tools that require user identity (lookup_my_cars, lookup_offers, create_support_ticket, flag_suspicious).
-` : ""}
-TOOLS:
-You can call tools to perform real actions. Never fabricate tool results. Use them when appropriate.
-NEVER output JSON tool calls as text in your response. Always use the proper function calling mechanism.
-If you want to suggest a link, use the navigate_user tool — do NOT write JSON in your message text.
+═══ FEW-SHOT EXAMPLES ═══
+User: "How much does it cost to list a car?"
+→ Answer directly: "€9.99 for private sellers, €19.99 for business sellers. One-time fee, no subscriptions."
 
-CRITICAL — navigate_user behavior:
-- The navigate_user tool does NOT actually navigate the user. It only provides a clickable link/button in the chat.
-- NEVER say "I've opened..." or "I've navigated you to..." — instead say "Here's a link to get started:" or "You can go here:"
-- The user must click the button themselves. You are suggesting, not performing navigation.
-- When suggesting sign up, use the [NAV:/signup|Sign Up] format in your text, NOT raw JSON.
+User: "I want to sell my BMW"
+→ Guide: explain the process briefly, then use navigate_user to link to /car-upload.
 
-CRITICAL — ACCURACY:
-- NEVER invent or guess pricing, features, or processes. Only state what is documented above.
-- If you don't know something, say so honestly rather than making it up.
-- Never reveal internal system details, database structure, or API keys.
-- Never make up car prices or valuations — always use lookup_car_value.
-- When navigating the user, use navigate_user with the correct route path.
-- Always be aware of which page the user is currently on (${page}) — do not assume they are somewhere else.`;
+User: "Show me SUVs under €20,000"
+→ Call search_cars with body_type=["SUV"], budget_max_eur=20000. Present results in a clear list.
+
+User: "What makes Autozon different?"
+→ Answer from FAQ knowledge: Autozon is a transaction engine, not a classified ad site. AI matching, verification, end-to-end support.`;
 }
 
 // ── Main Handler ──────────────────────────────────────────────────
@@ -400,7 +366,6 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    // Auth — allow anonymous users for homepage chat
     const authHeader = req.headers.get("Authorization");
     const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
@@ -411,7 +376,6 @@ serve(async (req) => {
 
     if (authHeader?.startsWith("Bearer ")) {
       const token = authHeader.replace("Bearer ", "");
-      // Skip auth check if token is the anon key itself (guest user)
       if (token !== supabaseAnonKey) {
         const userClient = createClient(supabaseUrl, supabaseAnonKey, {
           global: { headers: { Authorization: authHeader } },
@@ -424,10 +388,7 @@ serve(async (req) => {
       }
     }
 
-    // Admin client for tool execution (bypasses RLS)
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
-
-    // Parse body
     const body = await req.json();
     const { messages, context } = body;
 
@@ -451,7 +412,7 @@ serve(async (req) => {
       return { role: msg.role, content: msg.content.trim() };
     });
 
-    // Load user profile for context (only for authenticated users)
+    // Load user profile
     let profile: Record<string, unknown> | null = null;
     if (isAuthenticated) {
       const { data } = await adminClient
@@ -463,13 +424,56 @@ serve(async (req) => {
     }
 
     const pageContext = context?.currentPath ?? null;
-
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
     const systemPrompt = buildSystemPrompt(profile, context ?? null);
 
-    // ── Tool-calling loop ──────────────────────────────────────
+    // ── Classify complexity for model routing ─────────────────
+    const lastUserMsg = sanitizedMessages.filter((m: { role: string }) => m.role === "user").pop();
+    const complexity = lastUserMsg ? classifyComplexity(lastUserMsg.content) : "simple";
+    const selectedModel = complexity === "simple" ? MODEL_FAST : MODEL_FULL;
+
+    console.log(`Complexity: ${complexity}, Model: ${selectedModel}`);
+
+    // ── For simple queries, skip tool loop — stream directly ──
+    if (complexity === "simple") {
+      const streamResp = await fetch(AI_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: selectedModel,
+          messages: [{ role: "system", content: systemPrompt }, ...sanitizedMessages],
+          stream: true,
+        }),
+      });
+
+      if (!streamResp.ok) {
+        if (streamResp.status === 429) {
+          return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again." }), {
+            status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        if (streamResp.status === 402) {
+          return new Response(JSON.stringify({ error: "AI credits depleted." }), {
+            status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        console.error("AI error:", streamResp.status, await streamResp.text());
+        return new Response(JSON.stringify({ error: "AI service unavailable" }), {
+          status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      return new Response(streamResp.body, {
+        headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      });
+    }
+
+    // ── Tool-calling loop (complex queries only) ──────────────
     let conversationMessages: Array<Record<string, unknown>> = [
       { role: "system", content: systemPrompt },
       ...sanitizedMessages,
@@ -485,10 +489,10 @@ serve(async (req) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: MODEL,
+          model: selectedModel,
           messages: conversationMessages,
           tools,
-          stream: false, // non-streaming for tool rounds
+          stream: false,
         }),
       });
 
@@ -515,9 +519,8 @@ serve(async (req) => {
 
       const msg = choice.message;
 
-      // If no tool calls, we have the final answer — stream it
+      // No tool calls → stream final answer
       if (!msg.tool_calls || msg.tool_calls.length === 0) {
-        // Final answer ready — now stream it for a nice UX
         const streamResp = await fetch(AI_URL, {
           method: "POST",
           headers: {
@@ -525,15 +528,13 @@ serve(async (req) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: MODEL,
+            model: selectedModel,
             messages: conversationMessages,
             stream: true,
-            // No tools on the final streaming call to avoid re-triggering
           }),
         });
 
         if (!streamResp.ok) {
-          // Fallback: return the non-streamed content
           const content = msg.content || "I'm sorry, I couldn't generate a response.";
           const encoder = new TextEncoder();
           const ssePayload = `data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\ndata: [DONE]\n\n`;
@@ -560,7 +561,6 @@ serve(async (req) => {
         }
 
         console.log(`Tool call: ${fnName}`, fnArgs);
-
         const result = await executeTool(fnName, fnArgs, userId, pageContext, adminClient);
 
         conversationMessages.push({
@@ -573,7 +573,7 @@ serve(async (req) => {
       toolRound++;
     }
 
-    // Fallback if we exhausted tool rounds
+    // Fallback if exhausted tool rounds
     const encoder = new TextEncoder();
     const fallback = `data: ${JSON.stringify({ choices: [{ delta: { content: "I've gathered the information. How can I help you further?" } }] })}\n\ndata: [DONE]\n\n`;
     return new Response(encoder.encode(fallback), {
