@@ -362,8 +362,19 @@ const CarDetail: React.FC = () => {
 
             {/* Preisbewertung badge */}
             {car.fair_value_price > 0 && (() => {
-              const ratio = car.price / car.fair_value_price;
-              const level = ratio <= 0.92 ? "top" : ratio <= 1.05 ? "good" : "fair";
+              let level: "top" | "good" | "fair";
+              if (marketData) {
+                // Market-informed: compare asking price to market average
+                const pctOfMarket = car.price / marketData.avg_price;
+                const pctOfFair = car.price / car.fair_value_price;
+                // Weighted: 60% market position, 40% fair value ratio
+                const score = pctOfMarket * 0.6 + pctOfFair * 0.4;
+                level = score <= 0.93 ? "top" : score <= 1.05 ? "good" : "fair";
+              } else {
+                // Fallback to fair value only
+                const ratio = car.price / car.fair_value_price;
+                level = ratio <= 0.92 ? "top" : ratio <= 1.05 ? "good" : "fair";
+              }
               const labelMap = { top: language === "de" ? "Top Angebot" : "Top Deal", good: language === "de" ? "Gutes Angebot" : "Good Deal", fair: language === "de" ? "Faires Angebot" : "Fair Deal" };
               const colorMap = { top: "bg-primary text-primary-foreground", good: "bg-primary/80 text-primary-foreground", fair: "bg-yellow-500 text-white" };
               const barMap = { top: "100%", good: "66%", fair: "33%" };
@@ -371,11 +382,18 @@ const CarDetail: React.FC = () => {
                 <div className="flex flex-col gap-1.5 min-w-[160px]">
                   <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">{language === "de" ? "Preisbewertung" : "Price Rating"}</div>
                   <div className="flex items-center gap-2">
-                    <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${colorMap[level]}`}>{labelMap[level]}</span>
+                    <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${colorMap[level]}`}>
+                      {marketLoading ? "…" : labelMap[level]}
+                    </span>
                     <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-                      <div className={`h-full rounded-full transition-all ${level === "fair" ? "bg-yellow-500" : "bg-primary"}`} style={{ width: barMap[level] }} />
+                      <div className={`h-full rounded-full transition-all ${level === "fair" ? "bg-yellow-500" : "bg-primary"}`} style={{ width: marketLoading ? "0%" : barMap[level] }} />
                     </div>
                   </div>
+                  {marketData && (
+                    <div className="text-[9px] text-muted-foreground">
+                      {language === "de" ? "Marktdurchschnitt" : "Market avg"}: €{marketData.avg_price.toLocaleString()} · {marketData.confidence}
+                    </div>
+                  )}
                 </div>
               );
             })()}
