@@ -1,6 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { CreditCard } from "lucide-react";
+
+const PaymentIcon: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
+  <div className="flex items-center gap-1.5 bg-white/10 rounded px-2 py-1" title={label}>
+    {children}
+    <span className="text-[11px] text-white/60">{label}</span>
+  </div>
+);
 
 const FooterSection: React.FC = () => {
   const { t } = useLanguage();
@@ -16,6 +24,41 @@ const FooterSection: React.FC = () => {
           </div>
           <p className="text-white/40 text-sm">{t.footer.copyright}</p>
         </div>
+
+        {/* Payment methods */}
+        <div className="mb-6">
+          <p className="text-xs text-white/40 text-center mb-3">We accept</p>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <PaymentIcon label="Cards">
+              <CreditCard className="h-4 w-4 text-white/70" />
+            </PaymentIcon>
+            <PaymentIcon label="Amazon Pay">
+              <span className="text-sm font-bold text-white/70">a</span>
+            </PaymentIcon>
+            <PaymentIcon label="Apple Pay">
+              <span className="text-sm font-bold text-white/70"></span>
+            </PaymentIcon>
+            <PaymentIcon label="Google Pay">
+              <span className="text-[11px] font-semibold text-white/70">G Pay</span>
+            </PaymentIcon>
+            <PaymentIcon label="Link">
+              <span className="text-sm font-bold text-[#00D66E]">⟶</span>
+            </PaymentIcon>
+            <PaymentIcon label="PayPal">
+              <span className="text-sm font-bold text-[#009cde]">P</span>
+            </PaymentIcon>
+            <PaymentIcon label="Bancontact">
+              <span className="text-[11px] font-bold text-white/70">BC</span>
+            </PaymentIcon>
+            <PaymentIcon label="EPS">
+              <span className="text-[11px] font-bold text-white/70">eps</span>
+            </PaymentIcon>
+            <PaymentIcon label="Klarna">
+              <span className="text-sm font-bold text-[#FFB3C7]">K</span>
+            </PaymentIcon>
+          </div>
+        </div>
+
         <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/40 mb-8">
           <Link to="/privacy-policy" className="hover:text-orange transition-colors">Privacy Policy</Link>
           <span>·</span>

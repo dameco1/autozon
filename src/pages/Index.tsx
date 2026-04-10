@@ -45,7 +45,7 @@ const Index: React.FC = () => {
       
       <HowItWorksSection />
       <CtaSection />
-      <FooterSection />
+      
       <CookieConsent />
       <ConciergeChat />
     </div>

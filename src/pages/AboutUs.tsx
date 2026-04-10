@@ -268,7 +268,7 @@ const AboutUs: React.FC = () => {
         </div>
       </section>
 
-      <FooterSection />
+      
       <CookieConsent />
     </div>
   );
