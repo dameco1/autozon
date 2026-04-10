@@ -93,11 +93,6 @@ const SellWizard: React.FC = () => {
       return;
     }
 
-    if (!userId) {
-      navigate(`/login?redirect=/sell`);
-      return;
-    }
-
     setStep(1);
     setUploading(true);
     setAnalyzing(true);
@@ -108,6 +103,8 @@ const SellWizard: React.FC = () => {
       const imageUrls: string[] = [];
       const documentUrls: string[] = [];
       const tempId = crypto.randomUUID();
+      // Use user folder if logged in, temp/ folder for anonymous users
+      const folderPrefix = userId ? `${userId}/${tempId}` : `temp/${tempId}`;
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -119,7 +116,7 @@ const SellWizard: React.FC = () => {
         }
 
         const ext = file.name.split(".").pop() || "jpg";
-        const path = `${userId}/${tempId}/${i}.${ext}`;
+        const path = `${folderPrefix}/${i}.${ext}`;
         const { error: uploadErr } = await supabase.storage.from("car-images").upload(path, uploadFile);
         if (uploadErr) throw uploadErr;
 
