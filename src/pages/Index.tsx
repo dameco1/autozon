@@ -13,7 +13,7 @@ import PricingSection from "@/components/home/PricingSection";
 import AiInspectionSection from "@/components/home/AiInspectionSection";
 import ComparisonSection from "@/components/home/ComparisonSection";
 import CtaSection from "@/components/home/CtaSection";
-import FooterSection from "@/components/home/FooterSection";
+
 
 const Index: React.FC = () => {
   return (
