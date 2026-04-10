@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
-import FooterSection from "@/components/home/FooterSection";
+
 import CookieConsent from "@/components/CookieConsent";
 
 const fadeUp = {
@@ -268,7 +268,7 @@ const AboutUs: React.FC = () => {
         </div>
       </section>
 
-      <FooterSection />
+      
       <CookieConsent />
     </div>
   );
