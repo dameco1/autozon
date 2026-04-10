@@ -39,6 +39,7 @@ import AboutUs from "./pages/AboutUs";
 import FinancingCalculator from "./pages/FinancingCalculator";
 import KycVerification from "./pages/KycVerification";
 import Unsubscribe from "./pages/Unsubscribe";
+import FooterSection from "./components/home/FooterSection";
 
 const queryClient = new QueryClient();
 
@@ -50,47 +51,52 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/verify-otp" element={<EmailOtpVerify />} />
-              <Route path="/check-email" element={<CheckEmail />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsAndConditions />} />
-              <Route path="/cookie-policy" element={<CookiePolicy />} />
-              <Route path="/impressum" element={<Impressum />} />
-              <Route path="/pitch" element={<InvestorPitch />} />
-              <Route path="/brand" element={<BrandBook />} />
-              <Route path="/docs" element={<Documentation />} />
-              <Route path="/docs/view/:slug" element={<DocViewer />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/qa" element={<QA />} />
-              <Route path="/about" element={<AboutUs />} />
-              <Route path="/unsubscribe" element={<Unsubscribe />} />
+            <div className="flex flex-col min-h-screen">
+              <div className="flex-1">
+                <Routes>
+                  {/* Public routes */}
+                  <Route path="/" element={<Index />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/verify-otp" element={<EmailOtpVerify />} />
+                  <Route path="/check-email" element={<CheckEmail />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms" element={<TermsAndConditions />} />
+                  <Route path="/cookie-policy" element={<CookiePolicy />} />
+                  <Route path="/impressum" element={<Impressum />} />
+                  <Route path="/pitch" element={<InvestorPitch />} />
+                  <Route path="/brand" element={<BrandBook />} />
+                  <Route path="/docs" element={<Documentation />} />
+                  <Route path="/docs/view/:slug" element={<DocViewer />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/qa" element={<QA />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/unsubscribe" element={<Unsubscribe />} />
 
-              {/* Auth-protected routes handle session checks inside each page */}
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/onboarding" element={<Onboarding />} />
-              <Route path="/car-upload" element={<CarUpload />} />
-              <Route path="/fair-value/:id" element={<FairValueResult />} />
-              <Route path="/buyer-matches/:carId" element={<BuyerMatches />} />
-              <Route path="/recommendations" element={<NextCarRecommendations />} />
-              <Route path="/car/:id" element={<CarDetail />} />
-              <Route path="/intent" element={<IntentSelection />} />
-              <Route path="/buyer-questionnaire" element={<BuyerQuestionnaire />} />
-              <Route path="/cars" element={<CarSelection />} />
-              <Route path="/car-selection" element={<CarSelection />} />
-              <Route path="/compare" element={<CarComparison />} />
-              <Route path="/negotiate/:offerId" element={<Negotiation />} />
-              <Route path="/acquire/:offerId" element={<AcquisitionOptions />} />
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/financing/:offerId?" element={<FinancingCalculator />} />
-              <Route path="/kyc" element={<KycVerification />} />
+                  {/* Auth-protected routes handle session checks inside each page */}
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/onboarding" element={<Onboarding />} />
+                  <Route path="/car-upload" element={<CarUpload />} />
+                  <Route path="/fair-value/:id" element={<FairValueResult />} />
+                  <Route path="/buyer-matches/:carId" element={<BuyerMatches />} />
+                  <Route path="/recommendations" element={<NextCarRecommendations />} />
+                  <Route path="/car/:id" element={<CarDetail />} />
+                  <Route path="/intent" element={<IntentSelection />} />
+                  <Route path="/buyer-questionnaire" element={<BuyerQuestionnaire />} />
+                  <Route path="/cars" element={<CarSelection />} />
+                  <Route path="/car-selection" element={<CarSelection />} />
+                  <Route path="/compare" element={<CarComparison />} />
+                  <Route path="/negotiate/:offerId" element={<Negotiation />} />
+                  <Route path="/acquire/:offerId" element={<AcquisitionOptions />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/financing/:offerId?" element={<FinancingCalculator />} />
+                  <Route path="/kyc" element={<KycVerification />} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
+              <FooterSection />
+            </div>
           </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>
