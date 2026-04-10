@@ -138,8 +138,22 @@ const SellWizard: React.FC = () => {
       if (error) throw new Error(error.message || "Analysis failed");
       if (data?.error) throw new Error(data.error);
 
+      // Delete sensitive documents (driver's license, registration) from storage after analysis
+      if (documentUrls.length > 0) {
+        const docPaths = documentUrls.map((url: string) => {
+          const parts = url.split("/car-images/");
+          return parts[1] ? decodeURIComponent(parts[1]) : null;
+        }).filter(Boolean);
+        if (docPaths.length > 0) {
+          await supabase.storage.from("car-images").remove(docPaths as string[]);
+        }
+      }
+
+      // Sort photos according to slot order: front, rear, sides, interior, dashboard, extras
+      const sortedPhotos = sortPhotosBySlotOrder(data.photos || imageUrls);
+
       setAnalysisProgress(100);
-      setAnalysis(data);
+      setAnalysis({ ...data, photos: sortedPhotos });
       setAskingPrice(data.fairValue || 0);
       setEditDescription(data.description || "");
 
