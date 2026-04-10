@@ -24,29 +24,29 @@ const badgeIcons: Record<string, React.ReactNode> = {
   card: <CreditCard className="h-4 w-4 text-orange shrink-0" />,
 };
 
-const sellerBullets = {
+const sellerPoints = {
   en: [
-    { icon: Upload, title: "Create an Ad in just 3 clicks", desc: "Upload car images and a picture of car registration — Autozon does the rest for you." },
-    { icon: Brain, title: "AI-powered fair value estimation", desc: "Instant, data-driven valuation based on market trends and historical transactions." },
-    { icon: MessageSquare, title: "Structured negotiation flow", desc: "No more chaotic messages. Clean offer → counteroffer → acceptance, fully transparent." },
+    { icon: Upload, title: "Ad in 3 clicks", desc: "Upload photos + registration — we handle the rest." },
+    { icon: Brain, title: "AI fair value", desc: "Data-driven pricing from market trends." },
+    { icon: MessageSquare, title: "Smart negotiation", desc: "Structured offer → counteroffer → done." },
   ],
   de: [
-    { icon: Upload, title: "Inserat in nur 3 Klicks erstellen", desc: "Lade Fotos und den Zulassungsschein hoch — Autozon erledigt den Rest." },
-    { icon: Brain, title: "KI-gestützte Wertermittlung", desc: "Sofortige, datengetriebene Bewertung basierend auf Markttrends und Transaktionen." },
-    { icon: MessageSquare, title: "Strukturierter Verhandlungsablauf", desc: "Keine chaotischen Nachrichten. Angebot → Gegenangebot → Einigung, voll transparent." },
+    { icon: Upload, title: "Inserat in 3 Klicks", desc: "Fotos + Zulassung hochladen — wir erledigen den Rest." },
+    { icon: Brain, title: "KI-Wertermittlung", desc: "Datengetriebene Preise aus Markttrends." },
+    { icon: MessageSquare, title: "Smarte Verhandlung", desc: "Angebot → Gegenangebot → erledigt." },
   ],
 };
 
-const buyerBullets = {
+const buyerPoints = {
   en: [
-    { icon: Users, title: "Lifestyle-based buyer matching", desc: "Matched by use case — family, commuting, business, sport — not just model." },
-    { icon: FileCheck, title: "Legally structured handover", desc: "Enforced steps, deadlines, and documentation for a safe vehicle handover." },
-    { icon: ShieldCheck, title: "Built to build trust", desc: "Unlike traditional classifieds, Autozon gives buyers confidence and clarity." },
+    { icon: Users, title: "Lifestyle matching", desc: "Matched by use case, not just model." },
+    { icon: FileCheck, title: "Safe handover", desc: "Enforced steps, deadlines & documentation." },
+    { icon: ShieldCheck, title: "Built for trust", desc: "Confidence and clarity, unlike classifieds." },
   ],
   de: [
-    { icon: Users, title: "Lifestyle-basiertes Matching", desc: "Passend zum Einsatzzweck — Familie, Pendeln, Business, Sport — nicht nur Modell." },
-    { icon: FileCheck, title: "Rechtlich strukturierte Übergabe", desc: "Verbindliche Schritte, Fristen und Dokumentation für eine sichere Übergabe." },
-    { icon: ShieldCheck, title: "Vertrauen als Grundprinzip", desc: "Anders als klassische Inserate — Autozon gibt Käufern Sicherheit und Klarheit." },
+    { icon: Users, title: "Lifestyle-Matching", desc: "Passend zum Einsatzzweck, nicht nur Modell." },
+    { icon: FileCheck, title: "Sichere Übergabe", desc: "Verbindliche Schritte, Fristen & Dokumente." },
+    { icon: ShieldCheck, title: "Vertrauen first", desc: "Sicherheit und Klarheit, anders als Kleinanzeigen." },
   ],
 };
 
@@ -55,207 +55,144 @@ const HeroSection: React.FC = () => {
   const { canInstall, promptInstall } = usePwaInstall();
   const navigate = useNavigate();
 
-  const sBullets = sellerBullets[language];
-  const bBullets = buyerBullets[language];
-
-  // Split trust badges: first 2 for seller side, last 2 for buyer side
-  const sellerBadges = t.hero.trustBadges.slice(0, 2);
-  const buyerBadges = t.hero.trustBadges.slice(2, 4);
+  const sPoints = sellerPoints[language];
+  const bPoints = buyerPoints[language];
 
   return (
-    <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-background" style={{ minHeight: "60vh" }}>
+    <section className="relative overflow-hidden bg-background">
       {/* Warm radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
-      {/* Female buyer — mobile background */}
+      {/* Mobile background — female silhouette */}
       <div className="xl:hidden absolute inset-0 z-[0] flex justify-center items-end overflow-hidden pointer-events-none">
-        <img
-          src={heroBuyerFemale}
-          alt=""
-          className="h-[75%] w-auto object-contain object-bottom opacity-[0.07]"
-          width={640}
-          height={1280}
-        />
+        <img src={heroBuyerFemale} alt="" className="h-[70%] w-auto object-contain object-bottom opacity-[0.06]" width={640} height={1280} />
       </div>
 
-      {/* Male seller — right edge touching the title column */}
-      <motion.div
-        className="hidden xl:block absolute -bottom-[8%] left-[24%] z-[1]"
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: "easeOut" }}
-      >
-        <img
+      {/* ── Top hero area with people flanking the headline ── */}
+      <div className="relative z-10 pt-24 pb-10" style={{ minHeight: "55vh" }}>
+        {/* Male — left decorative */}
+        <motion.img
           src={heroSellerMale}
-          alt={language === "de" ? "Zufriedener Verkäufer" : "Happy seller"}
-          className="h-[calc(65vh)] w-auto object-contain object-bottom"
-          width={640}
-          height={1280}
+          alt=""
+          className="hidden xl:block absolute -bottom-4 left-[15%] h-[58vh] w-auto object-contain object-bottom z-[1] pointer-events-none"
+          width={640} height={1280}
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 0.85, x: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
         />
-        {/* Seller bullet cards — mid body area */}
-        <div className="absolute top-[38%] -left-[20px] w-[260px] z-20 space-y-2">
-          {sBullets.map((b, i) => (
-            <motion.div
-              key={i}
-              className="flex items-start gap-2 bg-card/95 backdrop-blur-md border border-border rounded-xl px-3 py-2 shadow-md"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
-            >
-              <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
-              <div>
-                <p className="text-foreground text-[11px] font-bold leading-tight">{b.title}</p>
-                <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-          {/* Trust badges below seller bullets */}
-          <div className="space-y-1.5 pt-1">
-            {sellerBadges.map((badge, i) => (
-              <motion.div
-                key={i}
-                className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2 shadow-sm"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2 + i * 0.1, duration: 0.4 }}
-              >
-                {badgeIcons[badge.icon]}
-                <span className="text-foreground text-[11px] font-semibold leading-tight">
-                  {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Female buyer — left edge touching the title column */}
-      <motion.div
-        className="hidden xl:block absolute bottom-0 right-[24%] z-[1]"
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: "easeOut" }}
-      >
-        <img
+        {/* Female — right decorative */}
+        <motion.img
           src={heroBuyerFemale}
-          alt={language === "de" ? "Glückliche Käuferin" : "Happy buyer"}
-          className="h-[calc(60vh)] w-auto object-contain object-bottom"
-          width={640}
-          height={1280}
+          alt=""
+          className="hidden xl:block absolute -bottom-4 right-[15%] h-[55vh] w-auto object-contain object-bottom z-[1] pointer-events-none"
+          width={640} height={1280}
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 0.85, x: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
         />
-        {/* Buyer bullet cards — mid body area */}
-        <div className="absolute top-[38%] -right-[20px] w-[260px] z-20 space-y-2">
-          {bBullets.map((b, i) => (
-            <motion.div
-              key={i}
-              className="flex items-start gap-2 bg-card/95 backdrop-blur-md border border-border rounded-xl px-3 py-2 shadow-md"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
-            >
-              <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
-              <div>
-                <p className="text-foreground text-[11px] font-bold leading-tight">{b.title}</p>
-                <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-          {/* Trust badges below buyer bullets */}
-          <div className="space-y-1.5 pt-1">
-            {buyerBadges.map((badge, i) => (
-              <motion.div
-                key={i}
-                className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2 shadow-sm"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2 + i * 0.1, duration: 0.4 }}
-              >
+
+        {/* Center content */}
+        <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
+          <motion.h1
+            className="text-5xl sm:text-6xl lg:text-[68px] font-display font-black text-foreground leading-[1.05] tracking-tight mb-3"
+            initial="hidden" animate="visible" variants={fadeUp} custom={0}
+          >
+            {t.hero.headline}
+          </motion.h1>
+          <motion.span
+            className="block text-4xl sm:text-5xl lg:text-[60px] font-display font-black text-orange leading-[1.08] mb-6"
+            initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
+          >
+            {t.hero.headlineAccent}
+          </motion.span>
+
+          <motion.p
+            className="text-muted-foreground text-lg sm:text-xl lg:text-2xl max-w-[560px] mx-auto leading-relaxed mb-8 whitespace-pre-line"
+            initial="hidden" animate="visible" variants={fadeUp} custom={1}
+          >
+            {t.hero.subheadline}
+          </motion.p>
+
+          {/* Trust badges — 2x2 on mobile, 4 cols on sm+ */}
+          <motion.div
+            className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto mb-8"
+            initial="hidden" animate="visible" variants={fadeUp} custom={2}
+          >
+            {t.hero.trustBadges.map((badge, i) => (
+              <div key={i} className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm hover:border-orange/30 transition-colors">
                 {badgeIcons[badge.icon]}
-                <span className="text-foreground text-[11px] font-semibold leading-tight">
+                <span className="text-foreground text-xs font-semibold leading-tight">
                   {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
                 </span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Center text — original layout preserved */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full text-center">
-        {/* Headline */}
-        <motion.h1
-          className="text-4xl sm:text-5xl lg:text-[56px] font-display font-black text-foreground leading-[1.08] tracking-tight mb-2"
-          initial="hidden" animate="visible" variants={fadeUp} custom={0}
-        >
-          {t.hero.headline}
-        </motion.h1>
-        <motion.span
-          className="block text-3xl sm:text-4xl lg:text-[48px] font-display font-black text-orange leading-[1.1] mb-6"
-          initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
-        >
-          {t.hero.headlineAccent}
-        </motion.span>
-
-        {/* Subheadline */}
-        <motion.p
-          className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-[560px] mx-auto leading-relaxed mb-10 whitespace-pre-line"
-          initial="hidden" animate="visible" variants={fadeUp} custom={1}
-        >
-          {t.hero.subheadline}
-        </motion.p>
-
-        {/* Trust Badges — visible on non-XL, hidden on XL (split to sides) */}
-        <motion.div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto xl:hidden"
-          initial="hidden" animate="visible" variants={fadeUp} custom={2}
-        >
-          {t.hero.trustBadges.map((badge, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm hover:border-orange/30 transition-colors"
-            >
-              {badgeIcons[badge.icon]}
-              <span className="text-foreground text-xs font-semibold leading-tight">
-                {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
-              </span>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8"
-          initial="hidden" animate="visible" variants={fadeUp} custom={3}
-        >
-          {canInstall && (
-            <Button onClick={promptInstall} size="lg" className="gap-2 text-base px-6">
-              <Download className="h-5 w-5" />
-              {t.hero.installApp}
-            </Button>
-          )}
-          <Button
-            variant="outline"
-            size="lg"
-            className="gap-2 text-base px-6"
-            onClick={() => navigate("/onboarding")}
-          >
-            {t.hero.getStarted}
-            <ArrowRight className="h-5 w-5" />
-          </Button>
-        </motion.div>
-
-        {/* Mobile-only bullet cards */}
-        <div className="xl:hidden mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-          {[...sBullets, ...bBullets].map((b, i) => (
-            <div key={i} className="flex items-start gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm">
-              <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
-              <div>
-                <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
-                <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </motion.div>
+
+          {/* CTA */}
+          <motion.div
+            className="flex flex-col sm:flex-row items-center justify-center gap-3"
+            initial="hidden" animate="visible" variants={fadeUp} custom={3}
+          >
+            {canInstall && (
+              <Button onClick={promptInstall} size="lg" className="gap-2 text-base px-6">
+                <Download className="h-5 w-5" />
+                {t.hero.installApp}
+              </Button>
+            )}
+            <Button variant="outline" size="lg" className="gap-2 text-base px-6" onClick={() => navigate("/onboarding")}>
+              {t.hero.getStarted}
+              <ArrowRight className="h-5 w-5" />
+            </Button>
+          </motion.div>
         </div>
+      </div>
+
+      {/* ── Value propositions — clean 2-column grid below ── */}
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pb-16">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+        >
+          {/* Seller column */}
+          <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm">
+            <h3 className="text-sm font-bold tracking-widest uppercase text-orange mb-5">
+              {language === "de" ? "Für Verkäufer" : "For Sellers"}
+            </h3>
+            <div className="space-y-5">
+              {sPoints.map((p, i) => (
+                <motion.div key={i} className="flex items-start gap-3" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}>
+                  <div className="w-9 h-9 rounded-lg bg-orange/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <p.icon className="h-5 w-5 text-orange" />
+                  </div>
+                  <div>
+                    <p className="text-foreground text-base font-bold leading-snug">{p.title}</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed mt-0.5">{p.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Buyer column */}
+          <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm">
+            <h3 className="text-sm font-bold tracking-widest uppercase text-orange mb-5">
+              {language === "de" ? "Für Käufer" : "For Buyers"}
+            </h3>
+            <div className="space-y-5">
+              {bPoints.map((p, i) => (
+                <motion.div key={i} className="flex items-start gap-3" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}>
+                  <div className="w-9 h-9 rounded-lg bg-orange/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <p.icon className="h-5 w-5 text-orange" />
+                  </div>
+                  <div>
+                    <p className="text-foreground text-base font-bold leading-snug">{p.title}</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed mt-0.5">{p.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
