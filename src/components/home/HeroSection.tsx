@@ -187,7 +187,7 @@ const HeroSection: React.FC = () => {
 
         {/* Subheadline */}
         <motion.p
-          className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-[560px] mx-auto leading-relaxed mb-10"
+          className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-[560px] mx-auto leading-relaxed mb-10 whitespace-pre-line"
           initial="hidden" animate="visible" variants={fadeUp} custom={1}
         >
           {t.hero.subheadline}
