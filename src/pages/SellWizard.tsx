@@ -93,6 +93,11 @@ const SellWizard: React.FC = () => {
       return;
     }
 
+    if (!userId) {
+      navigate(`/login?redirect=/sell`);
+      return;
+    }
+
     setStep(1);
     setUploading(true);
     setAnalyzing(true);
@@ -114,7 +119,7 @@ const SellWizard: React.FC = () => {
         }
 
         const ext = file.name.split(".").pop() || "jpg";
-        const path = `temp/${tempId}/${i}.${ext}`;
+        const path = `${userId}/${tempId}/${i}.${ext}`;
         const { error: uploadErr } = await supabase.storage.from("car-images").upload(path, uploadFile);
         if (uploadErr) throw uploadErr;
 
