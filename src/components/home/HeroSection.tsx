@@ -67,6 +67,17 @@ const HeroSection: React.FC = () => {
       {/* Warm radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
+      {/* Female buyer — mobile background */}
+      <div className="xl:hidden absolute inset-0 z-[0] flex justify-center items-end overflow-hidden pointer-events-none">
+        <img
+          src={heroBuyerFemale}
+          alt=""
+          className="h-[75%] w-auto object-contain object-bottom opacity-[0.07]"
+          width={640}
+          height={1280}
+        />
+      </div>
+
       {/* Male seller — right edge touching the title column */}
       <motion.div
         className="hidden xl:block absolute -bottom-[8%] left-[24%] z-[1]"
