@@ -39,7 +39,6 @@ import AboutUs from "./pages/AboutUs";
 import FinancingCalculator from "./pages/FinancingCalculator";
 import KycVerification from "./pages/KycVerification";
 import Unsubscribe from "./pages/Unsubscribe";
-import SellWizard from "./pages/SellWizard";
 
 const queryClient = new QueryClient();
 
@@ -89,7 +88,6 @@ const App = () => (
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/financing/:offerId?" element={<FinancingCalculator />} />
               <Route path="/kyc" element={<KycVerification />} />
-              <Route path="/sell" element={<SellWizard />} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>
