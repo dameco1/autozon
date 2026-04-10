@@ -1,13 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { CreditCard, Instagram } from "lucide-react";
+import { Instagram } from "lucide-react";
 
-const PaymentSvg: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
-  <div className="bg-white rounded px-2 py-1.5 flex items-center justify-center h-8 min-w-[48px]" title={label}>
-    {children}
-  </div>
-);
+import cardsImg from "@/assets/payments/cards.png";
+import amazonImg from "@/assets/payments/amazon.png";
+import applepayImg from "@/assets/payments/applepay.png";
+import googlepayImg from "@/assets/payments/googlepay.png";
+import linkImg from "@/assets/payments/link.png";
+import paypalImg from "@/assets/payments/paypal.png";
+import bancontactImg from "@/assets/payments/bancontact.png";
+import epsImg from "@/assets/payments/eps.png";
+import klarnaImg from "@/assets/payments/klarna.png";
+
+const paymentMethods = [
+  { label: "Cards", src: cardsImg },
+  { label: "Amazon Pay", src: amazonImg },
+  { label: "Apple Pay", src: applepayImg },
+  { label: "Google Pay", src: googlepayImg },
+  { label: "Link", src: linkImg },
+  { label: "PayPal", src: paypalImg },
+  { label: "Bancontact", src: bancontactImg },
+  { label: "EPS", src: epsImg },
+  { label: "Klarna", src: klarnaImg },
+];
 
 const FooterSection: React.FC = () => {
   const { t } = useLanguage();
@@ -39,33 +55,15 @@ const FooterSection: React.FC = () => {
         <div className="mb-6">
           <p className="text-xs text-white/40 text-center mb-3">We accept</p>
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <PaymentSvg label="Visa / Mastercard">
-              <CreditCard className="h-4 w-4 text-gray-700" />
-            </PaymentSvg>
-            <PaymentSvg label="Amazon Pay">
-              <svg viewBox="0 0 40 16" className="h-4 w-auto"><text x="0" y="13" fontSize="12" fontWeight="bold" fill="#FF9900" fontFamily="Arial">a</text><text x="9" y="13" fontSize="9" fill="#232F3E" fontFamily="Arial">pay</text></svg>
-            </PaymentSvg>
-            <PaymentSvg label="Apple Pay">
-              <svg viewBox="0 0 40 16" className="h-4 w-auto"><text x="0" y="13" fontSize="11" fontWeight="bold" fill="#000" fontFamily="Arial"></text><text x="12" y="13" fontSize="9" fill="#000" fontFamily="Arial">Pay</text></svg>
-            </PaymentSvg>
-            <PaymentSvg label="Google Pay">
-              <svg viewBox="0 0 44 16" className="h-4 w-auto"><text x="0" y="13" fontSize="11" fontWeight="bold" fill="#4285F4" fontFamily="Arial">G</text><text x="12" y="13" fontSize="9" fill="#5F6368" fontFamily="Arial">Pay</text></svg>
-            </PaymentSvg>
-            <PaymentSvg label="Link">
-              <svg viewBox="0 0 32 16" className="h-4 w-auto"><text x="0" y="13" fontSize="11" fontWeight="bold" fill="#00D66E" fontFamily="Arial">Link</text></svg>
-            </PaymentSvg>
-            <PaymentSvg label="PayPal">
-              <svg viewBox="0 0 40 16" className="h-4 w-auto"><text x="0" y="13" fontSize="10" fontWeight="bold" fill="#003087" fontFamily="Arial">Pay</text><text x="20" y="13" fontSize="10" fontWeight="bold" fill="#009CDE" fontFamily="Arial">Pal</text></svg>
-            </PaymentSvg>
-            <PaymentSvg label="Bancontact">
-              <svg viewBox="0 0 20 16" className="h-4 w-auto"><rect width="20" height="16" rx="2" fill="#005498"/><text x="3" y="12" fontSize="8" fontWeight="bold" fill="#fff" fontFamily="Arial">BC</text></svg>
-            </PaymentSvg>
-            <PaymentSvg label="EPS">
-              <svg viewBox="0 0 24 16" className="h-4 w-auto"><rect width="24" height="16" rx="2" fill="#C8036F"/><text x="3" y="12" fontSize="8" fontWeight="bold" fill="#fff" fontFamily="Arial">eps</text></svg>
-            </PaymentSvg>
-            <PaymentSvg label="Klarna">
-              <svg viewBox="0 0 36 16" className="h-4 w-auto"><rect width="36" height="16" rx="2" fill="#FFB3C7"/><text x="4" y="12" fontSize="9" fontWeight="bold" fill="#0A0B09" fontFamily="Arial">Klarna</text></svg>
-            </PaymentSvg>
+            {paymentMethods.map((pm) => (
+              <div
+                key={pm.label}
+                className="bg-white rounded px-2 py-1.5 flex items-center justify-center h-8"
+                title={pm.label}
+              >
+                <img src={pm.src} alt={pm.label} className="h-5 w-auto object-contain" />
+              </div>
+            ))}
           </div>
         </div>
 
