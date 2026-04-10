@@ -1,55 +1,136 @@
 
 
-# Fix Browsing Workflow — Let Users Browse Freely
+# Radical UX Transformation: AI-First Wizard Platform
 
-## Problems Identified
+## Summary
 
-1. **Broken continuity after login**: Clicking a car → redirected to login → after login goes to `/verify-otp` → then intent selection, losing the car the user wanted to see
-2. **Car cards in selection only toggle like** — no way to preview individual cars before committing
-3. **Comparison page shows limited specs** — no full car details or photos
-4. **"No cars found" pushes users to buyer-questionnaire** — wearing down casual browsers
-5. **CarSelection requires login for "Show More"** — blocks anonymous browsing
+Transform Autozon from a traditional car marketplace into an AI-first wizard platform with two major changes: (1) a **Hyper Search** natural-language buyer experience, and (2) a **drag-and-drop seller flow** where AI extracts everything from uploaded photos/documents.
 
-## Plan
+---
 
-### 1. Preserve return URL through login flow
-- **Login.tsx**: Accept a `?redirect=` query param. After successful login + OTP, redirect to that URL instead of always going to `/verify-otp` → intent selection.
-- **EmailOtpVerify.tsx**: Pass through the `redirect` param; after verification, navigate to the stored redirect URL.
-- **CarDetail.tsx** (`handleStartTrade`): When redirecting to login, include `?redirect=/car/${id}` so the user returns to the car they clicked.
-- **CarSelection.tsx** (`toggleLike`): Same — include redirect param when sending unauthenticated users to login.
+## Phase 1: Buyer — Hyper Search & Matchmaking
 
-### 2. Add "View Details" button on car cards in CarSelection
-- Each car card currently only toggles like on click. Add a **"View" icon/button** (e.g., eye icon) that navigates to `/car/${car.id}` so users can preview the full ad without losing their selection state.
-- Keep the heart/like toggle as a separate action on the card.
-- Remove the whole-card click = like behavior; make card click navigate to detail instead, and keep heart icon for liking.
+### What changes
 
-### 3. Make CarSelection fully browsable without login
-- Remove the login requirement for basic browsing. The `toggleLike` and `handleShowMore` functions currently require auth — keep like behind auth (with redirect), but allow "Show More" for anonymous users by running the query without user preferences.
-- Change "no cars found" CTA from "buyer-questionnaire" to just adjusting filters or going back to search.
+The `CarSearchSection` on the homepage gets a **mode toggle** defaulting to "Hyper Search". The new mode shows a single large textarea with a grey placeholder example. On submit, an edge function parses the natural language into structured filters, runs the matching algorithm, and returns Top 5 results.
 
-### 4. Improve CarComparison to show full car details
-- Update `CarComparison.tsx` to display full car photos (gallery/carousel), description, equipment, and inspection data for each car side by side — not just the spec rows table.
-- Each car column should function as a mini version of the CarDetail page.
+### Technical steps
 
-### 5. Defer preference collection to serious engagement
-- Remove the automatic redirect to intent selection / buyer-questionnaire after login.
-- Only prompt for preferences when the user explicitly clicks "Get Personalized Matches" or similar — not as a gate to browsing.
-- After login (with redirect param), go straight back to where the user was.
+1. **New edge function `hyper-search/index.ts`**
+   - Accepts `{ query: string }` (the natural language input)
+   - Uses Lovable AI (Gemini 3 Flash) with tool calling to extract structured fields: age, location, kids, budget, color, seats, body type, brands, max km, smoker preference, etc.
+   - Queries the `cars` table with extracted filters
+   - Runs `computeMatchScore` server-side (port the scoring logic or use a simplified version)
+   - Returns Top 5 matches ranked by: match score, preference weight, penalty for missing criteria, bonus for strong alignment
+   - Returns the extracted structured requirements alongside results so the user can see what was understood
 
-## Files to Modify
+2. **Update `CarSearchSection.tsx`**
+   - Add mode state: `"hyper"` (default) and `"standard"`
+   - Hyper mode: single large textarea + "Find My Car" button + animated loading state
+   - Standard mode: existing filter UI (unchanged)
+   - Toggle button to switch modes
+   - Results render inline as Top 5 car cards with match scores and extracted criteria summary
 
-| File | Change |
-|------|--------|
-| `src/pages/Login.tsx` | Accept `redirect` query param, pass it through OTP flow |
-| `src/pages/EmailOtpVerify.tsx` | Honor `redirect` param after verification |
-| `src/pages/CarSelection.tsx` | Add "View" button on cards; allow anonymous "Show More"; fix "no cars" CTA |
-| `src/pages/CarDetail.tsx` | Pass redirect URL when sending to login |
-| `src/pages/CarComparison.tsx` | Expand to show full photos, description, equipment per car |
-| `src/i18n/translations.ts` | Add any new translation keys (view details, etc.) |
+3. **New component `HyperSearchResults.tsx`**
+   - Displays extracted criteria as tags/chips
+   - Shows Top 5 car cards with match score badges
+   - "View all results" button navigates to `/car-selection` with extracted filters
 
-## Technical Notes
+---
 
-- The `redirect` param will be URL-encoded and passed as `?redirect=/car/abc-123` through login → OTP → final destination.
-- Anonymous browsing already works for car queries (RLS policy for `anon` role exists). The frontend just needs to stop gating UI on `userId`.
-- CarComparison will use a carousel component (already in the project) for photo galleries.
+## Phase 2: Seller — AI-Powered Ad Creation Wizard
+
+### What changes
+
+Replace the current 6-step manual form (`CarUpload.tsx`) with a new AI-first wizard at a new route `/sell` (keep old `/car-upload` for edit mode). The new flow has 6 animated wizard steps.
+
+### Technical steps
+
+4. **New page `src/pages/SellWizard.tsx`** — the main wizard container with step state management and animated transitions.
+
+5. **Step 1 — Upload Everything**
+   - Full-width drag-and-drop zone with animation
+   - Accept: images (car photos), PDFs (registration doc, driver's license, other docs)
+   - Upload all files to `car-images` bucket
+   - Categorize files client-side (image vs document) by MIME type
+   - Prominent animated instructions
+
+6. **Step 2 — AI Analyzing Animation**
+   - "Autozon AI Analyzing Your Vehicle..." with robot/scanning animation
+   - Progress indicators (Scanning photos... Reading documents... Detecting damages... Estimating value...)
+   - This step triggers the backend processing
+
+7. **New edge function `analyze-car-listing/index.ts`**
+   - Receives: array of image URLs + document URLs
+   - Orchestrates multiple AI calls:
+     a. **Document extraction**: Send document images to Gemini 2.5 Pro (vision) to extract: make, model, year, VIN, mileage, engine type, fuel, transmission, owners, registration validity, color
+     b. **Damage detection**: Reuse existing `detect-damage` logic (inline or call)
+     c. **Fair value calculation**: Use extracted data + `calculateFairValue` logic
+     d. **Ad description generation**: Reuse existing `generate-description` logic
+   - Returns structured JSON with all extracted fields, confidence levels, detected damages, fair value, generated description, and list of missing/uncertain fields
+   - Strictly deterministic: if data missing → mark as `null` with `"source": "not_found"`; if unclear → mark as `"uncertain"` and flag for user confirmation
+
+8. **Step 3 — Fair Value Analysis**
+   - Display detected damages with repair estimates
+   - Show valuation breakdown (reuse `AppraisalBreakdown` component)
+   - Recommended price range
+   - User can adjust/override
+
+9. **Step 4 — Ad Preview Wizard**
+   - Show pre-filled ad with all extracted data
+   - Missing fields highlighted in orange with inline inputs
+   - Fields that need confirmation shown with a confirm/edit toggle
+   - Common missing fields: smoker/non-smoker, service history, warranty, inspection details
+   - AI-generated description shown with edit capability
+
+10. **Step 5 — Final Step: Save or Place**
+    - Two prominent buttons:
+      - **Save Ad**: Requires registration → saves to dashboard as draft (status: `draft`), NOT visible to buyers
+      - **Place Ad**: Requires registration + payment → ad becomes `available`, visible to buyers
+    - This requires a new `draft` status for cars
+
+11. **Database migration**: Add `draft` status support
+    - Update the `cars` table status handling to support `draft`
+    - Update RLS policies: drafts visible only to owner
+    - Update `cars_public` view to exclude drafts
+
+---
+
+## Phase 3: Homepage & Navigation Updates
+
+12. **Update `HeroSection.tsx`**
+    - Update seller CTA to point to `/sell` instead of onboarding
+    - Update messaging to emphasize AI-first experience
+
+13. **Update `Index.tsx`** section order if needed
+
+14. **Update `App.tsx`** routing
+    - Add `/sell` route for `SellWizard`
+    - Keep `/car-upload` for edit mode
+
+15. **Translation updates** in `src/i18n/translations.ts` for all new UI text (EN + DE)
+
+---
+
+## What stays unchanged
+
+- Negotiation engine
+- Transaction wizard
+- Dashboard
+- KYC flow
+- Authentication flow
+- Existing matching algorithm (reused server-side)
+- Existing edge functions (detect-damage, vin-decode, generate-description — reused by the new orchestrator)
+
+---
+
+## Implementation order
+
+This is a large effort. Recommended phased delivery:
+
+1. **Phase 2 first** (Seller wizard) — highest impact, most visible change
+2. **Phase 1 second** (Hyper Search) — builds on existing matching logic
+3. **Phase 3 last** (Homepage/nav integration)
+
+Each phase is independently deployable and testable.
 
