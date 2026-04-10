@@ -69,7 +69,7 @@ const HeroSection: React.FC = () => {
 
       {/* Male seller — right edge touching the title column */}
       <motion.div
-        className="hidden xl:block absolute bottom-0 left-[24%] z-[1]"
+        className="hidden xl:block absolute -bottom-[8%] left-[24%] z-[1]"
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
