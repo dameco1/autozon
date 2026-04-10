@@ -63,9 +63,9 @@ const HeroSection: React.FC = () => {
       {/* Warm radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
-      {/* Male seller — anchored to bottom-left, stretching full section height */}
+      {/* Male seller — pulled closer to headline with face kept clear */}
       <motion.div
-        className="hidden lg:block absolute bottom-0 left-0 z-[1]"
+        className="hidden xl:block absolute bottom-0 left-[6%] z-[1] pointer-events-none"
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 0.95, x: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
@@ -77,12 +77,11 @@ const HeroSection: React.FC = () => {
           width={640}
           height={1280}
         />
-        {/* Seller bullet points */}
-        <div className="absolute top-[4%] left-[40%] w-[280px] z-20 space-y-2.5">
+        <div className="absolute top-[34%] left-[46%] w-[300px] z-20 space-y-2.5 pointer-events-auto">
           {sBullets.map((b, i) => (
             <motion.div
               key={i}
-              className="flex items-start gap-2 bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
+              className="flex items-start gap-2 bg-card/92 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
@@ -97,9 +96,9 @@ const HeroSection: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Female buyer — anchored to bottom-right, stretching full section height */}
+      {/* Female buyer — pulled closer to headline with face kept clear */}
       <motion.div
-        className="hidden lg:block absolute bottom-0 right-0 z-[1]"
+        className="hidden xl:block absolute bottom-0 right-[6%] z-[1] pointer-events-none"
         initial={{ opacity: 0, x: 30 }}
         animate={{ opacity: 0.95, x: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
@@ -111,12 +110,11 @@ const HeroSection: React.FC = () => {
           width={640}
           height={1280}
         />
-        {/* Buyer bullet points */}
-        <div className="absolute top-[4%] right-[40%] w-[280px] z-20 space-y-2.5">
+        <div className="absolute top-[34%] right-[46%] w-[300px] z-20 space-y-2.5 pointer-events-auto">
           {bBullets.map((b, i) => (
             <motion.div
               key={i}
-              className="flex items-start gap-2 bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
+              className="flex items-start gap-2 bg-card/92 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
