@@ -56,7 +56,17 @@ const NotificationBell: React.FC = () => {
   const markAllRead = async () => {
     const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id);
     if (unreadIds.length === 0) return;
-    await supabase.from("notifications").update({ read: true }).in("id", unreadIds);
+    // Update each notification individually to respect RLS per-row policy
+    const results = await Promise.all(
+      unreadIds.map((id) =>
+        supabase.from("notifications").update({ read: true }).eq("id", id)
+      )
+    );
+    const anyError = results.find((r) => r.error);
+    if (anyError?.error) {
+      console.error("Failed to mark notifications read:", anyError.error);
+      return;
+    }
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
