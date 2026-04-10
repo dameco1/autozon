@@ -14,6 +14,36 @@ import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import browserImageCompression from "browser-image-compression";
+import { PHOTO_SLOTS } from "@/components/car-upload/photoSlots";
+
+/** Sort photos by the canonical slot order: front, rear, left, right, interior, dashboard, extras */
+function sortPhotosBySlotOrder(photos: string[]): string[] {
+  if (!photos || photos.length === 0) return [];
+  const slotOrder = PHOTO_SLOTS.map(s => s.id);
+  // Keywords map to slot positions
+  const keywords: Record<string, string[]> = {
+    front: ["front", "vorne", "vorn"],
+    rear: ["rear", "back", "hinten", "heck"],
+    left: ["left", "links"],
+    right: ["right", "rechts"],
+    interior_front: ["interior", "innen", "cabin", "cockpit"],
+    interior_rear: ["rear_interior", "rücksitz", "backseat"],
+    dashboard: ["dashboard", "armatur", "tacho", "instrument"],
+  };
+
+  function getSlotIndex(url: string): number {
+    const lower = url.toLowerCase();
+    for (const [slot, words] of Object.entries(keywords)) {
+      if (words.some(w => lower.includes(w))) {
+        const idx = slotOrder.indexOf(slot);
+        return idx >= 0 ? idx : 99;
+      }
+    }
+    return 99;
+  }
+
+  return [...photos].sort((a, b) => getSlotIndex(a) - getSlotIndex(b));
+}
 
 interface ExtractedField {
   value: any;
@@ -138,8 +168,22 @@ const SellWizard: React.FC = () => {
       if (error) throw new Error(error.message || "Analysis failed");
       if (data?.error) throw new Error(data.error);
 
+      // Delete sensitive documents (driver's license, registration) from storage after analysis
+      if (documentUrls.length > 0) {
+        const docPaths = documentUrls.map((url: string) => {
+          const parts = url.split("/car-images/");
+          return parts[1] ? decodeURIComponent(parts[1]) : null;
+        }).filter(Boolean);
+        if (docPaths.length > 0) {
+          await supabase.storage.from("car-images").remove(docPaths as string[]);
+        }
+      }
+
+      // Sort photos according to slot order: front, rear, sides, interior, dashboard, extras
+      const sortedPhotos = sortPhotosBySlotOrder(data.photos || imageUrls);
+
       setAnalysisProgress(100);
-      setAnalysis(data);
+      setAnalysis({ ...data, photos: sortedPhotos });
       setAskingPrice(data.fairValue || 0);
       setEditDescription(data.description || "");
 
