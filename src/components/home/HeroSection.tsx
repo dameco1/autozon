@@ -86,7 +86,7 @@ const HeroSection: React.FC = () => {
           {sBullets.map((b, i) => (
             <motion.div
               key={i}
-              className="flex items-start gap-2 bg-card/92 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
+              className="flex items-start gap-2 bg-card/95 backdrop-blur-md border border-border rounded-xl px-3 py-2 shadow-md"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
@@ -137,7 +137,7 @@ const HeroSection: React.FC = () => {
           {bBullets.map((b, i) => (
             <motion.div
               key={i}
-              className="flex items-start gap-2 bg-card/92 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
+              className="flex items-start gap-2 bg-card/95 backdrop-blur-md border border-border rounded-xl px-3 py-2 shadow-md"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
