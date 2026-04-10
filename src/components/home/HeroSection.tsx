@@ -74,7 +74,7 @@ const HeroSection: React.FC = () => {
         <motion.img
           src={heroSellerMale}
           alt=""
-          className="hidden xl:block absolute -bottom-4 left-[12%] h-[58vh] w-auto object-contain object-bottom z-[1] pointer-events-none"
+          className="hidden xl:block absolute -bottom-4 right-[52%] h-[58vh] w-auto object-contain object-bottom z-[1] pointer-events-none"
           width={640} height={1280}
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 0.85, x: 0 }}
@@ -84,7 +84,7 @@ const HeroSection: React.FC = () => {
         <motion.img
           src={heroBuyerFemale}
           alt=""
-          className="hidden xl:block absolute -bottom-4 right-[12%] h-[55vh] w-auto object-contain object-bottom z-[1] pointer-events-none"
+          className="hidden xl:block absolute -bottom-4 left-[52%] h-[55vh] w-auto object-contain object-bottom z-[1] pointer-events-none"
           width={640} height={1280}
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 0.85, x: 0 }}
