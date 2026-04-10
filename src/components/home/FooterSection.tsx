@@ -54,15 +54,9 @@ const FooterSection: React.FC = () => {
         {/* Payment methods */}
         <div className="mb-6">
           <p className="text-xs text-white/40 text-center mb-3">We accept</p>
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             {paymentMethods.map((pm) => (
-              <div
-                key={pm.label}
-                className="bg-white rounded px-2 py-1.5 flex items-center justify-center h-8"
-                title={pm.label}
-              >
-                <img src={pm.src} alt={pm.label} className="h-5 w-auto object-contain" />
-              </div>
+              <img key={pm.label} src={pm.src} alt={pm.label} title={pm.label} className="h-6 w-auto object-contain" />
             ))}
           </div>
         </div>
