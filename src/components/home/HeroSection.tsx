@@ -69,7 +69,7 @@ const HeroSection: React.FC = () => {
 
       {/* Male seller — right edge touching the title column */}
       <motion.div
-        className="hidden xl:block absolute bottom-0 left-[12%] z-[1]"
+        className="hidden xl:block absolute bottom-0 left-[18%] z-[1]"
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
@@ -120,7 +120,7 @@ const HeroSection: React.FC = () => {
 
       {/* Female buyer — left edge touching the title column */}
       <motion.div
-        className="hidden xl:block absolute bottom-0 right-[12%] z-[1]"
+        className="hidden xl:block absolute bottom-0 right-[18%] z-[1]"
         initial={{ opacity: 0, x: 30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
