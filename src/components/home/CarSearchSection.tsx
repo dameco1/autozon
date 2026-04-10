@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Heart, Users, Baby, Briefcase, Wallet, Car } from "lucide-react";
+import { Search, Heart, Users, Baby, Briefcase, Wallet, Car, Sparkles, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -9,6 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useCarMakes, useCarModels } from "@/hooks/useCarModels";
 import { BODY_TYPES, TRANSMISSIONS } from "@/components/car-upload/constants";
+import { toast } from "sonner";
+import HyperSearchResults from "./HyperSearchResults";
 
 const PRICE_OPTIONS = [5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000, 200000, -1];
 const MILEAGE_OPTIONS = [25000, 50000, 100000, 150000, 200000];
@@ -19,9 +22,17 @@ const RELATIONSHIPS = ["single", "married", "divorced"] as const;
 const currentYear = new Date().getFullYear();
 const YEAR_OPTIONS = Array.from({ length: 30 }, (_, i) => currentYear - i);
 
+const HYPER_PLACEHOLDER_EN = "I am 35 years old from Vienna with one child, avid biker, looking for a car that's not more than 10 years old, blue color, 5-seater, SUV, prefer German brands like BMW, Audi, Mercedes, no more than 200,000 km, non-smoker…";
+const HYPER_PLACEHOLDER_DE = "Ich bin 35 Jahre alt aus Wien mit einem Kind, begeisterter Radfahrer, suche ein Auto nicht älter als 10 Jahre, blaue Farbe, 5-Sitzer, SUV, bevorzuge deutsche Marken wie BMW, Audi, Mercedes, maximal 200.000 km, Nichtraucher…";
+
 const CarSearchSection: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
+
+  const [mode, setMode] = useState<"hyper" | "standard">("hyper");
+  const [hyperQuery, setHyperQuery] = useState("");
+  const [hyperLoading, setHyperLoading] = useState(false);
+  const [hyperResults, setHyperResults] = useState<any>(null);
 
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
@@ -39,13 +50,13 @@ const CarSearchSection: React.FC = () => {
   const [purpose, setPurpose] = useState("");
   const [budget, setBudget] = useState("");
 
-  // Pull makes & models from car_models table (same source as car-upload)
   const { data: makes = [], isLoading: makesLoading } = useCarMakes();
   const { data: models = [], isLoading: modelsLoading } = useCarModels(make);
 
   const effectiveMaxPrice = budget || maxPrice;
 
   useEffect(() => {
+    if (mode !== "standard") return;
     const fetchCount = async () => {
       let query = supabase
         .from("cars")
@@ -65,9 +76,9 @@ const CarSearchSection: React.FC = () => {
       setTotalCount(count ?? 0);
     };
     fetchCount();
-  }, [make, model, effectiveMaxPrice, yearFrom, fuelType, maxMileage, bodyType, transmission]);
+  }, [make, model, effectiveMaxPrice, yearFrom, fuelType, maxMileage, bodyType, transmission, mode]);
 
-  const handleSearch = () => {
+  const handleStandardSearch = () => {
     const params = new URLSearchParams();
     if (make) params.set("make", make);
     if (model) params.set("model", model);
@@ -81,6 +92,27 @@ const CarSearchSection: React.FC = () => {
     if (hasKids) params.set("kids", hasKids);
     if (purpose) params.set("purpose", purpose);
     navigate(`/car-selection?${params.toString()}`);
+  };
+
+  const handleHyperSearch = async () => {
+    if (hyperQuery.trim().length < 10) {
+      toast.error(language === "de" ? "Bitte beschreiben Sie genauer, was Sie suchen" : "Please describe in more detail what you're looking for");
+      return;
+    }
+    setHyperLoading(true);
+    setHyperResults(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("hyper-search", {
+        body: { query: hyperQuery },
+      });
+      if (error) throw new Error(error.message);
+      if (data?.error) throw new Error(data.error);
+      setHyperResults(data);
+    } catch (err: any) {
+      toast.error(err.message || "Search failed");
+    } finally {
+      setHyperLoading(false);
+    }
   };
 
   const resetAll = () => {
@@ -98,189 +130,260 @@ const CarSearchSection: React.FC = () => {
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground text-center mb-2">
           {cs.title}
         </h2>
-        <p className="text-muted-foreground text-center text-sm mb-8">{cs.subtitle}</p>
+        <p className="text-muted-foreground text-center text-sm mb-6">{cs.subtitle}</p>
+
+        {/* Mode toggle */}
+        <div className="flex items-center justify-center gap-2 mb-6">
+          <Button
+            variant={mode === "hyper" ? "default" : "outline"}
+            size="sm"
+            className={mode === "hyper" ? "bg-orange text-orange-foreground hover:bg-orange/90" : ""}
+            onClick={() => { setMode("hyper"); setHyperResults(null); }}
+          >
+            <Sparkles className="h-4 w-4 mr-1.5" />
+            {language === "de" ? "KI-Suche" : "AI Search"}
+          </Button>
+          <Button
+            variant={mode === "standard" ? "default" : "outline"}
+            size="sm"
+            className={mode === "standard" ? "bg-orange text-orange-foreground hover:bg-orange/90" : ""}
+            onClick={() => setMode("standard")}
+          >
+            <SlidersHorizontal className="h-4 w-4 mr-1.5" />
+            {language === "de" ? "Filtersuche" : "Filter Search"}
+          </Button>
+        </div>
 
         <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
-          {/* Lifestyle filters row */}
-          <div className="mb-6">
-            <p className="text-muted-foreground text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5" /> {ls.sectionTitle}
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <Select value={relationship} onValueChange={setRelationship}>
-                <SelectTrigger className="bg-background border-border text-foreground text-sm">
-                  <Heart className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
-                  <SelectValue placeholder={ls.relationship} />
-                </SelectTrigger>
-                <SelectContent>
-                  {RELATIONSHIPS.map((r) => (
-                    <SelectItem key={r} value={r}>{ls.relationships[r]}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          {mode === "hyper" ? (
+            /* Hyper Search Mode */
+            <div>
+              <p className="text-muted-foreground text-sm mb-3">
+                {language === "de"
+                  ? "Beschreiben Sie Ihr Traumauto in eigenen Worten — unsere KI findet die besten Treffer:"
+                  : "Describe your dream car in your own words — our AI finds the best matches:"}
+              </p>
+              <Textarea
+                value={hyperQuery}
+                onChange={e => setHyperQuery(e.target.value)}
+                placeholder={language === "de" ? HYPER_PLACEHOLDER_DE : HYPER_PLACEHOLDER_EN}
+                rows={4}
+                className="text-base mb-4 resize-none"
+              />
+              <div className="flex justify-end">
+                <Button
+                  size="lg"
+                  className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-5 rounded-lg"
+                  onClick={handleHyperSearch}
+                  disabled={hyperLoading}
+                >
+                  {hyperLoading ? (
+                    <>
+                      <Sparkles className="mr-2 h-4 w-4 animate-pulse" />
+                      {language === "de" ? "KI sucht…" : "AI Searching…"}
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      {language === "de" ? "Mein Auto finden" : "Find My Car"}
+                    </>
+                  )}
+                </Button>
+              </div>
 
-              <Select value={hasKids} onValueChange={setHasKids}>
-                <SelectTrigger className="bg-background border-border text-foreground text-sm">
-                  <Baby className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
-                  <SelectValue placeholder={ls.kids} />
-                </SelectTrigger>
-                <SelectContent>
-                  {["0", "1", "2", "3", "3+"].map((k) => (
-                    <SelectItem key={k} value={k}>{k} {k === "0" ? ls.noKids : ""}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={purpose} onValueChange={setPurpose}>
-                <SelectTrigger className="bg-background border-border text-foreground text-sm">
-                  <Briefcase className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
-                  <SelectValue placeholder={ls.purpose} />
-                </SelectTrigger>
-                <SelectContent>
-                  {PURPOSES.map((p) => (
-                    <SelectItem key={p} value={p}>{ls.purposes[p]}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={budget} onValueChange={setBudget}>
-                <SelectTrigger className="bg-background border-border text-foreground text-sm">
-                  <Wallet className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
-                  <SelectValue placeholder={ls.budget} />
-                </SelectTrigger>
-                <SelectContent>
-                  {PRICE_OPTIONS.map((p) => (
-                    <SelectItem key={p} value={String(p)}>{p === -1 ? "Unlimited" : `€${p.toLocaleString()}`}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {hyperResults && (
+                <HyperSearchResults
+                  criteria={hyperResults.criteria}
+                  results={hyperResults.results}
+                  totalMatched={hyperResults.totalMatched}
+                />
+              )}
             </div>
-          </div>
+          ) : (
+            /* Standard Filter Mode */
+            <>
+              {/* Lifestyle filters row */}
+              <div className="mb-6">
+                <p className="text-muted-foreground text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                  <Users className="h-3.5 w-3.5" /> {ls.sectionTitle}
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <Select value={relationship} onValueChange={setRelationship}>
+                    <SelectTrigger className="bg-background border-border text-foreground text-sm">
+                      <Heart className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
+                      <SelectValue placeholder={ls.relationship} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {RELATIONSHIPS.map((r) => (
+                        <SelectItem key={r} value={r}>{ls.relationships[r]}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-          {/* OR Divider */}
-          <div className="relative my-6">
-            <div className="border-t border-border" />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-4 py-1 rounded-full text-xs font-bold text-orange uppercase tracking-widest">
-              {cs.or}
-            </span>
-          </div>
+                  <Select value={hasKids} onValueChange={setHasKids}>
+                    <SelectTrigger className="bg-background border-border text-foreground text-sm">
+                      <Baby className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
+                      <SelectValue placeholder={ls.kids} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {["0", "1", "2", "3", "3+"].map((k) => (
+                        <SelectItem key={k} value={k}>{k} {k === "0" ? ls.noKids : ""}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-          {/* Car spec filters */}
-          <div className="mb-3">
-            <p className="text-muted-foreground text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <Car className="h-3.5 w-3.5" /> {cs.vehicleType}
-            </p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 mb-6">
-            <Select value={make} onValueChange={(v) => { setMake(v); setModel(""); }}>
-              <SelectTrigger className="bg-background border-border text-foreground">
-                <SelectValue placeholder={cs.make} />
-              </SelectTrigger>
-              <SelectContent>
-                {makes.map((m) => (
-                  <SelectItem key={m} value={m}>{m}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  <Select value={purpose} onValueChange={setPurpose}>
+                    <SelectTrigger className="bg-background border-border text-foreground text-sm">
+                      <Briefcase className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
+                      <SelectValue placeholder={ls.purpose} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PURPOSES.map((p) => (
+                        <SelectItem key={p} value={p}>{ls.purposes[p]}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-            <Select value={model} onValueChange={setModel} disabled={!make}>
-              <SelectTrigger className="bg-background border-border text-foreground">
-                <SelectValue placeholder={cs.model} />
-              </SelectTrigger>
-              <SelectContent>
-                {models.map((m) => (
-                  <SelectItem key={m} value={m}>{m}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  <Select value={budget} onValueChange={setBudget}>
+                    <SelectTrigger className="bg-background border-border text-foreground text-sm">
+                      <Wallet className="h-3.5 w-3.5 mr-1 text-muted-foreground shrink-0" />
+                      <SelectValue placeholder={ls.budget} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PRICE_OPTIONS.map((p) => (
+                        <SelectItem key={p} value={String(p)}>{p === -1 ? "Unlimited" : `€${p.toLocaleString()}`}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-            <Select value={maxPrice} onValueChange={setMaxPrice}>
-              <SelectTrigger className="bg-background border-border text-foreground">
-                <SelectValue placeholder={cs.priceUpTo} />
-              </SelectTrigger>
-              <SelectContent>
-                {PRICE_OPTIONS.map((p) => (
-                  <SelectItem key={p} value={String(p)}>€{p.toLocaleString()}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              {/* OR Divider */}
+              <div className="relative my-6">
+                <div className="border-t border-border" />
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-4 py-1 rounded-full text-xs font-bold text-orange uppercase tracking-widest">
+                  {cs.or}
+                </span>
+              </div>
 
-            <Select value={yearFrom} onValueChange={setYearFrom}>
-              <SelectTrigger className="bg-background border-border text-foreground">
-                <SelectValue placeholder={cs.yearFrom} />
-              </SelectTrigger>
-              <SelectContent>
-                {YEAR_OPTIONS.map((y) => (
-                  <SelectItem key={y} value={String(y)}>{y}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              {/* Car spec filters */}
+              <div className="mb-3">
+                <p className="text-muted-foreground text-xs uppercase tracking-wider flex items-center gap-1.5">
+                  <Car className="h-3.5 w-3.5" /> {cs.vehicleType}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 mb-6">
+                <Select value={make} onValueChange={(v) => { setMake(v); setModel(""); }}>
+                  <SelectTrigger className="bg-background border-border text-foreground">
+                    <SelectValue placeholder={cs.make} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {makes.map((m) => (
+                      <SelectItem key={m} value={m}>{m}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-            <Select value={fuelType} onValueChange={setFuelType}>
-              <SelectTrigger className="bg-background border-border text-foreground">
-                <SelectValue placeholder={cs.fuel} />
-              </SelectTrigger>
-              <SelectContent>
-                {FUEL_OPTIONS.map((f) => (
-                  <SelectItem key={f} value={f}>{f}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <Select value={model} onValueChange={setModel} disabled={!make}>
+                  <SelectTrigger className="bg-background border-border text-foreground">
+                    <SelectValue placeholder={cs.model} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {models.map((m) => (
+                      <SelectItem key={m} value={m}>{m}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-            <Select value={maxMileage} onValueChange={setMaxMileage}>
-              <SelectTrigger className="bg-background border-border text-foreground">
-                <SelectValue placeholder={cs.mileageUpTo} />
-              </SelectTrigger>
-              <SelectContent>
-                {MILEAGE_OPTIONS.map((m) => (
-                  <SelectItem key={m} value={String(m)}>{m.toLocaleString()} km</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <Select value={maxPrice} onValueChange={setMaxPrice}>
+                  <SelectTrigger className="bg-background border-border text-foreground">
+                    <SelectValue placeholder={cs.priceUpTo} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PRICE_OPTIONS.map((p) => (
+                      <SelectItem key={p} value={String(p)}>€{p.toLocaleString()}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-            <Select value={bodyType} onValueChange={setBodyType}>
-              <SelectTrigger className="bg-background border-border text-foreground">
-                <SelectValue placeholder="Body Type" />
-              </SelectTrigger>
-              <SelectContent>
-                {BODY_TYPES.map((b) => (
-                  <SelectItem key={b} value={b}>{b}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <Select value={yearFrom} onValueChange={setYearFrom}>
+                  <SelectTrigger className="bg-background border-border text-foreground">
+                    <SelectValue placeholder={cs.yearFrom} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {YEAR_OPTIONS.map((y) => (
+                      <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-            <Select value={transmission} onValueChange={(v) => setTransmission(v === "any" ? "" : v)}>
-              <SelectTrigger className="bg-background border-border text-foreground">
-                <SelectValue placeholder="Transmission" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="any">Any</SelectItem>
-                {TRANSMISSIONS.map((tr) => (
-                  <SelectItem key={tr} value={tr}>{tr}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+                <Select value={fuelType} onValueChange={setFuelType}>
+                  <SelectTrigger className="bg-background border-border text-foreground">
+                    <SelectValue placeholder={cs.fuel} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {FUEL_OPTIONS.map((f) => (
+                      <SelectItem key={f} value={f}>{f}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-          <div className="flex items-center justify-between">
-            <button
-              onClick={resetAll}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {cs.reset}
-            </button>
+                <Select value={maxMileage} onValueChange={setMaxMileage}>
+                  <SelectTrigger className="bg-background border-border text-foreground">
+                    <SelectValue placeholder={cs.mileageUpTo} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {MILEAGE_OPTIONS.map((m) => (
+                      <SelectItem key={m} value={String(m)}>{m.toLocaleString()} km</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-            <Button
-              size="lg"
-              className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-5 rounded-lg"
-              onClick={handleSearch}
-            >
-              <Search className="mr-2 h-4 w-4" />
-              {totalCount !== null
-                ? `${cs.searchBtn} (${totalCount})`
-                : cs.searchBtn}
-            </Button>
-          </div>
+                <Select value={bodyType} onValueChange={setBodyType}>
+                  <SelectTrigger className="bg-background border-border text-foreground">
+                    <SelectValue placeholder="Body Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {BODY_TYPES.map((b) => (
+                      <SelectItem key={b} value={b}>{b}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={transmission} onValueChange={(v) => setTransmission(v === "any" ? "" : v)}>
+                  <SelectTrigger className="bg-background border-border text-foreground">
+                    <SelectValue placeholder="Transmission" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="any">Any</SelectItem>
+                    {TRANSMISSIONS.map((tr) => (
+                      <SelectItem key={tr} value={tr}>{tr}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={resetAll}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {cs.reset}
+                </button>
+
+                <Button
+                  size="lg"
+                  className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold text-base px-8 py-5 rounded-lg"
+                  onClick={handleStandardSearch}
+                >
+                  <Search className="mr-2 h-4 w-4" />
+                  {totalCount !== null
+                    ? `${cs.searchBtn} (${totalCount})`
+                    : cs.searchBtn}
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>
