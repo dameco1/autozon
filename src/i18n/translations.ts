@@ -23,7 +23,7 @@ export const translations = {
     hero: {
       headline: "The Easiest Way to",
       headlineAccent: "Sell and Buy Cars.",
-      subheadline: "AI-powered fair pricing. No dealer markups, no guesswork — just honest car trading.",
+      subheadline: "AI-powered fair pricing.\nNo dealer markups, no guesswork —\njust honest car trading.",
       primaryCta: "🚘 Sell My Car",
       secondaryCta: "Browse Cars",
       trustBadges: [
@@ -1226,7 +1226,7 @@ export const translations = {
     hero: {
       headline: "Der einfachste Weg,",
       headlineAccent: "Autos zu (ver)kaufen.",
-      subheadline: "KI-gestützte faire Preise. Kein Händleraufschlag, kein Rätselraten — einfach ehrlicher Autohandel.",
+      subheadline: "KI-gestützte faire Preise.\nKein Händleraufschlag, kein Rätselraten —\neinfach ehrlicher Autohandel.",
       primaryCta: "🚘 Auto verkaufen",
       secondaryCta: "Autos durchsuchen",
       trustBadges: [
