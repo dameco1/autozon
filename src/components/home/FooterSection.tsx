@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { CreditCard } from "lucide-react";
+import { CreditCard, Instagram } from "lucide-react";
 
 const PaymentIcon: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div className="flex items-center gap-1.5 bg-white/10 rounded px-2 py-1" title={label}>
@@ -22,7 +22,18 @@ const FooterSection: React.FC = () => {
               auto<span className="text-orange">zon</span>
             </span>
           </div>
-          <p className="text-white/40 text-sm">{t.footer.copyright}</p>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.instagram.com/autozon.at/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/40 hover:text-orange transition-colors"
+              aria-label="Instagram"
+            >
+              <Instagram className="h-5 w-5" />
+            </a>
+            <p className="text-white/40 text-sm">{t.footer.copyright}</p>
+          </div>
         </div>
 
         {/* Payment methods */}
