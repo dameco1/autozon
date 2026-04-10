@@ -168,16 +168,19 @@ RULES:
     const v = extraction.vehicle;
     const make = v.make?.value || "Unknown";
     const model = v.model?.value || "Unknown";
-    const year = v.year?.value || new Date().getFullYear();
-    const mileage = v.mileage?.value || 0;
+    const year = typeof v.year?.value === "number" ? v.year.value : parseInt(v.year?.value) || new Date().getFullYear();
+    const mileage = typeof v.mileage?.value === "number" ? v.mileage.value : parseInt(v.mileage?.value) || 0;
     const fuelType = v.fuel_type?.value || "Petrol";
     const bodyType = v.body_type?.value || "Sedan";
-    const powerHp = v.power_hp?.value || 100;
+    const powerHp = typeof v.power_hp?.value === "number" ? v.power_hp.value : parseInt(v.power_hp?.value) || 100;
     const condExterior = extraction.condition_exterior || 80;
     const condInterior = extraction.condition_interior || 80;
     const totalDamageCost = (extraction.damages || []).reduce((sum: number, d: any) => sum + (d.estimated_repair_cost_eur || 0), 0);
 
-    // Simplified fair value calculation (mirrors client-side logic)
+    // Ensure year is stored as a number in the extraction
+    if (v.year) v.year.value = year;
+
+    // Full fair value calculation (mirrors client-side calculateFairValue)
     const PREMIUM_BRANDS = ["Porsche", "Mercedes-Benz", "BMW", "Audi", "Tesla", "Volvo"];
     const ICONIC_BRANDS = ["Porsche", "Tesla"];
     const isPremium = PREMIUM_BRANDS.includes(make);
@@ -188,28 +191,67 @@ RULES:
       Porsche: 85000, Tesla: 52000, "Mercedes-Benz": 50000, BMW: 48000, Audi: 45000,
       Volvo: 42000, Volkswagen: 32000, Toyota: 30000, Honda: 28000, Mazda: 28000,
       Hyundai: 27000, Kia: 26000, Skoda: 26000, Ford: 28000, Opel: 26000,
-      Dacia: 18000, Nissan: 28000, "Land Rover": 60000, Mini: 30000,
+      Renault: 25000, Peugeot: 25000, "Citroën": 25000, Seat: 24000, Fiat: 22000,
+      Dacia: 18000, Nissan: 28000, Subaru: 32000, Suzuki: 22000,
+      "Land Rover": 60000, Jaguar: 55000, Lexus: 50000, Maserati: 80000,
+      "Alfa Romeo": 38000, Mini: 30000,
     };
     let baseMSRP = brandBase[make] ?? 30000;
-    const bodyMult: Record<string, number> = { SUV: 1.20, Coupe: 1.15, Convertible: 1.25, Wagon: 1.05, Sedan: 1.0, Hatchback: 0.9 };
+    const bodyMult: Record<string, number> = { SUV: 1.20, Coupe: 1.15, Convertible: 1.25, Wagon: 1.05, Sedan: 1.0, Hatchback: 0.9, Van: 0.95, Pickup: 1.10 };
     baseMSRP *= bodyMult[bodyType] ?? 1.0;
     baseMSRP *= Math.max(0.7, Math.min(1 + (powerHp - 150) * 0.0015, 1.8));
+    const fuelPremium: Record<string, number> = { Electric: 1.12, "Plug-in Hybrid": 1.08, Hybrid: 1.04, Petrol: 1.0, Diesel: 0.98 };
+    baseMSRP *= fuelPremium[fuelType] ?? 1.0;
 
     const carAge = 2026 - year;
     const depRate = isIconic ? 0.07 : isPremium ? 0.10 : 0.15;
     let depFactor = Math.max(0.25, Math.pow(1 - depRate, carAge * 0.75));
     if (carAge > 10) depFactor *= Math.max(0.60, 1 - (carAge - 10) * 0.04);
 
-    const expectedKm = carAge * 15000;
+    // Segment-specific expected mileage
+    const sportsMakes = ["Porsche", "Ferrari", "Lamborghini", "Maserati", "Alfa Romeo"];
+    let expectedAnnualKm = 15000;
+    if (sportsMakes.includes(make) || bodyType === "Coupe" || bodyType === "Convertible") expectedAnnualKm = 8000;
+    else if (bodyType === "Hatchback") expectedAnnualKm = 12000;
+    else if (bodyType === "SUV" || bodyType === "Wagon") expectedAnnualKm = 18000;
+    else if (bodyType === "Van") expectedAnnualKm = 25000;
+
+    const expectedKm = carAge * expectedAnnualKm;
     const mileageRatio = mileage / Math.max(expectedKm, 1);
     let mileageFactor = mileageRatio <= 1 ? 1 + (1 - mileageRatio) * 0.05 : Math.max(0.55, 1 - Math.pow(mileageRatio - 1, 1.4) * 0.25);
     if (mileage > 300000) mileageFactor *= 0.75;
+    else if (mileage > 250000) mileageFactor *= 0.82;
     else if (mileage > 200000) mileageFactor *= 0.90;
 
     const condAvg = (condExterior + condInterior) / 2;
     const condFactor = 0.70 + (condAvg / 100) * 0.32;
 
-    const attributeValue = Math.round(baseMSRP * depFactor * mileageFactor * condFactor);
+    // Equipment bonus (capped at 10%)
+    const equipList = extraction.detected_equipment || [];
+    const SAFETY = ["Adaptive Cruise Control", "Lane Assist", "Blind Spot Monitor", "360° Camera", "Parking Sensors", "Backup Camera"];
+    const TECH = ["Navigation", "Apple CarPlay", "Android Auto", "Heads-Up Display", "LED Headlights"];
+    const COMFORT = ["Heated Seats", "Leather Interior", "Sunroof", "Cruise Control", "Keyless Entry", "Seat Memory"];
+    let equipScore = 0;
+    equipList.forEach((eq: string) => {
+      if (SAFETY.includes(eq)) equipScore += 2.5;
+      else if (TECH.includes(eq)) equipScore += 1.8;
+      else if (COMFORT.includes(eq)) equipScore += 1.2;
+      else equipScore += 0.8;
+    });
+    const equipmentIndex = 1 + Math.min(equipScore * 0.003, 0.10);
+
+    // Market position
+    const highDemandBodies = ["SUV", "Hatchback"];
+    const bodyDemand = highDemandBodies.includes(bodyType) ? 1.04 : ["Sedan", "Wagon", "Coupe", "Convertible"].includes(bodyType) ? 1.01 : 0.97;
+    const highDemandMakes = ["Toyota", "Honda", "Porsche", "Tesla"];
+    const makeDemand = highDemandMakes.includes(make) ? 1.03 : isPremium ? 1.01 : 1.0;
+    const marketFactor = bodyDemand * makeDemand;
+
+    // Regional fuel demand
+    const fuelDemand: Record<string, number> = { Electric: 1.05, "Plug-in Hybrid": 1.03, Hybrid: 1.02, Petrol: 1.0, Diesel: 0.97 };
+    const regionalDemand = fuelDemand[fuelType] ?? 1.0;
+
+    const attributeValue = Math.round(baseMSRP * depFactor * mileageFactor * condFactor * equipmentIndex * marketFactor * regionalDemand);
     const fairValue = Math.max(500, attributeValue - totalDamageCost);
     const priceMin = Math.round(fairValue * 0.92);
     const priceMax = Math.round(fairValue * 1.08);
