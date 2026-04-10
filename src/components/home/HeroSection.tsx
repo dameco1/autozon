@@ -59,169 +59,153 @@ const HeroSection: React.FC = () => {
   const bBullets = buyerBullets[language];
 
   return (
-    <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-background" style={{ minHeight: "85vh" }}>
+    <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-background" style={{ minHeight: "60vh" }}>
       {/* Warm radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-stretch gap-0 lg:gap-4">
-
-          {/* LEFT — Seller (male) */}
-          <motion.div
-            className="hidden lg:flex flex-col items-center relative"
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="relative h-full flex flex-col items-center justify-end">
-              {/* Bullet points overlaid on left side */}
-              <div className="absolute top-[8%] left-0 right-[10%] z-20 space-y-3 pr-2">
-                {sBullets.map((b, i) => (
-                  <motion.div
-                    key={i}
-                    className="flex items-start gap-2 bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
-                  >
-                    <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
-                      <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
+      {/* Male seller — anchored to bottom-left, stretching full section height */}
+      <motion.div
+        className="hidden lg:block absolute bottom-0 left-0 z-[1]"
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 0.95, x: 0 }}
+        transition={{ duration: 0.9, ease: "easeOut" }}
+      >
+        <img
+          src={heroSellerMale}
+          alt={language === "de" ? "Zufriedener Verkäufer" : "Happy seller"}
+          className="h-[calc(60vh)] w-auto object-contain object-bottom"
+          width={640}
+          height={1280}
+        />
+        {/* Seller bullet points */}
+        <div className="absolute top-[4%] left-[40%] w-[280px] z-20 space-y-2.5">
+          {sBullets.map((b, i) => (
+            <motion.div
+              key={i}
+              className="flex items-start gap-2 bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
+            >
+              <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
+              <div>
+                <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
+                <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
               </div>
-              <img
-                src={heroSellerMale}
-                alt={language === "de" ? "Zufriedener Verkäufer" : "Happy seller"}
-                className="h-[520px] w-auto object-contain drop-shadow-lg"
-                width={640}
-                height={1280}
-              />
-              <span className="text-[11px] font-semibold tracking-widest uppercase text-orange mt-2">
-                {language === "de" ? "Verkäufer" : "Seller"}
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Female buyer — anchored to bottom-right, stretching full section height */}
+      <motion.div
+        className="hidden lg:block absolute bottom-0 right-0 z-[1]"
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 0.95, x: 0 }}
+        transition={{ duration: 0.9, ease: "easeOut" }}
+      >
+        <img
+          src={heroBuyerFemale}
+          alt={language === "de" ? "Glückliche Käuferin" : "Happy buyer"}
+          className="h-[calc(60vh)] w-auto object-contain object-bottom"
+          width={640}
+          height={1280}
+        />
+        {/* Buyer bullet points */}
+        <div className="absolute top-[4%] right-[40%] w-[280px] z-20 space-y-2.5">
+          {bBullets.map((b, i) => (
+            <motion.div
+              key={i}
+              className="flex items-start gap-2 bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
+            >
+              <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
+              <div>
+                <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
+                <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Center text — original layout preserved */}
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full text-center">
+        {/* Headline */}
+        <motion.h1
+          className="text-4xl sm:text-5xl lg:text-[56px] font-display font-black text-foreground leading-[1.08] tracking-tight mb-2"
+          initial="hidden" animate="visible" variants={fadeUp} custom={0}
+        >
+          {t.hero.headline}
+        </motion.h1>
+        <motion.span
+          className="block text-3xl sm:text-4xl lg:text-[48px] font-display font-black text-orange leading-[1.1] mb-6"
+          initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
+        >
+          {t.hero.headlineAccent}
+        </motion.span>
+
+        {/* Subheadline */}
+        <motion.p
+          className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-[560px] mx-auto leading-relaxed mb-10"
+          initial="hidden" animate="visible" variants={fadeUp} custom={1}
+        >
+          {t.hero.subheadline}
+        </motion.p>
+
+        {/* Trust Badges */}
+        <motion.div
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto"
+          initial="hidden" animate="visible" variants={fadeUp} custom={2}
+        >
+          {t.hero.trustBadges.map((badge, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm hover:border-orange/30 transition-colors"
+            >
+              {badgeIcons[badge.icon]}
+              <span className="text-foreground text-xs font-semibold leading-tight">
+                {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
               </span>
             </div>
-          </motion.div>
+          ))}
+        </motion.div>
 
-          {/* CENTER — Text content */}
-          <div className="flex flex-col items-center justify-center text-center max-w-xl mx-auto lg:mx-0 py-8">
-            {/* Headline */}
-            <motion.h1
-              className="text-4xl sm:text-5xl lg:text-[52px] font-display font-black text-foreground leading-[1.08] tracking-tight mb-2"
-              initial="hidden" animate="visible" variants={fadeUp} custom={0}
-            >
-              {t.hero.headline}
-            </motion.h1>
-            <motion.span
-              className="block text-3xl sm:text-4xl lg:text-[44px] font-display font-black text-orange leading-[1.1] mb-6"
-              initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
-            >
-              {t.hero.headlineAccent}
-            </motion.span>
-
-            {/* Subheadline */}
-            <motion.p
-              className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-[520px] mx-auto leading-relaxed mb-10"
-              initial="hidden" animate="visible" variants={fadeUp} custom={1}
-            >
-              {t.hero.subheadline}
-            </motion.p>
-
-            {/* Trust Badges */}
-            <motion.div
-              className="grid grid-cols-2 gap-3 max-w-md mx-auto"
-              initial="hidden" animate="visible" variants={fadeUp} custom={2}
-            >
-              {t.hero.trustBadges.map((badge, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm hover:border-orange/30 transition-colors"
-                >
-                  {badgeIcons[badge.icon]}
-                  <span className="text-foreground text-xs font-semibold leading-tight">
-                    {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
-                  </span>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8"
-              initial="hidden" animate="visible" variants={fadeUp} custom={3}
-            >
-              {canInstall && (
-                <Button onClick={promptInstall} size="lg" className="gap-2 text-base px-6">
-                  <Download className="h-5 w-5" />
-                  {t.hero.installApp}
-                </Button>
-              )}
-              <Button
-                variant="outline"
-                size="lg"
-                className="gap-2 text-base px-6"
-                onClick={() => navigate("/onboarding")}
-              >
-                {t.hero.getStarted}
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </motion.div>
-
-            {/* Mobile-only bullet cards */}
-            <div className="lg:hidden mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-              {[...sBullets, ...bBullets].map((b, i) => (
-                <div key={i} className="flex items-start gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm">
-                  <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
-                    <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT — Buyer (female) */}
-          <motion.div
-            className="hidden lg:flex flex-col items-center relative"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+        {/* CTA Buttons */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8"
+          initial="hidden" animate="visible" variants={fadeUp} custom={3}
+        >
+          {canInstall && (
+            <Button onClick={promptInstall} size="lg" className="gap-2 text-base px-6">
+              <Download className="h-5 w-5" />
+              {t.hero.installApp}
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="lg"
+            className="gap-2 text-base px-6"
+            onClick={() => navigate("/onboarding")}
           >
-            <div className="relative h-full flex flex-col items-center justify-end">
-              {/* Bullet points overlaid on right side */}
-              <div className="absolute top-[8%] left-[10%] right-0 z-20 space-y-3 pl-2">
-                {bBullets.map((b, i) => (
-                  <motion.div
-                    key={i}
-                    className="flex items-start gap-2 bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
-                  >
-                    <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
-                      <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-              <img
-                src={heroBuyerFemale}
-                alt={language === "de" ? "Glückliche Käuferin" : "Happy buyer"}
-                className="h-[520px] w-auto object-contain drop-shadow-lg"
-                width={640}
-                height={1280}
-              />
-              <span className="text-[11px] font-semibold tracking-widest uppercase text-orange mt-2">
-                {language === "de" ? "Käuferin" : "Buyer"}
-              </span>
-            </div>
-          </motion.div>
+            {t.hero.getStarted}
+            <ArrowRight className="h-5 w-5" />
+          </Button>
+        </motion.div>
 
+        {/* Mobile-only bullet cards */}
+        <div className="lg:hidden mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+          {[...sBullets, ...bBullets].map((b, i) => (
+            <div key={i} className="flex items-start gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm">
+              <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
+              <div>
+                <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
+                <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
