@@ -58,16 +58,20 @@ const HeroSection: React.FC = () => {
   const sBullets = sellerBullets[language];
   const bBullets = buyerBullets[language];
 
+  // Split trust badges: first 2 for seller side, last 2 for buyer side
+  const sellerBadges = t.hero.trustBadges.slice(0, 2);
+  const buyerBadges = t.hero.trustBadges.slice(2, 4);
+
   return (
     <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-background" style={{ minHeight: "60vh" }}>
       {/* Warm radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
-      {/* Male seller — pulled closer to headline with face kept clear */}
+      {/* Male seller — right edge touching the title column */}
       <motion.div
-        className="hidden xl:block absolute bottom-0 left-[6%] z-[1] pointer-events-none"
+        className="hidden xl:block absolute bottom-0 left-[12%] z-[1]"
         initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 0.95, x: 0 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
       >
         <img
@@ -77,7 +81,8 @@ const HeroSection: React.FC = () => {
           width={640}
           height={1280}
         />
-        <div className="absolute top-[34%] left-[46%] w-[300px] z-20 space-y-2.5 pointer-events-auto">
+        {/* Seller bullet cards — mid body area */}
+        <div className="absolute top-[38%] -left-[20px] w-[260px] z-20 space-y-2">
           {sBullets.map((b, i) => (
             <motion.div
               key={i}
@@ -88,19 +93,36 @@ const HeroSection: React.FC = () => {
             >
               <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
               <div>
-                <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
+                <p className="text-foreground text-[11px] font-bold leading-tight">{b.title}</p>
                 <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
               </div>
             </motion.div>
           ))}
+          {/* Trust badges below seller bullets */}
+          <div className="space-y-1.5 pt-1">
+            {sellerBadges.map((badge, i) => (
+              <motion.div
+                key={i}
+                className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2 shadow-sm"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2 + i * 0.1, duration: 0.4 }}
+              >
+                {badgeIcons[badge.icon]}
+                <span className="text-foreground text-[11px] font-semibold leading-tight">
+                  {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </motion.div>
 
-      {/* Female buyer — pulled closer to headline with face kept clear */}
+      {/* Female buyer — left edge touching the title column */}
       <motion.div
-        className="hidden xl:block absolute bottom-0 right-[6%] z-[1] pointer-events-none"
+        className="hidden xl:block absolute bottom-0 right-[12%] z-[1]"
         initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 0.95, x: 0 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
       >
         <img
@@ -110,7 +132,8 @@ const HeroSection: React.FC = () => {
           width={640}
           height={1280}
         />
-        <div className="absolute top-[34%] right-[46%] w-[300px] z-20 space-y-2.5 pointer-events-auto">
+        {/* Buyer bullet cards — mid body area */}
+        <div className="absolute top-[38%] -right-[20px] w-[260px] z-20 space-y-2">
           {bBullets.map((b, i) => (
             <motion.div
               key={i}
@@ -121,11 +144,28 @@ const HeroSection: React.FC = () => {
             >
               <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
               <div>
-                <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
+                <p className="text-foreground text-[11px] font-bold leading-tight">{b.title}</p>
                 <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
               </div>
             </motion.div>
           ))}
+          {/* Trust badges below buyer bullets */}
+          <div className="space-y-1.5 pt-1">
+            {buyerBadges.map((badge, i) => (
+              <motion.div
+                key={i}
+                className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2 shadow-sm"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2 + i * 0.1, duration: 0.4 }}
+              >
+                {badgeIcons[badge.icon]}
+                <span className="text-foreground text-[11px] font-semibold leading-tight">
+                  {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </motion.div>
 
@@ -153,9 +193,9 @@ const HeroSection: React.FC = () => {
           {t.hero.subheadline}
         </motion.p>
 
-        {/* Trust Badges */}
+        {/* Trust Badges — visible on non-XL, hidden on XL (split to sides) */}
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto xl:hidden"
           initial="hidden" animate="visible" variants={fadeUp} custom={2}
         >
           {t.hero.trustBadges.map((badge, i) => (
@@ -194,7 +234,7 @@ const HeroSection: React.FC = () => {
         </motion.div>
 
         {/* Mobile-only bullet cards */}
-        <div className="lg:hidden mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+        <div className="xl:hidden mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
           {[...sBullets, ...bBullets].map((b, i) => (
             <div key={i} className="flex items-start gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm">
               <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
