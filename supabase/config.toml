@@ -35,3 +35,7 @@ project_id = "heykhsoumvklotycuzya"
     verify_jwt = false
   [functions.handle-email-suppression]
     verify_jwt = false
+  [functions.analyze-car-listing]
+    verify_jwt = false
+  [functions.hyper-search]
+    verify_jwt = false

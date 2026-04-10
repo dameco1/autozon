@@ -139,9 +139,12 @@ const HeroSection: React.FC = () => {
                 {t.hero.installApp}
               </Button>
             )}
-            <Button variant="outline" size="lg" className="gap-2 text-base px-6" onClick={() => navigate("/onboarding")}>
-              {t.hero.getStarted}
+            <Button size="lg" className="gap-2 text-base px-8 bg-orange text-orange-foreground hover:bg-orange/90 font-bold" onClick={() => navigate("/sell")}>
+              {t.hero.primaryCta}
               <ArrowRight className="h-5 w-5" />
+            </Button>
+            <Button variant="outline" size="lg" className="gap-2 text-base px-6" onClick={() => { const el = document.getElementById("car-search"); el?.scrollIntoView({ behavior: "smooth" }); }}>
+              {t.hero.secondaryCta}
             </Button>
           </motion.div>
         </div>
