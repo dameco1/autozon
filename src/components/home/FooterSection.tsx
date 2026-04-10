@@ -3,25 +3,23 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Instagram } from "lucide-react";
 
-import cardsImg from "@/assets/payments/cards.png";
 import amazonImg from "@/assets/payments/amazon.png";
 import applepayImg from "@/assets/payments/applepay.png";
 import googlepayImg from "@/assets/payments/googlepay.png";
-import linkImg from "@/assets/payments/link.png";
 import paypalImg from "@/assets/payments/paypal.png";
-import bancontactImg from "@/assets/payments/bancontact.png";
-import epsImg from "@/assets/payments/eps.png";
 import klarnaImg from "@/assets/payments/klarna.png";
 
-const paymentMethods = [
-  { label: "Cards", src: cardsImg },
+const PaymentCard: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
+  <div className="bg-white rounded-lg border border-white/20 shadow-sm px-3 py-2 flex items-center justify-center h-10 min-w-[56px]" title={label}>
+    {children}
+  </div>
+);
+
+const paymentImages = [
   { label: "Amazon Pay", src: amazonImg },
   { label: "Apple Pay", src: applepayImg },
   { label: "Google Pay", src: googlepayImg },
-  { label: "Link", src: linkImg },
   { label: "PayPal", src: paypalImg },
-  { label: "Bancontact", src: bancontactImg },
-  { label: "EPS", src: epsImg },
   { label: "Klarna", src: klarnaImg },
 ];
 
