@@ -230,7 +230,7 @@ const SellWizard: React.FC = () => {
     analyzing: "Autozon AI analysiert Ihr Fahrzeug…",
     scanPhotos: "Fotos scannen…",
     readDocs: "Dokumente lesen…",
-    detectDamage: "Schäden erkennen…",
+    detectDamage: "Dein Auto wird komplett überprüft…",
     estimateValue: "Wert schätzen…",
     fairValueTitle: "Fair-Value-Analyse",
     damagesDetected: "Erkannte Schäden",
