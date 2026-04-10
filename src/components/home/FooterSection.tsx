@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { CreditCard, Instagram } from "lucide-react";
 
-const PaymentIcon: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
-  <div className="flex items-center gap-1.5 bg-white/10 rounded px-2 py-1" title={label}>
+const PaymentSvg: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
+  <div className="bg-white rounded px-2 py-1.5 flex items-center justify-center h-8 min-w-[48px]" title={label}>
     {children}
-    <span className="text-[11px] text-white/60">{label}</span>
   </div>
 );
 
