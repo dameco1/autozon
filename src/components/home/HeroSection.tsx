@@ -1,36 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, Lock, Zap, CreditCard, Download, ArrowRight } from "lucide-react";
+import { CheckCircle2, Lock, Zap, CreditCard, Download, ArrowRight, Upload, Brain, MessageSquare, Users, FileCheck, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import heroCar1 from "@/assets/hero-car-1.png";
-import heroCar2 from "@/assets/hero-car-2.png";
-import heroCar3 from "@/assets/hero-car-3.png";
-import heroCar4 from "@/assets/hero-car-4.png";
-import heroCar5 from "@/assets/hero-car-5.png";
-import heroCar6 from "@/assets/hero-car-6.png";
-import heroCar7 from "@/assets/hero-car-7.png";
-import heroCar8 from "@/assets/hero-car-8.png";
-import heroCar9 from "@/assets/hero-car-9.png";
-import heroCar10 from "@/assets/hero-car-10.png";
-
-const heroCars = [
-  // Top row – spread across full width
-  { src: heroCar3, className: "top-[4%] left-[2%] w-[140px] lg:w-[180px]", from: { x: -40, y: -20 } },
-  { src: heroCar9, className: "top-[6%] left-[22%] w-[120px] lg:w-[160px] hidden lg:block", from: { x: -20, y: -15 } },
-  { src: heroCar4, className: "top-[3%] right-[22%] w-[125px] lg:w-[165px] hidden lg:block", from: { x: 20, y: -15 } },
-  { src: heroCar7, className: "top-[5%] right-[2%] w-[135px] lg:w-[175px]", from: { x: 40, y: -20 } },
-  // Middle row – sides only (text is in the center)
-  { src: heroCar5, className: "top-[35%] left-[0%] w-[150px] lg:w-[200px] hidden sm:block", from: { x: -35, y: 0 } },
-  { src: heroCar6, className: "top-[33%] right-[0%] w-[145px] lg:w-[195px] hidden sm:block", from: { x: 35, y: 0 } },
-  // Bottom row – spread across full width
-  { src: heroCar1, className: "bottom-[2%] left-[1%] w-[170px] lg:w-[220px]", from: { x: -50, y: 20 } },
-  { src: heroCar8, className: "bottom-[5%] left-[25%] w-[130px] lg:w-[170px] hidden md:block", from: { x: -15, y: 25 } },
-  { src: heroCar10, className: "bottom-[4%] right-[25%] w-[125px] lg:w-[165px] hidden md:block", from: { x: 15, y: 25 } },
-  { src: heroCar2, className: "bottom-[2%] right-[1%] w-[165px] lg:w-[215px]", from: { x: 50, y: 20 } },
-];
+import heroSellerMale from "@/assets/hero-seller-male.png";
+import heroBuyerFemale from "@/assets/hero-buyer-female.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -48,93 +24,205 @@ const badgeIcons: Record<string, React.ReactNode> = {
   card: <CreditCard className="h-4 w-4 text-orange shrink-0" />,
 };
 
+const sellerBullets = {
+  en: [
+    { icon: Upload, title: "Create an Ad in just 3 clicks", desc: "Upload car images and a picture of car registration — Autozon does the rest for you." },
+    { icon: Brain, title: "AI-powered fair value estimation", desc: "Instant, data-driven valuation based on market trends and historical transactions." },
+    { icon: MessageSquare, title: "Structured negotiation flow", desc: "No more chaotic messages. Clean offer → counteroffer → acceptance, fully transparent." },
+  ],
+  de: [
+    { icon: Upload, title: "Inserat in nur 3 Klicks erstellen", desc: "Lade Fotos und den Zulassungsschein hoch — Autozon erledigt den Rest." },
+    { icon: Brain, title: "KI-gestützte Wertermittlung", desc: "Sofortige, datengetriebene Bewertung basierend auf Markttrends und Transaktionen." },
+    { icon: MessageSquare, title: "Strukturierter Verhandlungsablauf", desc: "Keine chaotischen Nachrichten. Angebot → Gegenangebot → Einigung, voll transparent." },
+  ],
+};
+
+const buyerBullets = {
+  en: [
+    { icon: Users, title: "Lifestyle-based buyer matching", desc: "Matched by use case — family, commuting, business, sport — not just model." },
+    { icon: FileCheck, title: "Legally structured handover", desc: "Enforced steps, deadlines, and documentation for a safe vehicle handover." },
+    { icon: ShieldCheck, title: "Built to build trust", desc: "Unlike traditional classifieds, Autozon gives buyers confidence and clarity." },
+  ],
+  de: [
+    { icon: Users, title: "Lifestyle-basiertes Matching", desc: "Passend zum Einsatzzweck — Familie, Pendeln, Business, Sport — nicht nur Modell." },
+    { icon: FileCheck, title: "Rechtlich strukturierte Übergabe", desc: "Verbindliche Schritte, Fristen und Dokumentation für eine sichere Übergabe." },
+    { icon: ShieldCheck, title: "Vertrauen als Grundprinzip", desc: "Anders als klassische Inserate — Autozon gibt Käufern Sicherheit und Klarheit." },
+  ],
+};
+
 const HeroSection: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { canInstall, promptInstall } = usePwaInstall();
   const navigate = useNavigate();
 
+  const sBullets = sellerBullets[language];
+  const bBullets = buyerBullets[language];
+
   return (
-    <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-background" style={{ minHeight: "60vh" }}>
+    <section className="relative flex items-center pt-24 pb-16 overflow-hidden bg-background" style={{ minHeight: "85vh" }}>
       {/* Warm radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,hsl(24_85%_48%/0.08),transparent)]" />
 
-      {/* Scattered transparent car images */}
-      {heroCars.map((car, i) => (
-        <motion.img
-          key={i}
-          src={car.src}
-          alt=""
-          className={`absolute opacity-[0.12] pointer-events-none select-none ${car.className}`}
-          initial={{ opacity: 0, x: car.from.x, y: car.from.y }}
-          animate={{ opacity: 0.12, x: 0, y: 0 }}
-          transition={{ duration: 1.4, ease: "easeOut", delay: i * 0.15 }}
-          width={800}
-          height={512}
-        />
-      ))}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-stretch gap-0 lg:gap-4">
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full text-center">
-        {/* Headline */}
-        <motion.h1
-          className="text-4xl sm:text-5xl lg:text-[56px] font-display font-black text-foreground leading-[1.08] tracking-tight mb-2"
-          initial="hidden" animate="visible" variants={fadeUp} custom={0}
-        >
-          {t.hero.headline}
-        </motion.h1>
-        <motion.span
-          className="block text-3xl sm:text-4xl lg:text-[48px] font-display font-black text-orange leading-[1.1] mb-6"
-          initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
-        >
-          {t.hero.headlineAccent}
-        </motion.span>
-
-        {/* Subheadline */}
-        <motion.p
-          className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-[560px] mx-auto leading-relaxed mb-10"
-          initial="hidden" animate="visible" variants={fadeUp} custom={1}
-        >
-          {t.hero.subheadline}
-        </motion.p>
-
-        {/* Trust Badges */}
-        <motion.div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto"
-          initial="hidden" animate="visible" variants={fadeUp} custom={2}
-        >
-          {t.hero.trustBadges.map((badge, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm hover:border-orange/30 transition-colors"
-            >
-              {badgeIcons[badge.icon]}
-              <span className="text-foreground text-xs font-semibold leading-tight">
-                {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
+          {/* LEFT — Seller (male) */}
+          <motion.div
+            className="hidden lg:flex flex-col items-center relative"
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <div className="relative h-full flex flex-col items-center justify-end">
+              {/* Bullet points overlaid on left side */}
+              <div className="absolute top-[8%] left-0 right-[10%] z-20 space-y-3 pr-2">
+                {sBullets.map((b, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex items-start gap-2 bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
+                  >
+                    <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
+                      <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <img
+                src={heroSellerMale}
+                alt={language === "de" ? "Zufriedener Verkäufer" : "Happy seller"}
+                className="h-[520px] w-auto object-contain drop-shadow-lg"
+                width={640}
+                height={1280}
+              />
+              <span className="text-[11px] font-semibold tracking-widest uppercase text-orange mt-2">
+                {language === "de" ? "Verkäufer" : "Seller"}
               </span>
             </div>
-          ))}
-        </motion.div>
+          </motion.div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8"
-          initial="hidden" animate="visible" variants={fadeUp} custom={3}
-        >
-          {canInstall && (
-            <Button onClick={promptInstall} size="lg" className="gap-2 text-base px-6">
-              <Download className="h-5 w-5" />
-              {t.hero.installApp}
-            </Button>
-          )}
-          <Button
-            variant="outline"
-            size="lg"
-            className="gap-2 text-base px-6"
-            onClick={() => navigate("/onboarding")}
+          {/* CENTER — Text content */}
+          <div className="flex flex-col items-center justify-center text-center max-w-xl mx-auto lg:mx-0 py-8">
+            {/* Headline */}
+            <motion.h1
+              className="text-4xl sm:text-5xl lg:text-[52px] font-display font-black text-foreground leading-[1.08] tracking-tight mb-2"
+              initial="hidden" animate="visible" variants={fadeUp} custom={0}
+            >
+              {t.hero.headline}
+            </motion.h1>
+            <motion.span
+              className="block text-3xl sm:text-4xl lg:text-[44px] font-display font-black text-orange leading-[1.1] mb-6"
+              initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
+            >
+              {t.hero.headlineAccent}
+            </motion.span>
+
+            {/* Subheadline */}
+            <motion.p
+              className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-[520px] mx-auto leading-relaxed mb-10"
+              initial="hidden" animate="visible" variants={fadeUp} custom={1}
+            >
+              {t.hero.subheadline}
+            </motion.p>
+
+            {/* Trust Badges */}
+            <motion.div
+              className="grid grid-cols-2 gap-3 max-w-md mx-auto"
+              initial="hidden" animate="visible" variants={fadeUp} custom={2}
+            >
+              {t.hero.trustBadges.map((badge, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm hover:border-orange/30 transition-colors"
+                >
+                  {badgeIcons[badge.icon]}
+                  <span className="text-foreground text-xs font-semibold leading-tight">
+                    {badge.text}<sup className="text-orange ml-0.5">{badge.note}</sup>
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8"
+              initial="hidden" animate="visible" variants={fadeUp} custom={3}
+            >
+              {canInstall && (
+                <Button onClick={promptInstall} size="lg" className="gap-2 text-base px-6">
+                  <Download className="h-5 w-5" />
+                  {t.hero.installApp}
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                size="lg"
+                className="gap-2 text-base px-6"
+                onClick={() => navigate("/onboarding")}
+              >
+                {t.hero.getStarted}
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </motion.div>
+
+            {/* Mobile-only bullet cards */}
+            <div className="lg:hidden mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+              {[...sBullets, ...bBullets].map((b, i) => (
+                <div key={i} className="flex items-start gap-2 bg-card border border-border rounded-xl px-3 py-2.5 shadow-sm">
+                  <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
+                    <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT — Buyer (female) */}
+          <motion.div
+            className="hidden lg:flex flex-col items-center relative"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {t.hero.getStarted}
-            <ArrowRight className="h-5 w-5" />
-          </Button>
-        </motion.div>
+            <div className="relative h-full flex flex-col items-center justify-end">
+              {/* Bullet points overlaid on right side */}
+              <div className="absolute top-[8%] left-[10%] right-0 z-20 space-y-3 pl-2">
+                {bBullets.map((b, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex items-start gap-2 bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 shadow-sm"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 + i * 0.15, duration: 0.5 }}
+                  >
+                    <b.icon className="h-4 w-4 text-orange shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-foreground text-xs font-bold leading-tight">{b.title}</p>
+                      <p className="text-muted-foreground text-[10px] leading-snug mt-0.5">{b.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <img
+                src={heroBuyerFemale}
+                alt={language === "de" ? "Glückliche Käuferin" : "Happy buyer"}
+                className="h-[520px] w-auto object-contain drop-shadow-lg"
+                width={640}
+                height={1280}
+              />
+              <span className="text-[11px] font-semibold tracking-widest uppercase text-orange mt-2">
+                {language === "de" ? "Käuferin" : "Buyer"}
+              </span>
+            </div>
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );
