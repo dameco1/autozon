@@ -14,6 +14,36 @@ import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import browserImageCompression from "browser-image-compression";
+import { PHOTO_SLOTS } from "@/components/car-upload/photoSlots";
+
+/** Sort photos by the canonical slot order: front, rear, left, right, interior, dashboard, extras */
+function sortPhotosBySlotOrder(photos: string[]): string[] {
+  if (!photos || photos.length === 0) return [];
+  const slotOrder = PHOTO_SLOTS.map(s => s.id);
+  // Keywords map to slot positions
+  const keywords: Record<string, string[]> = {
+    front: ["front", "vorne", "vorn"],
+    rear: ["rear", "back", "hinten", "heck"],
+    left: ["left", "links"],
+    right: ["right", "rechts"],
+    interior_front: ["interior", "innen", "cabin", "cockpit"],
+    interior_rear: ["rear_interior", "rücksitz", "backseat"],
+    dashboard: ["dashboard", "armatur", "tacho", "instrument"],
+  };
+
+  function getSlotIndex(url: string): number {
+    const lower = url.toLowerCase();
+    for (const [slot, words] of Object.entries(keywords)) {
+      if (words.some(w => lower.includes(w))) {
+        const idx = slotOrder.indexOf(slot);
+        return idx >= 0 ? idx : 99;
+      }
+    }
+    return 99;
+  }
+
+  return [...photos].sort((a, b) => getSlotIndex(a) - getSlotIndex(b));
+}
 
 interface ExtractedField {
   value: any;
