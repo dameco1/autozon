@@ -22,28 +22,34 @@ const NotificationBell: React.FC = () => {
 
   useEffect(() => {
     const fetchNotifications = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
       const { data } = await supabase
         .from("notifications")
         .select("*")
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(20);
       if (data) setNotifications(data);
+
+      // Real-time subscription filtered to this user
+      const channel = supabase
+        .channel("notifications-realtime")
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            setNotifications((prev) => [payload.new as Notification, ...prev]);
+          }
+        )
+        .subscribe();
+
+      return () => { supabase.removeChannel(channel); };
     };
-    fetchNotifications();
 
-    // Real-time subscription
-    const channel = supabase
-      .channel("notifications-realtime")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "notifications" },
-        (payload) => {
-          setNotifications((prev) => [payload.new as Notification, ...prev]);
-        }
-      )
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
+    let cleanup: (() => void) | undefined;
+    fetchNotifications().then((fn) => { cleanup = fn as any; });
+    return () => { cleanup?.(); };
   }, []);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
