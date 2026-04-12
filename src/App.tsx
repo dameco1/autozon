@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
@@ -44,6 +44,14 @@ import InstantAiFlow from "./pages/InstantAiFlow";
 import TinderSwipe from "./pages/TinderSwipe";
 import FooterSection from "./components/home/FooterSection";
 import Navbar from "./components/Navbar";
+import SellUpload from "./pages/sell/SellUpload";
+import SellValuation from "./pages/sell/SellValuation";
+import SellListing from "./pages/sell/SellListing";
+import SellConfirm from "./pages/sell/SellConfirm";
+import SellPublished from "./pages/sell/SellPublished";
+import BuyFeed from "./pages/BuyFeed";
+import ShortlistPage from "./pages/ShortlistPage";
+import ListingPublic from "./pages/ListingPublic";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +69,18 @@ const App = () => (
                 <Routes>
                   {/* Public routes */}
                   <Route path="/" element={<Index />} />
+                  <Route path="/sell" element={<SellUpload />} />
+                  <Route path="/sell/valuation" element={<SellValuation />} />
+                  <Route path="/sell/listing" element={<SellListing />} />
+                  <Route path="/sell/confirm" element={<SellConfirm />} />
+                  <Route path="/sell/published/:id" element={<SellPublished />} />
+                  <Route path="/buy" element={<BuyFeed />} />
+                  <Route path="/shortlist" element={<ShortlistPage />} />
+                  <Route path="/my-listings" element={<Dashboard />} />
+                  <Route path="/register" element={<Signup />} />
+                  <Route path="/listing/:id" element={<ListingPublic />} />
+                  <Route path="/tinder" element={<Navigate to="/buy" replace />} />
+                  <Route path="/instant-ai-flow" element={<Navigate to="/sell/listing" replace />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/verify-otp" element={<EmailOtpVerify />} />

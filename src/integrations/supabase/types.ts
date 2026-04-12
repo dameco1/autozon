@@ -1385,6 +1385,177 @@ export type Database = {
         }
         Relationships: []
       }
+      listings: {
+        Row: {
+          id: string
+          user_id: string | null
+          session_token: string
+          status: string
+          title: string | null
+          description: string | null
+          price: number | null
+          year: number | null
+          mileage: number | null
+          make: string | null
+          model: string | null
+          colour: string | null
+          fuel_type: string | null
+          gearbox: string | null
+          condition: string | null
+          location: string | null
+          email_contact: string | null
+          photos: string[]
+          valuation_low: number | null
+          valuation_mid: number | null
+          valuation_high: number | null
+          ocr_raw: Json | null
+          ai_confidence: number | null
+          eurotax_id: string | null
+          created_at: string
+          published_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          session_token: string
+          status?: string
+          title?: string | null
+          description?: string | null
+          price?: number | null
+          year?: number | null
+          mileage?: number | null
+          make?: string | null
+          model?: string | null
+          colour?: string | null
+          fuel_type?: string | null
+          gearbox?: string | null
+          condition?: string | null
+          location?: string | null
+          email_contact?: string | null
+          photos?: string[]
+          valuation_low?: number | null
+          valuation_mid?: number | null
+          valuation_high?: number | null
+          ocr_raw?: Json | null
+          ai_confidence?: number | null
+          eurotax_id?: string | null
+          created_at?: string
+          published_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          session_token?: string
+          status?: string
+          title?: string | null
+          description?: string | null
+          price?: number | null
+          year?: number | null
+          mileage?: number | null
+          make?: string | null
+          model?: string | null
+          colour?: string | null
+          fuel_type?: string | null
+          gearbox?: string | null
+          condition?: string | null
+          location?: string | null
+          email_contact?: string | null
+          photos?: string[]
+          valuation_low?: number | null
+          valuation_mid?: number | null
+          valuation_high?: number | null
+          ocr_raw?: Json | null
+          ai_confidence?: number | null
+          eurotax_id?: string | null
+          created_at?: string
+          published_at?: string | null
+        }
+        Relationships: []
+      }
+      shortlists: {
+        Row: {
+          id: string
+          user_id: string
+          listing_id: string | null
+          car_id: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          listing_id?: string | null
+          car_id?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          listing_id?: string | null
+          car_id?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      swipe_events: {
+        Row: {
+          id: string
+          session_id: string
+          listing_id: string | null
+          car_id: string | null
+          direction: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          session_id: string
+          listing_id?: string | null
+          car_id?: string | null
+          direction: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          session_id?: string
+          listing_id?: string | null
+          car_id?: string | null
+          direction?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      upload_sessions: {
+        Row: {
+          id: string
+          session_token: string
+          files: Json
+          ocr_result: Json | null
+          valuation_result: Json | null
+          status: string
+          created_at: string
+          expires_at: string
+        }
+        Insert: {
+          id?: string
+          session_token: string
+          files?: Json
+          ocr_result?: Json | null
+          valuation_result?: Json | null
+          status?: string
+          created_at?: string
+          expires_at?: string
+        }
+        Update: {
+          id?: string
+          session_token?: string
+          files?: Json
+          ocr_result?: Json | null
+          valuation_result?: Json | null
+          status?: string
+          created_at?: string
+          expires_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       cars_public: {
@@ -1616,6 +1787,34 @@ export type Database = {
           _transaction_id: string
         }
         Returns: undefined
+      }
+      create_listing_session: {
+        Args: Record<string, never>
+        Returns: {
+          id: string
+          session_token: string
+        }[]
+      }
+      get_listing_for_session: {
+        Args: { p_id: string; p_session_token: string }
+        Returns: Database["public"]["Tables"]["listings"]["Row"][]
+      }
+      update_listing_session: {
+        Args: { p_id: string; p_session_token: string; p_patch: Json }
+        Returns: boolean
+      }
+      publish_listing_session: {
+        Args: {
+          p_id: string
+          p_session_token: string
+          p_email: string
+          p_user_id?: string | null
+        }
+        Returns: boolean
+      }
+      link_listing_to_user: {
+        Args: { p_id: string; p_session_token: string; p_user_id: string }
+        Returns: boolean
       }
     }
     Enums: {

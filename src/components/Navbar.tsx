@@ -52,6 +52,11 @@ const Navbar: React.FC = () => {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-5">
+            <Link to="/buy" className={linkClass}>Discover</Link>
+            <Link to="/sell" className={linkClass}>Sell</Link>
+            {user && (
+              <Link to="/shortlist" className={linkClass}>Shortlist</Link>
+            )}
             <Link to="/car-selection" className={linkClass}>{t.nav.buyCar}</Link>
             <Link to="/intent" className={linkClass}>{t.nav.sellCar}</Link>
             <button
@@ -92,7 +97,7 @@ const Navbar: React.FC = () => {
                 <Button variant="ghost" className="text-foreground/70" onClick={() => navigate("/login")}>
                   {t.nav.login}
                 </Button>
-                <Button className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg px-5" onClick={() => navigate("/intent")}>
+                <Button className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg px-5" onClick={() => navigate("/sell")}>
                   {t.nav.getStarted}
                 </Button>
               </>
@@ -101,7 +106,7 @@ const Navbar: React.FC = () => {
 
           {/* Mobile: CTA + hamburger */}
           <div className="flex md:hidden items-center gap-2">
-            <Button size="sm" className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg text-xs px-3" onClick={() => navigate("/intent")}>
+            <Button size="sm" className="bg-orange text-orange-foreground hover:bg-orange/90 font-bold rounded-lg text-xs px-3" onClick={() => navigate("/sell")}>
               {t.nav.getStarted}
             </Button>
             <button onClick={() => setMenuOpen(!menuOpen)} className="text-foreground">
@@ -114,6 +119,17 @@ const Navbar: React.FC = () => {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden bg-card border-t border-border px-4 py-4 space-y-3">
+          <Link to="/buy" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+            Discover
+          </Link>
+          <Link to="/sell" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+            Sell
+          </Link>
+          {user && (
+            <Link to="/shortlist" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+              Shortlist
+            </Link>
+          )}
           <Link to="/car-selection" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             {t.nav.buyCar}
           </Link>
