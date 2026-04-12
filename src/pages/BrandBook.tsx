@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Car, Shield, TrendingUp, Users, Zap, BarChart3, MessageSquare, CheckCircle, Download, Bot, Sparkles } from "lucide-react";
+import { ArrowLeft, Car, Shield, TrendingUp, Users, Zap, BarChart3, MessageSquare, CheckCircle, Download, Bot, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import zoniAvatar from "@/assets/zoni-avatar.png";
+import { Button } from "@/components/ui/button";
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
