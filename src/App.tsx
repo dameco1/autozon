@@ -40,6 +40,8 @@ import FinancingCalculator from "./pages/FinancingCalculator";
 import KycVerification from "./pages/KycVerification";
 import Unsubscribe from "./pages/Unsubscribe";
 import Screenshots from "./pages/Screenshots";
+import InstantAiFlow from "./pages/InstantAiFlow";
+import SwipeCars from "./pages/SwipeCars";
 import FooterSection from "./components/home/FooterSection";
 import Navbar from "./components/Navbar";
 
