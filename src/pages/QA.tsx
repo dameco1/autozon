@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Search } from "lucide-react";
-import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { useLanguage } from "@/i18n/LanguageContext";
 import {
@@ -356,7 +355,6 @@ const QA = () => {
         description="Frequently asked questions about Autozon — how it works, what makes it different, and why it's the smarter way to buy and sell cars."
         path="/qa"
       />
-      <Navbar />
       <div className="max-w-3xl mx-auto px-4 pt-28 pb-20">
         <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-orange mb-8">
           <ArrowLeft className="h-4 w-4" />

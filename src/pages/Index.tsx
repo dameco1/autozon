@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "@/components/Navbar";
 import CookieConsent from "@/components/CookieConsent";
 import ConciergeChat from "@/components/ConciergeChat";
 import SEO from "@/components/SEO";
@@ -34,7 +33,6 @@ const Index: React.FC = () => {
           },
         }}
       />
-      <Navbar />
       <HeroSection />
       <CarSearchSection />
       <AiInspectionSection />

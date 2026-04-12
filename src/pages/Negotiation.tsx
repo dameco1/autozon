@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -169,7 +168,6 @@ const Negotiation: React.FC = () => {
   if (!offer || !car || !user) {
     return (
       <div className="min-h-screen bg-background text-muted-foreground">
-        <Navbar />
         <div className="flex items-center justify-center pt-32 text-muted-foreground">Offer not found</div>
       </div>
     );
@@ -299,7 +297,6 @@ const Negotiation: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-muted-foreground">
       <SEO title={`Negotiate — ${car.year} ${car.make} ${car.model}`} description="Negotiate the price" path={`/negotiate/${offerId}`} noIndex />
-      <Navbar />
 
       <div className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         {/* Header */}

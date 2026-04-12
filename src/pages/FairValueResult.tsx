@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Car, TrendingDown, Users, ArrowRight, Plus, BarChart3, Shield, Zap, LayoutDashboard, Megaphone, Loader2, CheckCircle2, PenLine } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import AppraisalBreakdown from "@/components/AppraisalBreakdown";
@@ -290,7 +289,6 @@ const FairValueResult: React.FC = () => {
         description={`Fair value appraisal for ${car.year} ${car.make} ${car.model} (${car.mileage.toLocaleString()} km). Condition: ${car.condition_score}/100. Market value: €${displayFairValue.toLocaleString()}.`}
         path={`/fair-value/${id}`}
       />
-      <Navbar />
 
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
         {/* Header */}

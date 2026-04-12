@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -83,7 +82,6 @@ const FinancingCalculator: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO title="Financing Calculator | Autozon" description="Austrian car financing calculator with credit, leasing, and 3-way comparison" />
-      <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-10">
         <Button variant="ghost" className="mb-4 text-muted-foreground" onClick={() => navigate(-1)}>
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
