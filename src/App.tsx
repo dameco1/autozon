@@ -52,7 +52,8 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <div className="flex flex-col min-h-screen">
-              <div className="flex-1">
+              <Navbar />
+              <div className="flex-1 pt-16">
                 <Routes>
                   {/* Public routes */}
                   <Route path="/" element={<Index />} />
