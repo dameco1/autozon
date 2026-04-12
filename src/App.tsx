@@ -78,6 +78,8 @@ const App = () => (
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/unsubscribe" element={<Unsubscribe />} />
                   <Route path="/screenshots" element={<Screenshots />} />
+                  <Route path="/instant-ai-flow" element={<InstantAiFlow />} />
+                  <Route path="/swipe" element={<SwipeCars />} />
 
                   {/* Auth-protected routes handle session checks inside each page */}
                   <Route path="/dashboard" element={<Dashboard />} />
