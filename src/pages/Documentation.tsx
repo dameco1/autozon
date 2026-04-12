@@ -295,11 +295,17 @@ const Documentation: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-10">
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
             <FolderOpen className="h-8 w-8 text-primary" />
             <h1 className="text-4xl font-display font-bold text-foreground">
               auto<span className="text-primary">zon</span> — Investor Data Room
             </h1>
+            <div className="ml-auto">
+              <Button size="sm" onClick={handleDownloadZip} disabled={zipping}>
+                {zipping ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                {zipping ? "Zipping…" : "Download All (ZIP)"}
+              </Button>
+            </div>
           </div>
           <p className="text-muted-foreground mb-4">
             Confidential materials for investors, engineering leadership, and due diligence review.
