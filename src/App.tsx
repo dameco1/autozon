@@ -75,6 +75,7 @@ const App = () => (
                   <Route path="/qa" element={<QA />} />
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/unsubscribe" element={<Unsubscribe />} />
+                  <Route path="/screenshots" element={<Screenshots />} />
 
                   {/* Auth-protected routes handle session checks inside each page */}
                   <Route path="/dashboard" element={<Dashboard />} />
