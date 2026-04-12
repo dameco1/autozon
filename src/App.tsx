@@ -39,6 +39,7 @@ import AboutUs from "./pages/AboutUs";
 import FinancingCalculator from "./pages/FinancingCalculator";
 import KycVerification from "./pages/KycVerification";
 import Unsubscribe from "./pages/Unsubscribe";
+import Screenshots from "./pages/Screenshots";
 import FooterSection from "./components/home/FooterSection";
 import Navbar from "./components/Navbar";
 
@@ -74,6 +75,7 @@ const App = () => (
                   <Route path="/qa" element={<QA />} />
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/unsubscribe" element={<Unsubscribe />} />
+                  <Route path="/screenshots" element={<Screenshots />} />
 
                   {/* Auth-protected routes handle session checks inside each page */}
                   <Route path="/dashboard" element={<Dashboard />} />
