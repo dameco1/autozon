@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import {
   Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen,
   Loader2, AlertTriangle, Rocket, Users, Building2, BarChart3, Scale,
-  Presentation, Globe, Landmark, FolderOpen, CheckCircle2, Clock, Search
+  Presentation, Globe, Landmark, FolderOpen, CheckCircle2, Clock, Search,
+  Download
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
