@@ -45,19 +45,19 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 ### Landing Page (`src/components/home/`)
 | Component | Purpose |
 |---|---|
-| `HeroSection` | Animated hero with seller/buyer split CTA |
+| `HeroSection` | Animated hero with seller/buyer persona images and split CTA |
 | `HeroCarShowcase` | Featured car display with animations |
 | `HeroProcessCircle` | Visual process indicator |
 | `CarTicker` | Scrolling car image carousel |
 | `ProblemSection` | Pain points of traditional car trading |
 | `SolutionSection` | How Autozon solves each pain point |
 | `HowItWorksSection` | 3-step process explanation |
-| `AiEngineSection` | AI capabilities showcase |
+| `AiEngineSection` | AI capabilities showcase (seller + buyer) |
 | `AiInspectionSection` | AI inspection feature highlight |
 | `CarSearchSection` | Dual-mode search (lifestyle profile OR traditional filters) |
 | `ComparisonSection` | Platform comparison |
 | `WhyAutozonSection` | Value proposition |
-| `PricingSection` | Pricing tiers |
+| `PricingSection` | Pricing tiers (€9.99 private / €19.99 dealer / FREE buyer) |
 | `StatsBar` | Platform statistics banner |
 | `TrustSection` | Social proof and trust signals |
 | `CtaSection` | Final conversion call-to-action |
@@ -78,14 +78,17 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 ### Shared Components
 | Component | Purpose |
 |---|---|
-| `Navbar` | Global nav with auth state, language toggle, notifications, admin link |
-| `ConciergeChat` | Floating AI chat widget (SSE streaming) |
+| `Navbar` | Global nav rendered in App.tsx layout — auth state, language toggle, notifications, admin link |
+| `ConciergeChat` | Zoni AI agent — floating chat widget with animated mascot, SSE streaming, guest mode support |
 | `AppraisalBreakdown` | Visual breakdown of fair value factors |
 | `MarketComparison` | AI-powered market positioning chart |
-| `NotificationBell` | Real-time notification indicator |
+| `NotificationBell` | User-scoped real-time notification indicator |
 | `SEO` | Dynamic meta tags, OG, JSON-LD |
 | `CookieConsent` | GDPR cookie consent banner |
 | `MfaGuard` | Enforces Email OTP 2FA on all protected routes |
+| `InsuranceCalculator` | Insurance cost estimation tool |
+| `VincarioDataCard` | VIN decode results display |
+| `NavLink` | Reusable navigation link component |
 
 ### Admin Command Center (`src/components/admin/`)
 | Component | Purpose |
@@ -97,6 +100,12 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 | `AdminActivityFeed` | Merged feed of notifications, car views, and shortlists |
 | `AdminMatches` | All car-to-buyer matches with scores and status |
 | `AdminTransactions` | All transaction monitoring |
+| `AdminAgentTab` | Zoni AI agent monitoring — tickets, tool calls, suspicious flags |
+| `AdminReports` | Reports and analytics dashboard |
+| `AdminContracts` | Contract management and monitoring |
+| `AdminFinancingRequests` | Financing request tracking |
+| `AdminInsuranceRequests` | Insurance request tracking |
+| `AdminAppraisalAccuracy` | Appraisal accuracy metrics and feedback |
 
 ### Auth & Admin Hooks (`src/hooks/`)
 | Hook | Purpose |
@@ -105,6 +114,7 @@ All from [shadcn/ui](https://ui.shadcn.com/), customized to warm light theme:
 | `useIsAdmin` | Lightweight boolean check for conditional UI (e.g. navbar admin link) |
 | `useMfaStatus` | Checks user's Email OTP verification status |
 | `useCarModels` | Paginated car model data fetching (handles 2,500+ entries) |
+| `usePwaInstall` | PWA install prompt management |
 
 ### Auth Components
 | Component | Purpose |
@@ -171,3 +181,7 @@ The dashboard uses a **Selling / Buying** tab layout:
 - Active Acquisitions with step progress (Method → Contract → Payment → Insurance → Complete)
 - My Offers (negotiations where user is buyer)
 - Shortlisted Cars
+
+---
+
+*Document status: V2 — Updated April 2026 with Zoni AI agent, global navbar layout, admin agent tab, and new components.*

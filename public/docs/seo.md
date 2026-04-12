@@ -62,6 +62,7 @@ For crawlers that don't execute JavaScript, `index.html` includes pre-rendered:
 - **Theme color**: `#FAF8F5` (warm cream, matches the design system)
 - **Sitemap link**: `<link rel="sitemap" href="/sitemap.xml">`
 - **Favicon**: `/favicon.png`
+- **`<noscript>` fallback**: Rich static HTML content (features, pricing, how-it-works) for AI crawlers and non-JS crawlers
 
 ---
 
@@ -117,11 +118,64 @@ A static XML sitemap listing all public-facing routes. Referenced in:
 
 ## Robots.txt (`public/robots.txt`)
 
+The `robots.txt` explicitly allows major AI crawlers for maximum discoverability:
+
 ```
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /onboarding
+Disallow: /car-upload
+Disallow: /fair-value/
+Disallow: /buyer-matches/
+Disallow: /recommendations
+Disallow: /compare
+
 Sitemap: https://autozon.lovable.app/sitemap.xml
 ```
+
+### AI Crawler Allowlist
+
+| Crawler | Platform |
+|---------|----------|
+| `GPTBot` | OpenAI (ChatGPT, Copilot) |
+| `ChatGPT-User` | ChatGPT browsing mode |
+| `Google-Extended` | Google AI (Gemini, Bard) |
+| `anthropic-ai` | Anthropic (Claude) |
+| `ClaudeBot` | Anthropic (Claude web) |
+| `CCBot` | Common Crawl (used by many AI models) |
+| `PerplexityBot` | Perplexity AI |
+| `Bytespider` | ByteDance AI |
 
 ---
 
@@ -138,6 +192,7 @@ Sitemap: https://autozon.lovable.app/sitemap.xml
 | **Title < 60 chars** | Page titles kept concise with keyword |
 | **Meta desc < 160 chars** | Descriptions are actionable and keyword-rich |
 | **noIndex on private pages** | Admin, MFA, and internal pages use `noIndex={true}` |
+| **`<noscript>` content** | Rich HTML fallback for non-JS crawlers |
 
 ---
 
@@ -152,4 +207,4 @@ Sitemap: https://autozon.lovable.app/sitemap.xml
 
 ---
 
-*Document status: V1 — Reflects current SEO implementation as of March 2026.*
+*Document status: V2 — Updated April 2026 with AI crawler allowlist, `<noscript>` fallback, and expanded robots.txt documentation.*

@@ -1,11 +1,20 @@
 # Authentication Flow — Registration, Login & Security
 
-This diagram maps the complete authentication journey including registration, email verification, Email OTP 2FA, social login, onboarding guard, and role-based access control.
+This diagram maps the complete authentication journey including registration, email verification, Email OTP 2FA, social login, anonymous browsing, onboarding guard, and role-based access control.
 
 ```mermaid
 flowchart TD
+    subgraph ANONYMOUS["Anonymous Browsing - No Login Required"]
+        AN1[Landing Page] --> AN2["Browse Car Catalog\n/cars"]
+        AN2 --> AN3["View Car Details\n/car/:id"]
+        AN3 --> AN4{Want to interact?}
+        AN4 -->|Make Offer / Shortlist| AN5["Redirect to Login"]
+        AN4 -->|Keep Browsing| AN2
+        AN1 --> AN6["Use Zoni AI Chat\n(Guest Mode - Limited)"]
+    end
+
     subgraph REGISTER["User Registration"]
-        R1[Landing Page] --> R2{New or Returning?}
+        AN5 --> R2{New or Returning?}
         R2 -->|New| R3["Sign Up Page /signup"]
         R2 -->|Returning| R4["Login Page /login"]
         R3 --> R5["Enter Details\n- Full Name\n- Email\n- Password (with visibility toggle)\n- Account Type (Private / Business)\n- Lifestyle Questions\n- Optional Buyer Preferences"]
@@ -76,6 +85,31 @@ flowchart TD
 
 ---
 
+## Anonymous Browsing (No Login Required)
+
+Anonymous users can access the following without creating an account:
+
+| Feature | Access |
+|---------|--------|
+| **Landing Page** | Full access |
+| **Car Catalog** (`/cars`) | Browse all available cars with paid placement |
+| **Car Details** (`/car/:id`) | View full car details, photos, specs |
+| **Car Search Filters** | Make, model, year, fuel, body type, transmission |
+| **Zoni AI Chat** | Guest mode — limited to car search and general questions |
+| **Legal Pages** | Privacy, Terms, Cookies, Impressum |
+| **Q&A Page** | Full access |
+
+### When Login Is Required
+
+Authentication is triggered when an anonymous user attempts to:
+- **Shortlist** a car
+- **Make an offer** on a car
+- **Access the dashboard**
+- **Upload a car listing**
+- **View buyer matches or negotiations**
+
+The user is redirected to `/login` with a return URL to resume their action after authentication.
+
 ## Authentication Methods
 
 | Method | Page | Details |
@@ -95,7 +129,7 @@ All users — including those signing in via Google or Apple — must complete t
 
 | Feature | Implementation |
 |---------|---------------|
-| **Password** | Secure hashing via auth provider; visibility toggle on signup |
+| **Password** | Secure hashing via auth provider; visibility toggle on signup; HIBP breach check |
 | **Email Verification** | Required before first login |
 | **2FA (Email OTP)** | 6-digit code via email, 5-minute TTL, rate-limited (5 requests / 10 min) |
 | **Session Management** | JWT tokens with refresh; OTP verified status in `app_metadata` |
@@ -103,3 +137,8 @@ All users — including those signing in via Google or Apple — must complete t
 | **Password Reset** | Email-based secure reset flow |
 | **RBAC** | Separate `user_roles` table, `has_role()` security definer function |
 | **Social Auth** | Google + Apple OAuth on login page |
+| **Anonymous Access** | Car browsing and Zoni guest mode available without login |
+
+---
+
+*Document status: V2 — Updated April 2026 with anonymous browsing flow and HIBP password checks.*
