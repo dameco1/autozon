@@ -139,6 +139,42 @@ const Documentation: React.FC = () => {
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [locked, setLocked] = useState(false);
   const [accessType, setAccessType] = useState<"full" | "viewer" | null>(null);
+  const [zipping, setZipping] = useState(false);
+
+  const handleDownloadZip = async () => {
+    setZipping(true);
+    try {
+      const JSZip = (await import("jszip")).default;
+      const { saveAs } = await import("file-saver");
+      const zip = new JSZip();
+
+      // Collect all unique .md files from sections
+      const files = new Set<string>();
+      sections.forEach((s) => s.docs.forEach((d) => { if (d.file) files.add(d.file); }));
+
+      // Fetch each file and add to zip
+      await Promise.all(
+        Array.from(files).map(async (filename) => {
+          try {
+            const res = await fetch(`/docs/${filename}`);
+            if (res.ok) {
+              const text = await res.text();
+              zip.file(filename, text);
+            }
+          } catch { /* skip failed */ }
+        })
+      );
+
+      const blob = await zip.generateAsync({ type: "blob" });
+      saveAs(blob, "autozon-docs.zip");
+    } catch (err) {
+      console.error(err);
+      const { toast } = await import("sonner");
+      toast.error("Failed to generate ZIP");
+    } finally {
+      setZipping(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
