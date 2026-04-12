@@ -3,7 +3,6 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
 import { Users, MapPin, Target, Clock, Star, Building2, User, Lock, CreditCard, Loader2, Handshake, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -231,7 +230,6 @@ const BuyerMatches: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background text-muted-foreground">
-      <Navbar />
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
         <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">

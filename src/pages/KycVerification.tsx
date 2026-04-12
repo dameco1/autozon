@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -103,7 +102,6 @@ const KycVerification: React.FC = () => {
     return (
       <div className="min-h-screen bg-background">
         <SEO title="KYC Verified | Autozon" />
-        <Navbar />
         <div className="max-w-lg mx-auto px-4 py-20 text-center">
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
             <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-4" />
@@ -121,7 +119,6 @@ const KycVerification: React.FC = () => {
     return (
       <div className="min-h-screen bg-background">
         <SEO title="KYC Pending | Autozon" />
-        <Navbar />
         <div className="max-w-lg mx-auto px-4 py-20 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <Loader2 className="h-16 w-16 text-primary mx-auto mb-4 animate-spin" />
@@ -139,7 +136,6 @@ const KycVerification: React.FC = () => {
     return (
       <div className="min-h-screen bg-background">
         <SEO title="KYC Declined | Autozon" />
-        <Navbar />
         <div className="max-w-lg mx-auto px-4 py-20 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
@@ -162,7 +158,6 @@ const KycVerification: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO title="KYC Verification | Autozon" description="Verify your identity to proceed with car transactions" />
-      <Navbar />
       <div className="max-w-lg mx-auto px-4 py-10">
         <Button variant="ghost" className="mb-4 text-muted-foreground" onClick={() => navigate(-1)}>
           <ArrowLeft className="mr-2 h-4 w-4" /> {t.auth.back}

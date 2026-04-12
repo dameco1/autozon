@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
-import Navbar from "@/components/Navbar";
 import ConciergeChat from "@/components/ConciergeChat";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -181,7 +180,6 @@ const Dashboard: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background text-muted-foreground">
-        <Navbar />
         <div className="flex items-center justify-center pt-32">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
@@ -192,7 +190,6 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-muted-foreground">
       <SEO title="Dashboard" description="Manage your car listings, track valuations, view buyer matches, and monitor your portfolio." path="/dashboard" noIndex />
-      <Navbar />
       <div className="max-w-7xl mx-auto px-4 pt-24 pb-16">
         {/* Header */}
         <motion.div

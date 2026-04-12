@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import SEO from "@/components/SEO";
-import Navbar from "@/components/Navbar";
 
 import CookieConsent from "@/components/CookieConsent";
 
@@ -57,7 +56,6 @@ const AboutUs: React.FC = () => {
           ],
         }}
       />
-      <Navbar />
 
       {/* Hero / Manifesto */}
       <section className="pt-28 pb-16 bg-background relative overflow-hidden">

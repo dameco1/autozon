@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { ArrowLeft } from "lucide-react";
 
@@ -12,7 +11,6 @@ const PrivacyPolicy: React.FC = () => {
         description="Learn how Autozon collects, uses, and protects your personal data. Comprehensive GDPR-compliant privacy policy for our car trading platform."
         path="/privacy-policy"
       />
-      <Navbar />
       <div className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 mb-8 text-sm">
           <ArrowLeft className="h-4 w-4" /> Back to Home

@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -242,7 +241,6 @@ const AcquisitionOptions: React.FC = () => {
   if (!offer || !car) {
     return (
       <div className="min-h-screen bg-background text-muted-foreground">
-        <Navbar />
         <div className="flex items-center justify-center pt-32 text-muted-foreground">Deal not found</div>
       </div>
     );
@@ -356,7 +354,6 @@ const AcquisitionOptions: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-muted-foreground">
       <SEO title={`${t.transaction.title} — ${car.year} ${car.make} ${car.model}`} description="Complete your vehicle transaction" path={`/acquire/${offerId}`} noIndex />
-      <Navbar />
 
       <div className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         {/* Header */}

@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/Navbar";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -331,7 +330,6 @@ const CarDetail: React.FC = () => {
           },
         }}
       />
-      <Navbar />
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
         {/* Back */}
         <Button variant="ghost" className="text-muted-foreground mb-6" onClick={() => navigate(-1)}>
