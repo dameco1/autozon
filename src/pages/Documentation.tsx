@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import {
   Lock, FileText, Database, Server, Brain, Palette, Shield, Map, BookOpen,
   Loader2, AlertTriangle, Rocket, Users, Building2, BarChart3, Scale,
-  Presentation, Globe, Landmark, FolderOpen, CheckCircle2, Clock, Search
+  Presentation, Globe, Landmark, FolderOpen, CheckCircle2, Clock, Search,
+  Download
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
@@ -138,6 +139,42 @@ const Documentation: React.FC = () => {
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [locked, setLocked] = useState(false);
   const [accessType, setAccessType] = useState<"full" | "viewer" | null>(null);
+  const [zipping, setZipping] = useState(false);
+
+  const handleDownloadZip = async () => {
+    setZipping(true);
+    try {
+      const JSZip = (await import("jszip")).default;
+      const { saveAs } = await import("file-saver");
+      const zip = new JSZip();
+
+      // Collect all unique .md files from sections
+      const files = new Set<string>();
+      sections.forEach((s) => s.docs.forEach((d) => { if (d.file) files.add(d.file); }));
+
+      // Fetch each file and add to zip
+      await Promise.all(
+        Array.from(files).map(async (filename) => {
+          try {
+            const res = await fetch(`/docs/${filename}`);
+            if (res.ok) {
+              const text = await res.text();
+              zip.file(filename, text);
+            }
+          } catch { /* skip failed */ }
+        })
+      );
+
+      const blob = await zip.generateAsync({ type: "blob" });
+      saveAs(blob, "autozon-docs.zip");
+    } catch (err) {
+      console.error(err);
+      const { toast } = await import("sonner");
+      toast.error("Failed to generate ZIP");
+    } finally {
+      setZipping(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -258,11 +295,17 @@ const Documentation: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-10">
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
             <FolderOpen className="h-8 w-8 text-primary" />
             <h1 className="text-4xl font-display font-bold text-foreground">
               auto<span className="text-primary">zon</span> — Investor Data Room
             </h1>
+            <div className="ml-auto">
+              <Button size="sm" onClick={handleDownloadZip} disabled={zipping}>
+                {zipping ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                {zipping ? "Zipping…" : "Download All (ZIP)"}
+              </Button>
+            </div>
           </div>
           <p className="text-muted-foreground mb-4">
             Confidential materials for investors, engineering leadership, and due diligence review.
