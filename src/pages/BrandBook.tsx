@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Car, Shield, TrendingUp, Users, Zap, BarChart3, MessageSquare, CheckCircle, Download, Bot, Sparkles } from "lucide-react";
+import { ArrowLeft, Car, Shield, TrendingUp, Users, Zap, BarChart3, MessageSquare, CheckCircle, Download, Bot, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import zoniAvatar from "@/assets/zoni-avatar.png";
+import { Button } from "@/components/ui/button";
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
@@ -69,6 +70,56 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 const BrandBook = () => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [exporting, setExporting] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    if (!contentRef.current) return;
+    setExporting(true);
+    toast.info("Generating PDF — this may take a moment…");
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const { jsPDF } = await import("jspdf");
+
+      const el = contentRef.current;
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#FAF8F5",
+        windowWidth: 1200,
+      });
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.92);
+      const pxW = canvas.width;
+      const pxH = canvas.height;
+
+      // A4 portrait in mm
+      const pageW = 210;
+      const pageH = 297;
+      const imgW = pageW;
+      const imgH = (pxH / pxW) * imgW;
+
+      const pdf = new jsPDF("p", "mm", "a4");
+      let y = 0;
+      let page = 0;
+
+      while (y < imgH) {
+        if (page > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, -y, imgW, imgH);
+        y += pageH;
+        page++;
+      }
+
+      pdf.save("autozon-brand-book.pdf");
+      toast.success("PDF downloaded!");
+    } catch (err) {
+      console.error(err);
+      toast.error("PDF export failed");
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
@@ -81,10 +132,16 @@ const BrandBook = () => {
             auto<span className="text-orange">zon</span>
           </span>
           <span className="text-muted-foreground text-sm">Brand Book</span>
+          <div className="ml-auto">
+            <Button size="sm" onClick={handleDownloadPdf} disabled={exporting}>
+              {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              {exporting ? "Exporting…" : "Download PDF"}
+            </Button>
+          </div>
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-6">
+      <div ref={contentRef} className="max-w-6xl mx-auto px-6">
         {/* Hero */}
         <header className="py-24 md:py-32">
           <p className="text-orange font-display font-bold text-sm tracking-widest uppercase mb-4">Brand Guidelines</p>
