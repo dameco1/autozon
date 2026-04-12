@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import SEO from "@/components/SEO"
 import { SwipeDeck } from "@/components/buy/SwipeDeck"
-import { AuthGateModal } from "@/components/buy/AuthGateModal"
 import { Button } from "@/components/ui/button"
 import { supabase } from "@/integrations/supabase/client"
 import { useBuyFlowStore, type FeedCard } from "@/store/buyFlow"
@@ -19,11 +19,11 @@ function sessionKey() {
   return id
 }
 
-const BuyFeed: React.FC = () => {
+/** /tinder — swipe feed; saving without auth redirects to login (per product spec). */
+const TinderSwipe: React.FC = () => {
+  const navigate = useNavigate()
   const { feed, currentIndex, setFeed, advance, setLoading } = useBuyFlowStore()
   const [userId, setUserId] = useState<string | null>(null)
-  const [authOpen, setAuthOpen] = useState(false)
-
   const current = feed[currentIndex]
 
   useEffect(() => {
@@ -38,7 +38,6 @@ const BuyFeed: React.FC = () => {
     const load = async () => {
       setLoading(true)
       const cards: FeedCard[] = []
-
       let pubListings: {
         id: string
         make: string | null
@@ -72,13 +71,11 @@ const BuyFeed: React.FC = () => {
           image: row.photos?.[0] ?? null,
         })
       }
-
       const { data: cars } = await supabase
         .from("cars_public")
         .select("id,make,model,year,mileage,price,image_url,photos,is_seed")
         .order("created_at", { ascending: false })
         .limit(30)
-
       for (const row of cars ?? []) {
         if (!row.id || row.price == null || row.year == null || row.mileage == null) continue
         const img = row.image_url ?? row.photos?.[0] ?? null
@@ -93,7 +90,6 @@ const BuyFeed: React.FC = () => {
           image: img,
         })
       }
-
       setFeed(cards)
       analytics.buyerFeedLoaded(cards.length)
       setLoading(false)
@@ -118,11 +114,8 @@ const BuyFeed: React.FC = () => {
       listingId: card.kind === "listing" ? card.id : undefined,
       index,
     }
-    if (direction === "right") {
-      trackSmartPush("BUYER_SWIPE_RIGHT", trackPayload)
-    } else {
-      trackSmartPush("BUYER_SWIPE_LEFT", trackPayload)
-    }
+    if (direction === "right") trackSmartPush("BUYER_SWIPE_RIGHT", trackPayload)
+    else trackSmartPush("BUYER_SWIPE_LEFT", trackPayload)
   }
 
   const onSwipeLeft = async (card: FeedCard, index: number) => {
@@ -140,7 +133,7 @@ const BuyFeed: React.FC = () => {
     analytics.shortlistSaveAttempted(current.kind === "car" ? current.id : null, Boolean(userId))
     if (!userId) {
       analytics.authGateOpened()
-      setAuthOpen(true)
+      navigate(`/login?redirect=${encodeURIComponent("/tinder")}`)
       return
     }
     try {
@@ -159,22 +152,17 @@ const BuyFeed: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 pb-24">
-      <SEO title="Discover cars" description="Swipe through cars tailored for you." path="/buy" />
+      <SEO title="Swipe cars" description="Swipe right to like, left to skip." path="/tinder" />
       <div className="max-w-xl mx-auto text-center mb-6">
         <h1 className="text-3xl font-display font-bold">Discover</h1>
         <p className="text-muted-foreground text-sm mt-1">Swipe right if you like a car, left to skip.</p>
       </div>
-      <SwipeDeck
-        cards={feed}
-        currentIndex={currentIndex}
-        onSwipeLeft={onSwipeLeft}
-        onSwipeRight={onSwipeRight}
-      />
+      <SwipeDeck cards={feed} currentIndex={currentIndex} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} />
       <div className="max-w-md mx-auto mt-8">
         <Button
           type="button"
           variant="secondary"
-          className="w-full py-6 gap-2"
+          className="w-full py-6 gap-2 min-h-[48px]"
           onClick={() => void saveShortlist()}
           disabled={!current}
         >
@@ -182,9 +170,8 @@ const BuyFeed: React.FC = () => {
           Save to shortlist
         </Button>
       </div>
-      <AuthGateModal open={authOpen} onOpenChange={setAuthOpen} />
     </div>
   )
 }
 
-export default BuyFeed
+export default TinderSwipe

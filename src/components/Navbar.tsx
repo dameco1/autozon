@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-5">
-            <Link to="/buy" className={linkClass}>Discover</Link>
+            <Link to="/tinder" className={linkClass}>Discover</Link>
             <Link to="/sell" className={linkClass}>Sell</Link>
             {user && (
               <Link to="/shortlist" className={linkClass}>Shortlist</Link>
@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden bg-card border-t border-border px-4 py-4 space-y-3">
-          <Link to="/buy" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
+          <Link to="/tinder" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>
             Discover
           </Link>
           <Link to="/sell" className="block text-sm text-foreground/80 hover:text-orange" onClick={() => setMenuOpen(false)}>

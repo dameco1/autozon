@@ -8,9 +8,10 @@ type Listing = Database["public"]["Tables"]["listings"]["Row"]
 type Props = {
   listing: Listing
   onContinue: () => void
+  continueLabel?: string
 }
 
-export const ValuationCard: React.FC<Props> = ({ listing, onContinue }) => {
+export const ValuationCard: React.FC<Props> = ({ listing, onContinue, continueLabel = "Create my listing" }) => {
   const low = listing.valuation_low ?? 0
   const mid = listing.valuation_mid ?? 0
   const high = listing.valuation_high ?? 0
@@ -48,7 +49,7 @@ export const ValuationCard: React.FC<Props> = ({ listing, onContinue }) => {
           onClick={onContinue}
           className="w-full py-3 rounded-xl bg-orange text-orange-foreground font-semibold hover:bg-orange/90"
         >
-          Create my listing
+          {continueLabel}
         </button>
       </CardContent>
     </Card>
