@@ -28,6 +28,16 @@ const screens = [
   { file: "21-buyer-questionnaire.png", label: "Buyer Questionnaire", route: "/buyer-questionnaire" },
   { file: "22-compare.png", label: "Car Comparison", route: "/compare" },
   { file: "23-financing.png", label: "Financing Calculator", route: "/financing" },
+  { file: "24-admin.png", label: "Admin Command Center", route: "/admin" },
+  { file: "25-pitch.png", label: "Investor Pitch Deck", route: "/pitch" },
+  { file: "26-docs.png", label: "Documentation Hub", route: "/docs" },
+  { file: "27-car-detail.png", label: "Car Detail", route: "/car/:id" },
+  { file: "28-fair-value.png", label: "Fair Value Result", route: "/fair-value/:id" },
+  { file: "29-buyer-matches.png", label: "Buyer Matches", route: "/buyer-matches/:carId" },
+  { file: "30-recommendations.png", label: "Next Car Recommendations", route: "/recommendations" },
+  { file: "31-negotiation.png", label: "Transaction / Negotiation", route: "/negotiate/:offerId" },
+  { file: "32-kyc.png", label: "KYC Verification", route: "/kyc" },
+  { file: "33-acquisition.png", label: "Acquisition Options", route: "/acquire/:offerId" },
 ];
 
 const Screenshots = () => {
@@ -81,7 +91,6 @@ const Screenshots = () => {
     <>
       <SEO title="All Screens | Autozon" description="Complete screenshot gallery of every Autozon screen." />
       <div className="min-h-screen bg-background">
-        {/* Sticky header */}
         <div className="sticky top-16 z-30 bg-background/95 backdrop-blur border-b px-6 py-3 flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground">Autozon — All Screens</h1>
@@ -93,7 +102,6 @@ const Screenshots = () => {
           </Button>
         </div>
 
-        {/* Gallery */}
         <div ref={contentRef} className="max-w-6xl mx-auto px-6 py-8 space-y-12">
           {screens.map((s, i) => (
             <section key={s.file} className="space-y-3">
@@ -112,26 +120,6 @@ const Screenshots = () => {
               </div>
             </section>
           ))}
-
-          {/* Placeholder for missing screens */}
-          <section className="border-2 border-dashed border-muted rounded-lg p-8 text-center space-y-2">
-            <h2 className="text-lg font-semibold text-muted-foreground">Screens Pending Capture</h2>
-            <p className="text-sm text-muted-foreground">
-              The following screens require specific data or auth access to capture:
-            </p>
-            <ul className="text-sm text-muted-foreground space-y-1">
-              <li><code>/car/:id</code> — Car Detail (needs a specific car ID)</li>
-              <li><code>/fair-value/:id</code> — Fair Value Result</li>
-              <li><code>/buyer-matches/:carId</code> — Buyer Matches</li>
-              <li><code>/negotiate/:offerId</code> — Negotiation</li>
-              <li><code>/acquire/:offerId</code> — Acquisition Options</li>
-              <li><code>/recommendations</code> — Next Car Recommendations</li>
-              <li><code>/kyc</code> — KYC Verification</li>
-              <li><code>/admin</code> — Admin Dashboard</li>
-              <li><code>/pitch</code> — Investor Pitch Deck</li>
-              <li><code>/docs</code> — Documentation Hub</li>
-            </ul>
-          </section>
         </div>
       </div>
     </>
