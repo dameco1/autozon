@@ -4,13 +4,15 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 
 ## Function Inventory
 
-### 1. `concierge-chat`
-- **Purpose**: AI-powered customer concierge chatbot
-- **Model**: Lovable AI (Gemini)
-- **Auth**: Required (JWT)
+### 1. `concierge-chat` (Zoni AI Agent)
+- **Purpose**: Context-aware AI assistant with tool-calling capabilities
+- **Model**: Two-tier routing — `gemini-2.5-flash` (simple/FAQ) and `gemini-3-flash-preview` (complex/tool-calling)
+- **Auth**: Optional (supports authenticated users and anonymous guests)
 - **Protocol**: Server-Sent Events (SSE) streaming
-- **Flow**: User messages → system prompt with car context → streamed AI response
-- **Persistence**: Messages saved to `chat_messages` table
+- **Tools**: `search_cars`, `lookup_my_cars`, `lookup_car_value`, `lookup_matches`, `lookup_offers`, `create_support_ticket`, `navigate_user`, `flag_suspicious`
+- **Features**: Intent classification, embedded FAQ knowledge base, bilingual (EN/DE), max 3 tool-calling rounds
+- **Guest Mode**: Anonymous users get limited access (car search + general questions only)
+- **Audit**: All tool calls logged to `agent_activity_log` table
 
 ### 2. `detect-damage`
 - **Purpose**: AI-powered vehicle damage detection from photos with brand-specific repair cost estimation
@@ -41,7 +43,7 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Integration**: Stripe API
 - **Auth**: Required (JWT + Supabase service role)
 - **Flow**: Creates Stripe session → returns checkout URL → user pays → webhook confirms
-- **Price**: Configurable per-listing fee
+- **Price**: €9.99 (private sellers), €19.99 (business/dealers)
 
 ### 6. `stripe-webhook`
 - **Purpose**: Handles Stripe payment confirmation webhooks
@@ -79,10 +81,11 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Data source**: Manufacturer-backed EU vehicle database
 
 ### 11. `verify-docs-password`
-- **Purpose**: Password-protects the documentation hub
+- **Purpose**: Password-protects the documentation hub (Investor Data Room)
 - **Auth**: Not required
-- **Input**: Password string
-- **Output**: Boolean success
+- **Input**: Password or email
+- **Features**: Email whitelist bypass, rate limiting (5 attempts per IP per 15 min)
+- **Output**: `{ valid: boolean, access_level: string }`
 
 ### 12. `admin-actions`
 - **Purpose**: Admin-only operations (user suspension, car status changes, transaction cancellation with Stripe refund)
@@ -96,6 +99,40 @@ All backend logic runs as serverless **Edge Functions** on Lovable Cloud (Deno r
 - **Flow**: Calls `find_overdue_transactions()` → starts 24h grace period → escalates to `cancellation_pending` if unresolved → notifies admins
 - **Statuses**: `completed` → `grace_period` → `cancellation_pending`
 
+### 14. `detect-location`
+- **Purpose**: Detects user's geographic location for regional defaults
+- **Auth**: Not required
+
+### 15. `send-email-otp`
+- **Purpose**: Sends 6-digit OTP code via email for 2FA
+- **Auth**: Required
+- **Rate limit**: 5 codes per 10 minutes per user
+- **TTL**: 5 minutes
+
+### 16. `verify-email-otp`
+- **Purpose**: Verifies OTP code and marks session as verified
+- **Auth**: Required
+
+### 17. `kyc-create-session` / `kyc-webhook` / `get-kyc-status`
+- **Purpose**: KYC identity verification flow via didit
+- **Auth**: Required (create-session), webhook signature (webhook)
+
+### 18. `create-car-payment`
+- **Purpose**: Creates Stripe payment intent for car purchase
+- **Auth**: Required
+
+### 19. `get-placement-receipts`
+- **Purpose**: Retrieves Stripe receipts for placement payments
+- **Auth**: Required
+
+### 20. Email System Functions
+- **`auth-email-hook`**: Custom email rendering for auth emails (signup, recovery, magic link, etc.)
+- **`send-transactional-email`**: Sends transactional emails (welcome, purchase receipt, placement receipt)
+- **`process-email-queue`**: Processes queued emails with rate limiting and retry logic (pgmq-based)
+- **`handle-email-suppression`**: Handles bounce/complaint webhooks to suppress emails
+- **`handle-email-unsubscribe`**: Processes one-click email unsubscribe
+- **`preview-transactional-email`**: Admin tool to preview email templates
+
 ## AI Integration Pattern
 
 All AI functions follow the same pattern:
@@ -104,3 +141,21 @@ Client → Edge Function → Lovable AI API → Structured Response → Client
 ```
 
 The Lovable AI gateway (`https://ai.gateway.lovable.dev/v1/chat/completions`) provides access to Gemini models without requiring external API keys. Authentication uses the `LOVABLE_API_KEY` environment secret.
+
+## Secrets
+
+| Secret | Purpose |
+|--------|---------|
+| `LOVABLE_API_KEY` | Lovable AI Gateway authentication (auto-provisioned) |
+| `STRIPE_SECRET_KEY` | Stripe API for payments |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signature verification |
+| `VINCARIO_API_KEY` | VINCARIO VIN decode API |
+| `VINCARIO_SECRET_KEY` | VINCARIO API authentication |
+| `DIDIT_API_KEY` | KYC verification API |
+| `DIDIT_WEBHOOK_SECRET` | KYC webhook verification |
+| `DIDIT_WORKFLOW_ID` | KYC workflow configuration |
+| `DOCS_PASSWORD` | Investor Data Room password |
+
+---
+
+*Document status: V2 — Updated April 2026 with Zoni AI agent details, email system functions, KYC functions, and complete secrets inventory.*

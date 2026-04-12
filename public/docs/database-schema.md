@@ -44,33 +44,44 @@
 │ partner_id   │     │car_shortlists│     │ **needs_towing** │
 │ quote_type   │     │──────────────│     │ **towing_wt_kg** │
 │ monthly_pmt  │     │ car_id (FK)  │     └──────────────────┘
-│ partner_id   │     │car_shortlists│
-│ quote_type   │     │──────────────│     ┌──────────────────┐
-│ monthly_pmt  │     │ car_id (FK)  │     │  notifications   │
-│ term_months  │     │ user_id      │     │──────────────────│
-│ interest_rate│     └──────────────┘     │ user_id          │
-└──────────────┘                          │ title, message   │
-                     ┌──────────────┐     │ type, link       │
-┌──────────────┐     │buyer_select. │     │ read (bool)      │
-│chat_messages │     │──────────────│     └──────────────────┘
-│──────────────│     │ car_id (FK)  │
-│ user_id      │     │ user_id      │     ┌──────────────────┐
-│ role         │     │ liked, round │     │financing_partners│
-│ content      │     └──────────────┘     │──────────────────│
-└──────────────┘                          │ name, type       │
-                     ┌──────────────┐     │ base_rate        │
-                     │ transactions │     │ is_active        │
-                     │──────────────│     └──────────────────┘
-                     │ offer_id (FK)│
-                     │ car_id (FK)  │     ┌──────────────────┐
-                     │ buyer/seller │     │   user_roles     │
-                     │ agreed_price │     │──────────────────│
-                     │ current_step │     │ user_id (FK)     │
-                     │ contract_*   │     │ role (enum)      │
-                     │ payment_*    │     │ admin/mod/user   │
-                     │ insurance_*  │     └──────────────────┘
-                     │ status       │
-                     └──────────────┘
+│ term_months  │     │ user_id      │
+│ interest_rate│     └──────────────┘     ┌──────────────────┐
+└──────────────┘                          │  notifications   │
+                     ┌──────────────┐     │──────────────────│
+┌──────────────┐     │buyer_select. │     │ user_id          │
+│chat_messages │     │──────────────│     │ title, message   │
+│──────────────│     │ car_id (FK)  │     │ type, link       │
+│ user_id      │     │ user_id      │     │ read (bool)      │
+│ role         │     │ liked, round │     └──────────────────┘
+│ content      │     └──────────────┘
+└──────────────┘                          ┌──────────────────┐
+                     ┌──────────────┐     │financing_partners│
+                     │ transactions │     │──────────────────│
+                     │──────────────│     │ name, type       │
+                     │ offer_id (FK)│     │ base_rate        │
+                     │ car_id (FK)  │     │ is_active        │
+                     │ buyer/seller │     └──────────────────┘
+                     │ agreed_price │
+                     │ current_step │     ┌──────────────────┐
+                     │ contract_*   │     │   user_roles     │
+                     │ payment_*    │     │──────────────────│
+                     │ insurance_*  │     │ user_id (FK)     │
+                     │ status       │     │ role (enum)      │
+                     └──────────────┘     │ admin/mod/user   │
+                                          └──────────────────┘
+┌──────────────────┐  ┌──────────────────┐
+│ support_tickets  │  │agent_activity_log│
+│──────────────────│  │──────────────────│
+│ id (PK)          │  │ id (PK)          │
+│ user_id          │  │ user_id          │
+│ category         │  │ action_type      │
+│ subject          │  │ tool_name        │
+│ description      │  │ details (JSONB)  │
+│ page_context     │  │ page_context     │
+│ severity         │  │ created_at       │
+│ status           │  └──────────────────┘
+│ created_at       │
+└──────────────────┘
 ```
 
 ## Tables Summary
@@ -93,6 +104,17 @@
 | `acquisition_quotes` | Per quote | Financing/leasing quote from partners |
 | `financing_partners` | Seed | Bank/leasing partner profiles |
 | `user_roles` | Per role assignment | Role-based access control (admin, moderator, user) — separate from profiles for security |
+| `support_tickets` | Per ticket | Bug reports, questions, feedback, UX suggestions — created by Zoni AI agent or users directly |
+| `agent_activity_log` | Per tool call | Audit trail for Zoni AI agent tool calls and suspicious activity flags |
+| `email_otp` | Per OTP code | Email-based 2FA codes with 5-minute TTL |
+| `email_send_log` | Per email | Email delivery tracking and error logging |
+| `email_send_state` | Singleton | Email queue configuration (batch size, delays, TTLs) |
+| `email_unsubscribe_tokens` | Per token | One-time unsubscribe tokens for transactional emails |
+| `suppressed_emails` | Per suppression | Bounced/complained email addresses blocked from future sends |
+| `kyc_verifications` | Per verification | KYC identity verification sessions (via didit) |
+| `negotiation_rounds` | Per round | Detailed per-round negotiation history with actor tracking |
+| `transaction_deadlines` | Per deadline | Step-based deadline tracking for ownership transfer |
+| `transaction_documents` | Per document | Required document checklist for transaction completion |
 
 ## Profiles Table — Lifestyle Fields
 
@@ -106,16 +128,74 @@ The `profiles` table stores lifestyle data collected during registration for use
 | `car_purpose` | text | Daily, work, pleasure, summer, winter → feature affinity |
 | `current_car` | text | Free text (e.g. "BMW 3 Series 2019") → brand loyalty, upgrade path, segment continuity |
 | `budget_max` | numeric | Fallback budget if preferences not set |
+| `suspended` | boolean | Account suspension flag (admin-controlled) |
+| `suspension_type` | text | Type of suspension |
+| `company_name` | text | Business entity name (for dealer accounts) |
+| `uid_number` | text | Business UID number |
+| `commercial_registry_number` | text | Business registry number |
+| `authorized_representative` | text | Business authorized representative |
+
+## Support Tickets Table (Zoni AI Agent)
+
+Created by the Zoni AI agent or users directly:
+
+| Column | Type | Purpose |
+|---|---|---|
+| `category` | text | `bug`, `question`, `feedback`, `ux_suggestion` |
+| `subject` | text | Brief subject line |
+| `description` | text | Detailed description |
+| `page_context` | text | Page where the issue occurred |
+| `severity` | text | `low`, `medium`, `high`, `critical` |
+| `status` | text | `open`, `in_progress`, `resolved`, `closed` |
+
+## Agent Activity Log (Zoni AI Agent)
+
+Audit trail for all Zoni tool calls:
+
+| Column | Type | Purpose |
+|---|---|---|
+| `action_type` | text | `tool_call` or `flag_suspicious` |
+| `tool_name` | text | Which tool was called (e.g. `search_cars`, `flag_suspicious`) |
+| `details` | jsonb | Tool arguments and context |
+| `page_context` | text | Page context at time of call |
 
 ## Security (Row-Level Security)
 
 All tables have RLS enabled. Key policies:
-- **cars**: Owners can CRUD their own; all authenticated users can SELECT available cars; admins full access
+- **cars**: Owners can CRUD their own; anonymous and authenticated users can SELECT available cars with paid placement; admins full access
 - **profiles**: Users can only read/write their own profile; admins can view/update all
 - **offers**: Buyer and seller of the offer can read/update; buyers cannot create offers on own cars (`buyer_id != seller_id`); admins full access
 - **car_shortlists**: Users can CRUD own; cannot shortlist own cars; car owners can view shortlists on their cars
 - **transactions**: Buyers and sellers can view/update own; buyers cannot create transactions on own cars (`buyer_id != seller_id`); admins full access; secure RPC functions for step transitions
 - **notifications**: Users can only see their own notifications; admins can view all; trigger auto-generates notifications on offer status changes
 - **chat_messages**: Users can only access their own chat history
-- **car_models**: All authenticated users can read; no public write access (seeded via edge function with service role)
+- **car_models**: All users (including anonymous) can read; no public write access (seeded via edge function with service role)
 - **user_roles**: Users can only view their own roles; `has_role()` security-definer function prevents RLS recursion
+- **support_tickets**: Users can view own tickets; service role and users can insert; admins can view/update all
+- **agent_activity_log**: Service role can insert; admins can view; no user access
+- **email_otp**: Service role INSERT only; users can view own
+- **suppressed_emails**: Service role only (all operations)
+
+## Database Functions
+
+| Function | Purpose |
+|---|---|
+| `has_role(_user_id, _role)` | Security definer check for RBAC (prevents RLS recursion) |
+| `lock_fair_value(_car_id, _fair_value_price)` | Owner-only fair value lock |
+| `transaction_set_method()` | Step 1: Set completion method |
+| `transaction_set_contract()` | Step 2: Generate contract + mark car as sold |
+| `transaction_set_payment()` | Step 3: Set payment method |
+| `transaction_set_insurance()` | Step 4: Set insurance + complete transaction |
+| `transaction_seller_sign_contract()` | Seller counter-signs digital contract |
+| `get_counterparty_profile()` | Secure profile lookup for transaction participants |
+| `find_overdue_transactions()` | Find Step 5 transactions with missed deadlines |
+| `notify_offer_update()` | Trigger: auto-create notifications on offer status changes |
+| `prevent_vin_change()` | Trigger: block VIN modification after creation |
+| `prevent_car_system_field_tampering()` | Trigger: protect system fields (status, placement_paid, fair_value_price, etc.) |
+| `validate_email_otp_expiry()` | Trigger: prevent inserting already-expired OTP codes |
+| `handle_new_user()` | Trigger: auto-create profile on user signup |
+| `enqueue_email() / read_email_batch() / delete_email() / move_to_dlq()` | Email queue management (pgmq-based) |
+
+---
+
+*Document status: V2 — Updated April 2026 with support_tickets, agent_activity_log, email tables, KYC, and all database functions.*
