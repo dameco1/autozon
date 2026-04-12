@@ -40,8 +40,6 @@ import FinancingCalculator from "./pages/FinancingCalculator";
 import KycVerification from "./pages/KycVerification";
 import Unsubscribe from "./pages/Unsubscribe";
 import Screenshots from "./pages/Screenshots";
-import InstantAiFlow from "./pages/InstantAiFlow";
-import TinderSwipe from "./pages/TinderSwipe";
 import FooterSection from "./components/home/FooterSection";
 import Navbar from "./components/Navbar";
 import SellUpload from "./pages/sell/SellUpload";
@@ -98,8 +96,6 @@ const App = () => (
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/unsubscribe" element={<Unsubscribe />} />
                   <Route path="/screenshots" element={<Screenshots />} />
-                  <Route path="/instant-ai-flow" element={<InstantAiFlow />} />
-                  <Route path="/tinder" element={<TinderSwipe />} />
 
                   {/* Auth-protected routes handle session checks inside each page */}
                   <Route path="/dashboard" element={<Dashboard />} />
